@@ -1,0 +1,82 @@
+#mapid{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: #666 url("../img/transparent-pattern.png");
+}
+#layers{
+  position: absolute;
+  top: 12px;
+  left: 12px;
+}
+#searchBar{
+  width: 300px;
+  padding: 10px;
+  border: 1px #333;
+  font-size: 18px;
+  font-family: Helvetica;
+}
+.arrowButton{
+  position: relative;
+  text-decoration: none;
+  font-size: 20px;
+  padding: 10px;
+  color: #000;
+}
+.arrowGo{
+  top: 4px;
+  right: 41px;
+}
+.arrowHide{
+  top: 9px;
+  font-size: 18px;
+}
+#queryList{
+  max-height: 80%;
+  overflow-y: auto;
+}
+#queryList li{
+  position: relative;
+  padding: 12px;
+  left: 20px;
+  width: 276px;
+  background: #FFF;
+  list-style-type: none;
+}
+a:active{
+  color: #555;
+}
+#searchForm a:link{
+  color: #000;
+}
+#sidebar{
+  position: absolute;
+  height: 100%;
+  width: 50%;
+  right: 0;
+  background: #FFF;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+#sidebar .arrowHide{
+  height: 100%;
+  background: #CCC;
+}
+#sidebar.horizTranslate{
+  transition: 3s;
+  transform: translateX(500px);
+}
+#logo{
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  text-decoration: none;
+  text-align: center;
+}
+#logo img{
+  width: 62px;
+}
+#logo p{
+  color: #CCC;
+  font-size: 10pt;
+}
