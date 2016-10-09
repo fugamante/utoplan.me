@@ -12,7 +12,7 @@ class CreateBusines extends Nodal.Migration {
   up() {
 
     return [
-      this.createTable("businesses", [{"name":"cdepts_id","type":"int"},{"name": "lat", "type": "int"},{"name": "long", "type": "int"},{"name":"title","type":"string"},{"name":"address","type":"string"}])
+      this.createTable("businesses", [{"name":"cdepts_id","type":"int"},{"name": "lat", "type": "float"},{"name": "long", "type": "float"},{"name":"title","type":"string"},{"name":"address","type":"string"}])
     ];
 
   }

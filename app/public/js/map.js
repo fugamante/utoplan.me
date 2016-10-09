@@ -1,10 +1,10 @@
-var map = L.map('mapid').setView([18.4110494, -66.0985525], 13);
+var map = L.map('mapid').setView([18.4110494, -66.0985525], 8);
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
   attribution: ''
 }).addTo(map);
 /*id: 'mapbox.streets',
 accessToken: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw'*/
-var freeBus = {
+/*var freeBus = {
 "type": "FeatureCollection",
 "features": [
     {
@@ -252,9 +252,44 @@ var coorsField = {
     "coordinates": [-104.99404191970824, 39.756213909328125]
 }
 };
+*/
+var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
+    xmlhttp.open("GET", "http://api.utoplan.me/v1/unis", false);
+    xmlhttp.setRequestHeader("Content-Type", "application/json");
+
+    xmlhttp.onreadystatechange = function() {
+	if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 
 
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
+        var obj = JSON.parse(xmlhttp.responseText);
+        for(var index in obj.data){
+          var uni = obj.data[index];
+          var marker = L.marker([uni.lat, uni.long]).addTo(map);
+          marker.bindPopup(uni.title + '<br/>' + [uni.lat, uni.long].toString()).openPopup();
+
+	    }
+	}
+    }
+    xmlhttp.send();
+
+
+/*var request = require('request');
+
+var options = {
+  url: 'http://www.universia.pr/maps/resultadoPR.xml',
+  headers: {
+    'User-Agent': 'request'
+  }
+};
+
+function callback(error, response, body) {
+  if (!error && response.statusCode == 200) {
+
+  }
+};*/
+
+
+/*L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
 maxZoom: 18,
 attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
   '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
@@ -321,3 +356,6 @@ pointToLayer: function (feature, latlng) {
 
 onEachFeature: onEachFeature
 }).addTo(map);
+
+*/
+//request(options, callback);

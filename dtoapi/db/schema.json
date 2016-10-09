@@ -11,8 +11,8 @@
       "columns": [
         {"name": "id", "type": "serial", "properties": {"nullable":false,"primary_key":true,"auto_increment":true}},
         {"name": "cdepts_id", "type": "int", "properties": {}},
-        {"name": "lat", "type": "int", "properties": {}},
-        {"name": "long", "type": "int", "properties": {}},
+        {"name": "lat", "type": "float", "properties": {}},
+        {"name": "long", "type": "float", "properties": {}},
         {"name": "title", "type": "string", "properties": {}},
         {"name": "address", "type": "string", "properties": {}},
         {"name": "created_at", "type": "datetime", "properties": {}},
@@ -31,7 +31,7 @@
         {"name": "total_anual", "type": "float", "properties": {}},
         {"name": "cnaic", "type": "int", "properties": {}},
         {"name": "county", "type": "int", "properties": {}},
-        {"name": "num_est", "type": "int", "properties": {}},
+        {"name": "cnaic_name", "type": "string", "properties": {}},
         {"name": "created_at", "type": "datetime", "properties": {}},
         {"name": "updated_at", "type": "datetime", "properties": {}}
       ]
@@ -90,8 +90,8 @@
         {"name": "title", "type": "string", "properties": {}},
         {"name": "address", "type": "string", "properties": {}},
         {"name": "desc", "type": "string", "properties": {}},
-        {"name": "lat", "type": "int", "properties": {}},
-        {"name": "long", "type": "int", "properties": {}},
+        {"name": "lat", "type": "float", "properties": {}},
+        {"name": "long", "type": "float", "properties": {}},
         {"name": "created_at", "type": "datetime", "properties": {}},
         {"name": "updated_at", "type": "datetime", "properties": {}}
       ]

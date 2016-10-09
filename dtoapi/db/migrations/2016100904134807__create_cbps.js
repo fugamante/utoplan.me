@@ -12,7 +12,7 @@ class CreateCbps extends Nodal.Migration {
   up() {
 
     return [
-      this.createTable("cbps", [{"name":"total_indus","type":"float"},{"name":"total_anual","type":"float"},{"name":"cnaic","type":"int"},{"name":"county","type":"int"},{"name":"num_est","type":"int"}])
+      this.createTable("cbps", [{"name":"total_indus","type":"float"},{"name":"total_anual","type":"float"},{"name":"cnaic","type":"int"},{"name": "cnaic_name", "type": "string"},{"name":"county","type":"int"},{"name":"num_est","type":"int"}])
     ];
 
   }
