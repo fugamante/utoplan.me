@@ -16,13 +16,22 @@
   <script type="text/javascript"  src="js/map.js"></script>
 
   <!-- Search and list of layers. -->
-  <div id="layers">
+  <div id="layersMenu">
     <form id="searchForm">
       <input type="text" id="searchBar" name="searchBar" value="" placeholder="Type your search.">
       <a class="arrowButton arrowGo" href="#" id="dropDownButton">&#9660;</a>
       <ul id="queryList">
         <!-- Dynamic content -->
-        <li class="child">Title<a class="eyeClosed"></a></li>
+        <li class="">Municipalities<a class="eye eyeClosed"></a></li>
+        <li class="">Education<a class="eye eyeClosed"></a></li>
+        <li class="child">Public Schools<a class="eye eyeClosed"></a></li>
+        <li class="child">Private Schools<a class="eye eyeClosed"></a></li>
+        <li class="child">Specialized Schools<a class="eye eyeClosed"></a></li>
+        <li class="child">Universities<a class="eye eyeOpened"></a></li>
+        <li class="">Business<a class="eye eyeClosed"></a></li>
+        <li class="child">Hoteles<a class="eye eyeClosed"></a></li>
+        <li class="child">Medicina<a class="eye eyeClosed"></a></li>
+        <li class="child">Software<a class="eye eyeClosed"></a></li>
         <!-- End dynamic content -->
       </ul>
     </form>
@@ -30,7 +39,7 @@
   <!-- Related -->
   <div id="sidebar">
    <!--<a class="arrowButton arrowHide" href="#">&#9658;</a> -->
-    <a onclick="" class="arrowButton arrowHide">&#9658;</a>
+    <!-- Sidebar -->
     <ul>
       <!-- Dynamic content -->
       <li class="relatedElement">
@@ -43,6 +52,7 @@
       <!-- End dynamic content -->
     </ul>
   </div>
+  <button class="arrowButton" id="toogle" style="left:96.5%;">&#9658;</button>
 
   <!-- Logo -->
   <a id="logo" href="http://imaginary.tech">
@@ -52,7 +62,7 @@
 </body>
 <script src="js/leaflet/leaflet.js"></script>
 <script src="js/jquery.min.js"></script>
-<script type="text/javascript" src="require.js"></script>
+<!--<script type="text/javascript" src="require.js"></script>-->
 <script type="text/javascript">
 // PLUGIN REF
 /*
@@ -64,8 +74,18 @@
   function callbackB(ModuleB) {
     ModuleB.funcB();
 */
-  }
 </script>
 <script src="js/main.js"></script>
-
+<script>
+$(document).ready(function(){
+  $("#sidebar").toggle(500);
+    $("#toogle").click(function(){
+        $("#sidebar").toggle(500);
+        arrowButton.innerHTML("&#x25c0;");
+    });
+    $("#dropDownButton").click(function(){
+        $("#queryList").toggle(500);
+    });
+});
+</script>
 </html>

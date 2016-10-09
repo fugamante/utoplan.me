@@ -1,51 +1,58 @@
 (function() {
   // Use JavaScript Strict Mode.
   "use strict";
-  var controller = require('controller'); // Sync loading of a script in the module directory
 
   // Get global DOM Elements
-  var sidebar = document.getElementById("sidebar");
+  //var sidebar = document.getElementById("sidebar");
 
   // Main function
   function init() {
-
-    //Animate HTML.
-    document.getElementsByID('arrowHide').onclick = function() {
-      if (this.innerHTML === "&#9658;") {
-        this.innerHTML = '&#9659;';
-        sidebar.classList.add('horizTranslate');
-      } else {
-        this.innerHTML = '&#9658;';
-        var computedStyle = window.getComputedStyle(sidebar),
-            animationEnd = computedStyle.getPropertyValue('horizTranslate');
-        sidebar.style.marginLeft = animationEnd;
-        sidebar.classList.remove('horizTranslate');
-      }
-      console.log(sidebar);
+    // Load possible
+    var layers = document.getElementsByClassName("eye"),
+      layersLength = layers.length;
+    for (var layer in layers) {
+      layer.onclick = function(){
+        if (!layer.className.match("eyeOpened")) {
+          layer.className += "eyeOpened";
+        } else {
+          layer.className.replace( /(?:^|\s)eyeOpened(?!\S)/g , '' );
+        }
+      };
     }
+
+    /*
     // Drop down layer list.
     document.getElementById("searchForm").onsubmit = function() { search(myForm); };
-
+*/
     // JAVIER'S TESTING ZONE
-    pushStream( {title:"County Business Patterns", content:"<h2>Average Anual Payroll per Business</h2><p>NAIC: 34</p><p>$55,692</p>", relatedContent:"See: <a href='#'>Related Content 1</a>"} );
+    //pushStream( {title:"County Business Patterns", content:"<h2>Average Anual Payroll per Business</h2><p>NAIC: 34</p><p>$55,692</p>", relatedContent:"See: <a href='#'>Related Content 1</a>"} );
   }
 
+  // Create HTML Elements
+  function createHTMLFragment(htmlStr) {
+    var frag = document.createDocumentFragment(),
+        temp = document.createElement('div');
+    temp.innerHTML = htmlStr;
+    while (temp.firstChild) {
+        frag.appendChild(temp.firstChild);
+    }
+    return frag;
+  }
   // Push data to sidebar
   function pushStream( elementData ) {
     var element, title, content, relatedContent;
+    element = document.createDocumentFragment();
     // Parse values
-    if (elementData.hasOwnProperty('title'))
-      title = element.title;
+    //if (elementData.hasOwnProperty('title'))
+    //  document.createElement('div').innerHTML( "<h1>"+elementData.title+"</h1>" );
     if (elementData.hasOwnProperty('content'))
-      content.innerHTML(content);
+      element.innerHTML (createHTMLFragment( elementData.content ) );
     if (elementData.hasOwnProperty('relatedContent'))
-      content.innerHTML(relatedContent);
-
+      element( createHTMLFragment( elementData.relatedContent ) );
     // Structure Title
     element = document.createElement("LI");
     //title = document.createTextNode(title);
     title = document.createElement("H1").innerHTML(title);
-
     // Insert content to LI
     element.appendChild(title);
     element.appendChild(content);

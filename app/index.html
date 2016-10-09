@@ -1,0 +1,114 @@
+a<!DOCTYPE html>
+<html>
+<head>
+  <title>Utoplan.me - Modular data visualizer for strategic planning.</title>
+  <meta name="viewport" content="initial-scale=1.0">
+  <meta charset="utf-8">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+  <script src="js/jquery.min.js"></script>
+  <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript"  src="js/map.js"></script>
+</head>
+<body>
+  <!-- Map -->
+  <div id="mapid"></div>
+
+
+  <!-- Search and list of layers. -->
+  <div id="layers">
+    <form id="searchForm">
+      <input type="text" id="searchBar" name="searchBar" value="" placeholder="Type your search.">
+      <a class="arrowButton arrowGo" href="#" id="dropDownButton">&#9660;</a>
+      <ul id="queryList">
+        <!-- Dynamic content -->
+        <li class="">Title<a class="eyeClosed"></a></li>
+        <li class="">Title<a class="eyeClosed"></a></li>
+        <li class="">Title<a class="eyeClosed"></a></li>
+        <!-- End dynamic content -->
+      </ul>
+    </form>
+  </div>
+  <!-- Related -->
+  <div id="sidebar">
+   <!--<a class="arrowButton arrowHide" href="#">&#9658;</a> -->
+    <!-- Sidebar -->
+    <ul>
+      dfdfdf
+      <!-- Dynamic content -->
+      <li class="relatedElement">
+        ssfd
+        <h1>dfdf</h1>
+        <div class="contents">
+          <table id="data" class="display" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th>total_indus</th>
+            </tr>
+          </thead>
+        </table>
+        </div>
+        <span>fdfdf</span>
+      </li>
+      <!-- End dynamic content -->
+    </ul>
+  </div>
+  <button class="arrowButton" id="toogle" style="left:96.5%;">&#9658;</button>
+
+  <!-- Logo -->
+  <a id="logo" href="http://imaginary.tech">
+    <img src="img/imaginary-logo.png" alt="Utoplan.me by Imaginary Films LLC">
+    <p>&copy; Imaginary Films LLC</p>
+  </a>
+</body>
+<script src="js/leaflet/leaflet.js"></script>
+<!--<script type="text/javascript" src="require.js"></script>-->
+<script type="text/javascript">
+// PLUGIN REF
+/*
+  var ModuleA = require('modulea') // Sync loading of a script in the module directory
+  ModuleA.funcA();
+*/
+/*
+  require('./path/moduleb.js', callbackB); // Async loading of a script anywhere else
+  function callbackB(ModuleB) {
+    ModuleB.funcB();
+*/
+</script>
+<script src="js/main.js"></script>
+<script>
+$(document).ready(function(){
+    $("#toogle").click(function(){
+        $("#sidebar").toggle(500);
+    });
+});
+
+$(document).ready(function(){
+  var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
+      xmlhttp.open("GET", "http://api.utoplan.me/v1/cbps", true);
+      xmlhttp.setRequestHeader("Content-Type", "application/json");
+
+      xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+
+
+          var obj = JSON.parse(xmlhttp.responseText);
+
+  $('#data').DataTable({data:obj.data;});
+
+
+        }
+    }
+  });
+
+
+
+        xmlhttp.send();
+
+
+</script>
+</html>

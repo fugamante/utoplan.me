@@ -12,7 +12,7 @@ class CreateUnis extends Nodal.Migration {
   up() {
 
     return [
-      this.createTable("unis", [{"name":"title","type":"string"},{"name":"address","type":"string"},{"name":"desc","type":"string"},{"name": "lat", "type": "int"},{"name": "long", "type": "int"}])
+      this.createTable("unis", [{"name":"title","type":"string"},{"name":"address","type":"string"},{"name":"desc","type":"string"},{"name": "lat", "type": "float"},{"name": "long", "type": "float"}])
     ];
 
   }
