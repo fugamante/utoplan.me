@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Utoplan.me - Modular data visualizer for strategic planning.</title>
+  <meta name="viewport" content="initial-scale=1.0">
+  <meta charset="utf-8">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+</head>
+<body>
+  <!-- Map -->
+  <div id="mapid"></div>
+  <script type="text/javascript"  src="js/map.js"></script>
+
+  <!-- Search and list of layers. -->
+  <div id="layers">
+    <form id="searchForm">
+      <input type="text" id="searchBar" name="searchBar" value="" placeholder="Type your search.">
+      <a class="arrowButton arrowGo" href="#" id="dropDownButton">&#9660;</a>
+      <ul id="queryList">
+        <!-- Dynamic content -->
+        <li class="child">Title<a class="eyeClosed"></a></li>
+        <!-- End dynamic content -->
+      </ul>
+    </form>
+  </div>
+  <!-- Related -->
+  <div id="sidebar">
+   <!--<a class="arrowButton arrowHide" href="#">&#9658;</a> -->
+    <a onclick="" class="arrowButton arrowHide">&#9658;</a>
+    <ul>
+      <!-- Dynamic content -->
+      <li class="relatedElement">
+        <h1></h1>
+        <div class="contents">
+          <p></p>
+        </div>
+        <span></span>
+      </li>
+      <!-- End dynamic content -->
+    </ul>
+  </div>
+
+  <!-- Logo -->
+  <a id="logo" href="http://imaginary.tech">
+    <img src="img/imaginary-logo.png" alt="Utoplan.me by Imaginary Films LLC">
+    <p>&copy; Imaginary Films LLC</p>
+  </a>
+</body>
+<script src="js/leaflet/leaflet.js"></script>
+<script src="js/jquery.min.js"></script>
+<script type="text/javascript" src="require.js"></script>
+<script type="text/javascript">
+// PLUGIN REF
+/*
+  var ModuleA = require('modulea') // Sync loading of a script in the module directory
+  ModuleA.funcA();
+*/
+/*
+  require('./path/moduleb.js', callbackB); // Async loading of a script anywhere else
+  function callbackB(ModuleB) {
+    ModuleB.funcB();
+*/
+  }
+</script>
+<script src="js/main.js"></script>
+
+</html>

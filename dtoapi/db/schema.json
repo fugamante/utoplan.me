@@ -1,0 +1,103 @@
+{
+
+  "migration_id": 2016100907055933,
+
+  "models": {
+
+    "Business": {
+
+      "table": "businesses",
+
+      "columns": [
+        {"name": "id", "type": "serial", "properties": {"nullable":false,"primary_key":true,"auto_increment":true}},
+        {"name": "cdepts_id", "type": "int", "properties": {}},
+        {"name": "lat", "type": "int", "properties": {}},
+        {"name": "long", "type": "int", "properties": {}},
+        {"name": "title", "type": "string", "properties": {}},
+        {"name": "address", "type": "string", "properties": {}},
+        {"name": "created_at", "type": "datetime", "properties": {}},
+        {"name": "updated_at", "type": "datetime", "properties": {}}
+      ]
+
+    },
+
+    "Cbp": {
+
+      "table": "cbps",
+
+      "columns": [
+        {"name": "id", "type": "serial", "properties": {"nullable":false,"primary_key":true,"auto_increment":true}},
+        {"name": "total_indus", "type": "float", "properties": {}},
+        {"name": "total_anual", "type": "float", "properties": {}},
+        {"name": "cnaic", "type": "int", "properties": {}},
+        {"name": "county", "type": "int", "properties": {}},
+        {"name": "num_est", "type": "int", "properties": {}},
+        {"name": "created_at", "type": "datetime", "properties": {}},
+        {"name": "updated_at", "type": "datetime", "properties": {}}
+      ]
+
+    },
+
+    "Cdept": {
+
+      "table": "cdepts",
+
+      "columns": [
+        {"name": "id", "type": "serial", "properties": {"nullable":false,"primary_key":true,"auto_increment":true}},
+        {"name": "cnaic", "type": "int", "properties": {}},
+        {"name": "created_at", "type": "datetime", "properties": {}},
+        {"name": "updated_at", "type": "datetime", "properties": {}}
+      ]
+
+    },
+
+    "GradeC": {
+
+      "table": "grade_cs",
+
+      "columns": [
+        {"name": "id", "type": "serial", "properties": {"nullable":false,"primary_key":true,"auto_increment":true}},
+        {"name": "uni_id", "type": "int", "properties": {}},
+        {"name": "cdepts_id", "type": "int", "properties": {}},
+        {"name": "rate", "type": "string", "properties": {}},
+        {"name": "year", "type": "string", "properties": {}},
+        {"name": "created_at", "type": "datetime", "properties": {}},
+        {"name": "updated_at", "type": "datetime", "properties": {}}
+      ]
+
+    },
+
+    "Mun": {
+
+      "table": "muns",
+
+      "columns": [
+        {"name": "id", "type": "serial", "properties": {"nullable":false,"primary_key":true,"auto_increment":true}},
+        {"name": "title", "type": "string", "properties": {}},
+        {"name": "county", "type": "int", "properties": {}},
+        {"name": "created_at", "type": "datetime", "properties": {}},
+        {"name": "updated_at", "type": "datetime", "properties": {}}
+      ]
+
+    },
+
+    "Uni": {
+
+      "table": "unis",
+
+      "columns": [
+        {"name": "id", "type": "serial", "properties": {"nullable":false,"primary_key":true,"auto_increment":true}},
+        {"name": "title", "type": "string", "properties": {}},
+        {"name": "address", "type": "string", "properties": {}},
+        {"name": "desc", "type": "string", "properties": {}},
+        {"name": "lat", "type": "int", "properties": {}},
+        {"name": "long", "type": "int", "properties": {}},
+        {"name": "created_at", "type": "datetime", "properties": {}},
+        {"name": "updated_at", "type": "datetime", "properties": {}}
+      ]
+
+    }
+
+  }
+
+}
