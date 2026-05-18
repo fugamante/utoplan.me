@@ -10,8 +10,10 @@
     "install:all": "npm ci && npm --prefix app ci && npm --prefix dtoapi ci",
     "start:app": "npm --prefix app start",
     "start:api": "npm --prefix dtoapi start",
+    "start:api:modern": "npm --prefix dtoapi run start:modern",
     "test": "npm run test:api && npm run test:app",
     "test:api": "npm --prefix dtoapi test",
+    "test:api:modern": "npm --prefix dtoapi run test:modern",
     "test:app": "npm --prefix app test",
     "test:browser": "node test/browser_smoke_test.js",
     "test:db": "npm run docker:test:db"

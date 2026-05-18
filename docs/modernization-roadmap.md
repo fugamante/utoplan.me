@@ -77,9 +77,9 @@ Exit criteria:
 
 ### Phase 5: Framework Replacement
 
-- Choose the API target only after Phase 3 behavior is pinned.
+- Choose the API target only after Phase 3 behavior is pinned. Status: complete; use the current Node runtime as the replacement target, keep the first slice dependency-free, and defer framework selection until more endpoints expose routing/database needs.
 - Prefer a TypeScript-capable Node runtime for replacement work so endpoint contracts and data boundaries can be typed incrementally.
-- Migrate endpoint by endpoint with compatibility tests.
+- Migrate endpoint by endpoint with compatibility tests. Status: in progress; the DB-free root endpoint is available through `dtoapi/modern/server.js` with a matching compatibility test.
 - Keep data schema and response contracts stable unless a breaking change is explicitly accepted.
 
 Exit criteria:
@@ -108,4 +108,4 @@ Exit criteria:
 
 ## Immediate Next Step
 
-Phase 4 is complete. Continue with Phase 5 by choosing the replacement API runtime and migrating one read endpoint behind the preserved contract tests.
+Continue Phase 5 by migrating the first DB-backed read endpoint behind the preserved contract tests, starting with `/v1/unis/{id}` because it already has deterministic Docker seed data.

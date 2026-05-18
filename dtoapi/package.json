@@ -15,8 +15,11 @@
     "mocha": "~2.4.5"
   },
   "scripts": {
-    "test": "mocha ./test/runner.js",
+    "test": "mocha ./test/runner.js && node ./test/modern_root_contract_test.js",
+    "test:legacy": "mocha ./test/runner.js",
+    "test:modern": "node ./test/modern_root_contract_test.js",
     "start": "node cluster.js",
+    "start:modern": "node modern/server.js",
     "worker": "node worker.js"
   },
   "private": true
