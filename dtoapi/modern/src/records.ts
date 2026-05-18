@@ -1,8 +1,8 @@
 'use strict';
 
-import type {QueryResult} from './db_bridge';
 import type {DatabaseRow, Resource} from './resource_contract';
-import * as db from '../db';
+import type {QueryResult} from './db';
+import * as db from './db';
 import * as resourceContract from './resource_contract';
 import * as responseContract from './response_contract';
 

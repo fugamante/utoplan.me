@@ -3,7 +3,7 @@
 const assert = require('assert');
 const http = require('http');
 
-const db = require('../db');
+const db = require('../lib/db');
 const modernApi = require('../server');
 
 const contracts = [

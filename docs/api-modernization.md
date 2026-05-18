@@ -12,7 +12,7 @@
 - `dtoapi/modern/src/response_contract.ts` owns the typed shared response envelope, error envelope, and JSON serialization boundary.
 - `dtoapi/modern/root_contract.js` owns the shared response shape for that endpoint.
 - `dtoapi/test/modern_root_contract_test.js` verifies status, JSON body, CORS headers, and gzip behavior.
-- `dtoapi/modern/db.js` owns the remaining JavaScript Postgres connection boundary, with `dtoapi/modern/db.d.ts` documenting the bridge used by TypeScript callers.
+- `dtoapi/modern/src/db.ts` owns the typed Postgres connection boundary, environment-derived connection config, query callback contract, and pool close lifecycle.
 - `dtoapi/modern/src/resource_contract.ts` owns typed resource definitions, public column order, row serialization, and `SELECT ... WHERE id = $1` query construction.
 - `dtoapi/modern/src/records.ts` owns typed compatibility queries and response shapes for seeded read endpoints.
 - `dtoapi/modern/test/db_contract_test.js` verifies the seeded read endpoint set and missing-record behavior against the Docker database.
@@ -32,4 +32,4 @@ The modern API must pass preserved endpoint contracts before additional endpoint
 
 ## Next Slice
 
-Continue by migrating `db.js` to TypeScript now that `records.ts` has an explicit query callback bridge.
+Continue by migrating the next narrow modern API runtime boundary to TypeScript, with `root_contract.js` or `server.js` as the remaining API-side candidates.
