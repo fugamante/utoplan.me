@@ -3,6 +3,7 @@
 const http = require('http');
 const URL = require('url').URL;
 const zlib = require('zlib');
+const records = require('./records');
 const rootContract = require('./root_contract');
 
 const CORS_HEADERS = {
@@ -15,8 +16,8 @@ function acceptsGzip(request) {
   return (request.headers['accept-encoding'] || '').indexOf('gzip') !== -1;
 }
 
-function sendJson(request, response, statusCode, body) {
-  const headers = Object.assign({}, CORS_HEADERS, {
+function sendJson(request, response, statusCode, body, extraHeaders) {
+  const headers = Object.assign({}, CORS_HEADERS, extraHeaders || {}, {
     'Content-Type': 'application/json; charset=utf-8',
     'X-Powered-By': 'utoplan-modern-api'
   });
@@ -44,16 +45,16 @@ function handleRoot(request, response) {
 }
 
 function handleRecord(request, response, kind, id) {
-  const records = require('./records');
-
   records.find(kind, id, function(error, row, resource) {
     if (error) {
+      console.error(error.stack || error.message);
+
       return sendJson(request, response, 500, JSON.stringify({
         meta: {
           total: 0,
           count: 0,
           offset: 0,
-          error: error.message
+          error: 'Internal Server Error'
         },
         data: []
       }, null, 2));
@@ -64,6 +65,20 @@ function handleRecord(request, response, kind, id) {
     }
 
     sendJson(request, response, row ? 200 : 404, JSON.stringify(records.payload(row, resource), null, 2));
+  });
+}
+
+function handleMethodNotAllowed(request, response) {
+  sendJson(request, response, 405, JSON.stringify({
+    meta: {
+      total: 0,
+      count: 0,
+      offset: 0,
+      error: 'Method Not Allowed'
+    },
+    data: []
+  }, null, 2), {
+    Allow: 'GET, OPTIONS'
   });
 }
 
@@ -79,6 +94,10 @@ function handleNotFound(request, response) {
   }, null, 2));
 }
 
+function matchRecord(pathname) {
+  return pathname.match(/^\/v1\/(unis|muns|cdepts|cbps|busines|grace_cs)\/([0-9]+)$/);
+}
+
 function createServer() {
   return http.createServer(function(request, response) {
     const pathname = new URL(request.url, 'http://127.0.0.1').pathname;
@@ -92,10 +111,14 @@ function createServer() {
       return handleRoot(request, response);
     }
 
-    const recordMatch = pathname.match(/^\/v1\/(unis|muns|cdepts|cbps|busines|grace_cs)\/([0-9]+)$/);
+    const recordMatch = matchRecord(pathname);
 
     if (request.method === 'GET' && recordMatch) {
       return handleRecord(request, response, recordMatch[1], Number(recordMatch[2]));
+    }
+
+    if (recordMatch) {
+      return handleMethodNotAllowed(request, response);
     }
 
     handleNotFound(request, response);
@@ -110,5 +133,6 @@ if (require.main === module) {
 }
 
 module.exports = {
-  createServer: createServer
+  createServer: createServer,
+  matchRecord: matchRecord
 };

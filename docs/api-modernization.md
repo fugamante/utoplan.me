@@ -13,7 +13,8 @@
 - `dtoapi/test/modern_root_contract_test.js` verifies status, JSON body, CORS headers, and gzip behavior.
 - `dtoapi/modern/db.js` owns the modern Postgres connection boundary.
 - `dtoapi/modern/records.js` owns compatibility queries and response shapes for seeded read endpoints.
-- `dtoapi/modern/test/db_contract_test.js` verifies the seeded read endpoint set against the Docker database.
+- `dtoapi/modern/test/db_contract_test.js` verifies the seeded read endpoint set and missing-record behavior against the Docker database.
+- Known record routes reject unsupported methods with `405 Method Not Allowed` and avoid exposing raw database errors to clients.
 
 ## Dependency Boundary
 
@@ -25,4 +26,4 @@ The modern API must pass preserved endpoint contracts before additional endpoint
 
 ## Next Slice
 
-Continue by expanding modern endpoint coverage beyond the currently seeded read contracts, then move shared response and data access shapes toward TypeScript.
+Continue by moving shared response and data access shapes toward TypeScript-ready boundaries, then add any newly discovered API behavior as modern contract tests before implementation.

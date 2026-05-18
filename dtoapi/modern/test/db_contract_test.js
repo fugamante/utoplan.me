@@ -51,6 +51,7 @@ const contracts = [
   },
   {
     path: '/v1/grace_cs/1',
+    statusCode: 200,
     expected: {
       id: 1,
       uni_id: 1,
@@ -58,8 +59,17 @@ const contracts = [
       rate: '92',
       year: '2016'
     }
+  },
+  {
+    path: '/v1/unis/999',
+    statusCode: 404,
+    expected: null
   }
 ];
+
+contracts.forEach(function(contract) {
+  contract.statusCode = contract.statusCode || 200;
+});
 
 function request(server, path, callback) {
   const address = server.address();
@@ -120,14 +130,19 @@ function runContract(server, index) {
     try {
       const body = JSON.parse(response.body);
 
-      assert.strictEqual(response.statusCode, 200, contract.path + ' should return HTTP 200');
+      assert.strictEqual(response.statusCode, contract.statusCode, contract.path + ' should return HTTP ' + contract.statusCode);
       assert.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8');
       assert.strictEqual(response.headers['access-control-allow-origin'], '*');
       assert.strictEqual(body.meta.error, null);
-      assert.strictEqual(body.meta.total, 1);
-      assert.strictEqual(body.meta.count, 1);
+      assert.strictEqual(body.meta.total, contract.expected ? 1 : 0);
+      assert.strictEqual(body.meta.count, contract.expected ? 1 : 0);
       assert.strictEqual(body.meta.offset, 0);
-      contains(body.data[0], contract.expected);
+
+      if (contract.expected) {
+        contains(body.data[0], contract.expected);
+      } else {
+        assert.deepStrictEqual(body.data, []);
+      }
 
       runContract(server, index + 1);
     } catch (assertionError) {

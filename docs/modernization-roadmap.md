@@ -8,7 +8,7 @@
 - Generated dependency folders are ignored and removed from source control.
 - Azure Pipelines installs Node 22, runs the DB-free API contract baseline, and runs the modern DB-backed contract suite through Docker Compose.
 - Docker validation builds from lockfiles, runs the API test baseline, and serves the static app by default.
-- DB-backed API contracts run in a current Node container against the modern API.
+- DB-backed API contracts run in a current Node container against the modern API, including missing-record behavior.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
 
 ## Target Outcomes
@@ -81,9 +81,10 @@ Exit criteria:
 
 - Choose the API target only after Phase 3 behavior is pinned. Status: complete; use the current Node runtime as the replacement target, keep the first slice dependency-free, and defer framework selection until more endpoints expose routing/database needs.
 - Prefer a TypeScript-capable Node runtime for replacement work so endpoint contracts and data boundaries can be typed incrementally.
-- Migrate endpoint by endpoint with compatibility tests. Status: in progress; the DB-free root endpoint and seeded DB-backed read endpoints are available through `dtoapi/modern/server.js` with matching compatibility tests.
+- Migrate endpoint by endpoint with compatibility tests. Status: in progress; the DB-free root endpoint and seeded DB-backed read endpoints are available through `dtoapi/modern/server.js` with matching success and edge-behavior tests.
 - Isolate modern dependencies from legacy source. Status: complete; normal installation no longer installs Nodal, and modern Postgres access uses `dtoapi/modern/package.json`.
 - Reduce legacy API audit exposure while replacement proceeds. Status: complete; Nodal, Mocha, and Chai have been removed from the normal API dependency graph.
+- Harden modern API failure responses. Status: in progress; unsupported methods on known record routes now return explicit `405` responses, and raw database errors are logged server-side instead of exposed in response bodies.
 - Keep data schema and response contracts stable unless a breaking change is explicitly accepted.
 
 Exit criteria:
@@ -112,4 +113,4 @@ Exit criteria:
 
 ## Immediate Next Step
 
-Continue Phase 5 by expanding modern endpoint coverage beyond the seeded read contract set and preparing typed response/data boundaries.
+Continue Phase 5 by preparing TypeScript-ready response/data boundaries and adding newly discovered API behavior as modern contract tests before implementation.
