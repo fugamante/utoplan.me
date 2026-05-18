@@ -8,6 +8,7 @@ ENV PORT=8080
 COPY package.json package-lock.json ./
 COPY app/package.json app/package-lock.json ./app/
 COPY dtoapi/package.json dtoapi/package-lock.json ./dtoapi/
+COPY dtoapi/modern/package.json dtoapi/modern/package-lock.json ./dtoapi/modern/
 
 RUN npm run install:all
 

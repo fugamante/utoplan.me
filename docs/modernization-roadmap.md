@@ -79,7 +79,8 @@ Exit criteria:
 
 - Choose the API target only after Phase 3 behavior is pinned. Status: complete; use the current Node runtime as the replacement target, keep the first slice dependency-free, and defer framework selection until more endpoints expose routing/database needs.
 - Prefer a TypeScript-capable Node runtime for replacement work so endpoint contracts and data boundaries can be typed incrementally.
-- Migrate endpoint by endpoint with compatibility tests. Status: in progress; the DB-free root endpoint is available through `dtoapi/modern/server.js` with a matching compatibility test.
+- Migrate endpoint by endpoint with compatibility tests. Status: in progress; the DB-free root endpoint and DB-backed `GET /v1/unis/{id}` endpoint are available through `dtoapi/modern/server.js` with matching compatibility tests.
+- Isolate modern dependencies from the legacy Node 8 Nodal runtime. Status: in progress; modern Postgres access uses `dtoapi/modern/package.json` and a separate Node 22 Docker contract service.
 - Keep data schema and response contracts stable unless a breaking change is explicitly accepted.
 
 Exit criteria:
@@ -108,4 +109,4 @@ Exit criteria:
 
 ## Immediate Next Step
 
-Continue Phase 5 by migrating the first DB-backed read endpoint behind the preserved contract tests, starting with `/v1/unis/{id}` because it already has deterministic Docker seed data.
+Continue Phase 5 by migrating the next simple DB-backed read endpoint behind the preserved contract tests, starting with `/v1/muns/{id}` because it has deterministic Docker seed data and should reuse the modern API database boundary established by `/v1/unis/{id}`.

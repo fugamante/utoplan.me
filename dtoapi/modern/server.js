@@ -1,6 +1,7 @@
 'use strict';
 
 const http = require('http');
+const URL = require('url').URL;
 const zlib = require('zlib');
 const rootContract = require('./root_contract');
 
@@ -42,6 +43,26 @@ function handleRoot(request, response) {
   sendJson(request, response, 200, rootContract.serializeRootPayload());
 }
 
+function handleUni(request, response, id) {
+  const unis = require('./unis');
+
+  unis.findUni(id, function(error, row) {
+    if (error) {
+      return sendJson(request, response, 500, JSON.stringify({
+        meta: {
+          total: 0,
+          count: 0,
+          offset: 0,
+          error: error.message
+        },
+        data: []
+      }, null, 2));
+    }
+
+    sendJson(request, response, row ? 200 : 404, JSON.stringify(unis.uniPayload(row), null, 2));
+  });
+}
+
 function handleNotFound(request, response) {
   sendJson(request, response, 404, JSON.stringify({
     meta: {
@@ -56,13 +77,21 @@ function handleNotFound(request, response) {
 
 function createServer() {
   return http.createServer(function(request, response) {
+    const pathname = new URL(request.url, 'http://127.0.0.1').pathname;
+
     if (request.method === 'OPTIONS') {
       response.writeHead(204, CORS_HEADERS);
       return response.end();
     }
 
-    if (request.method === 'GET' && request.url === '/') {
+    if (request.method === 'GET' && pathname === '/') {
       return handleRoot(request, response);
+    }
+
+    const uniMatch = pathname.match(/^\/v1\/unis\/([0-9]+)$/);
+
+    if (request.method === 'GET' && uniMatch) {
+      return handleUni(request, response, Number(uniMatch[1]));
     }
 
     handleNotFound(request, response);

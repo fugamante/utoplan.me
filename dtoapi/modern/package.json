@@ -1,0 +1,16 @@
+{
+  "name": "utoplanme-modern-api",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Modern API compatibility slice for utoplan.me.",
+  "main": "server.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "pg": "^8.16.3"
+  },
+  "scripts": {
+    "test:db": "node test/uni_contract_test.js"
+  }
+}
