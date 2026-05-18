@@ -2,7 +2,7 @@
 
 ## Current State
 
-- `app/` is a small Express 3 static server for the public web assets.
+- `app/` is a dependency-free Node static server for the public web assets.
 - `dtoapi/` is a Nodal 0.12 API with Mocha/Chai tests and JSON config.
 - Root workspace scripts install, test, build, and start both services from lockfiles.
 - Generated dependency folders are ignored and removed from source control.
@@ -69,6 +69,7 @@ Exit criteria:
 - Replace ad hoc browser globals only after the existing map/data behavior is covered. Status: complete for the first page; UI behavior has moved out of inline jQuery, map/data helpers are scoped inside first-party script modules, and first-party behavior is wired through explicit `data-ui` / `data-map` hooks.
 - Extract small frontend configuration/data adapter boundaries before framework work. Status: complete; `js/map_config.js` owns first-page map defaults, tile provider defaults, data URL selection, and university record normalization.
 - Add a minimal browser smoke test for the served public page. Status: complete; server-level static smoke coverage verifies the first page, key assets, local map fixture data, and browser cache-validator compatibility, while Playwright verifies map load, base tile layer rendering, layer menu toggle, sidebar toggle, marker rendering, and clean console/page errors.
+- Remove legacy static-server npm vulnerabilities. Status: complete; `app/` now serves static assets through Node built-ins and has no production npm dependencies.
 
 Exit criteria:
 
@@ -81,6 +82,7 @@ Exit criteria:
 - Prefer a TypeScript-capable Node runtime for replacement work so endpoint contracts and data boundaries can be typed incrementally.
 - Migrate endpoint by endpoint with compatibility tests. Status: in progress; the DB-free root endpoint and DB-backed `GET /v1/unis/{id}` endpoint are available through `dtoapi/modern/server.js` with matching compatibility tests.
 - Isolate modern dependencies from the legacy Node 8 Nodal runtime. Status: in progress; modern Postgres access uses `dtoapi/modern/package.json` and a separate Node 22 Docker contract service.
+- Reduce legacy API audit exposure while replacement proceeds. Status: in progress; the locked `dtoapi` install uses patched transitive overrides and audits clean under the current npm resolver, while Nodal removal remains the permanent fix.
 - Keep data schema and response contracts stable unless a breaking change is explicitly accepted.
 
 Exit criteria:

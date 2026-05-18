@@ -138,7 +138,13 @@ async function main() {
     'If-None-Match': '"legacy-cache-validator"',
     'If-Modified-Since': new Date().toUTCString()
   });
-  assert.strictEqual(cached.statusCode, 200, 'conditional asset request should not crash legacy static middleware');
+  assert.strictEqual(cached.statusCode, 200, 'conditional asset request should not affect static asset serving');
+
+  var missing = await request('/missing-file.css');
+  assert.strictEqual(missing.statusCode, 404, 'missing assets should return HTTP 404');
+
+  var traversal = await request('/../package.json');
+  assert.strictEqual(traversal.statusCode, 400, 'path traversal should be rejected');
 }
 
 main().then(function() {

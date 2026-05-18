@@ -11,8 +11,8 @@
     "nodal": "0.12.8"
   },
   "devDependencies": {
-    "chai": "~3.5.0",
-    "mocha": "~2.4.5"
+    "chai": "^4.5.0",
+    "mocha": "^6.2.3"
   },
   "scripts": {
     "test": "mocha ./test/runner.js && node ./test/modern_root_contract_test.js",
@@ -22,5 +22,14 @@
     "start:modern": "node modern/server.js",
     "worker": "node worker.js"
   },
-  "private": true
+  "private": true,
+  "overrides": {
+    "debug": "3.2.7",
+    "diff": "3.5.1",
+    "js-yaml": "3.14.2",
+    "minimatch": "3.1.4",
+    "lodash": "4.18.1",
+    "semver": "5.7.2",
+    "dot": "1.1.3"
+  }
 }
