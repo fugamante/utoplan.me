@@ -93,6 +93,7 @@ async function main() {
     'id="queryList"',
     'id="sidebar"',
     'id="logo"',
+    '<script type="module" src="js/map.js"></script>',
     '<script src="js/main.js"></script>'
   ].forEach(function(fragment) {
     assert(
@@ -117,6 +118,7 @@ async function main() {
     '/css/reset.css',
     '/data/unis.json',
     '/js/main.js',
+    '/js/map_config.js',
     '/js/map.js',
     '/vendor/jquery/jquery.min.js',
     '/vendor/leaflet/leaflet.css',

@@ -1,62 +1,57 @@
-(function(window, document, L) {
-  "use strict";
+import {
+  normalizeUniversities,
+  readMapConfig
+} from "./map_config.js";
 
-  var DEFAULT_CENTER = [18.4110494, -66.0985525];
-  var DEFAULT_ZOOM = 8;
-  var DEFAULT_DATA_URL = "/data/unis.json";
+function createMap(document, L, config) {
+  var mapElement = document.querySelector('[data-map="main"]');
+  var map = L.map(mapElement).setView(config.center, config.zoom);
 
-  function createMap() {
-    var mapElement = document.querySelector('[data-map="main"]');
-    var map = L.map(mapElement).setView(DEFAULT_CENTER, DEFAULT_ZOOM);
+  if (config.tileUrl) {
+    L.tileLayer(config.tileUrl, {
+      attribution: ""
+    }).addTo(map);
+  }
 
-    if (window.UTOPLAN_TILE_URL) {
-      L.tileLayer(window.UTOPLAN_TILE_URL, {
-        attribution: ""
-      }).addTo(map);
+  return map;
+}
+
+function addUniversities(map, L, universities) {
+  universities.forEach(function(university) {
+    var marker = L.marker(university.position).addTo(map);
+    marker.bindPopup(university.title + "<br/>" + university.position.toString()).openPopup();
+  });
+}
+
+function loadUniversities(window, config, callback) {
+  var request = new XMLHttpRequest();
+  request.open("GET", config.dataUrl, true);
+  request.setRequestHeader("Content-Type", "application/json");
+
+  request.onreadystatechange = function() {
+    if (request.readyState !== 4 || request.status !== 200) {
+      return;
     }
 
-    return map;
-  }
+    callback(normalizeUniversities(JSON.parse(request.responseText)));
+  };
 
-  function universityPosition(university) {
-    return [university.lat, university.long];
-  }
+  request.send();
+}
 
-  function addUniversities(map, universities) {
-    universities.forEach(function(university) {
-      var position = universityPosition(university);
-      var marker = L.marker(position).addTo(map);
-      marker.bindPopup(university.title + "<br/>" + position.toString()).openPopup();
-    });
-  }
+function init(window, document, L) {
+  var config = readMapConfig(window);
+  var map = createMap(document, L, config);
 
-  function loadUniversities(callback) {
-    var request = new XMLHttpRequest();
-    request.open("GET", window.UTOPLAN_API_URL || DEFAULT_DATA_URL, true);
-    request.setRequestHeader("Content-Type", "application/json");
+  loadUniversities(window, config, function(universities) {
+    addUniversities(map, L, universities);
+  });
+}
 
-    request.onreadystatechange = function() {
-      if (request.readyState !== 4 || request.status !== 200) {
-        return;
-      }
-
-      var payload = JSON.parse(request.responseText);
-      callback(payload.data || []);
-    };
-
-    request.send();
-  }
-
-  function init() {
-    var map = createMap();
-    loadUniversities(function(universities) {
-      addUniversities(map, universities);
-    });
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
-  } else {
-    init();
-  }
-}(window, document, L));
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", function() {
+    init(window, document, L);
+  });
+} else {
+  init(window, document, L);
+}
