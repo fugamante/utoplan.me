@@ -43,10 +43,10 @@ function handleRoot(request, response) {
   sendJson(request, response, 200, rootContract.serializeRootPayload());
 }
 
-function handleUni(request, response, id) {
-  const unis = require('./unis');
+function handleRecord(request, response, kind, id) {
+  const records = require('./records');
 
-  unis.findUni(id, function(error, row) {
+  records.find(kind, id, function(error, row, resource) {
     if (error) {
       return sendJson(request, response, 500, JSON.stringify({
         meta: {
@@ -59,7 +59,11 @@ function handleUni(request, response, id) {
       }, null, 2));
     }
 
-    sendJson(request, response, row ? 200 : 404, JSON.stringify(unis.uniPayload(row), null, 2));
+    if (!resource) {
+      return handleNotFound(request, response);
+    }
+
+    sendJson(request, response, row ? 200 : 404, JSON.stringify(records.payload(row, resource), null, 2));
   });
 }
 
@@ -88,10 +92,10 @@ function createServer() {
       return handleRoot(request, response);
     }
 
-    const uniMatch = pathname.match(/^\/v1\/unis\/([0-9]+)$/);
+    const recordMatch = pathname.match(/^\/v1\/(unis|muns|cdepts|cbps|busines|grace_cs)\/([0-9]+)$/);
 
-    if (request.method === 'GET' && uniMatch) {
-      return handleUni(request, response, Number(uniMatch[1]));
+    if (request.method === 'GET' && recordMatch) {
+      return handleRecord(request, response, recordMatch[1], Number(recordMatch[2]));
     }
 
     handleNotFound(request, response);

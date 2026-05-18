@@ -3,13 +3,12 @@
 ## Current State
 
 - `app/` is a dependency-free Node static server for the public web assets.
-- `dtoapi/` is a Nodal 0.12 API with Mocha/Chai tests and JSON config.
+- `dtoapi/` serves the modern API entrypoint; obsolete Nodal source has been removed from the normal project tree.
 - Root workspace scripts install, test, build, and start both services from lockfiles.
 - Generated dependency folders are ignored and removed from source control.
-- Azure Pipelines installs Node 22, runs the DB-free API contract baseline, and runs the DB-backed contract suite through Docker Compose.
+- Azure Pipelines installs Node 22, runs the DB-free API contract baseline, and runs the modern DB-backed contract suite through Docker Compose.
 - Docker validation builds from lockfiles, runs the API test baseline, and serves the static app by default.
-- DB-backed API contracts run in a Node 8 compatibility container because Nodal's `pg@4.5.7` client hangs against Postgres from modern Node runtimes.
-- The Node 8 DB contract container is a behavior-only harness. Its npm 6 transient install does not honor modern package overrides, so audit output from that container is not the security gate.
+- DB-backed API contracts run in a current Node container against the modern API.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
 
 ## Target Outcomes
@@ -40,7 +39,7 @@ Exit criteria:
 
 - Remove committed `node_modules` trees in a dedicated cleanup commit. Status: complete.
 - Generate lockfiles under a selected Node runtime. Status: complete.
-- Decide whether the compatibility target is Node 8 for archival stability or current LTS for active maintenance. Status: complete; use modern Node CI while preserving legacy API behavior with tests.
+- Decide whether the compatibility target is Node 8 for archival stability or current LTS for active maintenance. Status: complete; use modern Node CI and preserve legacy API behavior through modern compatibility tests.
 - Move secrets out of committed JSON config and replace them with documented environment defaults. Status: complete.
 
 Exit criteria:
@@ -52,10 +51,10 @@ Exit criteria:
 
 ### Phase 3: API Compatibility
 
-- Stabilize the Nodal test suite under the selected compatibility runtime. Status: complete.
+- Stabilize the legacy API test suite under the selected compatibility runtime. Status: complete; behavior was captured before the Nodal runtime was removed from the normal dependency graph.
 - Add smoke tests for the public read endpoints. Status: complete; database-free root, route, CORS, gzip behavior, and seeded DB endpoints are covered.
 - Document database requirements and seed/reset steps. Status: complete; Docker Compose provides a disposable Postgres test database with deterministic seed data.
-- Record runtime compatibility constraints. Status: complete; DB contracts use Node 8 because Nodal's `pg@4.5.7` client hangs from modern Node runtimes.
+- Record runtime compatibility constraints. Status: complete; the Node 8/Nodal compatibility path has been retired after seeded DB read behavior moved to the modern API.
 - Isolate externally observable endpoint behavior before replacement. Status: complete via API contract tests.
 
 Exit criteria:
@@ -82,16 +81,15 @@ Exit criteria:
 
 - Choose the API target only after Phase 3 behavior is pinned. Status: complete; use the current Node runtime as the replacement target, keep the first slice dependency-free, and defer framework selection until more endpoints expose routing/database needs.
 - Prefer a TypeScript-capable Node runtime for replacement work so endpoint contracts and data boundaries can be typed incrementally.
-- Migrate endpoint by endpoint with compatibility tests. Status: in progress; the DB-free root endpoint and DB-backed `GET /v1/unis/{id}` endpoint are available through `dtoapi/modern/server.js` with matching compatibility tests.
-- Isolate modern dependencies from the legacy Node 8 Nodal runtime. Status: in progress; modern Postgres access uses `dtoapi/modern/package.json` and a separate Node 22 Docker contract service.
-- Reduce legacy API audit exposure while replacement proceeds. Status: in progress; the locked `dtoapi` install uses patched transitive overrides and audits clean under the current npm resolver, while Nodal removal remains the permanent fix.
-- Keep legacy compatibility and audit policy separate. Status: complete; `Dockerfile.db-test` documents the Node 8 container as a behavior harness, and lockfile-backed current npm audits are the security gate.
+- Migrate endpoint by endpoint with compatibility tests. Status: in progress; the DB-free root endpoint and seeded DB-backed read endpoints are available through `dtoapi/modern/server.js` with matching compatibility tests.
+- Isolate modern dependencies from legacy source. Status: complete; normal installation no longer installs Nodal, and modern Postgres access uses `dtoapi/modern/package.json`.
+- Reduce legacy API audit exposure while replacement proceeds. Status: complete; Nodal, Mocha, and Chai have been removed from the normal API dependency graph.
 - Keep data schema and response contracts stable unless a breaking change is explicitly accepted.
 
 Exit criteria:
 
 - New runtime passes the preserved API contract tests.
-- Legacy Nodal runtime can be removed without losing documented behavior.
+- Legacy Nodal runtime can be removed without losing documented behavior. Status: complete for the seeded read contract set.
 
 ### Phase 6: TypeScript Adoption
 
@@ -114,4 +112,4 @@ Exit criteria:
 
 ## Immediate Next Step
 
-Continue Phase 5 by migrating the next simple DB-backed read endpoint behind the preserved contract tests, starting with `/v1/muns/{id}` because it has deterministic Docker seed data and should reuse the modern API database boundary established by `/v1/unis/{id}`.
+Continue Phase 5 by expanding modern endpoint coverage beyond the seeded read contract set and preparing typed response/data boundaries.

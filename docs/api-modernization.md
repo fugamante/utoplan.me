@@ -8,21 +8,21 @@
 
 ## Current Slice
 
-- `dtoapi/modern/server.js` implements the DB-free `/` endpoint and the first DB-backed `GET /v1/unis/{id}` route.
+- `dtoapi/modern/server.js` implements the DB-free `/` endpoint and the seeded DB-backed read routes.
 - `dtoapi/modern/root_contract.js` owns the shared response shape for that endpoint.
 - `dtoapi/test/modern_root_contract_test.js` verifies status, JSON body, CORS headers, and gzip behavior.
 - `dtoapi/modern/db.js` owns the modern Postgres connection boundary.
-- `dtoapi/modern/unis.js` owns the compatibility query and response shape for university reads.
-- `dtoapi/modern/test/uni_contract_test.js` verifies `GET /v1/unis/1` against the Docker-seeded database.
+- `dtoapi/modern/records.js` owns compatibility queries and response shapes for seeded read endpoints.
+- `dtoapi/modern/test/db_contract_test.js` verifies the seeded read endpoint set against the Docker database.
 
 ## Dependency Boundary
 
-Modern API dependencies are isolated under `dtoapi/modern/package.json` so the legacy Nodal package remains installable and testable under the Node 8 compatibility container. The modern DB contract test runs in a separate Node 22 Compose service that shares the same Postgres seed data.
+Modern API dependencies are isolated under `dtoapi/modern/package.json`. The normal API toolchain no longer installs Nodal, and the obsolete Nodal source tree has been removed.
 
 ## Compatibility Rule
 
-The modern API must pass preserved endpoint contracts before traffic can move away from Nodal. Keep new modern endpoints parallel until the matching legacy behavior is covered and verified.
+The modern API must pass preserved endpoint contracts before additional endpoint work is accepted. New work should extend modern contracts rather than reintroduce legacy runtime dependencies.
 
 ## Next Slice
 
-Continue migrating read endpoints behind the Docker-seeded DB contract. The next candidate is `/v1/muns/{id}` because it is another simple seeded read and can reuse the modern route, Postgres, and response helpers proven by `/v1/unis/{id}`.
+Continue by expanding modern endpoint coverage beyond the currently seeded read contracts, then move shared response and data access shapes toward TypeScript.

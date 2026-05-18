@@ -6,6 +6,61 @@ const http = require('http');
 const db = require('../db');
 const modernApi = require('../server');
 
+const contracts = [
+  {
+    path: '/v1/unis/1',
+    expected: {
+      id: 1,
+      title: 'Contract University',
+      address: '100 Contract Ave',
+      desc: 'Seeded university row'
+    }
+  },
+  {
+    path: '/v1/muns/1',
+    expected: {
+      id: 1,
+      title: 'Contract Municipality',
+      county: 1
+    }
+  },
+  {
+    path: '/v1/cdepts/1',
+    expected: {
+      id: 1,
+      cnaic: 541
+    }
+  },
+  {
+    path: '/v1/cbps/1',
+    expected: {
+      id: 1,
+      cnaic: 541,
+      county: 1,
+      cnaic_name: 'Professional Services'
+    }
+  },
+  {
+    path: '/v1/busines/1',
+    expected: {
+      id: 1,
+      cdepts_id: 1,
+      title: 'Contract Business',
+      address: '200 Contract St'
+    }
+  },
+  {
+    path: '/v1/grace_cs/1',
+    expected: {
+      id: 1,
+      uni_id: 1,
+      cdepts_id: 1,
+      rate: '92',
+      year: '2016'
+    }
+  }
+];
+
 function request(server, path, callback) {
   const address = server.address();
   const req = http.get({
@@ -31,6 +86,12 @@ function request(server, path, callback) {
   req.on('error', callback);
 }
 
+function contains(record, expected) {
+  Object.keys(expected).forEach(function(key) {
+    assert.strictEqual(record[key], expected[key], key + ' should match');
+  });
+}
+
 function finish(server, error) {
   server.close(function(closeError) {
     db.close(function(dbError) {
@@ -44,10 +105,14 @@ function finish(server, error) {
   });
 }
 
-const server = modernApi.createServer();
+function runContract(server, index) {
+  if (index >= contracts.length) {
+    return finish(server);
+  }
 
-server.listen(0, '127.0.0.1', function() {
-  request(server, '/v1/unis/1', function(error, response) {
+  const contract = contracts[index];
+
+  request(server, contract.path, function(error, response) {
     if (error) {
       return finish(server, error);
     }
@@ -55,28 +120,24 @@ server.listen(0, '127.0.0.1', function() {
     try {
       const body = JSON.parse(response.body);
 
-      assert.strictEqual(response.statusCode, 200);
+      assert.strictEqual(response.statusCode, 200, contract.path + ' should return HTTP 200');
       assert.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8');
       assert.strictEqual(response.headers['access-control-allow-origin'], '*');
       assert.strictEqual(body.meta.error, null);
       assert.strictEqual(body.meta.total, 1);
       assert.strictEqual(body.meta.count, 1);
       assert.strictEqual(body.meta.offset, 0);
-      assert.deepStrictEqual({
-        id: body.data[0].id,
-        title: body.data[0].title,
-        address: body.data[0].address,
-        desc: body.data[0].desc
-      }, {
-        id: 1,
-        title: 'Contract University',
-        address: '100 Contract Ave',
-        desc: 'Seeded university row'
-      });
+      contains(body.data[0], contract.expected);
 
-      finish(server);
+      runContract(server, index + 1);
     } catch (assertionError) {
       finish(server, assertionError);
     }
   });
+}
+
+const server = modernApi.createServer();
+
+server.listen(0, '127.0.0.1', function() {
+  runContract(server, 0);
 });

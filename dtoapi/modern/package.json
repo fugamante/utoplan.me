@@ -11,6 +11,6 @@
     "pg": "^8.16.3"
   },
   "scripts": {
-    "test:db": "node test/uni_contract_test.js"
+    "test:db": "node test/db_contract_test.js"
   }
 }

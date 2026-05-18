@@ -14,22 +14,6 @@ services:
     volumes:
       - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/001_contract_data.sql:ro
 
-  api-test:
-    build:
-      context: .
-      dockerfile: Dockerfile.db-test
-    depends_on:
-      db:
-        condition: service_healthy
-    environment:
-      RUN_DB_CONTRACTS: "1"
-      TEST_DATABASE_HOST: db
-      TEST_DATABASE_PORT: "5432"
-      TEST_DATABASE_USER: postgres
-      TEST_DATABASE_PASSWORD: postgres
-      TEST_DATABASE_DB: dtoapi_test
-    command: ["npm", "test"]
-
   modern-api-test:
     build:
       context: .
