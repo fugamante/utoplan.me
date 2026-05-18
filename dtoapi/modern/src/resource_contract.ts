@@ -1,6 +1,17 @@
 'use strict';
 
-const resources = {
+export interface Resource {
+  table: string;
+  columns: string[];
+}
+
+export type ResourceName = 'unis' | 'muns' | 'cdepts' | 'cbps' | 'busines' | 'grace_cs';
+
+export type DatabaseRow = Record<string, unknown>;
+
+export type PublicRecord = Record<string, unknown>;
+
+export const resources: Record<ResourceName, Resource> = {
   unis: {
     table: 'unis',
     columns: ['id', 'title', 'address', 'desc', 'lat', 'long', 'created_at', 'updated_at']
@@ -27,35 +38,27 @@ const resources = {
   }
 };
 
-function quoteColumn(column) {
+function quoteColumn(column: string): string {
   return column === 'desc' || column === 'long' ? '"' + column + '"' : column;
 }
 
-function get(kind) {
-  return resources[kind] || null;
+export function get(kind: string): Resource | null {
+  return Object.prototype.hasOwnProperty.call(resources, kind) ? resources[kind as ResourceName] : null;
 }
 
-function names() {
-  return Object.keys(resources);
+export function names(): ResourceName[] {
+  return Object.keys(resources) as ResourceName[];
 }
 
-function selectById(resource) {
+export function selectById(resource: Resource): string {
   const columns = resource.columns.map(quoteColumn).join(', ');
 
   return 'SELECT ' + columns + ' FROM ' + resource.table + ' WHERE id = $1 LIMIT 1';
 }
 
-function serialize(row, resource) {
-  return resource.columns.reduce(function(record, column) {
+export function serialize(row: DatabaseRow, resource: Resource): PublicRecord {
+  return resource.columns.reduce(function(record: PublicRecord, column: string) {
     record[column] = row[column];
     return record;
   }, {});
 }
-
-module.exports = {
-  get: get,
-  names: names,
-  resources: resources,
-  selectById: selectById,
-  serialize: serialize
-};

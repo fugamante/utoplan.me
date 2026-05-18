@@ -8,10 +8,10 @@
     "node": ">=18"
   },
   "scripts": {
-    "test": "node ./test/modern_root_contract_test.js",
-    "test:modern": "node ./test/modern_root_contract_test.js",
-    "start": "node modern/server.js",
-    "start:modern": "node modern/server.js"
+    "test": "npm --prefix modern run build && node ./test/modern_root_contract_test.js",
+    "test:modern": "npm --prefix modern run build && node ./test/modern_root_contract_test.js",
+    "start": "npm --prefix modern run build && node modern/server.js",
+    "start:modern": "npm --prefix modern run build && node modern/server.js"
   },
   "private": true
 }

@@ -4,7 +4,7 @@ const http = require('http');
 const URL = require('url').URL;
 const zlib = require('zlib');
 const records = require('./records');
-const responseContract = require('./response_contract');
+const responseContract = require('./lib/response_contract');
 const rootContract = require('./root_contract');
 
 const CORS_HEADERS = {

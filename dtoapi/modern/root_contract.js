@@ -1,6 +1,6 @@
 'use strict';
 
-const responseContract = require('./response_contract');
+const responseContract = require('./lib/response_contract');
 
 const ROOT_DATA = [
   {message: 'Welcome to your Nodal Project'}

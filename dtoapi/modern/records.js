@@ -1,8 +1,8 @@
 'use strict';
 
 const db = require('./db');
-const resourceContract = require('./resource_contract');
-const responseContract = require('./response_contract');
+const resourceContract = require('./lib/resource_contract');
+const responseContract = require('./lib/response_contract');
 
 function payload(row, resource) {
   const data = row ? [resourceContract.serialize(row, resource)] : [];

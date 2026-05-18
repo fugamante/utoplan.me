@@ -1,7 +1,7 @@
 'use strict';
 
 const assert = require('assert');
-const resourceContract = require('../resource_contract');
+const resourceContract = require('../lib/resource_contract');
 
 assert.deepStrictEqual(resourceContract.names(), [
   'unis',

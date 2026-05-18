@@ -1,7 +1,7 @@
 'use strict';
 
 const assert = require('assert');
-const responseContract = require('../response_contract');
+const responseContract = require('../lib/response_contract');
 
 const data = [{id: 1, title: 'Contract University'}];
 const payload = responseContract.payload(data);

@@ -10,8 +10,12 @@
   "dependencies": {
     "pg": "^8.16.3"
   },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  },
   "scripts": {
-    "test": "node test/response_contract_test.js && node test/resource_contract_test.js",
-    "test:db": "node test/db_contract_test.js"
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node test/response_contract_test.js && node test/resource_contract_test.js",
+    "test:db": "npm run build && node test/db_contract_test.js"
   }
 }

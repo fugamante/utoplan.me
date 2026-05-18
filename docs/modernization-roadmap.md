@@ -85,8 +85,8 @@ Exit criteria:
 - Isolate modern dependencies from legacy source. Status: complete; normal installation no longer installs Nodal, and modern Postgres access uses `dtoapi/modern/package.json`.
 - Reduce legacy API audit exposure while replacement proceeds. Status: complete; Nodal, Mocha, and Chai have been removed from the normal API dependency graph.
 - Harden modern API failure responses. Status: in progress; unsupported methods on known record routes now return explicit `405` responses, and raw database errors are logged server-side instead of exposed in response bodies.
-- Prepare TypeScript-ready response boundaries. Status: in progress; `dtoapi/modern/response_contract.js` now owns the shared response envelope, error envelope, and JSON serialization contract.
-- Prepare TypeScript-ready resource boundaries. Status: in progress; `dtoapi/modern/resource_contract.js` now owns resource definitions, public column order, row serialization, and parameterized read-query construction.
+- Prepare TypeScript-ready response boundaries. Status: complete; `dtoapi/modern/src/response_contract.ts` now owns the typed shared response envelope, error envelope, and JSON serialization contract.
+- Prepare TypeScript-ready resource boundaries. Status: complete; `dtoapi/modern/src/resource_contract.ts` now owns typed resource definitions, public column order, row serialization, and parameterized read-query construction.
 - Keep data schema and response contracts stable unless a breaking change is explicitly accepted.
 
 Exit criteria:
@@ -96,8 +96,8 @@ Exit criteria:
 
 ### Phase 6: TypeScript Adoption
 
-- Introduce TypeScript after API and frontend behavior have contract coverage.
-- Start at boundaries: config loading, API response shapes, frontend data adapters, and map modules.
+- Introduce TypeScript after API and frontend behavior have contract coverage. Status: started in `dtoapi/modern`.
+- Start at boundaries: config loading, API response shapes, frontend data adapters, and map modules. Status: in progress; the modern API response and resource contracts are now typed and compile to ignored CommonJS output.
 - Keep JavaScript compatibility layers small and temporary.
 - Avoid broad rewrites that mix typing, framework replacement, and behavior changes in one step.
 
@@ -115,4 +115,4 @@ Exit criteria:
 
 ## Immediate Next Step
 
-Continue Phase 5 by deciding whether to introduce TypeScript for the modern API boundary files now or first extract the frontend data/map boundary into the same contract-first shape.
+Continue Phase 6 by migrating the next narrow modern API boundary to TypeScript, with `db.js` and `records.js` as the likely candidates once the callback contract is pinned.
