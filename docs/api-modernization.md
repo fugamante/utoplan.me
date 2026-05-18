@@ -12,13 +12,14 @@
 - `dtoapi/modern/src/response_contract.ts` owns the typed shared response envelope, error envelope, and JSON serialization boundary.
 - `dtoapi/modern/root_contract.js` owns the shared response shape for that endpoint.
 - `dtoapi/test/modern_root_contract_test.js` verifies status, JSON body, CORS headers, and gzip behavior.
-- `dtoapi/modern/db.js` owns the modern Postgres connection boundary.
+- `dtoapi/modern/db.js` owns the remaining JavaScript Postgres connection boundary, with `dtoapi/modern/db.d.ts` documenting the bridge used by TypeScript callers.
 - `dtoapi/modern/src/resource_contract.ts` owns typed resource definitions, public column order, row serialization, and `SELECT ... WHERE id = $1` query construction.
-- `dtoapi/modern/records.js` owns compatibility queries and response shapes for seeded read endpoints.
+- `dtoapi/modern/src/records.ts` owns typed compatibility queries and response shapes for seeded read endpoints.
 - `dtoapi/modern/test/db_contract_test.js` verifies the seeded read endpoint set and missing-record behavior against the Docker database.
 - Known record routes reject unsupported methods with `405 Method Not Allowed` and avoid exposing raw database errors to clients.
 - `dtoapi/modern/test/response_contract_test.js` pins the typed response envelope.
 - `dtoapi/modern/test/resource_contract_test.js` pins the typed resource/data-access boundary.
+- `dtoapi/modern/test/records_contract_test.js` pins typed record payload wrapping without requiring a database.
 - `dtoapi/modern/tsconfig.json` compiles TypeScript contract sources to ignored CommonJS output under `dtoapi/modern/lib/` before tests or runtime entrypoints execute.
 
 ## Dependency Boundary
@@ -31,4 +32,4 @@ The modern API must pass preserved endpoint contracts before additional endpoint
 
 ## Next Slice
 
-Continue by migrating the next narrow modern API boundary to TypeScript, with `db.js` and `records.js` as the likely candidates once the callback contract is pinned.
+Continue by migrating `db.js` to TypeScript now that `records.ts` has an explicit query callback bridge.

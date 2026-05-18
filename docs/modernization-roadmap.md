@@ -98,6 +98,7 @@ Exit criteria:
 
 - Introduce TypeScript after API and frontend behavior have contract coverage. Status: started in `dtoapi/modern`.
 - Start at boundaries: config loading, API response shapes, frontend data adapters, and map modules. Status: in progress; the modern API response and resource contracts are now typed and compile to ignored CommonJS output.
+- Migrate modern API data lookup boundary. Status: in progress; `dtoapi/modern/src/records.ts` now owns typed record payload wrapping and typed callback results while `db.js` remains the JavaScript Postgres bridge.
 - Keep JavaScript compatibility layers small and temporary.
 - Avoid broad rewrites that mix typing, framework replacement, and behavior changes in one step.
 
@@ -115,4 +116,4 @@ Exit criteria:
 
 ## Immediate Next Step
 
-Continue Phase 6 by migrating the next narrow modern API boundary to TypeScript, with `db.js` and `records.js` as the likely candidates once the callback contract is pinned.
+Continue Phase 6 by migrating `db.js` to TypeScript now that `records.ts` has an explicit query callback bridge.
