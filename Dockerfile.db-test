@@ -5,6 +5,12 @@ WORKDIR /workspace/dtoapi
 ENV NODE_ENV=test
 
 COPY dtoapi/package.json ./
+
+# This image is a legacy behavior harness only. Nodal's old pg client needs
+# Node 8 for the seeded DB contracts, but npm 6 cannot honor modern package
+# overrides from the committed lockfile. Treat audit output from this transient
+# install as resolver noise; the security gate is the lockfile-backed audit in
+# the current Node toolchain.
 RUN npm install --ignore-scripts
 
 COPY dtoapi ./

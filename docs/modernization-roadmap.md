@@ -9,6 +9,8 @@
 - Azure Pipelines installs Node 22, runs the DB-free API contract baseline, and runs the DB-backed contract suite through Docker Compose.
 - Docker validation builds from lockfiles, runs the API test baseline, and serves the static app by default.
 - DB-backed API contracts run in a Node 8 compatibility container because Nodal's `pg@4.5.7` client hangs against Postgres from modern Node runtimes.
+- The Node 8 DB contract container is a behavior-only harness. Its npm 6 transient install does not honor modern package overrides, so audit output from that container is not the security gate.
+- The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
 
 ## Target Outcomes
 
@@ -83,6 +85,7 @@ Exit criteria:
 - Migrate endpoint by endpoint with compatibility tests. Status: in progress; the DB-free root endpoint and DB-backed `GET /v1/unis/{id}` endpoint are available through `dtoapi/modern/server.js` with matching compatibility tests.
 - Isolate modern dependencies from the legacy Node 8 Nodal runtime. Status: in progress; modern Postgres access uses `dtoapi/modern/package.json` and a separate Node 22 Docker contract service.
 - Reduce legacy API audit exposure while replacement proceeds. Status: in progress; the locked `dtoapi` install uses patched transitive overrides and audits clean under the current npm resolver, while Nodal removal remains the permanent fix.
+- Keep legacy compatibility and audit policy separate. Status: complete; `Dockerfile.db-test` documents the Node 8 container as a behavior harness, and lockfile-backed current npm audits are the security gate.
 - Keep data schema and response contracts stable unless a breaking change is explicitly accepted.
 
 Exit criteria:
