@@ -1,0 +1,131 @@
+var assert = require('assert');
+var childProcess = require('child_process');
+var http = require('http');
+
+var port = process.env.SMOKE_PORT || '18080';
+var baseUrl = 'http://127.0.0.1:' + port;
+var server;
+
+function request(path, headers) {
+  return new Promise(function(resolve, reject) {
+    var req = http.get({
+      hostname: '127.0.0.1',
+      port: port,
+      path: path,
+      headers: headers || {}
+    }, function(res) {
+      var chunks = [];
+
+      res.on('data', function(chunk) {
+        chunks.push(chunk);
+      });
+
+      res.on('end', function() {
+        resolve({
+          statusCode: res.statusCode,
+          headers: res.headers,
+          body: Buffer.concat(chunks)
+        });
+      });
+    });
+
+    req.on('error', reject);
+    req.setTimeout(5000, function() {
+      req.destroy(new Error('Timed out requesting ' + path));
+    });
+  });
+}
+
+function waitForServer(deadline) {
+  return request('/').catch(function(error) {
+    if (Date.now() > deadline) {
+      throw error;
+    }
+
+    return new Promise(function(resolve) {
+      setTimeout(resolve, 100);
+    }).then(function() {
+      return waitForServer(deadline);
+    });
+  });
+}
+
+function stopServer() {
+  if (server && !server.killed) {
+    server.kill();
+  }
+}
+
+async function main() {
+  server = childProcess.spawn(process.execPath, ['app.js'], {
+    cwd: __dirname + '/..',
+    env: Object.assign({}, process.env, { PORT: port }),
+    stdio: ['ignore', 'pipe', 'pipe']
+  });
+
+  server.on('exit', function(code, signal) {
+    if (code && code !== 0) {
+      console.error('Static app exited with code ' + code + ' signal ' + signal);
+    }
+  });
+
+  process.on('exit', stopServer);
+  process.on('SIGINT', function() {
+    stopServer();
+    process.exit(130);
+  });
+
+  await waitForServer(Date.now() + 10000);
+
+  var index = await request('/');
+  assert.strictEqual(index.statusCode, 200, 'index should return HTTP 200');
+
+  var html = index.body.toString('utf8');
+  [
+    '<div id="mapid"></div>',
+    'id="layersMenu"',
+    'id="searchBar"',
+    'id="queryList"',
+    'id="sidebar"',
+    'id="logo"'
+  ].forEach(function(fragment) {
+    assert(
+      html.indexOf(fragment) !== -1,
+      'index should include ' + fragment
+    );
+  });
+
+  var assets = [
+    '/css/main.css',
+    '/css/reset.css',
+    '/data/unis.json',
+    '/js/main.js',
+    '/js/map.js',
+    '/vendor/jquery/jquery.min.js',
+    '/vendor/leaflet/leaflet.css',
+    '/vendor/leaflet/leaflet.js',
+    '/vendor/require/require.js',
+    '/vendor/xml2json/xml2json.js',
+    '/img/imaginary-logo.png'
+  ];
+
+  for (var i = 0; i < assets.length; i++) {
+    var asset = await request(assets[i]);
+    assert.strictEqual(asset.statusCode, 200, assets[i] + ' should return HTTP 200');
+    assert(asset.body.length > 0, assets[i] + ' should not be empty');
+  }
+
+  var cached = await request('/css/main.css', {
+    'If-None-Match': '"legacy-cache-validator"',
+    'If-Modified-Since': new Date().toUTCString()
+  });
+  assert.strictEqual(cached.statusCode, 200, 'conditional asset request should not crash legacy static middleware');
+}
+
+main().then(function() {
+  stopServer();
+}).catch(function(error) {
+  stopServer();
+  console.error(error.stack || error.message);
+  process.exit(1);
+});

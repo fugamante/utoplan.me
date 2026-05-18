@@ -5,7 +5,7 @@
   "author": "mysterious author",
   "main": "cluster.js",
   "engines": {
-    "node": "6.0.0"
+    "node": ">=8"
   },
   "dependencies": {
     "nodal": "0.12.8"

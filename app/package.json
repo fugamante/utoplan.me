@@ -5,9 +5,9 @@
   "license": "MIT",
   "contributors": "Victor Ortiz, Javier Cordero, Moises Marcon, Pablo Pinna, Rafael Sierra",
   "main": "app.js",
-  "scipts": {
+  "scripts": {
     "start": "node app.js",
-    "test": "echo \"Error, test hasn't been defined yet.\""
+    "test": "node test/static_smoke_test.js"
   },
   "dependencies": {
     "express": "^3.21.2",

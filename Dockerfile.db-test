@@ -1,0 +1,12 @@
+FROM node:8-buster-slim
+
+WORKDIR /workspace/dtoapi
+
+ENV NODE_ENV=test
+
+COPY dtoapi/package.json ./
+RUN npm install --ignore-scripts
+
+COPY dtoapi ./
+
+CMD ["npm", "test"]

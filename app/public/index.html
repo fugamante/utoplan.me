@@ -7,8 +7,8 @@
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css">
-  <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+  <script src="vendor/leaflet/leaflet.js"></script>
 </head>
 <body>
   <!-- Map -->
@@ -60,9 +60,8 @@
     <p>&copy; Imaginary Films LLC</p>
   </a>
 </body>
-<script src="js/leaflet/leaflet.js"></script>
-<script src="js/jquery.min.js"></script>
-<!--<script type="text/javascript" src="require.js"></script>-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<!--<script type="text/javascript" src="vendor/require/require.js"></script>-->
 <script type="text/javascript">
 // PLUGIN REF
 /*
@@ -81,7 +80,7 @@ $(document).ready(function(){
   $("#sidebar").toggle(500);
     $("#toogle").click(function(){
         $("#sidebar").toggle(500);
-        arrowButton.innerHTML("&#x25c0;");
+        $(this).html($("#sidebar").is(":visible") ? "&#9658;" : "&#9668;");
     });
     $("#dropDownButton").click(function(){
         $("#queryList").toggle(500);

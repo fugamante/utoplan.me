@@ -1,0 +1,25 @@
+{
+  "name": "utoplanme",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Modernization workspace for utoplan.me.",
+  "scripts": {
+    "build": "npm run test",
+    "docker:build": "docker build -t utoplanme:modernization .",
+    "docker:test:db": "docker compose run --build --rm api-test; status=$?; docker compose down -v; exit $status",
+    "install:all": "npm ci && npm --prefix app ci && npm --prefix dtoapi ci",
+    "start:app": "npm --prefix app start",
+    "start:api": "npm --prefix dtoapi start",
+    "test": "npm run test:api && npm run test:app",
+    "test:api": "npm --prefix dtoapi test",
+    "test:app": "npm --prefix app test",
+    "test:browser": "node test/browser_smoke_test.js",
+    "test:db": "npm run docker:test:db"
+  },
+  "engines": {
+    "node": ">=8"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0"
+  }
+}

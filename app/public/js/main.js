@@ -8,14 +8,16 @@
   // Main function
   function init() {
     // Load possible
-    var layers = document.getElementsByClassName("eye"),
-      layersLength = layers.length;
-    for (var layer in layers) {
+    var layers = document.getElementsByClassName("eye");
+    for (var i = 0; i < layers.length; i++) {
+      var layer = layers[i];
       layer.onclick = function(){
-        if (!layer.className.match("eyeOpened")) {
-          layer.className += "eyeOpened";
+        if (!this.className.match("eyeOpened")) {
+          this.className = this.className.replace(/(?:^|\s)eyeClosed(?!\S)/g, '');
+          this.className += " eyeOpened";
         } else {
-          layer.className.replace( /(?:^|\s)eyeOpened(?!\S)/g , '' );
+          this.className = this.className.replace(/(?:^|\s)eyeOpened(?!\S)/g, '');
+          this.className += " eyeClosed";
         }
       };
     }
