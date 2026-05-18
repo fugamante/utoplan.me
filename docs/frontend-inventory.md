@@ -40,4 +40,5 @@
 2. Compare duplicate top-level files against served files before deleting anything. Status: complete.
 3. Separate first-party scripts from vendored browser libraries. Status: complete.
 4. Add browser-level coverage around map load, layer menu toggle, and sidebar toggle before behavior changes. Status: complete.
-5. Move first-page UI behavior out of inline jQuery and keep first-party scripts module-scoped. Status: in progress; `index.html` now loads only first-party scripts for the first page, `js/main.js` owns panel/layer toggles, and `js/map.js` keeps map/data helpers inside an IIFE.
+5. Move first-page UI behavior out of inline jQuery and keep first-party scripts module-scoped. Status: complete; `index.html` now loads only first-party scripts for the first page, `js/main.js` owns panel/layer toggles, and `js/map.js` keeps map/data helpers inside an IIFE.
+6. Prefer explicit `data-ui` and `data-map` hooks for first-party behavior and smoke coverage. Status: complete; IDs and classes remain for CSS/backward compatibility, while JavaScript and browser smoke tests use data attributes.

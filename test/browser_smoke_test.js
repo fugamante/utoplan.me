@@ -71,30 +71,30 @@ async function main() {
   await page.goto(baseUrl, { waitUntil: 'networkidle' });
 
   assert.strictEqual(await page.title(), 'Utoplan.me - Modular data visualizer for strategic planning.');
-  assert.strictEqual(await page.locator('#mapid').count(), 1, 'map container should render');
-  assert.strictEqual(await page.locator('#queryList li').count(), 10, 'layer menu should render expected entries');
+  assert.strictEqual(await page.locator('[data-map="main"]').count(), 1, 'map container should render');
+  assert.strictEqual(await page.locator('[data-ui="layer-menu"] li').count(), 10, 'layer menu should render expected entries');
   assert.strictEqual(await page.locator('.leaflet-marker-icon').count(), 1, 'local university marker should render');
   await assertVisible(page, '#layersMenu', 'layer menu should be visible');
-  await waitForDisplay(page, '#sidebar', 'none');
-  await assertHidden(page, '#sidebar', 'sidebar should start hidden');
+  await waitForDisplay(page, '[data-ui="sidebar"]', 'none');
+  await assertHidden(page, '[data-ui="sidebar"]', 'sidebar should start hidden');
 
-  await page.locator('#dropDownButton').click();
-  await waitForDisplay(page, '#queryList', 'none');
-  await assertHidden(page, '#queryList', 'layer list should hide after dropdown click');
-  await page.locator('#dropDownButton').click();
-  await waitForDisplay(page, '#queryList', 'block');
-  assert.strictEqual(await getDisplay(page, '#queryList'), 'block', 'layer list should show after second dropdown click');
+  await page.locator('[data-ui="layer-menu-toggle"]').click();
+  await waitForDisplay(page, '[data-ui="layer-menu"]', 'none');
+  await assertHidden(page, '[data-ui="layer-menu"]', 'layer list should hide after dropdown click');
+  await page.locator('[data-ui="layer-menu-toggle"]').click();
+  await waitForDisplay(page, '[data-ui="layer-menu"]', 'block');
+  assert.strictEqual(await getDisplay(page, '[data-ui="layer-menu"]'), 'block', 'layer list should show after second dropdown click');
 
-  await page.locator('#toogle').click();
-  await waitForDisplay(page, '#sidebar', 'block');
-  assert.strictEqual(await getDisplay(page, '#sidebar'), 'block', 'sidebar should show after toggle click');
-  await page.locator('#toogle').click();
-  await waitForDisplay(page, '#sidebar', 'none');
-  await assertHidden(page, '#sidebar', 'sidebar should hide after second toggle click');
+  await page.locator('[data-ui="sidebar-toggle"]').click();
+  await waitForDisplay(page, '[data-ui="sidebar"]', 'block');
+  assert.strictEqual(await getDisplay(page, '[data-ui="sidebar"]'), 'block', 'sidebar should show after toggle click');
+  await page.locator('[data-ui="sidebar-toggle"]').click();
+  await waitForDisplay(page, '[data-ui="sidebar"]', 'none');
+  await assertHidden(page, '[data-ui="sidebar"]', 'sidebar should hide after second toggle click');
 
-  await page.locator('.eye.eyeClosed').first().click();
+  await page.locator('[data-ui="layer-visibility"].eyeClosed').first().click();
   assert(
-    await page.locator('.eyeOpened').count() >= 2,
+    await page.locator('[data-ui="layer-visibility"].eyeOpened').count() >= 2,
     'layer eye click should open an additional layer icon'
   );
 

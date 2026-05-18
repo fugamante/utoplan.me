@@ -82,7 +82,12 @@ async function main() {
 
   var html = index.body.toString('utf8');
   [
-    '<div id="mapid"></div>',
+    'data-map="main"',
+    'data-ui="layer-menu-toggle"',
+    'data-ui="layer-menu"',
+    'data-ui="layer-visibility"',
+    'data-ui="sidebar"',
+    'data-ui="sidebar-toggle"',
     'id="layersMenu"',
     'id="searchBar"',
     'id="queryList"',

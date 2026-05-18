@@ -1,6 +1,14 @@
 (function(document) {
   "use strict";
 
+  function findUi(name) {
+    return document.querySelector('[data-ui="' + name + '"]');
+  }
+
+  function findAllUi(name) {
+    return document.querySelectorAll('[data-ui="' + name + '"]');
+  }
+
   function setVisible(element, visible) {
     element.style.display = visible ? "block" : "none";
   }
@@ -16,7 +24,7 @@
   }
 
   function bindLayerToggles() {
-    var layers = document.getElementsByClassName("eye");
+    var layers = findAllUi("layer-visibility");
 
     for (var i = 0; i < layers.length; i++) {
       layers[i].addEventListener("click", function(event) {
@@ -27,10 +35,10 @@
   }
 
   function bindPanelToggles() {
-    var sidebar = document.getElementById("sidebar");
-    var sidebarToggle = document.getElementById("toogle");
-    var queryList = document.getElementById("queryList");
-    var queryToggle = document.getElementById("dropDownButton");
+    var sidebar = findUi("sidebar");
+    var sidebarToggle = findUi("sidebar-toggle");
+    var queryList = findUi("layer-menu");
+    var queryToggle = findUi("layer-menu-toggle");
 
     setVisible(sidebar, false);
 

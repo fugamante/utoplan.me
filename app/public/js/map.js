@@ -6,7 +6,8 @@
   var DEFAULT_DATA_URL = "/data/unis.json";
 
   function createMap() {
-    var map = L.map("mapid").setView(DEFAULT_CENTER, DEFAULT_ZOOM);
+    var mapElement = document.querySelector('[data-map="main"]');
+    var map = L.map(mapElement).setView(DEFAULT_CENTER, DEFAULT_ZOOM);
 
     if (window.UTOPLAN_TILE_URL) {
       L.tileLayer(window.UTOPLAN_TILE_URL, {

@@ -66,7 +66,7 @@ Exit criteria:
 
 - Inventory duplicated frontend files under `app/` and `app/public/`. Status: complete; stale duplicate files have been removed.
 - Preserve static Unity/Leaflet artifacts while separating first-party JavaScript. Status: complete; vendored browser libraries live under `app/public/vendor/`.
-- Replace ad hoc browser globals only after the existing map/data behavior is covered. Status: in progress; first-page UI behavior has moved out of inline jQuery, and map/data helpers are scoped inside first-party script modules.
+- Replace ad hoc browser globals only after the existing map/data behavior is covered. Status: complete for the first page; UI behavior has moved out of inline jQuery, map/data helpers are scoped inside first-party script modules, and first-party behavior is wired through explicit `data-ui` / `data-map` hooks.
 - Add a minimal browser smoke test for the served public page. Status: complete; server-level static smoke coverage verifies the first page, key assets, local map fixture data, and browser cache-validator compatibility, while Playwright verifies map load, layer menu toggle, sidebar toggle, marker rendering, and clean console/page errors.
 
 Exit criteria:
@@ -107,4 +107,4 @@ Exit criteria:
 
 ## Immediate Next Step
 
-Continue Phase 4 by moving any remaining first-page DOM contracts toward explicit data attributes before broader frontend framework work.
+Continue Phase 4 by extracting small frontend configuration/data adapter boundaries before broader frontend framework work.
