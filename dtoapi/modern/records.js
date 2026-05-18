@@ -1,6 +1,7 @@
 'use strict';
 
 const db = require('./db');
+const responseContract = require('./response_contract');
 
 const resources = {
   unis: {
@@ -43,15 +44,7 @@ function serialize(row, columns) {
 function payload(row, resource) {
   const data = row ? [serialize(row, resource.columns)] : [];
 
-  return {
-    meta: {
-      total: data.length,
-      count: data.length,
-      offset: 0,
-      error: null
-    },
-    data: data
-  };
+  return responseContract.payload(data);
 }
 
 function find(kind, id, callback) {

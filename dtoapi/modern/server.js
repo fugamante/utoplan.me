@@ -4,6 +4,7 @@ const http = require('http');
 const URL = require('url').URL;
 const zlib = require('zlib');
 const records = require('./records');
+const responseContract = require('./response_contract');
 const rootContract = require('./root_contract');
 
 const CORS_HEADERS = {
@@ -49,49 +50,31 @@ function handleRecord(request, response, kind, id) {
     if (error) {
       console.error(error.stack || error.message);
 
-      return sendJson(request, response, 500, JSON.stringify({
-        meta: {
-          total: 0,
-          count: 0,
-          offset: 0,
-          error: 'Internal Server Error'
-        },
-        data: []
-      }, null, 2));
+      return sendJson(request, response, 500, responseContract.serialize(
+        responseContract.errorPayload('Internal Server Error')
+      ));
     }
 
     if (!resource) {
       return handleNotFound(request, response);
     }
 
-    sendJson(request, response, row ? 200 : 404, JSON.stringify(records.payload(row, resource), null, 2));
+    sendJson(request, response, row ? 200 : 404, responseContract.serialize(records.payload(row, resource)));
   });
 }
 
 function handleMethodNotAllowed(request, response) {
-  sendJson(request, response, 405, JSON.stringify({
-    meta: {
-      total: 0,
-      count: 0,
-      offset: 0,
-      error: 'Method Not Allowed'
-    },
-    data: []
-  }, null, 2), {
+  sendJson(request, response, 405, responseContract.serialize(
+    responseContract.errorPayload('Method Not Allowed')
+  ), {
     Allow: 'GET, OPTIONS'
   });
 }
 
 function handleNotFound(request, response) {
-  sendJson(request, response, 404, JSON.stringify({
-    meta: {
-      total: 0,
-      count: 0,
-      offset: 0,
-      error: 'Not Found'
-    },
-    data: []
-  }, null, 2));
+  sendJson(request, response, 404, responseContract.serialize(
+    responseContract.errorPayload('Not Found')
+  ));
 }
 
 function matchRecord(pathname) {

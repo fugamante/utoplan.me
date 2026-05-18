@@ -1,23 +1,17 @@
 'use strict';
 
+const responseContract = require('./response_contract');
+
 const ROOT_DATA = [
   {message: 'Welcome to your Nodal Project'}
 ];
 
 function rootPayload() {
-  return {
-    meta: {
-      total: ROOT_DATA.length,
-      count: ROOT_DATA.length,
-      offset: 0,
-      error: null
-    },
-    data: ROOT_DATA
-  };
+  return responseContract.payload(ROOT_DATA);
 }
 
 function serializeRootPayload() {
-  return JSON.stringify(rootPayload(), null, 2);
+  return responseContract.serialize(rootPayload());
 }
 
 module.exports = {

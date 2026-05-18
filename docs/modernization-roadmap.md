@@ -85,6 +85,7 @@ Exit criteria:
 - Isolate modern dependencies from legacy source. Status: complete; normal installation no longer installs Nodal, and modern Postgres access uses `dtoapi/modern/package.json`.
 - Reduce legacy API audit exposure while replacement proceeds. Status: complete; Nodal, Mocha, and Chai have been removed from the normal API dependency graph.
 - Harden modern API failure responses. Status: in progress; unsupported methods on known record routes now return explicit `405` responses, and raw database errors are logged server-side instead of exposed in response bodies.
+- Prepare TypeScript-ready response boundaries. Status: in progress; `dtoapi/modern/response_contract.js` now owns the shared response envelope, error envelope, and JSON serialization contract.
 - Keep data schema and response contracts stable unless a breaking change is explicitly accepted.
 
 Exit criteria:
@@ -113,4 +114,4 @@ Exit criteria:
 
 ## Immediate Next Step
 
-Continue Phase 5 by preparing TypeScript-ready response/data boundaries and adding newly discovered API behavior as modern contract tests before implementation.
+Continue Phase 5 by preparing the data access/resource boundary for TypeScript and adding newly discovered API behavior as modern contract tests before implementation.
