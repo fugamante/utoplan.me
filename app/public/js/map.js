@@ -9,7 +9,7 @@ function createMap(document, L, config) {
 
   if (config.tileUrl) {
     L.tileLayer(config.tileUrl, {
-      attribution: ""
+      attribution: config.tileAttribution
     }).addTo(map);
   }
 

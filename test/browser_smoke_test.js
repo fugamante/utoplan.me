@@ -58,6 +58,18 @@ async function main() {
   const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
   const consoleMessages = [];
   const pageErrors = [];
+  const tilePng = Buffer.from(
+    'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/p9sAAAAASUVORK5CYII=',
+    'base64'
+  );
+
+  await page.route('https://tile.openstreetmap.org/**', route => {
+    route.fulfill({
+      body: tilePng,
+      contentType: 'image/png',
+      status: 200
+    });
+  });
 
   page.on('console', message => {
     if (['error', 'warning'].includes(message.type())) {
@@ -73,6 +85,7 @@ async function main() {
   assert.strictEqual(await page.title(), 'Utoplan.me - Modular data visualizer for strategic planning.');
   assert.strictEqual(await page.locator('[data-map="main"]').count(), 1, 'map container should render');
   assert.strictEqual(await page.locator('[data-ui="layer-menu"] li').count(), 10, 'layer menu should render expected entries');
+  assert.strictEqual(await page.locator('.leaflet-tile-pane img.leaflet-tile').count() > 0, true, 'base map tiles should render');
   assert.strictEqual(await page.locator('.leaflet-marker-icon').count(), 1, 'local university marker should render');
   await assertVisible(page, '#layersMenu', 'layer menu should be visible');
   await waitForDisplay(page, '[data-ui="sidebar"]', 'none');

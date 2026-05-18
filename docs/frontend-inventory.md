@@ -43,4 +43,4 @@
 4. Add browser-level coverage around map load, layer menu toggle, and sidebar toggle before behavior changes. Status: complete.
 5. Move first-page UI behavior out of inline jQuery and keep first-party scripts module-scoped. Status: complete; `index.html` now loads only first-party scripts for the first page, `js/main.js` owns panel/layer toggles, and `js/map.js` keeps map/data helpers inside an IIFE.
 6. Prefer explicit `data-ui` and `data-map` hooks for first-party behavior and smoke coverage. Status: complete; IDs and classes remain for CSS/backward compatibility, while JavaScript and browser smoke tests use data attributes.
-7. Extract frontend map configuration and data normalization behind a small first-party module. Status: complete; `js/map_config.js` owns map defaults, endpoint selection, and university record normalization for `js/map.js`.
+7. Extract frontend map configuration and data normalization behind a small first-party module. Status: complete; `js/map_config.js` owns map defaults, OpenStreetMap tile defaults, endpoint selection, and university record normalization for `js/map.js`.
