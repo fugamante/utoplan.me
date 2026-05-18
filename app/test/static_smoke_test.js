@@ -87,11 +87,23 @@ async function main() {
     'id="searchBar"',
     'id="queryList"',
     'id="sidebar"',
-    'id="logo"'
+    'id="logo"',
+    '<script src="js/main.js"></script>'
   ].forEach(function(fragment) {
     assert(
       html.indexOf(fragment) !== -1,
       'index should include ' + fragment
+    );
+  });
+
+  [
+    'vendor/jquery/jquery.min.js',
+    '$(document).ready',
+    'PLUGIN REF'
+  ].forEach(function(fragment) {
+    assert(
+      html.indexOf(fragment) === -1,
+      'index should not include ' + fragment
     );
   });
 

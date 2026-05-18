@@ -1,77 +1,59 @@
-(function() {
-  // Use JavaScript Strict Mode.
+(function(document) {
   "use strict";
 
-  // Get global DOM Elements
-  //var sidebar = document.getElementById("sidebar");
+  function setVisible(element, visible) {
+    element.style.display = visible ? "block" : "none";
+  }
 
-  // Main function
-  function init() {
-    // Load possible
+  function isVisible(element) {
+    return window.getComputedStyle(element).display !== "none";
+  }
+
+  function toggleEyeState(element) {
+    var isOpen = element.classList.contains("eyeOpened");
+    element.classList.toggle("eyeOpened", !isOpen);
+    element.classList.toggle("eyeClosed", isOpen);
+  }
+
+  function bindLayerToggles() {
     var layers = document.getElementsByClassName("eye");
+
     for (var i = 0; i < layers.length; i++) {
-      var layer = layers[i];
-      layer.onclick = function(){
-        if (!this.className.match("eyeOpened")) {
-          this.className = this.className.replace(/(?:^|\s)eyeClosed(?!\S)/g, '');
-          this.className += " eyeOpened";
-        } else {
-          this.className = this.className.replace(/(?:^|\s)eyeOpened(?!\S)/g, '');
-          this.className += " eyeClosed";
-        }
-      };
+      layers[i].addEventListener("click", function(event) {
+        event.preventDefault();
+        toggleEyeState(event.currentTarget);
+      });
     }
-
-    /*
-    // Drop down layer list.
-    document.getElementById("searchForm").onsubmit = function() { search(myForm); };
-*/
-    // JAVIER'S TESTING ZONE
-    //pushStream( {title:"County Business Patterns", content:"<h2>Average Anual Payroll per Business</h2><p>NAIC: 34</p><p>$55,692</p>", relatedContent:"See: <a href='#'>Related Content 1</a>"} );
   }
 
-  // Create HTML Elements
-  function createHTMLFragment(htmlStr) {
-    var frag = document.createDocumentFragment(),
-        temp = document.createElement('div');
-    temp.innerHTML = htmlStr;
-    while (temp.firstChild) {
-        frag.appendChild(temp.firstChild);
-    }
-    return frag;
-  }
-  // Push data to sidebar
-  function pushStream( elementData ) {
-    var element, title, content, relatedContent;
-    element = document.createDocumentFragment();
-    // Parse values
-    //if (elementData.hasOwnProperty('title'))
-    //  document.createElement('div').innerHTML( "<h1>"+elementData.title+"</h1>" );
-    if (elementData.hasOwnProperty('content'))
-      element.innerHTML (createHTMLFragment( elementData.content ) );
-    if (elementData.hasOwnProperty('relatedContent'))
-      element( createHTMLFragment( elementData.relatedContent ) );
-    // Structure Title
-    element = document.createElement("LI");
-    //title = document.createTextNode(title);
-    title = document.createElement("H1").innerHTML(title);
-    // Insert content to LI
-    element.appendChild(title);
-    element.appendChild(content);
-    element.appendChild(relatedContent);
+  function bindPanelToggles() {
+    var sidebar = document.getElementById("sidebar");
+    var sidebarToggle = document.getElementById("toogle");
+    var queryList = document.getElementById("queryList");
+    var queryToggle = document.getElementById("dropDownButton");
+
+    setVisible(sidebar, false);
+
+    sidebarToggle.addEventListener("click", function() {
+      var shouldShow = !isVisible(sidebar);
+      setVisible(sidebar, shouldShow);
+      sidebarToggle.innerHTML = shouldShow ? "&#9658;" : "&#9668;";
+    });
+
+    queryToggle.addEventListener("click", function(event) {
+      event.preventDefault();
+      setVisible(queryList, !isVisible(queryList));
+    });
   }
 
-  // Determine what plug-ins should attend the query.
-  function search() {
-    // To be implemented.
-    // Continue to run
+  function init() {
+    bindLayerToggles();
+    bindPanelToggles();
   }
 
-  // Initialize objects after DOM is loaded
-  if (document.readyState === "interactive" || document.readyState === "complete")
-    // Call init if the DOM (interactive) or document (complete) is ready.
-    init();
-  else
-    // Set init as a listener for the DOMContentLoaded event.
+  if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
-}());
+  } else {
+    init();
+  }
+}(document));

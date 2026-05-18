@@ -59,32 +59,6 @@
     <img src="img/imaginary-logo.png" alt="Utoplan.me by Imaginary Films LLC">
     <p>&copy; Imaginary Films LLC</p>
   </a>
-</body>
-<script src="vendor/jquery/jquery.min.js"></script>
-<!--<script type="text/javascript" src="vendor/require/require.js"></script>-->
-<script type="text/javascript">
-// PLUGIN REF
-/*
-  var ModuleA = require('modulea') // Sync loading of a script in the module directory
-  ModuleA.funcA();
-*/
-/*
-  require('./path/moduleb.js', callbackB); // Async loading of a script anywhere else
-  function callbackB(ModuleB) {
-    ModuleB.funcB();
-*/
-</script>
 <script src="js/main.js"></script>
-<script>
-$(document).ready(function(){
-  $("#sidebar").toggle(500);
-    $("#toogle").click(function(){
-        $("#sidebar").toggle(500);
-        $(this).html($("#sidebar").is(":visible") ? "&#9658;" : "&#9668;");
-    });
-    $("#dropDownButton").click(function(){
-        $("#queryList").toggle(500);
-    });
-});
-</script>
+</body>
 </html>
