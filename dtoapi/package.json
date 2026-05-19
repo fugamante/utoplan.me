@@ -3,21 +3,15 @@
   "version": "0.0.0",
   "description": "dtoapi",
   "author": "mysterious author",
-  "main": "cluster.js",
+  "main": "modern/lib/server.js",
   "engines": {
-    "node": "6.0.0"
-  },
-  "dependencies": {
-    "nodal": "0.12.8"
-  },
-  "devDependencies": {
-    "chai": "~3.5.0",
-    "mocha": "~2.4.5"
+    "node": ">=18"
   },
   "scripts": {
-    "test": "mocha ./test/runner.js",
-    "start": "node cluster.js",
-    "worker": "node worker.js"
+    "test": "npm --prefix modern run build && node ./test/modern_root_contract_test.js",
+    "test:modern": "npm --prefix modern run build && node ./test/modern_root_contract_test.js",
+    "start": "npm --prefix modern run build && node modern/lib/server.js",
+    "start:modern": "npm --prefix modern run build && node modern/lib/server.js"
   },
   "private": true
 }

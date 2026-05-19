@@ -5,13 +5,12 @@
   "license": "MIT",
   "contributors": "Victor Ortiz, Javier Cordero, Moises Marcon, Pablo Pinna, Rafael Sierra",
   "main": "app.js",
-  "scipts": {
-    "start": "node app.js",
-    "test": "echo \"Error, test hasn't been defined yet.\""
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "npm run build && node app.js",
+    "test": "npm run build && node test/map_config_contract_test.js && node test/static_smoke_test.js && node test/static_api_gate_test.js && node test/static_proxy_test.js"
   },
-  "dependencies": {
-    "express": "^3.21.2",
-    "request": "^2.75.0",
-    "require": "^2.4.20"
+  "devDependencies": {
+    "typescript": "^5.9.3"
   }
 }

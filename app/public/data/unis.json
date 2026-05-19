@@ -1,0 +1,12 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "title": "University of Puerto Rico",
+      "address": "San Juan, PR",
+      "desc": "Local smoke-test university fixture.",
+      "lat": 18.4037,
+      "long": -66.0502
+    }
+  ]
+}
