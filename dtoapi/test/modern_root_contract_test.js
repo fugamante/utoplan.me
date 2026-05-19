@@ -5,7 +5,7 @@ const http = require('http');
 const zlib = require('zlib');
 
 const modernApi = require('../modern/server');
-const rootContract = require('../modern/root_contract');
+const rootContract = require('../modern/lib/root_contract');
 
 function request(server, path, options, callback) {
   const address = server.address();

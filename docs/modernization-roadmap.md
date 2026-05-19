@@ -100,6 +100,7 @@ Exit criteria:
 - Start at boundaries: config loading, API response shapes, frontend data adapters, and map modules. Status: in progress; the modern API response and resource contracts are now typed and compile to ignored CommonJS output.
 - Migrate modern API data lookup boundary. Status: in progress; `dtoapi/modern/src/records.ts` now owns typed record payload wrapping and typed callback results.
 - Migrate modern API database boundary. Status: complete; `dtoapi/modern/src/db.ts` now owns typed environment-derived connection config, query callbacks, and pool close lifecycle.
+- Migrate modern API root contract. Status: complete; `dtoapi/modern/src/root_contract.ts` now owns the typed root endpoint payload and serialization contract.
 - Keep JavaScript compatibility layers small and temporary.
 - Avoid broad rewrites that mix typing, framework replacement, and behavior changes in one step.
 
@@ -117,4 +118,4 @@ Exit criteria:
 
 ## Immediate Next Step
 
-Continue Phase 6 by migrating the next narrow modern API runtime boundary to TypeScript, with `root_contract.js` or `server.js` as the remaining API-side candidates.
+Continue Phase 6 by migrating `server.js` to TypeScript after pinning its routing helpers and HTTP response types.

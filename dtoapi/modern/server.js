@@ -5,7 +5,7 @@ const URL = require('url').URL;
 const zlib = require('zlib');
 const records = require('./lib/records');
 const responseContract = require('./lib/response_contract');
-const rootContract = require('./root_contract');
+const rootContract = require('./lib/root_contract');
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
