@@ -49,6 +49,7 @@ Run these checks before promoting a release candidate:
 ```sh
 npm run install:all
 npm run build
+npm run verify:deployment
 npm run test:browser
 npm run docker:test:db
 npm run docker:test:proxy
@@ -60,6 +61,8 @@ npm --prefix dtoapi/modern audit
 ```
 
 Run Docker compatibility checks when Docker is available, because the production topology depends on container networking and seeded Postgres validation.
+
+`npm run verify:deployment` validates the production app/API environment in the current shell. Use `node scripts/verify_deployment_config.js --service=app` or `--service=api` when checking one container at a time.
 
 Confirm these release facts before deployment:
 
