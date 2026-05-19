@@ -41,6 +41,7 @@ try {
     password: '',
     database: 'dtoapi_test'
   });
+  assert.strictEqual(db.hasExplicitConnectionConfig(), false);
 
   process.env.DATABASE_HOST = 'fallback-host';
   process.env.TEST_DATABASE_HOST = 'test-host';
@@ -60,11 +61,13 @@ try {
     password: 'test-password',
     database: 'test-db'
   });
+  assert.strictEqual(db.hasExplicitConnectionConfig(), true);
 
   process.env.DATABASE_URL = 'postgres://example';
   assert.deepStrictEqual(db.connectionConfig(), {
     connectionString: 'postgres://example'
   });
+  assert.strictEqual(db.hasExplicitConnectionConfig(), true);
 } finally {
   restore();
 }

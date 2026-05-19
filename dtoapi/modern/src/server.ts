@@ -3,6 +3,7 @@
 import http, {type IncomingMessage, type OutgoingHttpHeaders, type Server, type ServerResponse} from 'http';
 import {URL} from 'url';
 import zlib from 'zlib';
+import * as db from './db';
 import * as records from './records';
 import * as responseContract from './response_contract';
 import * as rootContract from './root_contract';
@@ -59,6 +60,13 @@ function sendJson(
 
 function handleRoot(request: IncomingMessage, response: ServerResponse): void {
   sendJson(request, response, 200, rootContract.serializeRootPayload());
+}
+
+function handleHealth(request: IncomingMessage, response: ServerResponse): void {
+  sendJson(request, response, 200, responseContract.serialize({
+    status: 'ok',
+    service: 'utoplan-modern-api'
+  }));
 }
 
 function handleRecord(request: IncomingMessage, response: ServerResponse, kind: string, id: number): void {
@@ -130,6 +138,11 @@ export function createServer(): Server {
       return;
     }
 
+    if (request.method === 'GET' && pathname === '/healthz') {
+      handleHealth(request, response);
+      return;
+    }
+
     const recordMatch = matchRecord(pathname);
     const collectionMatch = matchCollection(pathname);
 
@@ -154,6 +167,12 @@ export function createServer(): Server {
 
 if (require.main === module) {
   const port = process.env.PORT || 3001;
+
+  if (process.env.NODE_ENV === 'production' && !db.hasExplicitConnectionConfig()) {
+    console.error('DATABASE_URL or DATABASE_HOST, DATABASE_USER, and DATABASE_DB are required in production');
+    process.exit(1);
+  }
+
   createServer().listen(port, function() {
     console.log('modern api listening on port ' + port);
   });

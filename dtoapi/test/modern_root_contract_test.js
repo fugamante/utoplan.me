@@ -65,6 +65,17 @@ withServer(function(server, done) {
     assert(response.headers['access-control-allow-methods'].indexOf('GET') !== -1);
     assert.deepStrictEqual(JSON.parse(response.body.toString()), rootContract.rootPayload());
 
+    request(server, '/healthz', null, function(healthError, healthResponse) {
+      if (healthError) {
+        return done(healthError);
+      }
+
+      assert.strictEqual(healthResponse.statusCode, 200);
+      assert.deepStrictEqual(JSON.parse(healthResponse.body.toString()), {
+        status: 'ok',
+        service: 'utoplan-modern-api'
+      });
+
     request(server, '/', {headers: {'accept-encoding': 'gzip'}}, function(gzipError, gzipResponse) {
       if (gzipError) {
         return done(gzipError);
@@ -102,6 +113,7 @@ withServer(function(server, done) {
           });
         });
       });
+    });
     });
   });
 });

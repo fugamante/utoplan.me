@@ -5,8 +5,8 @@ var URL = require('url').URL;
 
 var port = process.env.PORT || 8080;
 var publicDir = path.join(__dirname, 'public');
-var apiOrigin = process.env.UTOPLAN_API_ORIGIN ? new URL(process.env.UTOPLAN_API_ORIGIN) : null;
 var demoFixture = process.env.UTOPLAN_DEMO_FIXTURE === '1';
+var apiOrigin = parseApiOrigin(process.env.UTOPLAN_API_ORIGIN);
 
 var types = {
   '.css': 'text/css; charset=utf-8',
@@ -52,8 +52,35 @@ function send(response, statusCode, body, headers) {
   response.end(body);
 }
 
+function parseApiOrigin(value) {
+  var origin;
+
+  if (!value) {
+    return null;
+  }
+
+  origin = new URL(value);
+  if (origin.protocol !== 'http:' && origin.protocol !== 'https:') {
+    throw new Error('UTOPLAN_API_ORIGIN must use http or https');
+  }
+
+  return origin;
+}
+
 function isApiPath(urlPath) {
   return urlPath.split('?')[0].indexOf('/v1/') === 0;
+}
+
+function sendHealth(response) {
+  send(response, 200, JSON.stringify({
+    status: 'ok',
+    service: 'utoplan-static-app',
+    apiProxy: Boolean(apiOrigin),
+    demoFixture: demoFixture
+  }), {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Cache-Control': 'no-cache'
+  });
 }
 
 function proxyApi(request, response) {
@@ -84,6 +111,10 @@ function serve(request, response) {
       'Content-Type': 'text/plain; charset=utf-8',
       'Allow': 'GET, HEAD'
     });
+  }
+
+  if (request.url.split('?')[0] === '/healthz') {
+    return sendHealth(response);
   }
 
   if (apiOrigin && isApiPath(request.url)) {
@@ -122,6 +153,11 @@ function serve(request, response) {
     response.writeHead(200, headers);
     fs.createReadStream(filePath).pipe(response);
   });
+}
+
+if (apiOrigin && demoFixture) {
+  console.error('UTOPLAN_API_ORIGIN and UTOPLAN_DEMO_FIXTURE=1 cannot be enabled together');
+  process.exit(1);
 }
 
 http.createServer(serve).listen(port, function() {

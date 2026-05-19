@@ -30,6 +30,10 @@ docker compose -f docker-compose.integrated.yml up --build
 
 The app is exposed on `http://127.0.0.1:8080` by default. The API is only exposed inside the Compose network.
 
+Both services expose `/healthz`. The Compose baseline waits for the API health check before starting the app and marks the app healthy only after its own `/healthz` responds.
+
+The API container fails fast in production when neither `DATABASE_URL` nor `DATABASE_HOST`, `DATABASE_USER`, and `DATABASE_DB` are configured.
+
 ## Fixture Policy
 
 Fixture mode is not part of the integrated deployment path. `UTOPLAN_DEMO_FIXTURE=1` is reserved for explicit offline demos and tests.
