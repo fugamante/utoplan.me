@@ -7,7 +7,7 @@
 - `app/public/css/` contains the page styles.
 - `app/public/js/` contains first-party browser scripts.
 - `app/public/vendor/` contains vendored browser libraries.
-- `app/public/data/unis.json` is the local default data fixture for offline and browser-safe map rendering.
+- `app/public/data/unis.json` is the explicit demo/test fixture for offline and browser-safe map rendering.
 - `app/public/Untitled/` contains Unity build artifacts that should be preserved as static assets during cleanup.
 
 ## First-Party Browser Files
@@ -60,7 +60,7 @@
 
 - The browser map prefers the same-origin modern API collection path `/v1/unis`.
 - `app/app.js` proxies `/v1/*` to `UTOPLAN_API_ORIGIN` when configured.
-- `app/app.js` maps `/v1/unis` to `app/public/data/unis.json` only when the static app runs without an API proxy.
+- `app/app.js` maps `/v1/unis` to `app/public/data/unis.json` only when `UTOPLAN_DEMO_FIXTURE=1` is set.
 - `app/public/src/map.ts` still has a client-side fallback URL from `MapConfig.fallbackDataUrl` for deployments where the preferred API request fails.
 - `npm run docker:test:proxy` validates the proxied same-origin `/v1/unis` path against the seeded modern API and confirms it does not read from the offline fixture.
 

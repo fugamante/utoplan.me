@@ -59,7 +59,10 @@ function stopServer() {
 async function main() {
   server = childProcess.spawn(process.execPath, ['app.js'], {
     cwd: __dirname + '/..',
-    env: Object.assign({}, process.env, { PORT: port }),
+    env: Object.assign({}, process.env, {
+      PORT: port,
+      UTOPLAN_DEMO_FIXTURE: '1'
+    }),
     stdio: ['ignore', 'pipe', 'pipe']
   });
 

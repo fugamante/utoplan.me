@@ -6,6 +6,7 @@ var URL = require('url').URL;
 var port = process.env.PORT || 8080;
 var publicDir = path.join(__dirname, 'public');
 var apiOrigin = process.env.UTOPLAN_API_ORIGIN ? new URL(process.env.UTOPLAN_API_ORIGIN) : null;
+var demoFixture = process.env.UTOPLAN_DEMO_FIXTURE === '1';
 
 var types = {
   '.css': 'text/css; charset=utf-8',
@@ -89,7 +90,7 @@ function serve(request, response) {
     return proxyApi(request, response);
   }
 
-  if (request.url.split('?')[0] === '/v1/unis') {
+  if (demoFixture && request.url.split('?')[0] === '/v1/unis') {
     request.url = '/data/unis.json';
   }
 

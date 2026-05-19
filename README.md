@@ -56,7 +56,9 @@ PORT=3001 npm run start:api:modern
 UTOPLAN_API_ORIGIN=http://127.0.0.1:3001 PORT=8080 npm run start:app
 ```
 
-With `UTOPLAN_API_ORIGIN` set, the static app proxies `/v1/*` requests to the modern API and the browser keeps using same-origin URLs such as `/v1/unis`. Without `UTOPLAN_API_ORIGIN`, the static app keeps the offline `/v1/unis` fixture fallback for standalone demos and browser smoke tests.
+With `UTOPLAN_API_ORIGIN` set, the static app proxies `/v1/*` requests to the modern API and the browser keeps using same-origin URLs such as `/v1/unis`.
+
+For explicit offline demos only, run the app with `UTOPLAN_DEMO_FIXTURE=1` to map `/v1/unis` to `app/public/data/unis.json`. Without `UTOPLAN_API_ORIGIN` or `UTOPLAN_DEMO_FIXTURE=1`, `/v1/*` paths are not handled by the static app.
 
 ## API Database Environment
 
