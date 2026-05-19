@@ -55,3 +55,10 @@
 - `app/public/src/map.ts` owns typed map creation, university loading, marker rendering, and DOM startup, then compiles to the browser-facing `app/public/js/map.js`.
 - `app/public/src/main.ts` owns typed layer visibility, sidebar, and layer-menu toggle behavior, then compiles to the browser-facing `app/public/js/main.js`.
 - `app/public/js/main.js`, `app/public/js/map.js`, and `app/public/js/map_config.js` remain committed because they are static browser assets referenced by `app/public/index.html`.
+
+## JavaScript Ownership
+
+- `app/app.js` remains dependency-free static-server glue.
+- `app/public/js/*.js` are committed browser assets compiled from `app/public/src/*.ts`.
+- `app/test/*.js` and `test/browser_smoke_test.js` are compatibility/smoke tests for the compiled browser output.
+- Vendored and Unity-generated JavaScript remains isolated under `app/public/vendor/` and `app/public/Untitled/`.

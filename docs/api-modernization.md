@@ -32,6 +32,12 @@ Modern API dependencies are isolated under `dtoapi/modern/package.json`. The nor
 
 The modern API must pass preserved endpoint contracts before additional endpoint work is accepted. New work should extend modern contracts rather than reintroduce legacy runtime dependencies.
 
+## JavaScript Ownership
+
+- `dtoapi/test/modern_root_contract_test.js` and `dtoapi/modern/test/*.js` are compatibility tests that execute compiled TypeScript output.
+- `dtoapi/modern/lib/` is ignored generated CommonJS output from the TypeScript build.
+- No active API runtime source remains in handwritten JavaScript.
+
 ## Next Slice
 
-Continue by reviewing the remaining JavaScript compatibility files in `dtoapi/modern` and deciding whether to migrate tests or move the next TypeScript slice to frontend data/map boundaries.
+Add new API behavior through typed sources under `dtoapi/modern/src/` and compatibility tests under `dtoapi/modern/test/`. Test migration to TypeScript is optional and lower priority than product behavior or CI hardening.

@@ -105,6 +105,7 @@ Exit criteria:
 - Migrate modern API HTTP runtime. Status: complete; `dtoapi/modern/src/server.ts` now owns typed routing, gzip detection, CORS headers, response dispatch, and server startup.
 - Migrate frontend map/data boundary. Status: in progress; `app/public/src/map_config.ts` owns typed map defaults, runtime override selection, and university record normalization while `app/public/src/map.ts` owns typed map creation, university loading, marker rendering, and DOM startup. Both compile to the existing browser module paths.
 - Migrate frontend UI toggle boundary. Status: complete; `app/public/src/main.ts` now owns typed layer visibility, sidebar, and layer-menu toggle behavior while compiling to the existing browser module path.
+- Inventory remaining JavaScript ownership. Status: complete; remaining handwritten JavaScript is static-server glue or test/smoke coverage, generated browser JavaScript is compiled from TypeScript, and vendored/generated assets are isolated.
 - Keep JavaScript compatibility layers small and temporary.
 - Avoid broad rewrites that mix typing, framework replacement, and behavior changes in one step.
 
@@ -113,6 +114,7 @@ Exit criteria:
 - Shared public contracts are typed.
 - New or migrated modules compile under TypeScript.
 - Remaining JavaScript files have explicit ownership and migration notes.
+Status: complete for active API runtime and first-party browser behavior. Tests/tooling may remain JavaScript unless a future pass needs stronger typed test helpers.
 
 ### Reactive Option: WebAssembly
 
@@ -122,4 +124,4 @@ Exit criteria:
 
 ## Immediate Next Step
 
-Continue Phase 6 by reviewing remaining JavaScript compatibility files and deciding whether to type tests/tooling next or begin the next roadmap phase.
+Begin the next roadmap phase by choosing the next product-facing modernization target. Recommended next target: wire the frontend map data flow to the modern API endpoint path, preserving the local fixture fallback for offline/browser smoke tests.
