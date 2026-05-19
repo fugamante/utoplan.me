@@ -1,33 +1,44 @@
 'use strict';
 
-const http = require('http');
-const URL = require('url').URL;
-const zlib = require('zlib');
-const records = require('./lib/records');
-const responseContract = require('./lib/response_contract');
-const rootContract = require('./lib/root_contract');
+import http, {type IncomingMessage, type OutgoingHttpHeaders, type Server, type ServerResponse} from 'http';
+import {URL} from 'url';
+import zlib from 'zlib';
+import * as records from './records';
+import * as responseContract from './response_contract';
+import * as rootContract from './root_contract';
 
-const CORS_HEADERS = {
+export const CORS_HEADERS: OutgoingHttpHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
 };
 
-function acceptsGzip(request) {
-  return (request.headers['accept-encoding'] || '').indexOf('gzip') !== -1;
+export function acceptsGzip(request: IncomingMessage): boolean {
+  return String(request.headers['accept-encoding'] || '').indexOf('gzip') !== -1;
 }
 
-function sendJson(request, response, statusCode, body, extraHeaders) {
+export function matchRecord(pathname: string): RegExpMatchArray | null {
+  return pathname.match(/^\/v1\/(unis|muns|cdepts|cbps|busines|grace_cs)\/([0-9]+)$/);
+}
+
+function sendJson(
+  request: IncomingMessage,
+  response: ServerResponse,
+  statusCode: number,
+  body: string,
+  extraHeaders?: OutgoingHttpHeaders
+): void {
   const headers = Object.assign({}, CORS_HEADERS, extraHeaders || {}, {
     'Content-Type': 'application/json; charset=utf-8',
     'X-Powered-By': 'utoplan-modern-api'
   });
 
   if (acceptsGzip(request)) {
-    return zlib.gzip(body, function(error, compressed) {
+    zlib.gzip(body, function(error: Error | null, compressed: Buffer) {
       if (error) {
         response.writeHead(500, headers);
-        return response.end(JSON.stringify({error: 'gzip_failed'}));
+        response.end(JSON.stringify({error: 'gzip_failed'}));
+        return;
       }
 
       response.writeHead(statusCode, Object.assign({}, headers, {
@@ -35,35 +46,38 @@ function sendJson(request, response, statusCode, body, extraHeaders) {
       }));
       response.end(compressed);
     });
+    return;
   }
 
   response.writeHead(statusCode, headers);
   response.end(body);
 }
 
-function handleRoot(request, response) {
+function handleRoot(request: IncomingMessage, response: ServerResponse): void {
   sendJson(request, response, 200, rootContract.serializeRootPayload());
 }
 
-function handleRecord(request, response, kind, id) {
+function handleRecord(request: IncomingMessage, response: ServerResponse, kind: string, id: number): void {
   records.find(kind, id, function(error, row, resource) {
     if (error) {
       console.error(error.stack || error.message);
 
-      return sendJson(request, response, 500, responseContract.serialize(
+      sendJson(request, response, 500, responseContract.serialize(
         responseContract.errorPayload('Internal Server Error')
       ));
+      return;
     }
 
     if (!resource) {
-      return handleNotFound(request, response);
+      handleNotFound(request, response);
+      return;
     }
 
     sendJson(request, response, row ? 200 : 404, responseContract.serialize(records.payload(row, resource)));
   });
 }
 
-function handleMethodNotAllowed(request, response) {
+function handleMethodNotAllowed(request: IncomingMessage, response: ServerResponse): void {
   sendJson(request, response, 405, responseContract.serialize(
     responseContract.errorPayload('Method Not Allowed')
   ), {
@@ -71,37 +85,37 @@ function handleMethodNotAllowed(request, response) {
   });
 }
 
-function handleNotFound(request, response) {
+function handleNotFound(request: IncomingMessage, response: ServerResponse): void {
   sendJson(request, response, 404, responseContract.serialize(
     responseContract.errorPayload('Not Found')
   ));
 }
 
-function matchRecord(pathname) {
-  return pathname.match(/^\/v1\/(unis|muns|cdepts|cbps|busines|grace_cs)\/([0-9]+)$/);
-}
-
-function createServer() {
-  return http.createServer(function(request, response) {
-    const pathname = new URL(request.url, 'http://127.0.0.1').pathname;
+export function createServer(): Server {
+  return http.createServer(function(request: IncomingMessage, response: ServerResponse) {
+    const pathname = new URL(request.url || '/', 'http://127.0.0.1').pathname;
 
     if (request.method === 'OPTIONS') {
       response.writeHead(204, CORS_HEADERS);
-      return response.end();
+      response.end();
+      return;
     }
 
     if (request.method === 'GET' && pathname === '/') {
-      return handleRoot(request, response);
+      handleRoot(request, response);
+      return;
     }
 
     const recordMatch = matchRecord(pathname);
 
     if (request.method === 'GET' && recordMatch) {
-      return handleRecord(request, response, recordMatch[1], Number(recordMatch[2]));
+      handleRecord(request, response, recordMatch[1], Number(recordMatch[2]));
+      return;
     }
 
     if (recordMatch) {
-      return handleMethodNotAllowed(request, response);
+      handleMethodNotAllowed(request, response);
+      return;
     }
 
     handleNotFound(request, response);
@@ -114,8 +128,3 @@ if (require.main === module) {
     console.log('modern api listening on port ' + port);
   });
 }
-
-module.exports = {
-  createServer: createServer,
-  matchRecord: matchRecord
-};

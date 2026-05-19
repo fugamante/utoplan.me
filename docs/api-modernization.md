@@ -8,7 +8,7 @@
 
 ## Current Slice
 
-- `dtoapi/modern/server.js` implements the DB-free `/` endpoint and the seeded DB-backed read routes.
+- `dtoapi/modern/src/server.ts` implements the typed HTTP runtime for the DB-free `/` endpoint and the seeded DB-backed read routes.
 - `dtoapi/modern/src/response_contract.ts` owns the typed shared response envelope, error envelope, and JSON serialization boundary.
 - `dtoapi/modern/src/root_contract.ts` owns the typed shared response shape for the root endpoint.
 - `dtoapi/test/modern_root_contract_test.js` verifies status, JSON body, CORS headers, and gzip behavior.
@@ -21,6 +21,7 @@
 - `dtoapi/modern/test/resource_contract_test.js` pins the typed resource/data-access boundary.
 - `dtoapi/modern/test/records_contract_test.js` pins typed record payload wrapping without requiring a database.
 - `dtoapi/modern/test/root_contract_test.js` pins the typed root response contract without requiring a server.
+- `dtoapi/modern/test/server_contract_test.js` pins server route matching and gzip detection helpers without requiring a database.
 - `dtoapi/modern/tsconfig.json` compiles TypeScript contract sources to ignored CommonJS output under `dtoapi/modern/lib/` before tests or runtime entrypoints execute.
 
 ## Dependency Boundary
@@ -33,4 +34,4 @@ The modern API must pass preserved endpoint contracts before additional endpoint
 
 ## Next Slice
 
-Continue by migrating `server.js` to TypeScript after pinning its routing helpers and HTTP response types.
+Continue by reviewing the remaining JavaScript compatibility files in `dtoapi/modern` and deciding whether to migrate tests or move the next TypeScript slice to frontend data/map boundaries.

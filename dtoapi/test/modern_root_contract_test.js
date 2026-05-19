@@ -4,7 +4,7 @@ const assert = require('assert');
 const http = require('http');
 const zlib = require('zlib');
 
-const modernApi = require('../modern/server');
+const modernApi = require('../modern/lib/server');
 const rootContract = require('../modern/lib/root_contract');
 
 function request(server, path, options, callback) {
