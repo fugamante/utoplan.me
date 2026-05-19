@@ -23,6 +23,7 @@ npm run install:all
 npm run test
 npm run test:browser
 npm run test:db
+npm run test:browser:start-local
 npm run start:app
 npm run start:api
 npm run start:api:modern
@@ -50,6 +51,8 @@ The Docker build runs `npm run install:all` and `npm run build`, so it validates
 `npm run test:browser` runs a Playwright Chromium smoke test against the static app. Run `npx playwright install chromium` once on a fresh local machine before using it.
 
 The legacy Nodal API path has been retired from the normal project tree. The modern API runs from `dtoapi/modern`, compiles TypeScript sources to ignored CommonJS output under `dtoapi/modern/lib/`, and preserves the captured root and seeded read endpoint contracts.
+
+The static app and modern API both expose `/healthz` for runtime health checks.
 
 Use `npm run start:api:modern` to run the modern API locally on `PORT` or `3001`.
 

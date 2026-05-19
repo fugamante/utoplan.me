@@ -83,6 +83,14 @@ async function main() {
   var index = await request('/');
   assert.strictEqual(index.statusCode, 200, 'index should return HTTP 200');
 
+  var health = await request('/healthz');
+  var healthBody = JSON.parse(health.body.toString('utf8'));
+  assert.strictEqual(health.statusCode, 200, 'health check should return HTTP 200');
+  assert.strictEqual(healthBody.status, 'ok');
+  assert.strictEqual(healthBody.service, 'utoplan-static-app');
+  assert.strictEqual(healthBody.apiProxy, false);
+  assert.strictEqual(healthBody.demoFixture, true);
+
   var html = index.body.toString('utf8');
   [
     'data-map="main"',
