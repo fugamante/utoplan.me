@@ -24,6 +24,7 @@ npm run test:db
 npm run start:app
 npm run start:api
 npm run start:api:modern
+npm run start:local
 ```
 
 ## Docker Validation
@@ -52,11 +53,17 @@ Use `npm run start:api:modern` to run the modern API locally on `PORT` or `3001`
 Run the modern API and static app as two local services when validating integrated map data:
 
 ```sh
+npm run start:local
+```
+
+`npm run start:local` starts the modern API on `UTOPLAN_API_PORT` or `3001`, starts the static app on `UTOPLAN_APP_PORT` or `8080`, and passes `UTOPLAN_API_ORIGIN` into the static app. The browser keeps using same-origin URLs such as `/v1/unis`.
+
+To run the services manually:
+
+```sh
 PORT=3001 npm run start:api:modern
 UTOPLAN_API_ORIGIN=http://127.0.0.1:3001 PORT=8080 npm run start:app
 ```
-
-With `UTOPLAN_API_ORIGIN` set, the static app proxies `/v1/*` requests to the modern API and the browser keeps using same-origin URLs such as `/v1/unis`.
 
 For explicit offline demos only, run the app with `UTOPLAN_DEMO_FIXTURE=1` to map `/v1/unis` to `app/public/data/unis.json`. Without `UTOPLAN_API_ORIGIN` or `UTOPLAN_DEMO_FIXTURE=1`, `/v1/*` paths are not handled by the static app.
 

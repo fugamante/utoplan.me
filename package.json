@@ -14,13 +14,15 @@
     "start:app": "npm --prefix app start",
     "start:api": "npm --prefix dtoapi run start:modern",
     "start:api:modern": "npm --prefix dtoapi run start:modern",
-    "test": "npm run test:api && npm run test:app",
+    "start:local": "node scripts/start_integrated.js",
+    "test": "npm run test:api && npm run test:app && npm run test:start:local",
     "test:api": "npm --prefix dtoapi test",
     "test:api:modern": "npm --prefix dtoapi run test:modern",
     "test:api:modern-db": "npm --prefix dtoapi/modern run test:db",
     "test:app": "npm --prefix app test",
     "test:browser": "node test/browser_smoke_test.js",
     "test:db": "npm run docker:test:db",
+    "test:start:local": "node test/start_integrated_contract_test.js",
     "test:proxy:modern": "npm --prefix dtoapi/modern run build && node test/app_modern_proxy_test.js"
   },
   "engines": {
