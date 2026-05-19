@@ -8,7 +8,8 @@
     "docker:build": "docker build -t utoplanme:modernization .",
     "docker:test:db": "docker compose run --build --rm modern-api-test; status=$?; docker compose down -v; exit $status",
     "docker:test:modern-db": "docker compose run --build --rm modern-api-test; status=$?; docker compose down -v; exit $status",
-    "docker:test:all-db": "npm run docker:test:modern-db",
+    "docker:test:proxy": "docker compose run --build --rm app-modern-proxy-test; status=$?; docker compose down -v; exit $status",
+    "docker:test:all-db": "npm run docker:test:modern-db && npm run docker:test:proxy",
     "install:all": "npm ci && npm --prefix app ci && npm --prefix dtoapi ci && npm --prefix dtoapi/modern ci",
     "start:app": "npm --prefix app start",
     "start:api": "npm --prefix dtoapi run start:modern",
@@ -19,7 +20,8 @@
     "test:api:modern-db": "npm --prefix dtoapi/modern run test:db",
     "test:app": "npm --prefix app test",
     "test:browser": "node test/browser_smoke_test.js",
-    "test:db": "npm run docker:test:db"
+    "test:db": "npm run docker:test:db",
+    "test:proxy:modern": "npm --prefix dtoapi/modern run build && node test/app_modern_proxy_test.js"
   },
   "engines": {
     "node": ">=8"

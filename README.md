@@ -16,6 +16,7 @@ Hackathon Neeuko Project by Imaginary Films.
 npm run build
 npm run docker:build
 npm run docker:test:db
+npm run docker:test:proxy
 npm run install:all
 npm run test
 npm run test:browser
@@ -31,11 +32,14 @@ npm run start:api:modern
 docker build -t utoplanme:modernization .
 docker run --rm -p 8080:8080 utoplanme:modernization
 npm run docker:test:db
+npm run docker:test:proxy
 ```
 
 The Docker build runs `npm run install:all` and `npm run build`, so it validates clean installs and the API test baseline before producing an image.
 
 `npm run docker:test:db` builds a disposable seeded Postgres image from `Dockerfile.postgres-test`, runs the DB-backed modern API contract tests in a current Node container, and tears the Compose stack down afterward.
+
+`npm run docker:test:proxy` uses the same seeded Postgres image, starts the modern API inside the test container, starts the static app with `UTOPLAN_API_ORIGIN`, and verifies `/v1/unis` is served through the proxy from real modern API data rather than the offline fixture.
 
 `npm run test:browser` runs a Playwright Chromium smoke test against the static app. Run `npx playwright install chromium` once on a fresh local machine before using it.
 
