@@ -94,7 +94,7 @@ async function main() {
     'id="sidebar"',
     'id="logo"',
     '<script type="module" src="js/map.js"></script>',
-    '<script src="js/main.js"></script>'
+    '<script type="module" src="js/main.js"></script>'
   ].forEach(function(fragment) {
     assert(
       html.indexOf(fragment) !== -1,
