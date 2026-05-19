@@ -122,6 +122,12 @@ async function main() {
 
   await waitForApp(Date.now() + 10000);
 
+  var health = await request(appPort, '/healthz');
+  var healthBody = JSON.parse(health.body.toString('utf8'));
+  assert.strictEqual(health.statusCode, 200, 'proxied app health check should return HTTP 200');
+  assert.strictEqual(healthBody.apiProxy, true);
+  assert.strictEqual(healthBody.demoFixture, false);
+
   var proxied = await request(appPort, '/v1/unis');
   var body = JSON.parse(proxied.body.toString('utf8'));
 

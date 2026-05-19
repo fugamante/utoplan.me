@@ -28,3 +28,7 @@ steps:
 - script: |
     npm run docker:test:db
   displayName: 'Docker DB contract tests'
+
+- script: |
+    npm run docker:test:start-local-browser
+  displayName: 'Docker start:local browser smoke test'

@@ -33,6 +33,18 @@ export function connectionConfig(): PoolConfig {
   };
 }
 
+export function hasExplicitConnectionConfig(): boolean {
+  if (process.env.DATABASE_URL) {
+    return true;
+  }
+
+  return Boolean(
+    value(process.env.TEST_DATABASE_HOST, process.env.DATABASE_HOST) &&
+    value(process.env.TEST_DATABASE_USER, process.env.DATABASE_USER) &&
+    value(process.env.TEST_DATABASE_DB, process.env.DATABASE_DB)
+  );
+}
+
 function getPool(): Pool {
   if (!pool) {
     pool = new Pool(connectionConfig());
