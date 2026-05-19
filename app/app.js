@@ -1,9 +1,11 @@
 var fs = require('fs');
 var http = require('http');
 var path = require('path');
+var URL = require('url').URL;
 
 var port = process.env.PORT || 8080;
 var publicDir = path.join(__dirname, 'public');
+var apiOrigin = process.env.UTOPLAN_API_ORIGIN ? new URL(process.env.UTOPLAN_API_ORIGIN) : null;
 
 var types = {
   '.css': 'text/css; charset=utf-8',
@@ -49,12 +51,42 @@ function send(response, statusCode, body, headers) {
   response.end(body);
 }
 
+function isApiPath(urlPath) {
+  return urlPath.split('?')[0].indexOf('/v1/') === 0;
+}
+
+function proxyApi(request, response) {
+  var target = new URL(request.url, apiOrigin);
+  var proxyRequest = http.request(target, {
+    method: request.method,
+    headers: Object.assign({}, request.headers, {
+      host: target.host
+    })
+  }, function(proxyResponse) {
+    response.writeHead(proxyResponse.statusCode || 502, proxyResponse.headers);
+    proxyResponse.pipe(response);
+  });
+
+  proxyRequest.on('error', function(error) {
+    console.error('API proxy failed: ' + error.message);
+    send(response, 502, 'Bad Gateway', {
+      'Content-Type': 'text/plain; charset=utf-8'
+    });
+  });
+
+  request.pipe(proxyRequest);
+}
+
 function serve(request, response) {
   if (request.method !== 'GET' && request.method !== 'HEAD') {
     return send(response, 405, 'Method Not Allowed', {
       'Content-Type': 'text/plain; charset=utf-8',
       'Allow': 'GET, HEAD'
     });
+  }
+
+  if (apiOrigin && isApiPath(request.url)) {
+    return proxyApi(request, response);
   }
 
   if (request.url.split('?')[0] === '/v1/unis') {

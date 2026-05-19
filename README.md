@@ -43,6 +43,17 @@ The legacy Nodal API path has been retired from the normal project tree. The mod
 
 Use `npm run start:api:modern` to run the modern API locally on `PORT` or `3001`.
 
+## Local App And API Flow
+
+Run the modern API and static app as two local services when validating integrated map data:
+
+```sh
+PORT=3001 npm run start:api:modern
+UTOPLAN_API_ORIGIN=http://127.0.0.1:3001 PORT=8080 npm run start:app
+```
+
+With `UTOPLAN_API_ORIGIN` set, the static app proxies `/v1/*` requests to the modern API and the browser keeps using same-origin URLs such as `/v1/unis`. Without `UTOPLAN_API_ORIGIN`, the static app keeps the offline `/v1/unis` fixture fallback for standalone demos and browser smoke tests.
+
 ## API Database Environment
 
 `dtoapi/modern/src/db.ts` reads database settings from environment variables.

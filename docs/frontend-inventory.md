@@ -59,7 +59,8 @@
 ## Map Data Flow
 
 - The browser map prefers the same-origin modern API collection path `/v1/unis`.
-- `app/app.js` maps `/v1/unis` to `app/public/data/unis.json` when the static app runs without an API proxy.
+- `app/app.js` proxies `/v1/*` to `UTOPLAN_API_ORIGIN` when configured.
+- `app/app.js` maps `/v1/unis` to `app/public/data/unis.json` only when the static app runs without an API proxy.
 - `app/public/src/map.ts` still has a client-side fallback URL from `MapConfig.fallbackDataUrl` for deployments where the preferred API request fails.
 
 ## JavaScript Ownership

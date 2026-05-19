@@ -11,6 +11,7 @@
 - Docker DB validation builds a seeded Postgres test image instead of bind-mounting seed SQL, avoiding host file-sharing instability during database initialization.
 - DB-backed API contracts run in a current Node container against the modern API, including missing-record behavior.
 - The first-page map now prefers the modern same-origin `/v1/unis` collection path while preserving local fixture fallback for standalone static app runs.
+- The static app can proxy `/v1/*` to `UTOPLAN_API_ORIGIN`, which supports local two-service validation against the modern API without changing browser URLs.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
 
 ## Target Outcomes
@@ -125,4 +126,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Continue the product-facing modernization phase by replacing the static server fallback shim with a documented local two-service dev flow and proxy setup.
+Continue the product-facing modernization phase by validating the proxy flow against a seeded local modern API, then narrowing the offline fixture fallback to explicit demo/test mode if the integrated path is stable.
