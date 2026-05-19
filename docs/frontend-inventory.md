@@ -64,6 +64,7 @@
 - `app/public/src/map.ts` still has a client-side fallback URL from `MapConfig.fallbackDataUrl` for deployments where the preferred API request fails.
 - `npm run start:local` starts the modern API and static app with the proxy origin wired automatically.
 - `npm run docker:test:proxy` validates `npm run start:local` against the seeded modern API and confirms same-origin `/v1/unis` does not read from the offline fixture.
+- `npm run docker:test:start-local-browser` validates the rendered map against the seeded `start:local` path in Chromium.
 
 ## JavaScript Ownership
 

@@ -45,6 +45,8 @@ function withServer(callback) {
           console.error((error || closeError).stack || (error || closeError).message);
           process.exit(1);
         }
+
+        process.exit(0);
       });
     });
   });

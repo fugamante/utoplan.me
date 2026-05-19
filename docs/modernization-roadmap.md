@@ -15,6 +15,8 @@
 - Offline fixture fallback is gated behind `UTOPLAN_DEMO_FIXTURE=1`; default static app runs no longer silently serve `/v1/unis` from fixture data.
 - `npm run start:local` starts the modern API and static app together with the same-origin proxy wiring applied.
 - Docker proxy validation now runs `npm run start:local` through the real modern API against seeded Postgres data.
+- Browser-level Docker validation now exercises the seeded `start:local` path and verifies the rendered map uses modern API data.
+- `docker-compose.integrated.yml` and `docs/deployment-topology.md` define the app/API deployment topology with the API kept behind the static app proxy.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
 
 ## Target Outcomes
@@ -129,4 +131,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Continue the product-facing modernization phase by adding browser-level coverage on top of the seeded `start:local` validation, or by moving toward deployment configuration for the integrated app/API topology.
+Continue the product-facing modernization phase by hardening the integrated deployment path with health checks, runtime configuration validation, and CI coverage for the new browser-level Docker smoke test.
