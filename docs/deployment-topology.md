@@ -34,6 +34,8 @@ Both services expose `/healthz`. The Compose baseline waits for the API health c
 
 The API container fails fast in production when neither `DATABASE_URL` nor `DATABASE_HOST`, `DATABASE_USER`, and `DATABASE_DB` are configured.
 
+Use `docs/production-deployment.md` for the production operator runbook, including secret configuration, release checks, migration expectations, and rollback triggers.
+
 ## Fixture Policy
 
 Fixture mode is not part of the integrated deployment path. `UTOPLAN_DEMO_FIXTURE=1` is reserved for explicit offline demos and tests.

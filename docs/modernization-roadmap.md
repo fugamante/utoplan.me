@@ -18,6 +18,7 @@
 - Browser-level Docker validation now exercises the seeded `start:local` path and verifies the rendered map uses modern API data.
 - `docker-compose.integrated.yml` and `docs/deployment-topology.md` define the app/API deployment topology with the API kept behind the static app proxy.
 - The integrated topology now has app/API `/healthz` endpoints, Compose health checks, CI coverage for the seeded browser smoke, and production API database configuration fail-fast.
+- `docs/production-deployment.md` now defines the production operator contract for required secrets, release preflight checks, migration/seeding policy, health checks, and rollback triggers.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
 
 ## Target Outcomes
@@ -132,4 +133,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Continue the product-facing modernization phase by adding production deployment documentation for secrets, database migrations/seeding, and release rollback expectations.
+Continue hardening the production path by adding a small deployment configuration verifier that checks app/API environment variables before containers start.
