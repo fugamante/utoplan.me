@@ -40,7 +40,7 @@ The Docker build runs `npm run install:all` and `npm run build`, so it validates
 
 `npm run docker:test:db` builds a disposable seeded Postgres image from `Dockerfile.postgres-test`, runs the DB-backed modern API contract tests in a current Node container, and tears the Compose stack down afterward.
 
-`npm run docker:test:proxy` uses the same seeded Postgres image, starts the modern API inside the test container, starts the static app with `UTOPLAN_API_ORIGIN`, and verifies `/v1/unis` is served through the proxy from real modern API data rather than the offline fixture.
+`npm run docker:test:proxy` uses the same seeded Postgres image, starts `npm run start:local` inside the test container, and verifies `/v1/unis` is served through the proxy from real modern API data rather than the offline fixture.
 
 `npm run test:browser` runs a Playwright Chromium smoke test against the static app. Run `npx playwright install chromium` once on a fresh local machine before using it.
 

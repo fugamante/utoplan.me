@@ -4,11 +4,7 @@ const assert = require('assert');
 const childProcess = require('child_process');
 const http = require('http');
 
-const db = require('../dtoapi/modern/lib/db');
-const modernApi = require('../dtoapi/modern/lib/server');
-
-let apiServer;
-let appServer;
+let localServer;
 
 function request(port, path) {
   return new Promise(function(resolve, reject) {
@@ -39,15 +35,6 @@ function request(port, path) {
   });
 }
 
-function listen(server) {
-  return new Promise(function(resolve, reject) {
-    server.on('error', reject);
-    server.listen(0, '127.0.0.1', function() {
-      resolve(server.address().port);
-    });
-  });
-}
-
 function waitForApp(port, deadline) {
   return request(port, '/').catch(function(error) {
     if (Date.now() > deadline) {
@@ -62,53 +49,86 @@ function waitForApp(port, deadline) {
   });
 }
 
-function closeApi() {
-  return new Promise(function(resolve) {
-    if (!apiServer) {
-      resolve();
-      return;
+function waitForProxy(port, deadline) {
+  return request(port, '/v1/unis').then(function(response) {
+    if (response.statusCode !== 200) {
+      throw new Error('Proxy returned HTTP ' + response.statusCode);
     }
 
-    apiServer.close(function() {
-      db.close(function() {
-        resolve();
-      });
+    return response;
+  }).catch(function(error) {
+    if (Date.now() > deadline) {
+      throw error;
+    }
+
+    return new Promise(function(resolve) {
+      setTimeout(resolve, 250);
+    }).then(function() {
+      return waitForProxy(port, deadline);
     });
   });
 }
 
-function stopApp() {
-  if (appServer && !appServer.killed) {
-    appServer.kill();
+function waitForApi(port, deadline) {
+  return request(port, '/v1/unis').then(function(response) {
+    if (response.statusCode !== 200) {
+      throw new Error('API returned HTTP ' + response.statusCode);
+    }
+
+    return response;
+  }).catch(function(error) {
+    if (Date.now() > deadline) {
+      throw error;
+    }
+
+    return new Promise(function(resolve) {
+      setTimeout(resolve, 250);
+    }).then(function() {
+      return waitForApi(port, deadline);
+    });
+  });
+}
+
+function stopLocal() {
+  if (localServer && !localServer.killed) {
+    if (process.platform === 'win32') {
+      localServer.kill();
+      return;
+    }
+
+    try {
+      process.kill(-localServer.pid, 'SIGTERM');
+    } catch (error) {
+      localServer.kill();
+    }
   }
 }
 
-async function cleanup() {
-  stopApp();
-  await closeApi();
-}
-
 async function main() {
-  apiServer = modernApi.createServer();
-  const apiPort = await listen(apiServer);
+  const apiPort = process.env.PROXY_API_PORT || '18085';
   const appPort = process.env.PROXY_APP_PORT || '18083';
 
-  appServer = childProcess.spawn(process.execPath, ['app.js'], {
-    cwd: __dirname + '/../app',
+  localServer = childProcess.spawn(process.platform === 'win32' ? 'npm.cmd' : 'npm', ['run', 'start:local'], {
+    cwd: __dirname + '/..',
     env: Object.assign({}, process.env, {
-      PORT: appPort,
-      UTOPLAN_API_ORIGIN: 'http://127.0.0.1:' + apiPort
+      UTOPLAN_API_PORT: apiPort,
+      UTOPLAN_APP_PORT: appPort
     }),
+    detached: process.platform !== 'win32',
     stdio: ['ignore', 'pipe', 'pipe']
   });
 
-  appServer.stderr.on('data', function(chunk) {
+  localServer.stdout.on('data', function(chunk) {
+    process.stderr.write(chunk);
+  });
+  localServer.stderr.on('data', function(chunk) {
     process.stderr.write(chunk);
   });
 
-  await waitForApp(appPort, Date.now() + 10000);
+  await waitForApp(appPort, Date.now() + 30000);
+  await waitForApi(apiPort, Date.now() + 30000);
 
-  const response = await request(appPort, '/v1/unis');
+  const response = await waitForProxy(appPort, Date.now() + 30000);
   const body = JSON.parse(response.body);
 
   assert.strictEqual(response.statusCode, 200, 'proxied modern API request should return HTTP 200');
@@ -119,18 +139,16 @@ async function main() {
   assert.notStrictEqual(body.data[0].title, 'University of Puerto Rico');
 }
 
-process.on('exit', stopApp);
+process.on('exit', stopLocal);
 process.on('SIGINT', function() {
-  cleanup().then(function() {
-    process.exit(130);
-  });
+  stopLocal();
+  process.exit(130);
 });
 
 main().then(function() {
-  return cleanup();
+  stopLocal();
 }).catch(function(error) {
-  cleanup().then(function() {
-    console.error(error.stack || error.message);
-    process.exit(1);
-  });
+  stopLocal();
+  console.error(error.stack || error.message);
+  process.exit(1);
 });

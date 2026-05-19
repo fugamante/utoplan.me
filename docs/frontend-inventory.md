@@ -63,7 +63,7 @@
 - `app/app.js` maps `/v1/unis` to `app/public/data/unis.json` only when `UTOPLAN_DEMO_FIXTURE=1` is set.
 - `app/public/src/map.ts` still has a client-side fallback URL from `MapConfig.fallbackDataUrl` for deployments where the preferred API request fails.
 - `npm run start:local` starts the modern API and static app with the proxy origin wired automatically.
-- `npm run docker:test:proxy` validates the proxied same-origin `/v1/unis` path against the seeded modern API and confirms it does not read from the offline fixture.
+- `npm run docker:test:proxy` validates `npm run start:local` against the seeded modern API and confirms same-origin `/v1/unis` does not read from the offline fixture.
 
 ## JavaScript Ownership
 
