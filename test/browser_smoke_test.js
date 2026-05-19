@@ -58,6 +58,7 @@ async function main() {
   const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
   const consoleMessages = [];
   const pageErrors = [];
+  const requestedPaths = [];
   const tilePng = Buffer.from(
     'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/p9sAAAAASUVORK5CYII=',
     'base64'
@@ -70,6 +71,28 @@ async function main() {
       status: 200
     });
   });
+  await page.route(`${baseUrl}/v1/unis/1`, route => {
+    route.fulfill({
+      body: JSON.stringify({
+        meta: {
+          total: 1,
+          count: 1,
+          offset: 0,
+          error: null
+        },
+        data: [{
+          id: 1,
+          title: 'Contract University',
+          address: '100 Contract Ave',
+          desc: 'Seeded university row',
+          lat: 18.42,
+          long: -66.06
+        }]
+      }),
+      contentType: 'application/json',
+      status: 200
+    });
+  });
 
   page.on('console', message => {
     if (['error', 'warning'].includes(message.type())) {
@@ -79,6 +102,9 @@ async function main() {
   page.on('pageerror', error => {
     pageErrors.push(error.message);
   });
+  page.on('request', request => {
+    requestedPaths.push(new URL(request.url()).pathname);
+  });
 
   await page.goto(baseUrl, { waitUntil: 'networkidle' });
 
@@ -86,7 +112,9 @@ async function main() {
   assert.strictEqual(await page.locator('[data-map="main"]').count(), 1, 'map container should render');
   assert.strictEqual(await page.locator('[data-ui="layer-menu"] li').count(), 10, 'layer menu should render expected entries');
   assert.strictEqual(await page.locator('.leaflet-tile-pane img.leaflet-tile').count() > 0, true, 'base map tiles should render');
-  assert.strictEqual(await page.locator('.leaflet-marker-icon').count(), 1, 'local university marker should render');
+  assert.strictEqual(await page.locator('.leaflet-marker-icon').count(), 1, 'university marker should render');
+  assert(requestedPaths.includes('/v1/unis/1'), 'map should try the modern API endpoint first');
+  assert(!requestedPaths.includes('/data/unis.json'), 'map should not fetch fixture data when the modern API responds');
   await assertVisible(page, '#layersMenu', 'layer menu should be visible');
   await waitForDisplay(page, '[data-ui="sidebar"]', 'none');
   await assertHidden(page, '[data-ui="sidebar"]', 'sidebar should start hidden');

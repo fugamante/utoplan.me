@@ -56,6 +56,12 @@
 - `app/public/src/main.ts` owns typed layer visibility, sidebar, and layer-menu toggle behavior, then compiles to the browser-facing `app/public/js/main.js`.
 - `app/public/js/main.js`, `app/public/js/map.js`, and `app/public/js/map_config.js` remain committed because they are static browser assets referenced by `app/public/index.html`.
 
+## Map Data Flow
+
+- The browser map prefers the same-origin modern API path `/v1/unis/1`.
+- `app/app.js` maps `/v1/unis/1` to `app/public/data/unis.json` when the static app runs without an API proxy.
+- `app/public/src/map.ts` still has a client-side fallback URL from `MapConfig.fallbackDataUrl` for deployments where the preferred API request fails.
+
 ## JavaScript Ownership
 
 - `app/app.js` remains dependency-free static-server glue.

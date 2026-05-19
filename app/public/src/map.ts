@@ -1,6 +1,7 @@
 import {
   type MapConfig,
   type NormalizedUniversity,
+  type UniversityPayload,
   normalizeUniversities,
   readMapConfig
 } from "./map_config.js";
@@ -27,6 +28,7 @@ interface LeafletApi {
 
 interface UtoplanWindow extends Window {
   L: LeafletApi;
+  fetch: typeof fetch;
   XMLHttpRequest: typeof XMLHttpRequest;
   UTOPLAN_API_URL?: string;
   UTOPLAN_TILE_ATTRIBUTION?: string;
@@ -36,7 +38,7 @@ interface UtoplanWindow extends Window {
 type UniversityCallback = (universities: NormalizedUniversity[]) => void;
 
 interface RequestWindow {
-  XMLHttpRequest: typeof XMLHttpRequest;
+  fetch: typeof fetch;
 }
 
 export function createMap(documentRef: Document, leaflet: LeafletApi, config: MapConfig): LeafletMap {
@@ -65,19 +67,37 @@ export function addUniversities(map: LeafletMap, leaflet: LeafletApi, universiti
 }
 
 export function loadUniversities(windowRef: RequestWindow, config: MapConfig, callback: UniversityCallback): void {
-  const request = new windowRef.XMLHttpRequest();
-  request.open("GET", config.dataUrl, true);
-  request.setRequestHeader("Content-Type", "application/json");
-
-  request.onreadystatechange = function(): void {
-    if (request.readyState !== 4 || request.status !== 200) {
+  loadUniversityUrl(windowRef, config.dataUrl, function(universities: NormalizedUniversity[] | null): void {
+    if (universities) {
+      callback(universities);
       return;
     }
 
-    callback(normalizeUniversities(JSON.parse(request.responseText)));
-  };
+    loadUniversityUrl(windowRef, config.fallbackDataUrl, function(fallbackUniversities: NormalizedUniversity[] | null): void {
+      callback(fallbackUniversities || []);
+    });
+  });
+}
 
-  request.send();
+function loadUniversityUrl(windowRef: RequestWindow, dataUrl: string, callback: (universities: NormalizedUniversity[] | null) => void): void {
+  windowRef.fetch(dataUrl, {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }).then(function(response: Response): Promise<unknown> | null {
+    if (!response.ok) {
+      callback(null);
+      return null;
+    }
+
+    return response.json();
+  }).then(function(payload: unknown): void {
+    if (payload) {
+      callback(normalizeUniversities(payload as UniversityPayload));
+    }
+  }).catch(function(): void {
+    callback(null);
+  });
 }
 
 export function init(windowRef: UtoplanWindow, documentRef: Document, leaflet: LeafletApi): void {

@@ -10,6 +10,7 @@
 - Docker validation builds from lockfiles, runs the API test baseline, and serves the static app by default.
 - Docker DB validation builds a seeded Postgres test image instead of bind-mounting seed SQL, avoiding host file-sharing instability during database initialization.
 - DB-backed API contracts run in a current Node container against the modern API, including missing-record behavior.
+- The first-page map now prefers the modern same-origin `/v1/unis/1` data path while preserving local fixture fallback for standalone static app runs.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
 
 ## Target Outcomes
@@ -124,4 +125,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Begin the next roadmap phase by choosing the next product-facing modernization target. Recommended next target: wire the frontend map data flow to the modern API endpoint path, preserving the local fixture fallback for offline/browser smoke tests.
+Continue the product-facing modernization phase by replacing the static server fallback shim with a documented local two-service dev flow, or by expanding the modern API to provide a collection endpoint better suited for map data.

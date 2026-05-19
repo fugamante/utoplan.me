@@ -19,16 +19,34 @@ export function addUniversities(map, leaflet, universities) {
     });
 }
 export function loadUniversities(windowRef, config, callback) {
-    const request = new windowRef.XMLHttpRequest();
-    request.open("GET", config.dataUrl, true);
-    request.setRequestHeader("Content-Type", "application/json");
-    request.onreadystatechange = function () {
-        if (request.readyState !== 4 || request.status !== 200) {
+    loadUniversityUrl(windowRef, config.dataUrl, function (universities) {
+        if (universities) {
+            callback(universities);
             return;
         }
-        callback(normalizeUniversities(JSON.parse(request.responseText)));
-    };
-    request.send();
+        loadUniversityUrl(windowRef, config.fallbackDataUrl, function (fallbackUniversities) {
+            callback(fallbackUniversities || []);
+        });
+    });
+}
+function loadUniversityUrl(windowRef, dataUrl, callback) {
+    windowRef.fetch(dataUrl, {
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(function (response) {
+        if (!response.ok) {
+            callback(null);
+            return null;
+        }
+        return response.json();
+    }).then(function (payload) {
+        if (payload) {
+            callback(normalizeUniversities(payload));
+        }
+    }).catch(function () {
+        callback(null);
+    });
 }
 export function init(windowRef, documentRef, leaflet) {
     const config = readMapConfig(windowRef);

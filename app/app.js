@@ -57,6 +57,10 @@ function serve(request, response) {
     });
   }
 
+  if (request.url.split('?')[0] === '/v1/unis/1') {
+    request.url = '/data/unis.json';
+  }
+
   var filePath = safePath(request.url);
 
   if (!filePath) {

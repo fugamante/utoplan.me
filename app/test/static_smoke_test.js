@@ -134,6 +134,10 @@ async function main() {
     assert(asset.body.length > 0, assets[i] + ' should not be empty');
   }
 
+  var apiFallback = await request('/v1/unis/1');
+  assert.strictEqual(apiFallback.statusCode, 200, 'local API data fallback should return HTTP 200');
+  assert.strictEqual(JSON.parse(apiFallback.body.toString('utf8')).data[0].title, 'University of Puerto Rico');
+
   var cached = await request('/css/main.css', {
     'If-None-Match': '"legacy-cache-validator"',
     'If-Modified-Since': new Date().toUTCString()

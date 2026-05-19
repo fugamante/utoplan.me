@@ -15,7 +15,8 @@ async function main() {
   assert.deepStrictEqual(mapConfig.DEFAULT_MAP_CONFIG, {
     center: [18.4110494, -66.0985525],
     zoom: 8,
-    dataUrl: '/data/unis.json',
+    dataUrl: '/v1/unis/1',
+    fallbackDataUrl: '/data/unis.json',
     tileAttribution: '&copy; OpenStreetMap contributors',
     tileUrl: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
   });
@@ -23,12 +24,14 @@ async function main() {
   assert.deepStrictEqual(mapConfig.readMapConfig({}), mapConfig.DEFAULT_MAP_CONFIG);
   assert.deepStrictEqual(mapConfig.readMapConfig({
     UTOPLAN_API_URL: '/api/unis.json',
+    UTOPLAN_FALLBACK_DATA_URL: '/offline/unis.json',
     UTOPLAN_TILE_ATTRIBUTION: 'Tiles',
     UTOPLAN_TILE_URL: ''
   }), {
     center: [18.4110494, -66.0985525],
     zoom: 8,
     dataUrl: '/api/unis.json',
+    fallbackDataUrl: '/offline/unis.json',
     tileAttribution: 'Tiles',
     tileUrl: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
   });
