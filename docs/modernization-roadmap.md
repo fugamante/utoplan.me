@@ -102,6 +102,7 @@ Exit criteria:
 - Migrate modern API database boundary. Status: complete; `dtoapi/modern/src/db.ts` now owns typed environment-derived connection config, query callbacks, and pool close lifecycle.
 - Migrate modern API root contract. Status: complete; `dtoapi/modern/src/root_contract.ts` now owns the typed root endpoint payload and serialization contract.
 - Migrate modern API HTTP runtime. Status: complete; `dtoapi/modern/src/server.ts` now owns typed routing, gzip detection, CORS headers, response dispatch, and server startup.
+- Migrate frontend map/data boundary. Status: in progress; `app/public/src/map_config.ts` now owns typed map defaults, runtime override selection, and university record normalization while compiling to the existing browser module path.
 - Keep JavaScript compatibility layers small and temporary.
 - Avoid broad rewrites that mix typing, framework replacement, and behavior changes in one step.
 
@@ -119,4 +120,4 @@ Exit criteria:
 
 ## Immediate Next Step
 
-Continue Phase 6 by reviewing the remaining JavaScript compatibility files in `dtoapi/modern` and deciding whether to migrate tests or move the next TypeScript slice to frontend data/map boundaries.
+Continue Phase 6 by migrating the next frontend map module boundary, likely `app/public/js/map.js`, after pinning its Leaflet and data-loading interfaces.

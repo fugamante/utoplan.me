@@ -6,7 +6,11 @@
   "contributors": "Victor Ortiz, Javier Cordero, Moises Marcon, Pablo Pinna, Rafael Sierra",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "test": "node test/static_smoke_test.js"
+    "build": "tsc -p tsconfig.json",
+    "start": "npm run build && node app.js",
+    "test": "npm run build && node test/map_config_contract_test.js && node test/static_smoke_test.js"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
   }
 }
