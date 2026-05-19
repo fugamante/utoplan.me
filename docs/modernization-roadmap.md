@@ -8,6 +8,7 @@
 - Generated dependency folders are ignored and removed from source control.
 - Azure Pipelines installs Node 22, runs the DB-free API contract baseline, and runs the modern DB-backed contract suite through Docker Compose.
 - Docker validation builds from lockfiles, runs the API test baseline, and serves the static app by default.
+- Docker DB validation builds a seeded Postgres test image instead of bind-mounting seed SQL, avoiding host file-sharing instability during database initialization.
 - DB-backed API contracts run in a current Node container against the modern API, including missing-record behavior.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
 
@@ -81,7 +82,7 @@ Exit criteria:
 
 - Choose the API target only after Phase 3 behavior is pinned. Status: complete; use the current Node runtime as the replacement target, keep the first slice dependency-free, and defer framework selection until more endpoints expose routing/database needs.
 - Prefer a TypeScript-capable Node runtime for replacement work so endpoint contracts and data boundaries can be typed incrementally.
-- Migrate endpoint by endpoint with compatibility tests. Status: in progress; the DB-free root endpoint and seeded DB-backed read endpoints are available through `dtoapi/modern/server.js` with matching success and edge-behavior tests.
+- Migrate endpoint by endpoint with compatibility tests. Status: in progress; the DB-free root endpoint and seeded DB-backed read endpoints are available through `dtoapi/modern/src/server.ts` with matching success and edge-behavior tests.
 - Isolate modern dependencies from legacy source. Status: complete; normal installation no longer installs Nodal, and modern Postgres access uses `dtoapi/modern/package.json`.
 - Reduce legacy API audit exposure while replacement proceeds. Status: complete; Nodal, Mocha, and Chai have been removed from the normal API dependency graph.
 - Harden modern API failure responses. Status: in progress; unsupported methods on known record routes now return explicit `405` responses, and raw database errors are logged server-side instead of exposed in response bodies.
@@ -102,7 +103,7 @@ Exit criteria:
 - Migrate modern API database boundary. Status: complete; `dtoapi/modern/src/db.ts` now owns typed environment-derived connection config, query callbacks, and pool close lifecycle.
 - Migrate modern API root contract. Status: complete; `dtoapi/modern/src/root_contract.ts` now owns the typed root endpoint payload and serialization contract.
 - Migrate modern API HTTP runtime. Status: complete; `dtoapi/modern/src/server.ts` now owns typed routing, gzip detection, CORS headers, response dispatch, and server startup.
-- Migrate frontend map/data boundary. Status: in progress; `app/public/src/map_config.ts` now owns typed map defaults, runtime override selection, and university record normalization while compiling to the existing browser module path.
+- Migrate frontend map/data boundary. Status: in progress; `app/public/src/map_config.ts` owns typed map defaults, runtime override selection, and university record normalization while `app/public/src/map.ts` owns typed map creation, university loading, marker rendering, and DOM startup. Both compile to the existing browser module paths.
 - Keep JavaScript compatibility layers small and temporary.
 - Avoid broad rewrites that mix typing, framework replacement, and behavior changes in one step.
 
@@ -120,4 +121,4 @@ Exit criteria:
 
 ## Immediate Next Step
 
-Continue Phase 6 by migrating the next frontend map module boundary, likely `app/public/js/map.js`, after pinning its Leaflet and data-loading interfaces.
+Continue Phase 6 by reviewing the remaining frontend JavaScript compatibility file, `app/public/js/main.js`, and deciding whether its UI toggle behavior should be typed next.

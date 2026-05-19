@@ -4,8 +4,8 @@ Hackathon Neeuko Project by Imaginary Films.
 
 ## Project Layout
 
-- `app/`: Express static web app.
-- `dtoapi/`: Nodal API and tests.
+- `app/`: dependency-free Node static web app and first-party browser assets.
+- `dtoapi/`: modern API compatibility server and tests.
 - `docs/api-modernization.md`: modern API replacement notes.
 - `docs/frontend-inventory.md`: static app source and asset inventory.
 - `docs/modernization-roadmap.md`: modernization plan and phase gates.
@@ -35,17 +35,17 @@ npm run docker:test:db
 
 The Docker build runs `npm run install:all` and `npm run build`, so it validates clean installs and the API test baseline before producing an image.
 
-`npm run docker:test:db` starts a disposable Postgres container with contract seed data, runs the DB-backed API tests in a Node 8 compatibility container, and tears the Compose stack down afterward. The legacy Nodal `pg@4.5.7` driver hangs against Postgres from modern Node runtimes, so the DB contract path is intentionally isolated from the normal Node 22 build.
+`npm run docker:test:db` builds a disposable seeded Postgres image from `Dockerfile.postgres-test`, runs the DB-backed modern API contract tests in a current Node container, and tears the Compose stack down afterward.
 
 `npm run test:browser` runs a Playwright Chromium smoke test against the static app. Run `npx playwright install chromium` once on a fresh local machine before using it.
 
-The API is legacy Nodal code originally aligned with Node 6/8. The current modernization baseline installs and tests successfully on newer Node versions, but the dependency stack remains deprecated and vulnerable until later phases replace or upgrade it.
+The legacy Nodal API path has been retired from the normal project tree. The modern API runs from `dtoapi/modern`, compiles TypeScript sources to ignored CommonJS output under `dtoapi/modern/lib/`, and preserves the captured root and seeded read endpoint contracts.
 
-Phase 5 introduces a parallel modern API compatibility entrypoint under `dtoapi/modern/`. It currently implements the DB-free root endpoint contract only; `npm run test:api` runs both the legacy Nodal contract baseline and the modern root compatibility test. Use `npm run start:api:modern` to run that modern slice locally on `PORT` or `3001`.
+Use `npm run start:api:modern` to run the modern API locally on `PORT` or `3001`.
 
 ## API Database Environment
 
-`dtoapi/config/db.json` reads database settings from environment variables.
+`dtoapi/modern/src/db.ts` reads database settings from environment variables.
 
 Development:
 

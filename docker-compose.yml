@@ -1,6 +1,8 @@
 services:
   db:
-    image: postgres:12-alpine
+    build:
+      context: .
+      dockerfile: Dockerfile.postgres-test
     environment:
       POSTGRES_DB: dtoapi_test
       POSTGRES_USER: postgres
@@ -11,8 +13,6 @@ services:
       interval: 2s
       timeout: 5s
       retries: 20
-    volumes:
-      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/001_contract_data.sql:ro
 
   modern-api-test:
     build:

@@ -18,6 +18,7 @@
 - `app/public/js/main.js`
 - `app/public/js/map.js`
 - `app/public/js/map_config.js`
+- `app/public/src/map.ts`
 - `app/public/src/map_config.ts`
 - `app/public/data/unis.json`
 
@@ -50,4 +51,5 @@
 
 - `app/tsconfig.json` compiles typed browser boundary modules from `app/public/src/` into the served `app/public/js/` tree.
 - `app/test/map_config_contract_test.js` verifies the compiled map config module without changing the app package to ESM.
-- `app/public/js/map_config.js` remains committed because it is the static browser asset referenced by `app/public/js/map.js`.
+- `app/public/src/map.ts` owns typed map creation, university loading, marker rendering, and DOM startup, then compiles to the browser-facing `app/public/js/map.js`.
+- `app/public/js/map.js` and `app/public/js/map_config.js` remain committed because they are static browser assets referenced by `app/public/index.html`.
