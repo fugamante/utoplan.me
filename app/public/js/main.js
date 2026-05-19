@@ -1,75 +1,56 @@
-(function() {
-  // Use JavaScript Strict Mode.
-  "use strict";
-
-  // Get global DOM Elements
-  //var sidebar = document.getElementById("sidebar");
-
-  // Main function
-  function init() {
-    // Load possible
-    var layers = document.getElementsByClassName("eye"),
-      layersLength = layers.length;
-    for (var layer in layers) {
-      layer.onclick = function(){
-        if (!layer.className.match("eyeOpened")) {
-          layer.className += "eyeOpened";
-        } else {
-          layer.className.replace( /(?:^|\s)eyeOpened(?!\S)/g , '' );
-        }
-      };
+function findUi(name) {
+    const element = document.querySelector('[data-ui="' + name + '"]');
+    if (!element) {
+        throw new Error("Missing UI element: " + name);
     }
-
-    /*
-    // Drop down layer list.
-    document.getElementById("searchForm").onsubmit = function() { search(myForm); };
-*/
-    // JAVIER'S TESTING ZONE
-    //pushStream( {title:"County Business Patterns", content:"<h2>Average Anual Payroll per Business</h2><p>NAIC: 34</p><p>$55,692</p>", relatedContent:"See: <a href='#'>Related Content 1</a>"} );
-  }
-
-  // Create HTML Elements
-  function createHTMLFragment(htmlStr) {
-    var frag = document.createDocumentFragment(),
-        temp = document.createElement('div');
-    temp.innerHTML = htmlStr;
-    while (temp.firstChild) {
-        frag.appendChild(temp.firstChild);
+    return element;
+}
+function findAllUi(name) {
+    return document.querySelectorAll('[data-ui="' + name + '"]');
+}
+export function setVisible(element, visible) {
+    element.style.display = visible ? "block" : "none";
+}
+export function isVisible(element) {
+    return window.getComputedStyle(element).display !== "none";
+}
+export function toggleEyeState(element) {
+    const isOpen = element.classList.contains("eyeOpened");
+    element.classList.toggle("eyeOpened", !isOpen);
+    element.classList.toggle("eyeClosed", isOpen);
+}
+export function bindLayerToggles() {
+    const layers = findAllUi("layer-visibility");
+    for (let i = 0; i < layers.length; i += 1) {
+        layers[i].addEventListener("click", function (event) {
+            event.preventDefault();
+            toggleEyeState(event.currentTarget);
+        });
     }
-    return frag;
-  }
-  // Push data to sidebar
-  function pushStream( elementData ) {
-    var element, title, content, relatedContent;
-    element = document.createDocumentFragment();
-    // Parse values
-    //if (elementData.hasOwnProperty('title'))
-    //  document.createElement('div').innerHTML( "<h1>"+elementData.title+"</h1>" );
-    if (elementData.hasOwnProperty('content'))
-      element.innerHTML (createHTMLFragment( elementData.content ) );
-    if (elementData.hasOwnProperty('relatedContent'))
-      element( createHTMLFragment( elementData.relatedContent ) );
-    // Structure Title
-    element = document.createElement("LI");
-    //title = document.createTextNode(title);
-    title = document.createElement("H1").innerHTML(title);
-    // Insert content to LI
-    element.appendChild(title);
-    element.appendChild(content);
-    element.appendChild(relatedContent);
-  }
-
-  // Determine what plug-ins should attend the query.
-  function search() {
-    // To be implemented.
-    // Continue to run
-  }
-
-  // Initialize objects after DOM is loaded
-  if (document.readyState === "interactive" || document.readyState === "complete")
-    // Call init if the DOM (interactive) or document (complete) is ready.
-    init();
-  else
-    // Set init as a listener for the DOMContentLoaded event.
+}
+export function bindPanelToggles() {
+    const sidebar = findUi("sidebar");
+    const sidebarToggle = findUi("sidebar-toggle");
+    const queryList = findUi("layer-menu");
+    const queryToggle = findUi("layer-menu-toggle");
+    setVisible(sidebar, false);
+    sidebarToggle.addEventListener("click", function () {
+        const shouldShow = !isVisible(sidebar);
+        setVisible(sidebar, shouldShow);
+        sidebarToggle.innerHTML = shouldShow ? "&#9658;" : "&#9668;";
+    });
+    queryToggle.addEventListener("click", function (event) {
+        event.preventDefault();
+        setVisible(queryList, !isVisible(queryList));
+    });
+}
+export function init() {
+    bindLayerToggles();
+    bindPanelToggles();
+}
+if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
-}());
+}
+else {
+    init();
+}

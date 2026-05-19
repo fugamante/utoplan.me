@@ -1,0 +1,19 @@
+FROM mcr.microsoft.com/playwright:v1.60.0-noble
+
+WORKDIR /workspace
+
+ENV NODE_ENV=test
+
+COPY package.json package-lock.json ./
+RUN npm ci
+COPY app/package.json app/package-lock.json ./app/
+RUN npm --prefix app ci
+COPY dtoapi/modern/package.json dtoapi/modern/package-lock.json ./dtoapi/modern/
+RUN npm --prefix dtoapi/modern ci
+
+COPY app ./app/
+COPY dtoapi ./dtoapi/
+COPY scripts ./scripts/
+COPY test ./test/
+
+CMD ["npm", "run", "test:browser:start-local"]

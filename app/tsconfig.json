@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "allowJs": false,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ES2020",
+    "noImplicitAny": true,
+    "outDir": "public/js",
+    "rootDir": "public/src",
+    "strict": true,
+    "target": "ES2020"
+  },
+  "include": [
+    "public/src/**/*.ts"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "name": "utoplanme-modern-api",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Modern API compatibility slice for utoplan.me.",
+  "main": "lib/server.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.0",
+    "@types/pg": "^8.20.0",
+    "typescript": "^5.9.3"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node test/response_contract_test.js && node test/resource_contract_test.js && node test/records_contract_test.js && node test/db_contract_unit_test.js && node test/root_contract_test.js && node test/server_contract_test.js",
+    "test:db": "npm run build && node test/db_contract_test.js"
+  }
+}
