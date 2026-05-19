@@ -64,6 +64,8 @@ Run Docker compatibility checks when Docker is available, because the production
 
 `npm run verify:deployment` validates the production app/API environment in the current shell. Use `node scripts/verify_deployment_config.js --service=app` or `--service=api` when checking one container at a time.
 
+`docker-compose.integrated.yml` runs the verifier before each service process starts. The modern API Docker image also runs `--service=api` before starting `dtoapi/modern/lib/server.js`.
+
 Confirm these release facts before deployment:
 
 - The image or artifact was built from the intended commit.

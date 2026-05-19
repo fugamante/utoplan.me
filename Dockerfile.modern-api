@@ -18,8 +18,9 @@ ENV PORT=3001
 COPY dtoapi/modern/package.json dtoapi/modern/package-lock.json ./dtoapi/modern/
 RUN npm --prefix dtoapi/modern ci --omit=dev
 
+COPY scripts/verify_deployment_config.js ./scripts/verify_deployment_config.js
 COPY --from=build /workspace/dtoapi/modern/lib ./dtoapi/modern/lib/
 
 EXPOSE 3001
 
-CMD ["node", "dtoapi/modern/lib/server.js"]
+CMD ["sh", "-c", "node scripts/verify_deployment_config.js --service=api && node dtoapi/modern/lib/server.js"]

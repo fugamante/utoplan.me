@@ -20,6 +20,7 @@
 - The integrated topology now has app/API `/healthz` endpoints, Compose health checks, CI coverage for the seeded browser smoke, and production API database configuration fail-fast.
 - `docs/production-deployment.md` now defines the production operator contract for required secrets, release preflight checks, migration/seeding policy, health checks, and rollback triggers.
 - `npm run verify:deployment` now validates production app/API environment configuration before startup.
+- The integrated Compose topology and modern API image now run the deployment verifier before service startup.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
 
 ## Target Outcomes
@@ -134,4 +135,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Continue hardening the production path by wiring the deployment verifier into the container entrypoints or CI release job once the target production platform is selected.
+Continue hardening the production path by adding a migration status check to the API health or deployment preflight once the production database migration strategy is selected.
