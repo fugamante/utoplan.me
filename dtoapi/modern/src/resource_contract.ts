@@ -56,6 +56,12 @@ export function selectById(resource: Resource): string {
   return 'SELECT ' + columns + ' FROM ' + resource.table + ' WHERE id = $1 LIMIT 1';
 }
 
+export function selectAll(resource: Resource): string {
+  const columns = resource.columns.map(quoteColumn).join(', ');
+
+  return 'SELECT ' + columns + ' FROM ' + resource.table + ' ORDER BY id';
+}
+
 export function serialize(row: DatabaseRow, resource: Resource): PublicRecord {
   return resource.columns.reduce(function(record: PublicRecord, column: string) {
     record[column] = row[column];

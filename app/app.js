@@ -57,7 +57,7 @@ function serve(request, response) {
     });
   }
 
-  if (request.url.split('?')[0] === '/v1/unis/1') {
+  if (request.url.split('?')[0] === '/v1/unis') {
     request.url = '/data/unis.json';
   }
 

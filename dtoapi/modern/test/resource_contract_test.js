@@ -21,6 +21,10 @@ assert.strictEqual(
   resourceContract.selectById(resourceContract.get('busines')),
   'SELECT id, cdepts_id, lat, "long", title, address, created_at, updated_at FROM businesses WHERE id = $1 LIMIT 1'
 );
+assert.strictEqual(
+  resourceContract.selectAll(resourceContract.get('unis')),
+  'SELECT id, title, address, "desc", lat, "long", created_at, updated_at FROM unis ORDER BY id'
+);
 
 assert.deepStrictEqual(resourceContract.serialize({
   id: 1,

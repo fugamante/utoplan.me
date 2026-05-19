@@ -21,6 +21,10 @@ export function matchRecord(pathname: string): RegExpMatchArray | null {
   return pathname.match(/^\/v1\/(unis|muns|cdepts|cbps|busines|grace_cs)\/([0-9]+)$/);
 }
 
+export function matchCollection(pathname: string): RegExpMatchArray | null {
+  return pathname.match(/^\/v1\/(unis|muns|cdepts|cbps|busines|grace_cs)$/);
+}
+
 function sendJson(
   request: IncomingMessage,
   response: ServerResponse,
@@ -77,6 +81,26 @@ function handleRecord(request: IncomingMessage, response: ServerResponse, kind: 
   });
 }
 
+function handleCollection(request: IncomingMessage, response: ServerResponse, kind: string): void {
+  records.list(kind, function(error, rows, resource) {
+    if (error) {
+      console.error(error.stack || error.message);
+
+      sendJson(request, response, 500, responseContract.serialize(
+        responseContract.errorPayload('Internal Server Error')
+      ));
+      return;
+    }
+
+    if (!resource) {
+      handleNotFound(request, response);
+      return;
+    }
+
+    sendJson(request, response, 200, responseContract.serialize(records.collectionPayload(rows, resource)));
+  });
+}
+
 function handleMethodNotAllowed(request: IncomingMessage, response: ServerResponse): void {
   sendJson(request, response, 405, responseContract.serialize(
     responseContract.errorPayload('Method Not Allowed')
@@ -107,13 +131,19 @@ export function createServer(): Server {
     }
 
     const recordMatch = matchRecord(pathname);
+    const collectionMatch = matchCollection(pathname);
+
+    if (request.method === 'GET' && collectionMatch) {
+      handleCollection(request, response, collectionMatch[1]);
+      return;
+    }
 
     if (request.method === 'GET' && recordMatch) {
       handleRecord(request, response, recordMatch[1], Number(recordMatch[2]));
       return;
     }
 
-    if (recordMatch) {
+    if (recordMatch || collectionMatch) {
       handleMethodNotAllowed(request, response);
       return;
     }

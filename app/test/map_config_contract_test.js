@@ -15,7 +15,7 @@ async function main() {
   assert.deepStrictEqual(mapConfig.DEFAULT_MAP_CONFIG, {
     center: [18.4110494, -66.0985525],
     zoom: 8,
-    dataUrl: '/v1/unis/1',
+    dataUrl: '/v1/unis',
     fallbackDataUrl: '/data/unis.json',
     tileAttribution: '&copy; OpenStreetMap contributors',
     tileUrl: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'

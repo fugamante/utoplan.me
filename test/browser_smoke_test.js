@@ -71,7 +71,7 @@ async function main() {
       status: 200
     });
   });
-  await page.route(`${baseUrl}/v1/unis/1`, route => {
+  await page.route(`${baseUrl}/v1/unis`, route => {
     route.fulfill({
       body: JSON.stringify({
         meta: {
@@ -113,7 +113,7 @@ async function main() {
   assert.strictEqual(await page.locator('[data-ui="layer-menu"] li').count(), 10, 'layer menu should render expected entries');
   assert.strictEqual(await page.locator('.leaflet-tile-pane img.leaflet-tile').count() > 0, true, 'base map tiles should render');
   assert.strictEqual(await page.locator('.leaflet-marker-icon').count(), 1, 'university marker should render');
-  assert(requestedPaths.includes('/v1/unis/1'), 'map should try the modern API endpoint first');
+  assert(requestedPaths.includes('/v1/unis'), 'map should try the modern API endpoint first');
   assert(!requestedPaths.includes('/data/unis.json'), 'map should not fetch fixture data when the modern API responds');
   await assertVisible(page, '#layersMenu', 'layer menu should be visible');
   await waitForDisplay(page, '[data-ui="sidebar"]', 'none');

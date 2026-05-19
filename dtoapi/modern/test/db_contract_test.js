@@ -8,6 +8,15 @@ const modernApi = require('../lib/server');
 
 const contracts = [
   {
+    path: '/v1/unis',
+    expected: {
+      id: 1,
+      title: 'Contract University',
+      address: '100 Contract Ave',
+      desc: 'Seeded university row'
+    }
+  },
+  {
     path: '/v1/unis/1',
     expected: {
       id: 1,
