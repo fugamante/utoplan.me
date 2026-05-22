@@ -1,0 +1,311 @@
+{
+  "schemaVersion": 1,
+  "scope": "puerto-rico-only",
+  "mappedAt": "2026-05-22",
+  "sourceRegistry": "data/sources/puerto-rico.json",
+  "tables": [
+    {
+      "table": "cbps",
+      "status": "partial",
+      "sourceIds": [
+        "datospr-cbp-2014-municipios",
+        "datospr-cbp-2014-puerto-rico",
+        "census-cbp-2014-state-72-fallback"
+      ],
+      "preferredSourceId": "datospr-cbp-2014-municipios",
+      "notes": "Municipality-level CBP data is the closest replacement for the legacy cbps table. NAICS titles are not present in the Datos.PR CSV headers sampled on 2026-05-22, so cnaic_name needs a NAICS lookup source or Census API enrichment before import.",
+      "columns": [
+        {
+          "target": "id",
+          "strategy": "generated",
+          "sourceColumns": []
+        },
+        {
+          "target": "total_indus",
+          "strategy": "candidate",
+          "sourceColumns": [
+            "emp"
+          ],
+          "notes": "Likely employment count; confirm against legacy UI wording before import."
+        },
+        {
+          "target": "total_anual",
+          "strategy": "direct",
+          "sourceColumns": [
+            "ap"
+          ],
+          "notes": "Annual payroll in CBP files."
+        },
+        {
+          "target": "cnaic",
+          "strategy": "normalized",
+          "sourceColumns": [
+            "naics"
+          ],
+          "notes": "Legacy column is integer; source values include aggregate placeholders such as ------ and 23----, so importer must either preserve a string-compatible schema or define a numeric-only filter."
+        },
+        {
+          "target": "cnaic_name",
+          "strategy": "blocked",
+          "sourceColumns": [],
+          "notes": "Not present in sampled Datos.PR CSV headers; requires NAICS title enrichment before production import."
+        },
+        {
+          "target": "county",
+          "strategy": "direct",
+          "sourceColumns": [
+            "fipscty",
+            "cencty"
+          ]
+        },
+        {
+          "target": "num_est",
+          "strategy": "direct",
+          "sourceColumns": [
+            "est"
+          ]
+        },
+        {
+          "target": "created_at",
+          "strategy": "generated",
+          "sourceColumns": []
+        },
+        {
+          "target": "updated_at",
+          "strategy": "generated",
+          "sourceColumns": []
+        }
+      ]
+    },
+    {
+      "table": "muns",
+      "status": "partial",
+      "sourceIds": [
+        "datospr-official-municipality-boundaries",
+        "datospr-cbp-2014-municipios"
+      ],
+      "preferredSourceId": "datospr-official-municipality-boundaries",
+      "notes": "The boundary ZIP contains shapefile components, including municipios.dbf. Inspect the DBF field names before import to select the municipality title field. CBP municipality codes can supply county-style numeric IDs.",
+      "columns": [
+        {
+          "target": "id",
+          "strategy": "generated",
+          "sourceColumns": []
+        },
+        {
+          "target": "title",
+          "strategy": "blocked",
+          "sourceColumns": [],
+          "notes": "Expected in municipios.dbf, but field name has not been confirmed."
+        },
+        {
+          "target": "county",
+          "strategy": "direct",
+          "sourceColumns": [
+            "fipscty",
+            "cencty"
+          ],
+          "notes": "Available from the CBP municipality CSV; must be reconciled with boundary file identifiers."
+        },
+        {
+          "target": "created_at",
+          "strategy": "generated",
+          "sourceColumns": []
+        },
+        {
+          "target": "updated_at",
+          "strategy": "generated",
+          "sourceColumns": []
+        }
+      ]
+    },
+    {
+      "table": "unis",
+      "status": "partial",
+      "sourceIds": [
+        "datospr-higher-ed-directory-2017-18"
+      ],
+      "preferredSourceId": "datospr-higher-ed-directory-2017-18",
+      "notes": "Directory fields cover institution name and address, but do not include latitude or longitude in the sampled CSV header. Coordinates require a separate Puerto Rico-only geocoding step or another confirmed source.",
+      "columns": [
+        {
+          "target": "id",
+          "strategy": "generated",
+          "sourceColumns": []
+        },
+        {
+          "target": "title",
+          "strategy": "direct",
+          "sourceColumns": [
+            "Nombre de la Institución"
+          ]
+        },
+        {
+          "target": "address",
+          "strategy": "concat",
+          "sourceColumns": [
+            "Dirección Física",
+            "Dirección Física 2",
+            "Pueblo"
+          ]
+        },
+        {
+          "target": "desc",
+          "strategy": "derived",
+          "sourceColumns": [
+            "Unidad Académica",
+            "Principal Ejecutivo",
+            "Telefono",
+            "Dirección Pág Web",
+            "Correo Electrónico"
+          ],
+          "notes": "Legacy desc is underspecified; keep this as a display summary only if the UI still needs it."
+        },
+        {
+          "target": "lat",
+          "strategy": "blocked",
+          "sourceColumns": [],
+          "notes": "Not present in sampled directory CSV."
+        },
+        {
+          "target": "long",
+          "strategy": "blocked",
+          "sourceColumns": [],
+          "notes": "Not present in sampled directory CSV."
+        },
+        {
+          "target": "created_at",
+          "strategy": "generated",
+          "sourceColumns": []
+        },
+        {
+          "target": "updated_at",
+          "strategy": "generated",
+          "sourceColumns": []
+        }
+      ]
+    },
+    {
+      "table": "cdepts",
+      "status": "blocked",
+      "sourceIds": [],
+      "preferredSourceId": null,
+      "notes": "No confirmed Puerto Rico-only source or transform path yet for career department NAICS relationships.",
+      "columns": [
+        {
+          "target": "id",
+          "strategy": "generated",
+          "sourceColumns": []
+        },
+        {
+          "target": "cnaic",
+          "strategy": "blocked",
+          "sourceColumns": []
+        },
+        {
+          "target": "created_at",
+          "strategy": "generated",
+          "sourceColumns": []
+        },
+        {
+          "target": "updated_at",
+          "strategy": "generated",
+          "sourceColumns": []
+        }
+      ]
+    },
+    {
+      "table": "businesses",
+      "status": "blocked",
+      "sourceIds": [],
+      "preferredSourceId": null,
+      "notes": "No confirmed Puerto Rico-only point business source or cdepts join source yet.",
+      "columns": [
+        {
+          "target": "id",
+          "strategy": "generated",
+          "sourceColumns": []
+        },
+        {
+          "target": "cdepts_id",
+          "strategy": "blocked",
+          "sourceColumns": []
+        },
+        {
+          "target": "lat",
+          "strategy": "blocked",
+          "sourceColumns": []
+        },
+        {
+          "target": "long",
+          "strategy": "blocked",
+          "sourceColumns": []
+        },
+        {
+          "target": "title",
+          "strategy": "blocked",
+          "sourceColumns": []
+        },
+        {
+          "target": "address",
+          "strategy": "blocked",
+          "sourceColumns": []
+        },
+        {
+          "target": "created_at",
+          "strategy": "generated",
+          "sourceColumns": []
+        },
+        {
+          "target": "updated_at",
+          "strategy": "generated",
+          "sourceColumns": []
+        }
+      ]
+    },
+    {
+      "table": "grade_cs",
+      "status": "blocked",
+      "sourceIds": [],
+      "preferredSourceId": null,
+      "notes": "No confirmed Puerto Rico-only graduation/career relationship source yet.",
+      "columns": [
+        {
+          "target": "id",
+          "strategy": "generated",
+          "sourceColumns": []
+        },
+        {
+          "target": "uni_id",
+          "strategy": "blocked",
+          "sourceColumns": []
+        },
+        {
+          "target": "cdepts_id",
+          "strategy": "blocked",
+          "sourceColumns": []
+        },
+        {
+          "target": "rate",
+          "strategy": "blocked",
+          "sourceColumns": []
+        },
+        {
+          "target": "year",
+          "strategy": "blocked",
+          "sourceColumns": []
+        },
+        {
+          "target": "created_at",
+          "strategy": "generated",
+          "sourceColumns": []
+        },
+        {
+          "target": "updated_at",
+          "strategy": "generated",
+          "sourceColumns": []
+        }
+      ]
+    }
+  ]
+}

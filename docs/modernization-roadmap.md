@@ -28,6 +28,8 @@
 - `docs/data-provenance.md` records the current evidence for original hackathon data sources and tracks the unresolved organizer-provided dataset provenance gap.
 - `docs/data-intake.md` and `data/sources/puerto-rico.json` define the Puerto Rico-only source intake contract for future data replacement work.
 - `npm run test:data-sources` validates that registered import candidates are Puerto Rico-only or explicitly filtered to Puerto Rico.
+- `docs/data-schema-mapping.md` and `data/mappings/puerto-rico-schema-map.json` map Puerto Rico source candidates to the preserved legacy schema before import work.
+- `npm run test:data-mapping` validates that source mappings reference registered sources and preserve legacy table columns.
 - `npm run verify:release` wraps app/API deployment verification for release jobs, and Azure validates the wrapper in sample mode without production secrets.
 - `npm run verify:release-smoke` checks deployed app `/healthz`, public `/v1/unis`, and optional API `/readyz` from configured release URLs.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
@@ -75,7 +77,7 @@ Exit criteria:
 - Stabilize the legacy API test suite under the selected compatibility runtime. Status: complete; behavior was captured before the Nodal runtime was removed from the normal dependency graph.
 - Add smoke tests for the public read endpoints. Status: complete; database-free root, route, CORS, gzip behavior, and seeded DB endpoints are covered.
 - Document database requirements and seed/reset steps. Status: complete; Docker Compose provides a disposable Postgres test database with deterministic seed data.
-- Document original data provenance before treating seeded or recovered data as production data. Status: in progress; `docs/data-provenance.md` records verified old-branch evidence, while `docs/data-intake.md` and `data/sources/puerto-rico.json` constrain replacement candidates to Puerto Rico-only sources.
+- Document original data provenance before treating seeded or recovered data as production data. Status: in progress; `docs/data-provenance.md` records verified old-branch evidence, while `docs/data-intake.md`, `docs/data-schema-mapping.md`, and the `data/` registry files constrain replacement candidates to Puerto Rico-only sources and preserved schema mappings.
 - Record runtime compatibility constraints. Status: complete; the Node 8/Nodal compatibility path has been retired after seeded DB read behavior moved to the modern API.
 - Isolate externally observable endpoint behavior before replacement. Status: complete via API contract tests.
 
@@ -145,4 +147,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Map the registered Puerto Rico source candidates to the preserved legacy API schemas, starting with `cbps` and `unis`, before writing import scripts.
+Resolve the blocked source-mapping items for `cbps.cnaic_name`, aggregate NAICS handling, municipality DBF field names, and university coordinates before writing import scripts.
