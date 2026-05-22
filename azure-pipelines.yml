@@ -26,6 +26,12 @@ steps:
   displayName: 'Browser smoke tests'
 
 - script: |
+    npm run verify:release
+  displayName: 'Release preflight configuration contract'
+  env:
+    UTOPLAN_RELEASE_SAMPLE: '1'
+
+- script: |
     npm run docker:test:db
   displayName: 'Docker DB contract tests'
 
