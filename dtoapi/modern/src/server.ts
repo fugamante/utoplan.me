@@ -69,6 +69,31 @@ function handleHealth(request: IncomingMessage, response: ServerResponse): void 
   }));
 }
 
+function handleReadiness(request: IncomingMessage, response: ServerResponse): void {
+  db.ready(function(error: Error | null, status) {
+    if (error) {
+      console.error(error.stack || error.message);
+
+      sendJson(request, response, 503, responseContract.serialize({
+        status: 'error',
+        service: 'utoplan-modern-api',
+        database: status ? 'ok' : 'unavailable',
+        schema: status ? 'unavailable' : 'unknown',
+        schemaVersion: status ? status.version : null
+      }));
+      return;
+    }
+
+    sendJson(request, response, 200, responseContract.serialize({
+      status: 'ok',
+      service: 'utoplan-modern-api',
+      database: 'ok',
+      schema: 'ok',
+      schemaVersion: status ? status.version : null
+    }));
+  });
+}
+
 function handleRecord(request: IncomingMessage, response: ServerResponse, kind: string, id: number): void {
   records.find(kind, id, function(error, row, resource) {
     if (error) {
@@ -140,6 +165,11 @@ export function createServer(): Server {
 
     if (request.method === 'GET' && pathname === '/healthz') {
       handleHealth(request, response);
+      return;
+    }
+
+    if (request.method === 'GET' && pathname === '/readyz') {
+      handleReadiness(request, response);
       return;
     }
 
