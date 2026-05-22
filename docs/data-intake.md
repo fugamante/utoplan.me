@@ -36,3 +36,7 @@ npm run test:data-sources
 ```
 
 The root `npm run test` command also runs this check.
+
+## Schema Mapping
+
+The current source-to-schema mapping is documented in `docs/data-schema-mapping.md` and enforced by `npm run test:data-mapping`.
