@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Utoplan.me - Modular data visualizer for strategic planning.</title>
+  <meta name="viewport" content="initial-scale=1.0">
+  <meta charset="utf-8">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+  <script src="vendor/leaflet/leaflet.js"></script>
+</head>
+<body>
+  <!-- Map -->
+  <div id="mapid" data-map="main"></div>
+  <script type="module" src="js/map.js"></script>
+
+  <!-- Search and list of layers. -->
+  <div id="layersMenu">
+    <form id="searchForm">
+      <input type="text" id="searchBar" name="searchBar" value="" placeholder="Type your search.">
+      <a class="arrowButton arrowGo" href="#" id="dropDownButton" data-ui="layer-menu-toggle">&#9660;</a>
+      <ul id="queryList" data-ui="layer-menu">
+        <!-- Dynamic content -->
+        <li class="">Municipalities<a class="eye eyeClosed" data-ui="layer-visibility"></a></li>
+        <li class="">Education<a class="eye eyeClosed" data-ui="layer-visibility"></a></li>
+        <li class="child">Public Schools<a class="eye eyeClosed" data-ui="layer-visibility"></a></li>
+        <li class="child">Private Schools<a class="eye eyeClosed" data-ui="layer-visibility"></a></li>
+        <li class="child">Specialized Schools<a class="eye eyeClosed" data-ui="layer-visibility"></a></li>
+        <li class="child">Universities<a class="eye eyeOpened" data-ui="layer-visibility"></a></li>
+        <li class="">Business<a class="eye eyeClosed" data-ui="layer-visibility"></a></li>
+        <li class="child">Hoteles<a class="eye eyeClosed" data-ui="layer-visibility"></a></li>
+        <li class="child">Medicina<a class="eye eyeClosed" data-ui="layer-visibility"></a></li>
+        <li class="child">Software<a class="eye eyeClosed" data-ui="layer-visibility"></a></li>
+        <!-- End dynamic content -->
+      </ul>
+    </form>
+  </div>
+  <!-- Related -->
+  <div id="sidebar" data-ui="sidebar">
+   <!--<a class="arrowButton arrowHide" href="#">&#9658;</a> -->
+    <!-- Sidebar -->
+    <ul>
+      <!-- Dynamic content -->
+      <li class="relatedElement">
+        <h1></h1>
+        <div class="contents">
+          <p></p>
+        </div>
+        <span></span>
+      </li>
+      <!-- End dynamic content -->
+    </ul>
+  </div>
+  <button class="arrowButton" id="toogle" data-ui="sidebar-toggle" style="left:96.5%;">&#9658;</button>
+
+  <!-- Logo -->
+  <a id="logo" href="http://imaginary.tech">
+    <img src="img/imaginary-logo.png" alt="Utoplan.me by Imaginary Films LLC">
+    <p>&copy; Imaginary Films LLC</p>
+  </a>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

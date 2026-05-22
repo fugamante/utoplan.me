@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "scope": "puerto-rico-only",
+  "retrievedAt": "2026-05-22",
+  "sources": [
+    {
+      "id": "datospr-cbp-2014-puerto-rico",
+      "status": "candidate",
+      "targetTables": [
+        "cbps"
+      ],
+      "publisher": "U.S. Census Bureau",
+      "portal": "Datos.PR",
+      "license": "Creative Commons Attribution",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://datos.estadisticas.pr/dataset/county_business_patterns",
+      "resourceUrl": "https://datos.estadisticas.pr/dataset/b0e448f9-d41a-4064-8536-a1b8b2b9f04b/resource/4503472e-77a7-4b29-b4aa-8945cfa7664c/download/cbp14pr.csv",
+      "resourceId": "4503472e-77a7-4b29-b4aa-8945cfa7664c",
+      "sourceBasis": "Repository evidence points the legacy cbps endpoint at 2014 Census business-pattern data. This resource is already scoped to Puerto Rico.",
+      "notes": "Candidate replacement for the legacy cbps table; confirm column mapping before import."
+    },
+    {
+      "id": "datospr-cbp-2014-municipios",
+      "status": "candidate",
+      "targetTables": [
+        "cbps",
+        "muns"
+      ],
+      "publisher": "U.S. Census Bureau",
+      "portal": "Datos.PR",
+      "license": "Creative Commons Attribution",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://datos.estadisticas.pr/dataset/county_business_patterns",
+      "resourceUrl": "https://datos.estadisticas.pr/dataset/b0e448f9-d41a-4064-8536-a1b8b2b9f04b/resource/4828e082-6c0d-4d3f-be12-ab6aeb34eb59/download/cbp14pr_mun.csv",
+      "resourceId": "4828e082-6c0d-4d3f-be12-ab6aeb34eb59",
+      "sourceBasis": "Municipality-level 2014 County Business Patterns data for Puerto Rico.",
+      "notes": "Use as the preferred municipality-level CBP source if it preserves the legacy county/municipality join shape."
+    },
+    {
+      "id": "datospr-higher-ed-directory-2017-18",
+      "status": "candidate",
+      "targetTables": [
+        "unis"
+      ],
+      "publisher": "Departamento de Estado, Plataforma de Educacion Superior",
+      "portal": "Datos.PR",
+      "license": "Other (Public Domain)",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://datos.estadisticas.pr/dataset/directorio-de-instituciones-de-educacion-superior-puerto-rico",
+      "resourceUrl": "https://datos.estadisticas.pr/dataset/ccf64cca-d0d6-4539-a803-70aeba73ea12/resource/818869e2-82c6-4189-bff8-40616e5d3010/download/directorio_de_instituciones_de_educaci_n_superior__puerto_rico__a_o_acad_mico_2017-18.csv",
+      "resourceId": "818869e2-82c6-4189-bff8-40616e5d3010",
+      "sourceBasis": "Puerto Rico higher education institution directory that can replace or refresh the legacy unis endpoint after field mapping.",
+      "notes": "This resource was published after the 2016 hackathon, so it is not confirmed original input."
+    },
+    {
+      "id": "datospr-official-municipality-boundaries",
+      "status": "candidate",
+      "targetTables": [
+        "muns"
+      ],
+      "publisher": "Junta de Planificacion",
+      "portal": "Datos.PR",
+      "license": "Creative Commons Attribution",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://datos.estadisticas.pr/dataset/municipios-de-puerto-rico",
+      "resourceUrl": "https://datos.estadisticas.pr/dataset/93ada8d3-ef83-4c78-bd22-8805de601f26/resource/974f57b4-c5fd-4317-a4d8-dc13cdcf8372/download/mapa-oficial-municipios.zip",
+      "resourceId": "974f57b4-c5fd-4317-a4d8-dc13cdcf8372",
+      "sourceBasis": "Official Puerto Rico municipality boundary data.",
+      "notes": "Candidate for municipality reference data and future map geometry work; do not import geometry into the read API until the target schema is designed."
+    },
+    {
+      "id": "census-cbp-2014-state-72-fallback",
+      "status": "fallback-candidate",
+      "targetTables": [
+        "cbps"
+      ],
+      "publisher": "U.S. Census Bureau",
+      "portal": "Census API",
+      "license": "U.S. Government public data",
+      "scope": "puerto-rico-filtered",
+      "scopeFilter": "state:72",
+      "sourceUrl": "https://www.census.gov/data/developers/data-sets/cbp-zbp/cbp-api.2014.html",
+      "apiUrl": "https://api.census.gov/data/2014/cbp?get=ESTAB,PAYANN,NAICS2012,NAICS2012_TTL&for=county:*&in=state:72",
+      "sourceBasis": "Direct Census API fallback for 2014 CBP data, constrained to Puerto Rico by FIPS state code 72.",
+      "notes": "Use only if the Datos.PR CBP files are unavailable or insufficient."
+    }
+  ],
+  "unresolvedTargets": [
+    {
+      "targetTables": [
+        "cdepts",
+        "businesses",
+        "grade_cs"
+      ],
+      "status": "blocked",
+      "reason": "No Puerto Rico-only public source has been confirmed for the legacy transformed career, department, business, or grade relationship tables."
+    }
+  ]
+}
