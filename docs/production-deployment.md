@@ -51,6 +51,7 @@ npm run install:all
 npm run build
 npm run verify:deployment
 npm run verify:release
+npm run test:release-smoke
 npm run test:browser
 npm run docker:test:db
 npm run docker:test:proxy
@@ -68,6 +69,8 @@ Run Docker compatibility checks when Docker is available, because the production
 `docker-compose.integrated.yml` runs the verifier before each service process starts. The modern API Docker image also runs `--service=api` before starting `dtoapi/modern/lib/server.js`.
 
 `npm run verify:release` wraps the app and API deployment verifiers for release jobs. CI runs it with `UTOPLAN_RELEASE_SAMPLE=1` to validate wiring without production secrets; production release jobs must omit sample mode and provide real platform environment values.
+
+After deploying a candidate release, run `npm run verify:release-smoke` with `UTOPLAN_APP_URL` set to the public app origin. Set `UTOPLAN_API_URL` only when the API readiness URL is reachable from the release job network.
 
 Confirm these release facts before deployment:
 
@@ -109,8 +112,9 @@ Do not add startup-time schema mutation to either service. Production startup sh
 Example smoke checks:
 
 ```sh
-curl -fsS https://app.example.com/healthz
-curl -fsS https://app.example.com/v1/unis
+UTOPLAN_APP_URL=https://app.example.com \
+UTOPLAN_API_URL=https://api.example.internal \
+npm run verify:release-smoke
 ```
 
 The `/healthz` response reports service identity and app proxy state. Use it to verify the deployed app is in proxy mode, not fixture mode.

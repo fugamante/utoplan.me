@@ -16,7 +16,7 @@
     "start:api": "npm --prefix dtoapi run start:modern",
     "start:api:modern": "npm --prefix dtoapi run start:modern",
     "start:local": "node scripts/start_integrated.js",
-    "test": "npm run test:api && npm run test:app && npm run test:start:local && npm run test:deployment-config && npm run test:deployment-containers && npm run test:migration-artifacts && npm run test:release-preflight",
+    "test": "npm run test:api && npm run test:app && npm run test:start:local && npm run test:deployment-config && npm run test:deployment-containers && npm run test:migration-artifacts && npm run test:release-preflight && npm run test:release-smoke",
     "test:api": "npm --prefix dtoapi test",
     "test:api:modern": "npm --prefix dtoapi run test:modern",
     "test:api:modern-db": "npm --prefix dtoapi/modern run test:db",
@@ -28,10 +28,12 @@
     "test:deployment-config": "node test/deployment_config_test.js",
     "test:migration-artifacts": "node test/migration_artifact_contract_test.js",
     "test:release-preflight": "node test/release_preflight_test.js",
+    "test:release-smoke": "node test/release_smoke_check_test.js",
     "test:start:local": "node test/start_integrated_contract_test.js",
     "test:proxy:modern": "npm --prefix dtoapi/modern run build && node test/app_modern_proxy_test.js",
     "verify:deployment": "node scripts/verify_deployment_config.js",
-    "verify:release": "node scripts/release_preflight.js"
+    "verify:release": "node scripts/release_preflight.js",
+    "verify:release-smoke": "node scripts/release_smoke_check.js"
   },
   "engines": {
     "node": ">=8"
