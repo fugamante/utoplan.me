@@ -71,7 +71,8 @@ Confirm these release facts before deployment:
 - The image or artifact was built from the intended commit.
 - App and API environment variables are set in the deployment platform.
 - The API database user has only the permissions required by the current read endpoint set.
-- `/healthz` is part of the platform readiness or load balancer health policy for both services.
+- API `/readyz` is part of the platform readiness policy.
+- App `/healthz` is part of the platform readiness or load balancer health policy.
 - `UTOPLAN_DEMO_FIXTURE` is unset.
 
 ## Migration And Seed Policy
@@ -94,7 +95,7 @@ Do not add startup-time schema mutation to either service. Production startup sh
 2. Build and publish the app image or artifact from the same release commit.
 3. Confirm database connectivity from the target network.
 4. Deploy the API with production database configuration.
-5. Wait for `GET /healthz` on the API to return `200`.
+5. Wait for `GET /readyz` on the API to return `200`.
 6. Deploy the app with `UTOPLAN_API_ORIGIN` pointing at the API service.
 7. Wait for `GET /healthz` on the app to return `200`.
 8. Smoke test the public app origin and verify `/v1/unis` is served through the app origin.
@@ -108,13 +109,15 @@ curl -fsS https://app.example.com/v1/unis
 
 The `/healthz` response reports service identity and app proxy state. Use it to verify the deployed app is in proxy mode, not fixture mode.
 
+The API `/readyz` response checks database reachability and returns `503` when the database cannot be reached. Keep `/healthz` available for shallow process liveness checks.
+
 ## Rollback Expectations
 
 Rollback should use the last known-good app and API artifacts from the same release pair.
 
 Rollback immediately when:
 
-- Either service fails readiness health checks after deployment.
+- Either service fails readiness checks after deployment.
 - The app health response shows fixture mode enabled.
 - `/v1/unis` fails through the public app origin.
 - The API logs database connection or query failures after rollout.
@@ -124,7 +127,7 @@ Rollback order:
 
 1. Remove the app from public traffic or route traffic to the previous app artifact.
 2. Restore the previous API artifact.
-3. Verify API `/healthz`.
+3. Verify API `/readyz`.
 4. Verify app `/healthz`.
 5. Verify `/v1/unis` from the public app origin.
 

@@ -11,6 +11,8 @@ export type QueryCallback = (error: Error | null, result: QueryResult) => void;
 
 export type CloseCallback = (error?: Error) => void;
 
+export type ReadyCallback = (error: Error | null) => void;
+
 let pool: Pool | null = null;
 
 function value(primary: string | undefined, fallback: string | undefined): string | undefined {
@@ -56,6 +58,12 @@ function getPool(): Pool {
 export function query(text: string, params: unknown[], callback: QueryCallback): void {
   getPool().query(text, params, function(error: Error, result: PgQueryResult<DatabaseRow>) {
     callback(error || null, result);
+  });
+}
+
+export function ready(callback: ReadyCallback): void {
+  query('SELECT 1', [], function(error: Error | null) {
+    callback(error || null);
   });
 }
 

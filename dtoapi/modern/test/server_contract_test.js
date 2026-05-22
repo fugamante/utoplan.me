@@ -1,6 +1,8 @@
 'use strict';
 
 const assert = require('assert');
+const http = require('http');
+const db = require('../lib/db');
 const modernApi = require('../lib/server');
 
 const uniMatch = modernApi.matchRecord('/v1/unis/123');
@@ -30,3 +32,61 @@ assert.strictEqual(modernApi.acceptsGzip({
 }), false);
 
 assert.strictEqual(typeof modernApi.createServer().listen, 'function');
+
+function request(server, path, callback) {
+  const address = server.address();
+  const req = http.request({
+    hostname: '127.0.0.1',
+    port: address.port,
+    path: path
+  }, function(response) {
+    const chunks = [];
+
+    response.on('data', function(chunk) {
+      chunks.push(chunk);
+    });
+
+    response.on('end', function() {
+      callback(null, {
+        statusCode: response.statusCode,
+        body: Buffer.concat(chunks).toString()
+      });
+    });
+  });
+
+  req.on('error', callback);
+  req.end();
+}
+
+const originalReady = db.ready;
+const originalError = console.error;
+const server = modernApi.createServer();
+
+db.ready = function(callback) {
+  callback(null);
+};
+
+server.listen(0, '127.0.0.1', function() {
+  request(server, '/readyz', function(error, response) {
+    assert.ifError(error);
+    assert.strictEqual(response.statusCode, 200);
+    assert.strictEqual(JSON.parse(response.body).database, 'ok');
+
+    db.ready = function(callback) {
+      callback(new Error('database unavailable'));
+    };
+    console.error = function() {};
+
+    request(server, '/readyz', function(failedError, failedResponse) {
+      assert.ifError(failedError);
+      assert.strictEqual(failedResponse.statusCode, 503);
+      assert.strictEqual(JSON.parse(failedResponse.body).database, 'unavailable');
+
+      db.ready = originalReady;
+      console.error = originalError;
+      server.close(function(closeError) {
+        assert.ifError(closeError);
+      });
+    });
+  });
+});
