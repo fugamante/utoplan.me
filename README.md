@@ -8,6 +8,8 @@ Hackathon Neeuko Project by Imaginary Films.
 - `dtoapi/`: modern API compatibility server and tests.
 - `docs/api-modernization.md`: modern API replacement notes.
 - `docs/database-migrations.md`: production database migration artifact strategy.
+- `docs/data-intake.md`: Puerto Rico-only source intake contract and registry policy.
+- `docs/data-provenance.md`: known evidence and open gaps for the original hackathon dataset.
 - `docs/deployment-topology.md`: integrated app/API deployment topology.
 - `docs/frontend-inventory.md`: static app source and asset inventory.
 - `docs/modernization-roadmap.md`: modernization plan and phase gates.
@@ -24,6 +26,7 @@ npm run docker:test:start-local-browser
 npm run install:all
 npm run test
 npm run test:browser
+npm run test:data-sources
 npm run test:db
 npm run test:browser:start-local
 npm run start:app
