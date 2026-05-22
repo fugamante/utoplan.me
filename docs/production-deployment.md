@@ -79,6 +79,8 @@ Confirm these release facts before deployment:
 
 The current modern API reads the existing DTO schema. The production baseline is `baseline-read-v1`, which requires the public read tables and columns used by the modern API resource contract. This project does not yet contain a production migration runner.
 
+Migration artifacts live under `db/migrations/`; use `docs/database-migrations.md` for the artifact format, release policy, and review checklist.
+
 Until a migration runner is added:
 
 - Apply schema changes outside the app deploy and record the exact database change in the release notes.

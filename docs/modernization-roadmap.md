@@ -23,6 +23,7 @@
 - The integrated Compose topology and modern API image now run the deployment verifier before service startup.
 - The modern API exposes `/readyz` for database-backed readiness while `/healthz` remains a shallow process health check.
 - `/readyz` now verifies the `baseline-read-v1` database schema contract before the API is marked ready.
+- `db/migrations/` and `docs/database-migrations.md` now define the migration artifact format and production release checklist.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
 
 ## Target Outcomes
@@ -137,4 +138,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Continue hardening the production path by adding an explicit migration artifact format and release checklist for future schema changes.
+Continue hardening the production path by adding a first baseline migration artifact that documents the existing `baseline-read-v1` schema as the initial production reference.

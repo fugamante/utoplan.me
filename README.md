@@ -7,6 +7,7 @@ Hackathon Neeuko Project by Imaginary Films.
 - `app/`: dependency-free Node static web app and first-party browser assets.
 - `dtoapi/`: modern API compatibility server and tests.
 - `docs/api-modernization.md`: modern API replacement notes.
+- `docs/database-migrations.md`: production database migration artifact strategy.
 - `docs/deployment-topology.md`: integrated app/API deployment topology.
 - `docs/frontend-inventory.md`: static app source and asset inventory.
 - `docs/modernization-roadmap.md`: modernization plan and phase gates.
