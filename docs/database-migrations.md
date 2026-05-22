@@ -8,6 +8,8 @@ The modern API expects the `baseline-read-v1` read schema. API `/readyz` verifie
 
 The current baseline covers the public read tables and columns used by `dtoapi/modern/src/resource_contract.ts`.
 
+The initial baseline artifact is `db/migrations/202605211200_baseline_read_v1.md`.
+
 ## Artifact Location
 
 Store migration artifacts in `db/migrations/`.
