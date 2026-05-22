@@ -50,6 +50,7 @@ Run these checks before promoting a release candidate:
 npm run install:all
 npm run build
 npm run verify:deployment
+npm run verify:release
 npm run test:browser
 npm run docker:test:db
 npm run docker:test:proxy
@@ -65,6 +66,8 @@ Run Docker compatibility checks when Docker is available, because the production
 `npm run verify:deployment` validates the production app/API environment in the current shell. Use `node scripts/verify_deployment_config.js --service=app` or `--service=api` when checking one container at a time.
 
 `docker-compose.integrated.yml` runs the verifier before each service process starts. The modern API Docker image also runs `--service=api` before starting `dtoapi/modern/lib/server.js`.
+
+`npm run verify:release` wraps the app and API deployment verifiers for release jobs. CI runs it with `UTOPLAN_RELEASE_SAMPLE=1` to validate wiring without production secrets; production release jobs must omit sample mode and provide real platform environment values.
 
 Confirm these release facts before deployment:
 

@@ -25,6 +25,7 @@
 - `/readyz` now verifies the `baseline-read-v1` database schema contract before the API is marked ready.
 - `db/migrations/` and `docs/database-migrations.md` now define the migration artifact format and production release checklist.
 - `db/migrations/202605211200_baseline_read_v1.md` records the existing read schema as the initial production reference.
+- `npm run verify:release` wraps app/API deployment verification for release jobs, and Azure validates the wrapper in sample mode without production secrets.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
 
 ## Target Outcomes
@@ -139,4 +140,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Continue hardening the production path by deciding whether PR #3 should be marked ready for review and merged, or whether to add a release-job wrapper around the verifier first.
+Continue hardening the production path by opening a focused PR for the release preflight wrapper and validating Azure before merge.
