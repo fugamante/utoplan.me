@@ -22,6 +22,7 @@
 - `npm run verify:deployment` now validates production app/API environment configuration before startup.
 - The integrated Compose topology and modern API image now run the deployment verifier before service startup.
 - The modern API exposes `/readyz` for database-backed readiness while `/healthz` remains a shallow process health check.
+- `/readyz` now verifies the `baseline-read-v1` database schema contract before the API is marked ready.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
 
 ## Target Outcomes
@@ -136,4 +137,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Continue hardening the production path by defining the production database migration strategy and adding a migration status check to readiness once that strategy exists.
+Continue hardening the production path by adding an explicit migration artifact format and release checklist for future schema changes.

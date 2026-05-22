@@ -77,13 +77,14 @@ Confirm these release facts before deployment:
 
 ## Migration And Seed Policy
 
-The current modern API reads the existing DTO schema. This project does not yet contain a production migration runner.
+The current modern API reads the existing DTO schema. The production baseline is `baseline-read-v1`, which requires the public read tables and columns used by the modern API resource contract. This project does not yet contain a production migration runner.
 
 Until a migration runner is added:
 
 - Apply schema changes outside the app deploy and record the exact database change in the release notes.
 - Prefer backward-compatible schema changes before app rollout.
 - Verify seeded contract behavior with `npm run docker:test:db` before touching production data.
+- Keep the API `/readyz` schema status green before routing app traffic.
 - Keep demo/test seed data separate from production data.
 - Treat production data changes as manual operator actions that require an explicit backup and rollback note.
 
@@ -109,7 +110,7 @@ curl -fsS https://app.example.com/v1/unis
 
 The `/healthz` response reports service identity and app proxy state. Use it to verify the deployed app is in proxy mode, not fixture mode.
 
-The API `/readyz` response checks database reachability and returns `503` when the database cannot be reached. Keep `/healthz` available for shallow process liveness checks.
+The API `/readyz` response checks database reachability and the `baseline-read-v1` schema contract. It returns `503` when the database cannot be reached or the required read schema is missing. Keep `/healthz` available for shallow process liveness checks.
 
 ## Rollback Expectations
 

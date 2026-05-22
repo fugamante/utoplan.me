@@ -2,6 +2,7 @@
 
 import {Pool, type PoolConfig, type QueryResult as PgQueryResult} from 'pg';
 import type {DatabaseRow} from './resource_contract';
+import * as schemaContract from './schema_contract';
 
 export interface QueryResult {
   rows: DatabaseRow[];
@@ -11,7 +12,7 @@ export type QueryCallback = (error: Error | null, result: QueryResult) => void;
 
 export type CloseCallback = (error?: Error) => void;
 
-export type ReadyCallback = (error: Error | null) => void;
+export type ReadyCallback = (error: Error | null, status?: schemaContract.SchemaStatus) => void;
 
 let pool: Pool | null = null;
 
@@ -62,8 +63,19 @@ export function query(text: string, params: unknown[], callback: QueryCallback):
 }
 
 export function ready(callback: ReadyCallback): void {
-  query('SELECT 1', [], function(error: Error | null) {
-    callback(error || null);
+  query(schemaContract.statusQuery(), schemaContract.statusParams(), function(error: Error | null, result: QueryResult) {
+    if (error) {
+      callback(error);
+      return;
+    }
+
+    const status = schemaContract.evaluate(result.rows);
+    if (!status.ok) {
+      callback(new Error('database schema does not match ' + status.version), status);
+      return;
+    }
+
+    callback(null, status);
   });
 }
 

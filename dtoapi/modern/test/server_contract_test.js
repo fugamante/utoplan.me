@@ -63,7 +63,11 @@ const originalError = console.error;
 const server = modernApi.createServer();
 
 db.ready = function(callback) {
-  callback(null);
+  callback(null, {
+    version: 'baseline-read-v1',
+    ok: true,
+    missing: []
+  });
 };
 
 server.listen(0, '127.0.0.1', function() {
@@ -71,6 +75,8 @@ server.listen(0, '127.0.0.1', function() {
     assert.ifError(error);
     assert.strictEqual(response.statusCode, 200);
     assert.strictEqual(JSON.parse(response.body).database, 'ok');
+    assert.strictEqual(JSON.parse(response.body).schema, 'ok');
+    assert.strictEqual(JSON.parse(response.body).schemaVersion, 'baseline-read-v1');
 
     db.ready = function(callback) {
       callback(new Error('database unavailable'));
@@ -81,6 +87,7 @@ server.listen(0, '127.0.0.1', function() {
       assert.ifError(failedError);
       assert.strictEqual(failedResponse.statusCode, 503);
       assert.strictEqual(JSON.parse(failedResponse.body).database, 'unavailable');
+      assert.strictEqual(JSON.parse(failedResponse.body).schema, 'unknown');
 
       db.ready = originalReady;
       console.error = originalError;

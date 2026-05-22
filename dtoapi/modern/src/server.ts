@@ -70,14 +70,16 @@ function handleHealth(request: IncomingMessage, response: ServerResponse): void 
 }
 
 function handleReadiness(request: IncomingMessage, response: ServerResponse): void {
-  db.ready(function(error: Error | null) {
+  db.ready(function(error: Error | null, status) {
     if (error) {
       console.error(error.stack || error.message);
 
       sendJson(request, response, 503, responseContract.serialize({
         status: 'error',
         service: 'utoplan-modern-api',
-        database: 'unavailable'
+        database: status ? 'ok' : 'unavailable',
+        schema: status ? 'unavailable' : 'unknown',
+        schemaVersion: status ? status.version : null
       }));
       return;
     }
@@ -85,7 +87,9 @@ function handleReadiness(request: IncomingMessage, response: ServerResponse): vo
     sendJson(request, response, 200, responseContract.serialize({
       status: 'ok',
       service: 'utoplan-modern-api',
-      database: 'ok'
+      database: 'ok',
+      schema: 'ok',
+      schemaVersion: status ? status.version : null
     }));
   });
 }
