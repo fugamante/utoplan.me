@@ -1,0 +1,17 @@
+{
+  "name": "dtoapi",
+  "version": "0.0.0",
+  "description": "dtoapi",
+  "author": "mysterious author",
+  "main": "modern/lib/server.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "npm --prefix modern run build && node ./test/modern_root_contract_test.js",
+    "test:modern": "npm --prefix modern run build && node ./test/modern_root_contract_test.js",
+    "start": "npm --prefix modern run build && node modern/lib/server.js",
+    "start:modern": "npm --prefix modern run build && node modern/lib/server.js"
+  },
+  "private": true
+}

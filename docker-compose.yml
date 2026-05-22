@@ -1,0 +1,57 @@
+services:
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile.postgres-test
+    environment:
+      POSTGRES_DB: dtoapi_test
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_INITDB_ARGS: "--auth-host=md5"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d dtoapi_test"]
+      interval: 2s
+      timeout: 5s
+      retries: 20
+
+  modern-api-test:
+    build:
+      context: .
+      dockerfile: Dockerfile.modern-db-test
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      TEST_DATABASE_HOST: db
+      TEST_DATABASE_PORT: "5432"
+      TEST_DATABASE_USER: postgres
+      TEST_DATABASE_PASSWORD: postgres
+      TEST_DATABASE_DB: dtoapi_test
+
+  app-modern-proxy-test:
+    build:
+      context: .
+      dockerfile: Dockerfile.proxy-test
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      TEST_DATABASE_HOST: db
+      TEST_DATABASE_PORT: "5432"
+      TEST_DATABASE_USER: postgres
+      TEST_DATABASE_PASSWORD: postgres
+      TEST_DATABASE_DB: dtoapi_test
+
+  start-local-browser-test:
+    build:
+      context: .
+      dockerfile: Dockerfile.start-local-browser-test
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      TEST_DATABASE_HOST: db
+      TEST_DATABASE_PORT: "5432"
+      TEST_DATABASE_USER: postgres
+      TEST_DATABASE_PASSWORD: postgres
+      TEST_DATABASE_DB: dtoapi_test

@@ -1,0 +1,16 @@
+{
+  "name": "utoplan.me",
+  "email": "support@imaginary.tech",
+  "description": "Modular data visualizer for strategic planning.",
+  "license": "MIT",
+  "contributors": "Victor Ortiz, Javier Cordero, Moises Marcon, Pablo Pinna, Rafael Sierra",
+  "main": "app.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "npm run build && node app.js",
+    "test": "npm run build && node test/map_config_contract_test.js && node test/static_smoke_test.js && node test/static_api_gate_test.js && node test/static_proxy_test.js && node test/static_config_test.js"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}
