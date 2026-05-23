@@ -144,3 +144,22 @@ npm run docker:test:data-sql-preview
 ```
 
 This check depends on unique indexes for the load-policy natural keys: `cbps(county, cnaic)`, `muns(county)`, and `unis(title, address)`.
+
+## Writer Gate
+
+`scripts/data_writer_gate.js` is an enablement preflight, not a writer. It consumes a SQL preview plus a captured API `/readyz` JSON payload and exits nonzero unless:
+
+- skipped records are explicitly acknowledged;
+- the SQL preview is unblocked and still dry-run only;
+- the load policy writer status remains `not-implemented`;
+- API readiness is healthy;
+- `/readyz` reports `loadPolicyIndexes: "ok"`.
+
+Run:
+
+```sh
+npm run gate:data-writer -- --sql-preview=sql-preview.json --readyz=readyz.json --acknowledge-skipped --out=writer-gate.json
+npm run test:data-writer-gate
+```
+
+The gate output always keeps `writerEnabled: false`; it only records whether the prerequisite state would allow a future writer to be implemented safely.
