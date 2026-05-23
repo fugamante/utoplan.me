@@ -16,7 +16,10 @@ function hasPuertoRicoScope(source) {
     return true;
   }
 
-  return source.scope === 'puerto-rico-filtered' && source.scopeFilter === 'state:72';
+  return source.scope === 'puerto-rico-filtered' && (
+    source.scopeFilter === 'state:72' ||
+    source.scopeFilter === "STATE='PR'"
+  );
 }
 
 assert.strictEqual(registry.schemaVersion, 1);

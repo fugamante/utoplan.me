@@ -6,9 +6,9 @@ The machine-readable contract lives in `data/mappings/puerto-rico-schema-map.jso
 
 ## Mapping Status
 
-- `cbps`: partial. The Datos.PR 2014 municipality County Business Patterns CSV maps `ap`, `est`, `naics`, and municipality FIPS fields to most legacy columns. `cnaic_name` still needs NAICS title enrichment, and `total_indus` needs confirmation before import.
-- `unis`: partial. The Datos.PR higher education directory maps institution name and address fields, but sampled headers do not include latitude or longitude.
-- `muns`: partial. The official municipality boundary ZIP is the preferred source, but the DBF field names still need inspection before choosing the municipality title field.
+- `cbps`: partial. The Datos.PR 2014 municipality County Business Patterns CSV maps `ap`, `est`, `naics`, and municipality FIPS fields to most legacy columns. Census 2014 CBP metadata confirms `NAICS2012_TTL` as the NAICS title field, but row queries require an API key in this environment. `total_indus` still needs confirmation before import.
+- `unis`: partial. The Datos.PR higher education directory maps institution name and address fields. NCES EDGE postsecondary locations, filtered to Puerto Rico with `STATE='PR'`, can supply `LAT` and `LON` after a deterministic name/address join is defined.
+- `muns`: partial. The official municipality boundary ZIP is the preferred source; DBF inspection confirmed `municipio`, `countyfp`, `cntyidfp`, and `statefp` fields.
 - `cdepts`, `businesses`, and `grade_cs`: blocked. No confirmed Puerto Rico-only source or transform path has been identified.
 
 ## Import Preconditions
@@ -16,10 +16,10 @@ The machine-readable contract lives in `data/mappings/puerto-rico-schema-map.jso
 Before writing import scripts:
 
 - Confirm whether legacy `cbps.total_indus` should store employment count or another business-pattern metric.
-- Add or identify a NAICS title source for `cbps.cnaic_name`.
-- Decide whether the legacy `cbps.cnaic` integer column can safely represent aggregate NAICS placeholders such as `------` and `23----`; otherwise define a schema migration before importing.
-- Inspect `municipios.dbf` from the official boundary ZIP and record the field selected for `muns.title`.
-- Identify a Puerto Rico-only coordinate source or geocoding policy for `unis.lat` and `unis.long`.
+- Provide a Census API key or cached NAICS title reference for `cbps.cnaic_name` enrichment.
+- Filter current-schema imports to numeric NAICS values, or define a schema migration before preserving aggregate NAICS placeholders such as `------` and `23----`.
+- Define the municipality code normalization from `countyfp` / `cntyidfp` / `fipscty` / `cencty` into the legacy integer `muns.county` and `cbps.county` fields.
+- Define the deterministic join from Datos.PR higher education directory rows to NCES EDGE coordinate rows.
 
 ## Validation
 
