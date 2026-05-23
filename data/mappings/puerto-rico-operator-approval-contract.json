@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "scope": "puerto-rico-only",
+  "contractStatus": "draft-no-writer",
+  "purpose": "Define the operator approval artifact required before any future data writer can consider skipped records acknowledged.",
+  "artifactName": "operatorApproval",
+  "requiredFields": [
+    "schemaVersion",
+    "scope",
+    "approvedBy",
+    "approvedAt",
+    "approvalReason",
+    "skippedAcknowledged",
+    "skippedSummary",
+    "sourceArtifacts"
+  ],
+  "fieldRules": {
+    "schemaVersion": {
+      "equals": 1
+    },
+    "scope": {
+      "equals": "puerto-rico-only"
+    },
+    "approvedBy": {
+      "type": "string",
+      "description": "Neutral operator role or team name; avoid personal identifiers in public artifacts."
+    },
+    "approvedAt": {
+      "type": "iso-8601-timestamp"
+    },
+    "approvalReason": {
+      "type": "string",
+      "minLength": 12
+    },
+    "skippedAcknowledged": {
+      "equals": true
+    },
+    "skippedSummary": {
+      "requiredFields": [
+        "rejected",
+        "manualReview",
+        "unsupportedCacheSources"
+      ],
+      "valueSource": "sqlPreview.summary.skipped"
+    },
+    "sourceArtifacts": {
+      "requiredFields": [
+        "loadPlanGeneratedAt",
+        "sqlPreviewGeneratedAt",
+        "writerGateSchemaVersion"
+      ]
+    }
+  },
+  "requiredAcknowledgements": [
+    "Rejected records will not be written.",
+    "Manual-review records will not be written.",
+    "Unsupported cached sources will not be written.",
+    "Skipped counts were reviewed against the SQL preview summary.",
+    "This approval does not enable database mutation by itself."
+  ],
+  "forbiddenFields": [
+    "password",
+    "token",
+    "secret",
+    "privateKey",
+    "personalEmail"
+  ],
+  "retention": {
+    "storeWithReleaseArtifact": true,
+    "includeInPublicRepo": false,
+    "notes": "Approval records can contain operational metadata and should be stored with release evidence, not committed as real approvals."
+  }
+}

@@ -45,6 +45,7 @@ npm run test:data-sql-preview
 npm run test:data-sql-preview-db
 npm run test:data-writer-gate
 npm run test:data-writer-contract
+npm run test:data-operator-approval-contract
 npm run test:data-sources
 npm run test:db
 npm run test:browser:start-local

@@ -8,6 +8,7 @@
     "scripts/data_load_plan.js",
     "scripts/data_sql_preview.js",
     "scripts/data_writer_gate.js",
+    "data/mappings/puerto-rico-operator-approval-contract.json",
     "db/migrations/202605230900_add_load_natural_key_indexes.md"
   ],
   "requiredInputs": [
@@ -32,12 +33,15 @@
     },
     {
       "name": "operatorApproval",
+      "source": "data/mappings/puerto-rico-operator-approval-contract.json",
       "required": true,
       "requiredFields": [
         "approvedBy",
         "approvedAt",
         "approvalReason",
-        "skippedAcknowledged"
+        "skippedAcknowledged",
+        "skippedSummary",
+        "sourceArtifacts"
       ]
     }
   ],
