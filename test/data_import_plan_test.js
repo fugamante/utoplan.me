@@ -162,6 +162,10 @@ var outPath = path.join(tmpDir, 'report.json');
 var cliResult;
 var report;
 var failedResult;
+var sampleFixturePath = path.join(__dirname, '..', 'data', 'fixtures', 'non-production', 'import-plan-fixtures.json');
+var sampleReportPath = path.join(__dirname, '..', 'data', 'fixtures', 'non-production', 'import-plan-report.json');
+var sampleOutPath = path.join(tmpDir, 'sample-report.json');
+var sampleResult;
 
 fs.writeFileSync(fixturePath, JSON.stringify(fixtures, null, 2));
 
@@ -193,6 +197,21 @@ failedResult = childProcess.spawnSync(process.execPath, [
 
 assert.strictEqual(failedResult.status, 1);
 assert(failedResult.stderr.indexOf('Missing required --fixtures=<path> argument') !== -1);
+
+sampleResult = childProcess.spawnSync(process.execPath, [
+  'scripts/data_import_plan.js',
+  '--fixtures=' + sampleFixturePath,
+  '--out=' + sampleOutPath
+], {
+  cwd: path.join(__dirname, '..'),
+  encoding: 'utf8'
+});
+
+assert.strictEqual(sampleResult.status, 0);
+assert.deepStrictEqual(
+  JSON.parse(fs.readFileSync(sampleOutPath, 'utf8')),
+  JSON.parse(fs.readFileSync(sampleReportPath, 'utf8'))
+);
 
 fs.rmSync(tmpDir, {
   recursive: true,

@@ -1,0 +1,81 @@
+{
+  "cbps": [
+    {
+      "fipscty": "001",
+      "cencty": "001",
+      "naics": "541",
+      "emp": "653",
+      "ap": "11348",
+      "est": "128",
+      "NAICS2012_TTL": "Professional Services"
+    },
+    {
+      "fipscty": "001",
+      "cencty": "001",
+      "naics": "23----",
+      "emp": "0",
+      "ap": "0",
+      "est": "6",
+      "NAICS2012_TTL": "Construction"
+    }
+  ],
+  "muns": [
+    {
+      "municipio": "  San   Juan  ",
+      "countyfp": "127",
+      "cntyidfp": "72127"
+    },
+    {
+      "municipio": "",
+      "countyfp": "001"
+    }
+  ],
+  "unis": [
+    {
+      "Nombre de la Institución": "American University of Puerto Rico",
+      "Unidad Académica": "",
+      "Principal Ejecutivo": "Juan Nazario Torres",
+      "Telefono": "(787) 620-2040",
+      "Dirección Pág Web": "www.aupr.edu",
+      "Correo Electrónico": "jcnazario@aupr.edu",
+      "Dirección Física": "Carr # 2 KM 14.0",
+      "Dirección Física 2": "Barrio Hato Tejas",
+      "Pueblo": "BAYAMON"
+    },
+    {
+      "Nombre de la Institución": "Sample College",
+      "Dirección Física": "Main Street",
+      "Dirección Física 2": "",
+      "Pueblo": "San Juan"
+    },
+    {
+      "Nombre de la Institución": "Unknown Institute",
+      "Dirección Física": "No Match",
+      "Dirección Física 2": "",
+      "Pueblo": "Ponce"
+    }
+  ],
+  "unisCoordinates": [
+    {
+      "NAME": "American University of Puerto Rico",
+      "STREET": "Carr. #2, Km.14.4, Bo. Hato Tejas",
+      "CITY": "Bayamon",
+      "LAT": 18.407058,
+      "LON": -66.186631
+    },
+    {
+      "NAME": "Sample College",
+      "STREET": "North Campus",
+      "CITY": "San Juan",
+      "LAT": 18,
+      "LON": -66
+    },
+    {
+      "NAME": "Sample College",
+      "STREET": "South Campus",
+      "CITY": "San Juan",
+      "LAT": 18.1,
+      "LON": -66.1
+    }
+  ]
+}
