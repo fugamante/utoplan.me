@@ -29,6 +29,43 @@ const contracts = [
     }
   },
   {
+    path: '/v1/unis?limit=1&offset=0',
+    expected: {
+      id: 1,
+      title: 'Contract University',
+      address: '100 Contract Ave',
+      desc: 'Seeded university row'
+    },
+    expectedMeta: {
+      total: 1,
+      count: 1,
+      offset: 0
+    }
+  },
+  {
+    path: '/v1/unis?limit=1&offset=1',
+    expected: null,
+    expectedMeta: {
+      total: 1,
+      count: 0,
+      offset: 1
+    }
+  },
+  {
+    path: '/v1/unis?offset=1',
+    expected: null,
+    expectedMeta: {
+      total: 1,
+      count: 0,
+      offset: 1
+    }
+  },
+  {
+    path: '/v1/unis?limit=0',
+    statusCode: 400,
+    error: 'Bad Request'
+  },
+  {
     path: '/v1/unis/1',
     expected: {
       id: 1,
@@ -181,10 +218,23 @@ function runContract(server, index) {
         return;
       }
 
+      if (contract.error) {
+        assert.strictEqual(body.meta.error, contract.error);
+        assert.deepStrictEqual(body.data, []);
+        runContract(server, index + 1);
+        return;
+      }
+
+      const expectedMeta = contract.expectedMeta || {
+        total: contract.expected ? 1 : 0,
+        count: contract.expected ? 1 : 0,
+        offset: 0
+      };
+
       assert.strictEqual(body.meta.error, null);
-      assert.strictEqual(body.meta.total, contract.expected ? 1 : 0);
-      assert.strictEqual(body.meta.count, contract.expected ? 1 : 0);
-      assert.strictEqual(body.meta.offset, 0);
+      assert.strictEqual(body.meta.total, expectedMeta.total);
+      assert.strictEqual(body.meta.count, expectedMeta.count);
+      assert.strictEqual(body.meta.offset, expectedMeta.offset);
 
       if (contract.expected) {
         contains(body.data[0], contract.expected);

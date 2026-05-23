@@ -12,20 +12,20 @@ export interface ResponsePayload<T> {
   data: T[];
 }
 
-export function meta(count: number, error?: string | null): ResponseMeta {
+export function meta(count: number, error?: string | null, total?: number, offset?: number): ResponseMeta {
   return {
-    total: count,
+    total: total === undefined ? count : total,
     count: count,
-    offset: 0,
+    offset: offset === undefined ? 0 : offset,
     error: error || null
   };
 }
 
-export function payload<T>(data?: T[], error?: string | null): ResponsePayload<T> {
+export function payload<T>(data?: T[], error?: string | null, total?: number, offset?: number): ResponsePayload<T> {
   const records = data || [];
 
   return {
-    meta: meta(records.length, error),
+    meta: meta(records.length, error, total, offset),
     data: records
   };
 }
