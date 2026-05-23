@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "scope": "puerto-rico-only",
+  "contractStatus": "draft-no-writer",
+  "mutationStatus": "disabled",
+  "dependsOn": [
+    "data/mappings/puerto-rico-load-policy.json",
+    "scripts/data_load_plan.js",
+    "scripts/data_sql_preview.js",
+    "scripts/data_writer_gate.js",
+    "db/migrations/202605230900_add_load_natural_key_indexes.md"
+  ],
+  "requiredInputs": [
+    {
+      "name": "loadPlan",
+      "source": "scripts/data_load_plan.js",
+      "required": true
+    },
+    {
+      "name": "sqlPreview",
+      "source": "scripts/data_sql_preview.js",
+      "required": true
+    },
+    {
+      "name": "writerGate",
+      "source": "scripts/data_writer_gate.js",
+      "required": true,
+      "requiredFields": {
+        "writerEnabled": false,
+        "writerEnablementAllowed": true
+      }
+    },
+    {
+      "name": "operatorApproval",
+      "required": true,
+      "requiredFields": [
+        "approvedBy",
+        "approvedAt",
+        "approvalReason",
+        "skippedAcknowledged"
+      ]
+    }
+  ],
+  "executionPhases": [
+    {
+      "name": "preflight",
+      "required": true,
+      "checks": [
+        "Verify writer gate allows enablement but keeps writerEnabled false.",
+        "Verify load-policy indexes are visible through API readiness.",
+        "Verify skipped records are acknowledged by the operator approval artifact.",
+        "Verify SQL preview remains dry-run only before opening a database transaction."
+      ]
+    },
+    {
+      "name": "transaction",
+      "required": true,
+      "checks": [
+        "Open exactly one database transaction for the full load plan.",
+        "Execute statements in preview order only.",
+        "Rollback on first write, validation, or constraint failure.",
+        "Commit only after all row counts and affected-row counts match the SQL preview summary."
+      ]
+    },
+    {
+      "name": "postCommit",
+      "required": true,
+      "checks": [
+        "Record committed row counts by table.",
+        "Record skipped record counts by reason.",
+        "Record source ids and row indexes for every executed statement.",
+        "Record the final API readiness payload after commit."
+      ]
+    }
+  ],
+  "auditEvents": [
+    "writer.preflight.started",
+    "writer.preflight.blocked",
+    "writer.transaction.opened",
+    "writer.statement.executed",
+    "writer.transaction.rolled_back",
+    "writer.transaction.committed",
+    "writer.post_commit.verified"
+  ],
+  "forbiddenActions": [
+    "Do not write rejected records.",
+    "Do not write manual-review records.",
+    "Do not write unsupported cached sources.",
+    "Do not truncate production tables.",
+    "Do not change table schema.",
+    "Do not execute SQL that is absent from the reviewed SQL preview.",
+    "Do not continue after a failed statement.",
+    "Do not enable this writer while mutationStatus is disabled."
+  ],
+  "failurePolicy": {
+    "rollbackOnAnyFailure": true,
+    "emitAuditEvent": "writer.transaction.rolled_back",
+    "operatorActionRequired": true
+  }
+}
