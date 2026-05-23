@@ -29,3 +29,13 @@ The root `npm run test` command also runs this check.
 ## Helper Module
 
 Fixture-backed helper functions live in `scripts/data_normalization.js`. They do not fetch external data or write imports; they only implement the deterministic rules above so importer work can reuse tested behavior.
+
+## Offline Planning
+
+`scripts/data_import_plan.js` applies the helper functions to in-memory fixture rows and returns accepted, rejected, and manual-review buckets. It does not fetch source data, write files, or mutate a database.
+
+Run:
+
+```sh
+npm run test:data-plan
+```
