@@ -33,6 +33,7 @@
 - `docs/data-normalization.md` and `data/mappings/puerto-rico-normalization.json` define deterministic import normalization rules for Puerto Rico source data.
 - `npm run test:data-normalization` validates that normalization rules reference registered sources and preserved legacy columns.
 - `scripts/data_normalization.js` provides fixture-backed normalization helpers for NAICS filtering, municipality code coercion, title cleanup, and university coordinate join review behavior.
+- `scripts/data_import_plan.js` provides an offline fixture planning harness that reports accepted, rejected, and manual-review records without fetching source data or mutating a database.
 - `npm run verify:release` wraps app/API deployment verification for release jobs, and Azure validates the wrapper in sample mode without production secrets.
 - `npm run verify:release-smoke` checks deployed app `/healthz`, public `/v1/unis`, and optional API `/readyz` from configured release URLs.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
@@ -150,4 +151,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Build the offline import planning harness that applies the normalization helpers to fixture rows and reports accepted, rejected, and manual-review records before adding networked source downloads.
+Add file-based import planning inputs and outputs for local fixture CSV/JSON files before adding networked source downloads.

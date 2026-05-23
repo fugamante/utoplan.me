@@ -30,6 +30,7 @@ npm run test
 npm run test:browser
 npm run test:data-mapping
 npm run test:data-normalization
+npm run test:data-plan
 npm run test:data-sources
 npm run test:db
 npm run test:browser:start-local
