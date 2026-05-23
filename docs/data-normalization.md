@@ -213,3 +213,24 @@ npm run test:data-operator-approval-validate
 ```
 
 The validation result keeps `mutationAllowed: false`; it only checks release evidence.
+
+## Release Evidence Bundle
+
+`scripts/data_release_evidence_bundle.js` builds a local dry-run evidence directory from fixture planning input and a captured API `/readyz` payload. It writes:
+
+- `planning-report.json`
+- `load-plan.json`
+- `sql-preview.json`
+- `writer-gate.json`
+- `operator-approval.json`
+- `operator-approval-validation.json`
+- `manifest.json`
+
+Run:
+
+```sh
+npm run bundle:release-evidence -- --readyz=readyz.json --out-dir=release-evidence --acknowledge-skipped
+npm run test:data-release-evidence-bundle
+```
+
+The bundle command does not connect to a database, execute SQL, or enable mutation. It writes `manifest.status: "blocked"` when the writer gate or approval validation is not satisfied.
