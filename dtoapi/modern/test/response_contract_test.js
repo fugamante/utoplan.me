@@ -16,6 +16,16 @@ assert.deepStrictEqual(payload, {
   data: data
 });
 
+assert.deepStrictEqual(responseContract.payload(data, null, 5, 2), {
+  meta: {
+    total: 5,
+    count: 1,
+    offset: 2,
+    error: null
+  },
+  data: data
+});
+
 assert.deepStrictEqual(responseContract.errorPayload('Not Found'), {
   meta: {
     total: 0,

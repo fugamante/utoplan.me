@@ -19,6 +19,8 @@
 - Known record routes reject unsupported methods with `405 Method Not Allowed` and avoid exposing raw database errors to clients.
 - Canonical public routes use preserved resource/table names: `/v1/unis`, `/v1/muns`, `/v1/cdepts`, `/v1/cbps`, `/v1/businesses`, and `/v1/grade_cs`.
 - The modern API also accepts `/v1/busines` and `/v1/grace_cs` as legacy typo aliases that resolve to `businesses` and `grade_cs`.
+- Collection routes accept optional integer `limit` and `offset` query parameters. `limit` must be between `1` and `1000`; `offset` must be zero or greater. Unknown query parameters are ignored for compatibility.
+- Collection response metadata reports `total` as the full resource count, `count` as the returned page length, and `offset` as the applied offset.
 - `dtoapi/modern/test/response_contract_test.js` pins the typed response envelope.
 - `dtoapi/modern/test/resource_contract_test.js` pins the typed resource/data-access boundary.
 - `dtoapi/modern/test/records_contract_test.js` pins typed record payload wrapping without requiring a database.

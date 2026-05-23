@@ -53,3 +53,21 @@ assert.deepStrictEqual(records.collectionPayload([{
   long: -66.06,
   ignored: 'not public'
 }], uni), payload);
+
+assert.deepStrictEqual(records.collectionPayload([{
+  id: 1,
+  title: 'Contract University',
+  address: '100 Contract Ave',
+  desc: 'Seeded university row',
+  lat: 18.42,
+  long: -66.06,
+  ignored: 'not public'
+}], uni, 3, 2), {
+  meta: {
+    total: 3,
+    count: 1,
+    offset: 2,
+    error: null
+  },
+  data: payload.data
+});

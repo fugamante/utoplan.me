@@ -15,6 +15,8 @@ export const CORS_HEADERS: OutgoingHttpHeaders = {
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
 };
 
+export const MAX_COLLECTION_LIMIT = 1000;
+
 export function acceptsGzip(request: IncomingMessage): boolean {
   return String(request.headers['accept-encoding'] || '').indexOf('gzip') !== -1;
 }
@@ -25,6 +27,25 @@ export function matchRecord(pathname: string): RegExpMatchArray | null {
 
 export function matchCollection(pathname: string): RegExpMatchArray | null {
   return pathname.match(new RegExp('^/v1/(' + resourceContract.routeNames().join('|') + ')$'));
+}
+
+export function parseCollectionQuery(params: URLSearchParams): records.CollectionQuery | null {
+  const limit = params.get('limit');
+  const offset = params.get('offset');
+  const integerPattern = /^[0-9]+$/;
+
+  if (limit !== null && (!integerPattern.test(limit) || Number(limit) < 1 || Number(limit) > MAX_COLLECTION_LIMIT)) {
+    return null;
+  }
+
+  if (offset !== null && !integerPattern.test(offset)) {
+    return null;
+  }
+
+  return {
+    limit: limit === null ? null : Number(limit),
+    offset: offset === null ? 0 : Number(offset)
+  };
 }
 
 function sendJson(
@@ -121,8 +142,8 @@ function handleRecord(request: IncomingMessage, response: ServerResponse, kind: 
   });
 }
 
-function handleCollection(request: IncomingMessage, response: ServerResponse, kind: string): void {
-  records.list(kind, function(error, rows, resource) {
+function handleCollection(request: IncomingMessage, response: ServerResponse, kind: string, query: records.CollectionQuery): void {
+  records.list(kind, query, function(error, rows, resource, total, offset) {
     if (error) {
       console.error(error.stack || error.message);
 
@@ -137,8 +158,14 @@ function handleCollection(request: IncomingMessage, response: ServerResponse, ki
       return;
     }
 
-    sendJson(request, response, 200, responseContract.serialize(records.collectionPayload(rows, resource)));
+    sendJson(request, response, 200, responseContract.serialize(records.collectionPayload(rows, resource, total, offset)));
   });
+}
+
+function handleBadRequest(request: IncomingMessage, response: ServerResponse): void {
+  sendJson(request, response, 400, responseContract.serialize(
+    responseContract.errorPayload('Bad Request')
+  ));
 }
 
 function handleMethodNotAllowed(request: IncomingMessage, response: ServerResponse): void {
@@ -157,7 +184,8 @@ function handleNotFound(request: IncomingMessage, response: ServerResponse): voi
 
 export function createServer(): Server {
   return http.createServer(function(request: IncomingMessage, response: ServerResponse) {
-    const pathname = new URL(request.url || '/', 'http://127.0.0.1').pathname;
+    const requestUrl = new URL(request.url || '/', 'http://127.0.0.1');
+    const pathname = requestUrl.pathname;
 
     if (request.method === 'OPTIONS') {
       response.writeHead(204, CORS_HEADERS);
@@ -184,7 +212,14 @@ export function createServer(): Server {
     const collectionMatch = matchCollection(pathname);
 
     if (request.method === 'GET' && collectionMatch) {
-      handleCollection(request, response, collectionMatch[1]);
+      const collectionQuery = parseCollectionQuery(requestUrl.searchParams);
+
+      if (!collectionQuery) {
+        handleBadRequest(request, response);
+        return;
+      }
+
+      handleCollection(request, response, collectionMatch[1], collectionQuery);
       return;
     }
 

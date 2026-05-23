@@ -81,6 +81,26 @@ export function selectAll(resource: Resource): string {
   return 'SELECT ' + columns + ' FROM ' + resource.table + ' ORDER BY id';
 }
 
+export function selectPage(resource: Resource, hasLimit: boolean, hasOffset: boolean): string {
+  let sql = selectAll(resource);
+  let paramIndex = 1;
+
+  if (hasLimit) {
+    sql += ' LIMIT $' + paramIndex;
+    paramIndex += 1;
+  }
+
+  if (hasOffset) {
+    sql += ' OFFSET $' + paramIndex;
+  }
+
+  return sql;
+}
+
+export function countAll(resource: Resource): string {
+  return 'SELECT COUNT(*)::int AS total FROM ' + resource.table;
+}
+
 export function serialize(row: DatabaseRow, resource: Resource): PublicRecord {
   return resource.columns.reduce(function(record: PublicRecord, column: string) {
     record[column] = row[column];

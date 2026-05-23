@@ -7,7 +7,18 @@ import * as resourceContract from './resource_contract';
 import * as responseContract from './response_contract';
 
 export type FindCallback = (error: Error | null, row: DatabaseRow | null, resource: Resource | null) => void;
-export type ListCallback = (error: Error | null, rows: DatabaseRow[], resource: Resource | null) => void;
+export type ListCallback = (
+  error: Error | null,
+  rows: DatabaseRow[],
+  resource: Resource | null,
+  total: number,
+  offset: number
+) => void;
+
+export interface CollectionQuery {
+  limit: number | null;
+  offset: number;
+}
 
 export function payload(row: DatabaseRow | null, resource: Resource): responseContract.ResponsePayload<resourceContract.PublicRecord> {
   const data = row ? [resourceContract.serialize(row, resource)] : [];
@@ -15,12 +26,17 @@ export function payload(row: DatabaseRow | null, resource: Resource): responseCo
   return responseContract.payload(data);
 }
 
-export function collectionPayload(rows: DatabaseRow[], resource: Resource): responseContract.ResponsePayload<resourceContract.PublicRecord> {
+export function collectionPayload(
+  rows: DatabaseRow[],
+  resource: Resource,
+  total?: number,
+  offset?: number
+): responseContract.ResponsePayload<resourceContract.PublicRecord> {
   const data = rows.map(function(row: DatabaseRow): resourceContract.PublicRecord {
     return resourceContract.serialize(row, resource);
   });
 
-  return responseContract.payload(data);
+  return responseContract.payload(data, null, total, offset);
 }
 
 export function find(kind: string, id: number, callback: FindCallback): void {
@@ -41,20 +57,41 @@ export function find(kind: string, id: number, callback: FindCallback): void {
   });
 }
 
-export function list(kind: string, callback: ListCallback): void {
+function countTotal(row: DatabaseRow | undefined): number {
+  return Number(row ? row.total || 0 : 0);
+}
+
+export function list(kind: string, query: CollectionQuery, callback: ListCallback): void {
   const resource = resourceContract.get(kind);
 
   if (!resource) {
-    callback(null, [], null);
+    callback(null, [], null, 0, query.offset);
     return;
   }
 
-  db.query(resourceContract.selectAll(resource), [], function(error: Error | null, result: QueryResult) {
-    if (error) {
-      callback(error, [], resource);
+  db.query(resourceContract.countAll(resource), [], function(countError: Error | null, countResult: QueryResult) {
+    const params: number[] = [];
+
+    if (countError) {
+      callback(countError, [], resource, 0, query.offset);
       return;
     }
 
-    callback(null, result.rows, resource);
+    if (query.limit !== null) {
+      params.push(query.limit);
+    }
+
+    if (query.offset > 0) {
+      params.push(query.offset);
+    }
+
+    db.query(resourceContract.selectPage(resource, query.limit !== null, query.offset > 0), params, function(error: Error | null, result: QueryResult) {
+      if (error) {
+        callback(error, [], resource, 0, query.offset);
+        return;
+      }
+
+      callback(null, result.rows, resource, countTotal(countResult.rows[0]), query.offset);
+    });
   });
 }

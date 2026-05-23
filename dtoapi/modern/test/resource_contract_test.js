@@ -38,6 +38,18 @@ assert.strictEqual(
   resourceContract.selectAll(resourceContract.get('unis')),
   'SELECT id, title, address, "desc", lat, "long", created_at, updated_at FROM unis ORDER BY id'
 );
+assert.strictEqual(
+  resourceContract.selectPage(resourceContract.get('unis'), true, true),
+  'SELECT id, title, address, "desc", lat, "long", created_at, updated_at FROM unis ORDER BY id LIMIT $1 OFFSET $2'
+);
+assert.strictEqual(
+  resourceContract.selectPage(resourceContract.get('unis'), false, true),
+  'SELECT id, title, address, "desc", lat, "long", created_at, updated_at FROM unis ORDER BY id OFFSET $1'
+);
+assert.strictEqual(
+  resourceContract.countAll(resourceContract.get('unis')),
+  'SELECT COUNT(*)::int AS total FROM unis'
+);
 
 assert.deepStrictEqual(resourceContract.serialize({
   id: 1,
