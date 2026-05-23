@@ -163,3 +163,21 @@ npm run test:data-writer-gate
 ```
 
 The gate output always keeps `writerEnabled: false`; it only records whether the prerequisite state would allow a future writer to be implemented safely.
+
+## Writer Execution Contract
+
+`data/mappings/puerto-rico-writer-contract.json` defines the audited execution contract a future writer must satisfy before mutation can be implemented. The contract is still `draft-no-writer` with `mutationStatus: "disabled"`.
+
+It requires:
+
+- load plan, SQL preview, writer gate, and operator approval artifacts;
+- preflight, transaction, and post-commit phases;
+- audit events for preflight, transaction open, each statement, rollback, commit, and post-commit verification;
+- rollback on any failure;
+- no writes outside the reviewed SQL preview.
+
+Run:
+
+```sh
+npm run test:data-writer-contract
+```
