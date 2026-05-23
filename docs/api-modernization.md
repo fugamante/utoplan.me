@@ -17,6 +17,8 @@
 - `dtoapi/modern/src/records.ts` owns typed compatibility queries and response shapes for seeded read endpoints.
 - `dtoapi/modern/test/db_contract_test.js` verifies the seeded read endpoint set and missing-record behavior against the Docker database.
 - Known record routes reject unsupported methods with `405 Method Not Allowed` and avoid exposing raw database errors to clients.
+- Canonical public routes use preserved resource/table names: `/v1/unis`, `/v1/muns`, `/v1/cdepts`, `/v1/cbps`, `/v1/businesses`, and `/v1/grade_cs`.
+- The modern API also accepts `/v1/busines` and `/v1/grace_cs` as legacy typo aliases that resolve to `businesses` and `grade_cs`.
 - `dtoapi/modern/test/response_contract_test.js` pins the typed response envelope.
 - `dtoapi/modern/test/resource_contract_test.js` pins the typed resource/data-access boundary.
 - `dtoapi/modern/test/records_contract_test.js` pins typed record payload wrapping without requiring a database.

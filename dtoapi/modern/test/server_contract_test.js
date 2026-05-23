@@ -14,6 +14,26 @@ const uniCollectionMatch = modernApi.matchCollection('/v1/unis');
 assert(uniCollectionMatch);
 assert.strictEqual(uniCollectionMatch[1], 'unis');
 
+const businessMatch = modernApi.matchRecord('/v1/businesses/123');
+assert(businessMatch);
+assert.strictEqual(businessMatch[1], 'businesses');
+assert.strictEqual(businessMatch[2], '123');
+
+const legacyBusinessMatch = modernApi.matchRecord('/v1/busines/123');
+assert(legacyBusinessMatch);
+assert.strictEqual(legacyBusinessMatch[1], 'busines');
+assert.strictEqual(legacyBusinessMatch[2], '123');
+
+const gradeMatch = modernApi.matchRecord('/v1/grade_cs/123');
+assert(gradeMatch);
+assert.strictEqual(gradeMatch[1], 'grade_cs');
+assert.strictEqual(gradeMatch[2], '123');
+
+const legacyGradeMatch = modernApi.matchRecord('/v1/grace_cs/123');
+assert(legacyGradeMatch);
+assert.strictEqual(legacyGradeMatch[1], 'grace_cs');
+assert.strictEqual(legacyGradeMatch[2], '123');
+
 assert.strictEqual(modernApi.matchRecord('/v1/unis/not-a-number'), null);
 assert.strictEqual(modernApi.matchRecord('/v1/unknown/1'), null);
 assert.strictEqual(modernApi.matchCollection('/v1/unis/1'), null);

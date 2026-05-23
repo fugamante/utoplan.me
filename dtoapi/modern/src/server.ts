@@ -5,6 +5,7 @@ import {URL} from 'url';
 import zlib from 'zlib';
 import * as db from './db';
 import * as records from './records';
+import * as resourceContract from './resource_contract';
 import * as responseContract from './response_contract';
 import * as rootContract from './root_contract';
 
@@ -19,11 +20,11 @@ export function acceptsGzip(request: IncomingMessage): boolean {
 }
 
 export function matchRecord(pathname: string): RegExpMatchArray | null {
-  return pathname.match(/^\/v1\/(unis|muns|cdepts|cbps|busines|grace_cs)\/([0-9]+)$/);
+  return pathname.match(new RegExp('^/v1/(' + resourceContract.routeNames().join('|') + ')/([0-9]+)$'));
 }
 
 export function matchCollection(pathname: string): RegExpMatchArray | null {
-  return pathname.match(/^\/v1\/(unis|muns|cdepts|cbps|busines|grace_cs)$/);
+  return pathname.match(new RegExp('^/v1/(' + resourceContract.routeNames().join('|') + ')$'));
 }
 
 function sendJson(
