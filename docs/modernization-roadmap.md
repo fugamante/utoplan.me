@@ -147,4 +147,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Resolve the blocked source-mapping items for `cbps.cnaic_name`, aggregate NAICS handling, municipality DBF field names, and university coordinates before writing import scripts.
+Define deterministic normalization rules for CBP NAICS filtering, municipality code joins, and higher-education coordinate joins before writing import scripts.

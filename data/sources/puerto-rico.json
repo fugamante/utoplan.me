@@ -69,6 +69,22 @@
       "notes": "Candidate for municipality reference data and future map geometry work; do not import geometry into the read API until the target schema is designed."
     },
     {
+      "id": "nces-edge-postsecondary-locations-2021-pr",
+      "status": "candidate",
+      "targetTables": [
+        "unis"
+      ],
+      "publisher": "National Center for Education Statistics",
+      "portal": "NCES OpenGIS",
+      "license": "U.S. Government public data",
+      "scope": "puerto-rico-filtered",
+      "scopeFilter": "STATE='PR'",
+      "sourceUrl": "https://nces.ed.gov/opengis/rest/services/Postsecondary_School_Locations/EDGE_GEOCODE_POSTSECONDARYSCH_2021/MapServer/0",
+      "apiUrl": "https://nces.ed.gov/opengis/rest/services/Postsecondary_School_Locations/EDGE_GEOCODE_POSTSECONDARYSCH_2021/MapServer/0/query?f=json&where=STATE%3D%27PR%27&outFields=NAME,STREET,CITY,STATE,LAT,LON&returnGeometry=false",
+      "sourceBasis": "Puerto Rico-filtered postsecondary school point locations with latitude and longitude.",
+      "notes": "Coordinate enrichment candidate for the legacy unis table; importer must join against the Puerto Rico higher education directory by normalized institution name and address."
+    },
+    {
       "id": "census-cbp-2014-state-72-fallback",
       "status": "fallback-candidate",
       "targetTables": [

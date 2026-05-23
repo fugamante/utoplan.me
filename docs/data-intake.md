@@ -21,6 +21,7 @@ Do not import broad national datasets unless the registry entry includes a deter
 - `cbps`: Datos.PR County Business Patterns 2014 Puerto Rico CSV and municipality CSV.
 - `muns`: Datos.PR official Puerto Rico municipality boundary ZIP, plus the municipality-level CBP file where only tabular join data is needed.
 - `unis`: Datos.PR higher education directory for Puerto Rico, academic year 2017-18.
+- `unis` coordinates: NCES EDGE postsecondary locations filtered to `STATE='PR'`.
 - `cbps` fallback: Census 2014 CBP API filtered with `state:72`.
 
 ## Unresolved Legacy Tables

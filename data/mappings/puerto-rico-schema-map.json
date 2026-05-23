@@ -13,7 +13,7 @@
         "census-cbp-2014-state-72-fallback"
       ],
       "preferredSourceId": "datospr-cbp-2014-municipios",
-      "notes": "Municipality-level CBP data is the closest replacement for the legacy cbps table. NAICS titles are not present in the Datos.PR CSV headers sampled on 2026-05-22, so cnaic_name needs a NAICS lookup source or Census API enrichment before import.",
+      "notes": "Municipality-level CBP data is the closest replacement for the legacy cbps table. NAICS titles are not present in the Datos.PR CSV headers sampled on 2026-05-22, but the Census 2014 CBP variable metadata confirms NAICS2012_TTL as the title field. Live Census row queries require an API key in this environment.",
       "columns": [
         {
           "target": "id",
@@ -42,13 +42,15 @@
           "sourceColumns": [
             "naics"
           ],
-          "notes": "Legacy column is integer; source values include aggregate placeholders such as ------ and 23----, so importer must either preserve a string-compatible schema or define a numeric-only filter."
+          "notes": "Legacy column is integer; importers targeting the current schema must filter to numeric NAICS values. Aggregate placeholders such as ------ and 23---- require a schema migration before they can be preserved."
         },
         {
           "target": "cnaic_name",
-          "strategy": "blocked",
-          "sourceColumns": [],
-          "notes": "Not present in sampled Datos.PR CSV headers; requires NAICS title enrichment before production import."
+          "strategy": "candidate",
+          "sourceColumns": [
+            "NAICS2012_TTL"
+          ],
+          "notes": "Available from the Census 2014 CBP API metadata; production import needs a Census API key or cached NAICS title reference."
         },
         {
           "target": "county",
@@ -85,7 +87,7 @@
         "datospr-cbp-2014-municipios"
       ],
       "preferredSourceId": "datospr-official-municipality-boundaries",
-      "notes": "The boundary ZIP contains shapefile components, including municipios.dbf. Inspect the DBF field names before import to select the municipality title field. CBP municipality codes can supply county-style numeric IDs.",
+      "notes": "The boundary ZIP contains shapefile components, including municipios.dbf. DBF inspection on 2026-05-22 confirmed municipio, countyfp, cntyidfp, and statefp fields. CBP municipality codes can supply county-style numeric IDs.",
       "columns": [
         {
           "target": "id",
@@ -94,18 +96,22 @@
         },
         {
           "target": "title",
-          "strategy": "blocked",
-          "sourceColumns": [],
-          "notes": "Expected in municipios.dbf, but field name has not been confirmed."
+          "strategy": "direct",
+          "sourceColumns": [
+            "municipio"
+          ],
+          "notes": "Confirmed in municipios.dbf."
         },
         {
           "target": "county",
           "strategy": "direct",
           "sourceColumns": [
+            "countyfp",
+            "cntyidfp",
             "fipscty",
             "cencty"
           ],
-          "notes": "Available from the CBP municipality CSV; must be reconciled with boundary file identifiers."
+          "notes": "Boundary DBF and CBP municipality CSV both expose county-style codes; importer must normalize to the integer legacy column."
         },
         {
           "target": "created_at",
@@ -123,10 +129,11 @@
       "table": "unis",
       "status": "partial",
       "sourceIds": [
-        "datospr-higher-ed-directory-2017-18"
+        "datospr-higher-ed-directory-2017-18",
+        "nces-edge-postsecondary-locations-2021-pr"
       ],
       "preferredSourceId": "datospr-higher-ed-directory-2017-18",
-      "notes": "Directory fields cover institution name and address, but do not include latitude or longitude in the sampled CSV header. Coordinates require a separate Puerto Rico-only geocoding step or another confirmed source.",
+      "notes": "Directory fields cover institution name and address. NCES EDGE postsecondary locations provide Puerto Rico-filtered latitude and longitude enrichment, but importers must define a deterministic join by normalized institution name and address.",
       "columns": [
         {
           "target": "id",
@@ -163,15 +170,19 @@
         },
         {
           "target": "lat",
-          "strategy": "blocked",
-          "sourceColumns": [],
-          "notes": "Not present in sampled directory CSV."
+          "strategy": "direct",
+          "sourceColumns": [
+            "LAT"
+          ],
+          "notes": "Available from NCES EDGE postsecondary locations with STATE='PR'."
         },
         {
           "target": "long",
-          "strategy": "blocked",
-          "sourceColumns": [],
-          "notes": "Not present in sampled directory CSV."
+          "strategy": "direct",
+          "sourceColumns": [
+            "LON"
+          ],
+          "notes": "Available from NCES EDGE postsecondary locations with STATE='PR'."
         },
         {
           "target": "created_at",
