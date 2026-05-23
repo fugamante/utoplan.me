@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "scope": "puerto-rico-only",
+  "mappedAt": "2026-05-23",
+  "sourceRegistry": "data/sources/puerto-rico.json",
+  "schemaMapping": "data/mappings/puerto-rico-schema-map.json",
+  "normalizationMapping": "data/mappings/puerto-rico-normalization.json",
+  "appliesToTables": [
+    "cbps",
+    "muns",
+    "unis"
+  ],
+  "confidenceLevels": {
+    "high": "Source scope, license, target mapping, and transform path are confirmed enough for source-backed planning display after import approval.",
+    "medium": "Source scope and license are recorded, but one or more mapping or transform assumptions still need operator review before production-style use.",
+    "low": "Source is useful for exploratory planning only; field semantics, joins, or enrichment are not strong enough for production-style use.",
+    "blocked": "No source-backed planning use is allowed until a source, license, scope, and transform path are recorded."
+  },
+  "rowProvenanceFields": [
+    "sourceId",
+    "rowIndex",
+    "sourceConfidence",
+    "transformConfidence",
+    "productionReadiness",
+    "sourceBacked",
+    "notes"
+  ],
+  "tableAssessments": [
+    {
+      "table": "cbps",
+      "sourceIds": [
+        "datospr-cbp-2014-municipios",
+        "datospr-cbp-2014-puerto-rico",
+        "census-cbp-2014-state-72-fallback"
+      ],
+      "preferredSourceId": "datospr-cbp-2014-municipios",
+      "sourceConfidence": "medium",
+      "transformConfidence": "low",
+      "productionReadiness": "candidate-needs-review",
+      "sourceBacked": true,
+      "requiredBeforeApiPromotion": [
+        "Confirm the business meaning of cbps.total_indus.",
+        "Provide a Census API key or cached NAICS title reference for cbps.cnaic_name.",
+        "Decide whether aggregate NAICS placeholders require a schema migration."
+      ],
+      "notes": "Municipality-level CBP data is Puerto Rico-scoped, but important legacy field semantics are still unresolved."
+    },
+    {
+      "table": "muns",
+      "sourceIds": [
+        "datospr-official-municipality-boundaries",
+        "datospr-cbp-2014-municipios"
+      ],
+      "preferredSourceId": "datospr-official-municipality-boundaries",
+      "sourceConfidence": "medium",
+      "transformConfidence": "medium",
+      "productionReadiness": "candidate-needs-review",
+      "sourceBacked": true,
+      "requiredBeforeApiPromotion": [
+        "Add deterministic DBF extraction for the official municipality boundary ZIP.",
+        "Confirm county code normalization across boundary and CBP municipality sources."
+      ],
+      "notes": "The source is official and Puerto Rico-scoped, but the current planner does not yet consume the ZIP/DBF source directly."
+    },
+    {
+      "table": "unis",
+      "sourceIds": [
+        "datospr-higher-ed-directory-2017-18",
+        "nces-edge-postsecondary-locations-2021-pr"
+      ],
+      "preferredSourceId": "datospr-higher-ed-directory-2017-18",
+      "sourceConfidence": "medium",
+      "transformConfidence": "low",
+      "productionReadiness": "candidate-needs-review",
+      "sourceBacked": true,
+      "requiredBeforeApiPromotion": [
+        "Keep unmatched or ambiguous NCES coordinate joins in manual review.",
+        "Document that the Datos.PR directory is a replacement-source candidate, not confirmed original hackathon input.",
+        "Decide whether legacy unis.desc should remain a display summary or move to a richer future schema."
+      ],
+      "notes": "Institution rows can be source-backed, but coordinate enrichment depends on a cautious deterministic join."
+    }
+  ],
+  "blockedTables": [
+    {
+      "table": "cdepts",
+      "sourceConfidence": "blocked",
+      "transformConfidence": "blocked",
+      "productionReadiness": "blocked",
+      "sourceBacked": false,
+      "reason": "No confirmed Puerto Rico-only source or transform path."
+    },
+    {
+      "table": "businesses",
+      "sourceConfidence": "blocked",
+      "transformConfidence": "blocked",
+      "productionReadiness": "blocked",
+      "sourceBacked": false,
+      "reason": "No confirmed Puerto Rico-only point business source or cdepts join source."
+    },
+    {
+      "table": "grade_cs",
+      "sourceConfidence": "blocked",
+      "transformConfidence": "blocked",
+      "productionReadiness": "blocked",
+      "sourceBacked": false,
+      "reason": "No confirmed Puerto Rico-only graduation/career relationship source."
+    }
+  ],
+  "promotionRule": "Rows may be displayed as source-backed planning data only when their sourceId is registered, their table has a table assessment, sourceBacked is true, and productionReadiness is not blocked. Rows must not be described as production-grade until requiredBeforeApiPromotion is empty or explicitly waived in release evidence."
+}

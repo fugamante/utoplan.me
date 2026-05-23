@@ -93,6 +93,8 @@ When a cached source is present but unsupported, the planner includes `unsupport
 
 `scripts/data_load_plan.js` converts an accepted planning report into DB-ready row groups without connecting to a database or executing SQL. It adds one import timestamp to `created_at` and `updated_at`, carries rejected/manual-review records into `skipped`, and keeps unsupported cached source IDs visible.
 
+Each accepted load-plan row also carries a `provenance` object from `data/mappings/puerto-rico-provenance-confidence.json`. This sidecar records `sourceId`, `rowIndex`, source confidence, transform confidence, production readiness, and whether the row is source-backed. The provenance object is evidence for operators and future API/UI work; it is not inserted into the legacy read tables.
+
 Run:
 
 ```sh
@@ -132,6 +134,8 @@ npm run test:data-sql-preview
 ```
 
 The preview output remains `dryRunOnly: true` and `mutationAllowed: false`; it is an inspection artifact, not a writer.
+
+SQL preview statements preserve the row provenance sidecar beside each generated statement. This keeps confidence and source evidence attached to dry-run SQL without changing SQL columns or enabling mutation.
 
 ## SQL Preview Database Check
 

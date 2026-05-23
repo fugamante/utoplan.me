@@ -157,6 +157,7 @@ function buildSqlPreview(loadPlan, policy, options) {
 
       statement.sourceId = row.sourceId || null;
       statement.rowIndex = Object.prototype.hasOwnProperty.call(row, 'rowIndex') ? row.rowIndex : null;
+      statement.provenance = row.provenance || null;
       preview.statements.push(statement);
     });
   });

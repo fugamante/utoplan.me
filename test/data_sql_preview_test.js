@@ -89,6 +89,7 @@ assert.deepStrictEqual(cbpStatement.params, [
 ]);
 assert.strictEqual(cbpStatement.sourceId, 'datospr-cbp-2014-municipios');
 assert.strictEqual(cbpStatement.rowIndex, 0);
+assert.deepStrictEqual(cbpStatement.provenance, loadPlan.rows.cbps[0].provenance);
 
 assert.strictEqual(
   munStatement.sql,
