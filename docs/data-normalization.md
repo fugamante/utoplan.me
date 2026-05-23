@@ -37,5 +37,17 @@ Fixture-backed helper functions live in `scripts/data_normalization.js`. They do
 Run:
 
 ```sh
+npm run plan:data -- --fixtures=fixtures.json --out=report.json
 npm run test:data-plan
+```
+
+The fixture JSON shape is:
+
+```json
+{
+  "cbps": [],
+  "muns": [],
+  "unis": [],
+  "unisCoordinates": []
+}
 ```

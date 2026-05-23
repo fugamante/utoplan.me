@@ -1,6 +1,20 @@
 'use strict';
 
+var fs = require('fs');
 var normalization = require('./data_normalization');
+
+function readArg(args, name, defaultValue) {
+  var prefix = '--' + name + '=';
+  var value = defaultValue;
+
+  args.forEach(function(arg) {
+    if (arg.indexOf(prefix) === 0) {
+      value = arg.slice(prefix.length);
+    }
+  });
+
+  return value;
+}
 
 function issue(table, sourceId, rowIndex, reason, row) {
   return {
@@ -189,9 +203,56 @@ function planFixtureRows(fixtures) {
   ]);
 }
 
+function readJsonFile(filePath) {
+  return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+}
+
+function writeJsonFile(filePath, value) {
+  fs.writeFileSync(filePath, JSON.stringify(value, null, 2) + '\n');
+}
+
+function run(args) {
+  var fixturePath = readArg(args, 'fixtures', null);
+  var outPath = readArg(args, 'out', null);
+  var fixtures;
+  var plan;
+
+  if (!fixturePath) {
+    console.error('Missing required --fixtures=<path> argument');
+    return 1;
+  }
+
+  try {
+    fixtures = readJsonFile(fixturePath);
+  } catch (error) {
+    console.error('Failed to read fixture JSON: ' + error.message);
+    return 1;
+  }
+
+  plan = planFixtureRows(fixtures);
+
+  try {
+    if (outPath) {
+      writeJsonFile(outPath, plan);
+    } else {
+      process.stdout.write(JSON.stringify(plan, null, 2) + '\n');
+    }
+  } catch (error) {
+    console.error('Failed to write planning report: ' + error.message);
+    return 1;
+  }
+
+  return 0;
+}
+
+if (require.main === module) {
+  process.exit(run(process.argv.slice(2)));
+}
+
 module.exports = {
   planCbpRows: planCbpRows,
   planMunicipalityRows: planMunicipalityRows,
   planUniversityRows: planUniversityRows,
-  planFixtureRows: planFixtureRows
+  planFixtureRows: planFixtureRows,
+  run: run
 };

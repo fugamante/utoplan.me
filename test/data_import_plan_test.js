@@ -1,9 +1,13 @@
 'use strict';
 
 var assert = require('assert');
+var childProcess = require('child_process');
+var fs = require('fs');
+var os = require('os');
+var path = require('path');
 var planner = require('../scripts/data_import_plan');
 
-var plan = planner.planFixtureRows({
+var fixtures = {
   cbps: [
     {
       fipscty: '001',
@@ -83,7 +87,8 @@ var plan = planner.planFixtureRows({
       LON: -66.1
     }
   ]
-});
+};
+var plan = planner.planFixtureRows(fixtures);
 
 assert.deepStrictEqual(plan.tables, {
   cbps: {
@@ -150,3 +155,46 @@ assert(plan.manualReview.some(function(item) {
 assert(plan.manualReview.some(function(item) {
   return item.table === 'unis' && item.reason.indexOf('no exact normalized name') !== -1;
 }));
+
+var tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'utoplan-data-plan-'));
+var fixturePath = path.join(tmpDir, 'fixtures.json');
+var outPath = path.join(tmpDir, 'report.json');
+var cliResult;
+var report;
+var failedResult;
+
+fs.writeFileSync(fixturePath, JSON.stringify(fixtures, null, 2));
+
+cliResult = childProcess.spawnSync(process.execPath, [
+  'scripts/data_import_plan.js',
+  '--fixtures=' + fixturePath,
+  '--out=' + outPath
+], {
+  cwd: path.join(__dirname, '..'),
+  encoding: 'utf8'
+});
+
+assert.strictEqual(cliResult.status, 0);
+assert.strictEqual(cliResult.stderr, '');
+assert(fs.existsSync(outPath));
+
+report = JSON.parse(fs.readFileSync(outPath, 'utf8'));
+assert.deepStrictEqual(report.tables, plan.tables);
+assert.strictEqual(report.accepted.length, plan.accepted.length);
+assert.strictEqual(report.rejected.length, plan.rejected.length);
+assert.strictEqual(report.manualReview.length, plan.manualReview.length);
+
+failedResult = childProcess.spawnSync(process.execPath, [
+  'scripts/data_import_plan.js'
+], {
+  cwd: path.join(__dirname, '..'),
+  encoding: 'utf8'
+});
+
+assert.strictEqual(failedResult.status, 1);
+assert(failedResult.stderr.indexOf('Missing required --fixtures=<path> argument') !== -1);
+
+fs.rmSync(tmpDir, {
+  recursive: true,
+  force: true
+});
