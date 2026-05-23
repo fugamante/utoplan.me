@@ -95,6 +95,8 @@ When a cached source is present but unsupported, the planner includes `unsupport
 
 Each accepted load-plan row also carries a `provenance` object from `data/mappings/puerto-rico-provenance-confidence.json`. This sidecar records `sourceId`, `rowIndex`, source confidence, transform confidence, production readiness, and whether the row is source-backed. The provenance object is evidence for operators and future API/UI work; it is not inserted into the legacy read tables.
 
+The modern API exposes that same contract at `GET /v1/source-metadata` as read-only metadata. This endpoint is for product and operator visibility; it does not mark the service ready, query the database, or promote candidate rows beyond their recorded confidence state.
+
 Run:
 
 ```sh

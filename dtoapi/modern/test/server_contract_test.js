@@ -72,12 +72,13 @@ assert.strictEqual(modernApi.acceptsGzip({
 
 assert.strictEqual(typeof modernApi.createServer().listen, 'function');
 
-function request(server, path, callback) {
+function request(server, path, callback, options) {
   const address = server.address();
   const req = http.request({
     hostname: '127.0.0.1',
     port: address.port,
-    path: path
+    path: path,
+    method: options && options.method ? options.method : 'GET'
   }, function(response) {
     const chunks = [];
 
@@ -115,31 +116,47 @@ db.ready = function(callback) {
 };
 
 server.listen(0, '127.0.0.1', function() {
-  request(server, '/readyz', function(error, response) {
-    assert.ifError(error);
-    assert.strictEqual(response.statusCode, 200);
-    assert.strictEqual(JSON.parse(response.body).database, 'ok');
-    assert.strictEqual(JSON.parse(response.body).schema, 'ok');
-    assert.strictEqual(JSON.parse(response.body).schemaVersion, 'baseline-read-v1');
-    assert.strictEqual(JSON.parse(response.body).loadPolicyIndexes, 'missing');
-    assert.deepStrictEqual(JSON.parse(response.body).missingLoadPolicyIndexes, ['unis_title_address_unique']);
+  request(server, '/v1/source-metadata', function(metadataError, metadataResponse) {
+    assert.ifError(metadataError);
+    assert.strictEqual(metadataResponse.statusCode, 200);
+    assert.strictEqual(JSON.parse(metadataResponse.body).scope, 'puerto-rico-only');
+    assert.strictEqual(JSON.parse(metadataResponse.body).tables.unis.dataClass, 'source-backed-candidate');
+    assert.strictEqual(JSON.parse(metadataResponse.body).blockedTables.businesses.dataClass, 'blocked');
 
-    db.ready = function(callback) {
-      callback(new Error('database unavailable'));
-    };
-    console.error = function() {};
+    request(server, '/v1/source-metadata', function(methodError, methodResponse) {
+      assert.ifError(methodError);
+      assert.strictEqual(methodResponse.statusCode, 405);
+      assert.strictEqual(JSON.parse(methodResponse.body).meta.error, 'Method Not Allowed');
 
-    request(server, '/readyz', function(failedError, failedResponse) {
-      assert.ifError(failedError);
-      assert.strictEqual(failedResponse.statusCode, 503);
-      assert.strictEqual(JSON.parse(failedResponse.body).database, 'unavailable');
-      assert.strictEqual(JSON.parse(failedResponse.body).schema, 'unknown');
+      request(server, '/readyz', function(error, response) {
+        assert.ifError(error);
+        assert.strictEqual(response.statusCode, 200);
+        assert.strictEqual(JSON.parse(response.body).database, 'ok');
+        assert.strictEqual(JSON.parse(response.body).schema, 'ok');
+        assert.strictEqual(JSON.parse(response.body).schemaVersion, 'baseline-read-v1');
+        assert.strictEqual(JSON.parse(response.body).loadPolicyIndexes, 'missing');
+        assert.deepStrictEqual(JSON.parse(response.body).missingLoadPolicyIndexes, ['unis_title_address_unique']);
 
-      db.ready = originalReady;
-      console.error = originalError;
-      server.close(function(closeError) {
-        assert.ifError(closeError);
+        db.ready = function(callback) {
+          callback(new Error('database unavailable'));
+        };
+        console.error = function() {};
+
+        request(server, '/readyz', function(failedError, failedResponse) {
+          assert.ifError(failedError);
+          assert.strictEqual(failedResponse.statusCode, 503);
+          assert.strictEqual(JSON.parse(failedResponse.body).database, 'unavailable');
+          assert.strictEqual(JSON.parse(failedResponse.body).schema, 'unknown');
+
+          db.ready = originalReady;
+          console.error = originalError;
+          server.close(function(closeError) {
+            assert.ifError(closeError);
+          });
+        });
       });
+    }, {
+      method: 'POST'
     });
   });
 });
