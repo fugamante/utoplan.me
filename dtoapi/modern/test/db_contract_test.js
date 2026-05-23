@@ -8,6 +8,18 @@ const modernApi = require('../lib/server');
 
 const contracts = [
   {
+    path: '/readyz',
+    rawExpected: {
+      status: 'ok',
+      service: 'utoplan-modern-api',
+      database: 'ok',
+      schema: 'ok',
+      schemaVersion: 'baseline-read-v1',
+      loadPolicyIndexes: 'ok',
+      missingLoadPolicyIndexes: []
+    }
+  },
+  {
     path: '/v1/unis',
     expected: {
       id: 1,
@@ -142,6 +154,13 @@ function runContract(server, index) {
       assert.strictEqual(response.statusCode, contract.statusCode, contract.path + ' should return HTTP ' + contract.statusCode);
       assert.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8');
       assert.strictEqual(response.headers['access-control-allow-origin'], '*');
+
+      if (contract.rawExpected) {
+        assert.deepStrictEqual(body, contract.rawExpected);
+        runContract(server, index + 1);
+        return;
+      }
+
       assert.strictEqual(body.meta.error, null);
       assert.strictEqual(body.meta.total, contract.expected ? 1 : 0);
       assert.strictEqual(body.meta.count, contract.expected ? 1 : 0);

@@ -64,18 +64,23 @@ export function query(text: string, params: unknown[], callback: QueryCallback):
 
 export function ready(callback: ReadyCallback): void {
   query(schemaContract.statusQuery(), schemaContract.statusParams(), function(error: Error | null, result: QueryResult) {
+    let status: schemaContract.SchemaStatus;
+
     if (error) {
       callback(error);
       return;
     }
 
-    const status = schemaContract.evaluate(result.rows);
+    status = schemaContract.evaluate(result.rows);
     if (!status.ok) {
       callback(new Error('database schema does not match ' + status.version), status);
       return;
     }
 
-    callback(null, status);
+    query(schemaContract.loadIndexStatusQuery(), schemaContract.loadIndexStatusParams(), function(indexError: Error | null, indexResult: QueryResult) {
+      status.loadIndexes = indexError ? schemaContract.unavailableLoadIndexes() : schemaContract.evaluateLoadIndexes(indexResult.rows);
+      callback(null, status);
+    });
   });
 }
 

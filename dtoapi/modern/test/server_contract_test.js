@@ -66,7 +66,12 @@ db.ready = function(callback) {
   callback(null, {
     version: 'baseline-read-v1',
     ok: true,
-    missing: []
+    missing: [],
+    loadIndexes: {
+      ok: false,
+      missing: ['unis_title_address_unique'],
+      unavailable: false
+    }
   });
 };
 
@@ -77,6 +82,8 @@ server.listen(0, '127.0.0.1', function() {
     assert.strictEqual(JSON.parse(response.body).database, 'ok');
     assert.strictEqual(JSON.parse(response.body).schema, 'ok');
     assert.strictEqual(JSON.parse(response.body).schemaVersion, 'baseline-read-v1');
+    assert.strictEqual(JSON.parse(response.body).loadPolicyIndexes, 'missing');
+    assert.deepStrictEqual(JSON.parse(response.body).missingLoadPolicyIndexes, ['unis_title_address_unique']);
 
     db.ready = function(callback) {
       callback(new Error('database unavailable'));

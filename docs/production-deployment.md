@@ -121,6 +121,8 @@ The `/healthz` response reports service identity and app proxy state. Use it to 
 
 The API `/readyz` response checks database reachability and the `baseline-read-v1` schema contract. It returns `503` when the database cannot be reached or the required read schema is missing. Keep `/healthz` available for shallow process liveness checks.
 
+`/readyz` also reports advisory load-policy index visibility through `loadPolicyIndexes` and `missingLoadPolicyIndexes`. These fields are not part of the current read-only readiness gate; they show whether the natural-key indexes required by a future data writer are present.
+
 ## Rollback Expectations
 
 Rollback should use the last known-good app and API artifacts from the same release pair.

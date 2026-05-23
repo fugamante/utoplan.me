@@ -12,6 +12,8 @@ The initial baseline artifact is `db/migrations/202605211200_baseline_read_v1.md
 
 The natural-key index artifact for future Puerto Rico loader upserts is `db/migrations/202605230900_add_load_natural_key_indexes.md`.
 
+API `/readyz` reports those index prerequisites as advisory `loadPolicyIndexes` metadata. Missing load-policy indexes do not fail the current `baseline-read-v1` readiness gate.
+
 ## Artifact Location
 
 Store migration artifacts in `db/migrations/`.
