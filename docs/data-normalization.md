@@ -38,6 +38,7 @@ Run:
 
 ```sh
 npm run plan:data -- --fixtures=fixtures.json --out=report.json
+npm run plan:data -- --cbps-csv=cbps.csv --muns-csv=muns.csv --unis-csv=unis.csv --unis-coordinates-csv=unis-coordinates.csv --out=report.json
 npm run test:data-plan
 ```
 
@@ -56,3 +57,7 @@ Checked-in non-production examples live under `data/fixtures/non-production/`:
 
 - `import-plan-fixtures.json`
 - `import-plan-report.json`
+- `cbps.csv`
+- `muns.csv`
+- `unis.csv`
+- `unis-coordinates.csv`

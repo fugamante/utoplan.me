@@ -165,7 +165,9 @@ var failedResult;
 var sampleFixturePath = path.join(__dirname, '..', 'data', 'fixtures', 'non-production', 'import-plan-fixtures.json');
 var sampleReportPath = path.join(__dirname, '..', 'data', 'fixtures', 'non-production', 'import-plan-report.json');
 var sampleOutPath = path.join(tmpDir, 'sample-report.json');
+var sampleCsvOutPath = path.join(tmpDir, 'sample-csv-report.json');
 var sampleResult;
+var sampleCsvResult;
 
 fs.writeFileSync(fixturePath, JSON.stringify(fixtures, null, 2));
 
@@ -196,7 +198,7 @@ failedResult = childProcess.spawnSync(process.execPath, [
 });
 
 assert.strictEqual(failedResult.status, 1);
-assert(failedResult.stderr.indexOf('Missing required --fixtures=<path> argument') !== -1);
+assert(failedResult.stderr.indexOf('Missing fixture input') !== -1);
 
 sampleResult = childProcess.spawnSync(process.execPath, [
   'scripts/data_import_plan.js',
@@ -210,6 +212,31 @@ sampleResult = childProcess.spawnSync(process.execPath, [
 assert.strictEqual(sampleResult.status, 0);
 assert.deepStrictEqual(
   JSON.parse(fs.readFileSync(sampleOutPath, 'utf8')),
+  JSON.parse(fs.readFileSync(sampleReportPath, 'utf8'))
+);
+
+assert.deepStrictEqual(planner.rowsFromCsv('a,b\n\"x,y\",z\n'), [
+  {
+    a: 'x,y',
+    b: 'z'
+  }
+]);
+
+sampleCsvResult = childProcess.spawnSync(process.execPath, [
+  'scripts/data_import_plan.js',
+  '--cbps-csv=data/fixtures/non-production/cbps.csv',
+  '--muns-csv=data/fixtures/non-production/muns.csv',
+  '--unis-csv=data/fixtures/non-production/unis.csv',
+  '--unis-coordinates-csv=data/fixtures/non-production/unis-coordinates.csv',
+  '--out=' + sampleCsvOutPath
+], {
+  cwd: path.join(__dirname, '..'),
+  encoding: 'utf8'
+});
+
+assert.strictEqual(sampleCsvResult.status, 0);
+assert.deepStrictEqual(
+  JSON.parse(fs.readFileSync(sampleCsvOutPath, 'utf8')),
   JSON.parse(fs.readFileSync(sampleReportPath, 'utf8'))
 );
 

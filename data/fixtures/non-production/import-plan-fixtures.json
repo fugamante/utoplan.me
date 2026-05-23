@@ -27,7 +27,8 @@
     },
     {
       "municipio": "",
-      "countyfp": "001"
+      "countyfp": "001",
+      "cntyidfp": ""
     }
   ],
   "unis": [
@@ -44,12 +45,22 @@
     },
     {
       "Nombre de la Institución": "Sample College",
+      "Unidad Académica": "",
+      "Principal Ejecutivo": "",
+      "Telefono": "",
+      "Dirección Pág Web": "",
+      "Correo Electrónico": "",
       "Dirección Física": "Main Street",
       "Dirección Física 2": "",
       "Pueblo": "San Juan"
     },
     {
       "Nombre de la Institución": "Unknown Institute",
+      "Unidad Académica": "",
+      "Principal Ejecutivo": "",
+      "Telefono": "",
+      "Dirección Pág Web": "",
+      "Correo Electrónico": "",
       "Dirección Física": "No Match",
       "Dirección Física 2": "",
       "Pueblo": "Ponce"
