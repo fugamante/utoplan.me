@@ -132,3 +132,15 @@ npm run test:data-sql-preview
 ```
 
 The preview output remains `dryRunOnly: true` and `mutationAllowed: false`; it is an inspection artifact, not a writer.
+
+## SQL Preview Database Check
+
+The Docker-only database check applies the SQL preview against the disposable seeded Postgres schema inside one transaction, verifies each upsert affects one row, verifies expected in-transaction row counts, rolls back, and verifies final row counts match the starting state.
+
+Run:
+
+```sh
+npm run docker:test:data-sql-preview
+```
+
+This check depends on unique indexes for the load-policy natural keys: `cbps(county, cnaic)`, `muns(county)`, and `unis(title, address)`.

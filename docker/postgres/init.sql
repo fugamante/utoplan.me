@@ -57,6 +57,10 @@ CREATE TABLE cdepts (
   updated_at timestamp
 );
 
+CREATE UNIQUE INDEX cbps_county_cnaic_unique ON cbps (county, cnaic);
+CREATE UNIQUE INDEX muns_county_unique ON muns (county);
+CREATE UNIQUE INDEX unis_title_address_unique ON unis (title, address);
+
 INSERT INTO unis (id, title, address, "desc", lat, long, created_at, updated_at)
 VALUES (1, 'Contract University', '100 Contract Ave', 'Seeded university row', 18.42, -66.06, NOW(), NOW());
 

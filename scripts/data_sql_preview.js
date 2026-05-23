@@ -96,6 +96,7 @@ function buildUpsertStatement(table, record, tablePolicy) {
   return {
     table: table,
     sourceId: record.sourceId,
+    columns: columns,
     sql: sql,
     params: values
   };
