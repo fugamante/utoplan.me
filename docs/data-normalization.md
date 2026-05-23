@@ -25,3 +25,7 @@ npm run test:data-normalization
 ```
 
 The root `npm run test` command also runs this check.
+
+## Helper Module
+
+Fixture-backed helper functions live in `scripts/data_normalization.js`. They do not fetch external data or write imports; they only implement the deterministic rules above so importer work can reuse tested behavior.
