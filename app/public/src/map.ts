@@ -35,10 +35,15 @@ interface UtoplanWindow extends Window {
   UTOPLAN_TILE_URL?: string;
 }
 
-type UniversityCallback = (universities: NormalizedUniversity[]) => void;
+type LoadSource = "api" | "fallback" | "none";
 
 interface RequestWindow {
   fetch: typeof fetch;
+}
+
+interface UniversityLoadResult {
+  universities: NormalizedUniversity[];
+  source: LoadSource;
 }
 
 export function createMap(documentRef: Document, leaflet: LeafletApi, config: MapConfig): LeafletMap {
@@ -66,15 +71,40 @@ export function addUniversities(map: LeafletMap, leaflet: LeafletApi, universiti
   });
 }
 
-export function loadUniversities(windowRef: RequestWindow, config: MapConfig, callback: UniversityCallback): void {
+export function setMapStatus(documentRef: Document, state: string, message: string): void {
+  const statusElement = documentRef.querySelector('[data-map-status="main"]');
+
+  if (!statusElement) {
+    return;
+  }
+
+  statusElement.setAttribute("data-state", state);
+  statusElement.textContent = message;
+}
+
+export function loadUniversities(windowRef: RequestWindow, config: MapConfig, callback: (result: UniversityLoadResult) => void): void {
   loadUniversityUrl(windowRef, config.dataUrl, function(universities: NormalizedUniversity[] | null): void {
     if (universities) {
-      callback(universities);
+      callback({
+        universities: universities,
+        source: "api"
+      });
       return;
     }
 
     loadUniversityUrl(windowRef, config.fallbackDataUrl, function(fallbackUniversities: NormalizedUniversity[] | null): void {
-      callback(fallbackUniversities || []);
+      if (fallbackUniversities) {
+        callback({
+          universities: fallbackUniversities,
+          source: "fallback"
+        });
+        return;
+      }
+
+      callback({
+        universities: [],
+        source: "none"
+      });
     });
   });
 }
@@ -104,8 +134,22 @@ export function init(windowRef: UtoplanWindow, documentRef: Document, leaflet: L
   const config = readMapConfig(windowRef);
   const map = createMap(documentRef, leaflet, config);
 
-  loadUniversities(windowRef, config, function(universities: NormalizedUniversity[]): void {
-    addUniversities(map, leaflet, universities);
+  setMapStatus(documentRef, "loading", "Loading map data...");
+
+  loadUniversities(windowRef, config, function(result: UniversityLoadResult): void {
+    addUniversities(map, leaflet, result.universities);
+
+    if (result.universities.length > 0 && result.source === "api") {
+      setMapStatus(documentRef, "ready", "");
+      return;
+    }
+
+    if (result.universities.length > 0 && result.source === "fallback") {
+      setMapStatus(documentRef, "fallback", "Using offline university data while the API is unavailable.");
+      return;
+    }
+
+    setMapStatus(documentRef, "error", "University data is unavailable. The map is loaded without university markers.");
   });
 }
 

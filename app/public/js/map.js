@@ -18,14 +18,35 @@ export function addUniversities(map, leaflet, universities) {
         marker.bindPopup(university.title + "<br/>" + university.position.toString()).openPopup();
     });
 }
+export function setMapStatus(documentRef, state, message) {
+    const statusElement = documentRef.querySelector('[data-map-status="main"]');
+    if (!statusElement) {
+        return;
+    }
+    statusElement.setAttribute("data-state", state);
+    statusElement.textContent = message;
+}
 export function loadUniversities(windowRef, config, callback) {
     loadUniversityUrl(windowRef, config.dataUrl, function (universities) {
         if (universities) {
-            callback(universities);
+            callback({
+                universities: universities,
+                source: "api"
+            });
             return;
         }
         loadUniversityUrl(windowRef, config.fallbackDataUrl, function (fallbackUniversities) {
-            callback(fallbackUniversities || []);
+            if (fallbackUniversities) {
+                callback({
+                    universities: fallbackUniversities,
+                    source: "fallback"
+                });
+                return;
+            }
+            callback({
+                universities: [],
+                source: "none"
+            });
         });
     });
 }
@@ -51,8 +72,18 @@ function loadUniversityUrl(windowRef, dataUrl, callback) {
 export function init(windowRef, documentRef, leaflet) {
     const config = readMapConfig(windowRef);
     const map = createMap(documentRef, leaflet, config);
-    loadUniversities(windowRef, config, function (universities) {
-        addUniversities(map, leaflet, universities);
+    setMapStatus(documentRef, "loading", "Loading map data...");
+    loadUniversities(windowRef, config, function (result) {
+        addUniversities(map, leaflet, result.universities);
+        if (result.universities.length > 0 && result.source === "api") {
+            setMapStatus(documentRef, "ready", "");
+            return;
+        }
+        if (result.universities.length > 0 && result.source === "fallback") {
+            setMapStatus(documentRef, "fallback", "Using offline university data while the API is unavailable.");
+            return;
+        }
+        setMapStatus(documentRef, "error", "University data is unavailable. The map is loaded without university markers.");
     });
 }
 const browserWindow = window;

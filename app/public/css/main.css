@@ -7,6 +7,25 @@ body {
   height: 100%;
   background: #666 url("../img/transparent-pattern.png");
 }
+#mapStatus{
+  position: absolute;
+  left: 50px;
+  bottom: 24px;
+  z-index: 1000;
+  max-width: 360px;
+  padding: 10px 12px;
+  border-left: 4px solid #2f6f6a;
+  background: rgba(255, 255, 255, 0.88);
+  color: #222;
+  font-size: 14px;
+  line-height: 18px;
+}
+#mapStatus[data-state="ready"]{
+  display: none;
+}
+#mapStatus[data-state="error"]{
+  border-left-color: #a33a2a;
+}
 #layersMenu{
   position: absolute;
   top: 12px;

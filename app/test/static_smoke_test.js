@@ -94,6 +94,8 @@ async function main() {
   var html = index.body.toString('utf8');
   [
     'data-map="main"',
+    'data-map-status="main"',
+    'role="status"',
     'data-ui="layer-menu-toggle"',
     'data-ui="layer-menu"',
     'data-ui="layer-visibility"',
