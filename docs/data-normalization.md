@@ -72,3 +72,17 @@ npm run cache:data -- --all
 ```
 
 The cache command only downloads sources listed in `data/sources/puerto-rico.json`, requires HTTPS URLs, writes under `.cache/utoplan-data/`, and writes a sidecar metadata JSON file for each cached source. Downloaded source data is intentionally ignored by git.
+
+The planner can read supported cached sources directly:
+
+```sh
+npm run plan:data -- --cache-dir=.cache/utoplan-data --out=report.json
+```
+
+Supported cached planner inputs:
+
+- `datospr-cbp-2014-municipios`
+- `datospr-higher-ed-directory-2017-18`
+- `nces-edge-postsecondary-locations-2021-pr`
+
+The official municipality boundary ZIP is intentionally not consumed by the planner yet; it needs DBF extraction support first.
