@@ -82,7 +82,7 @@ The Docker build runs `npm run install:all` and `npm run build`, so it validates
 
 `npm run docker:test:start-local-browser` runs Chromium against the seeded `start:local` path and verifies the map renders modern API data without fetching the offline fixture.
 
-`npm run test:browser` runs a Playwright Chromium smoke test against the static app. Run `npx playwright install chromium` once on a fresh local machine before using it.
+`npm run test:browser` runs Playwright Chromium smoke tests against the static app, including API-ready, offline fallback, and no-data error map states. Run `npx playwright install chromium` once on a fresh local machine before using it.
 
 The legacy Nodal API path has been retired from the normal project tree. The modern API runs from `dtoapi/modern`, compiles TypeScript sources to ignored CommonJS output under `dtoapi/modern/lib/`, and preserves the captured root and seeded read endpoint contracts.
 
