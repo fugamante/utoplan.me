@@ -16,6 +16,7 @@ export const CORS_HEADERS: OutgoingHttpHeaders = {
 };
 
 export const MAX_COLLECTION_LIMIT = 1000;
+export const SUPPORTED_COLLECTION_QUERY_PARAMS = ['limit', 'offset'];
 
 export function acceptsGzip(request: IncomingMessage): boolean {
   return String(request.headers['accept-encoding'] || '').indexOf('gzip') !== -1;

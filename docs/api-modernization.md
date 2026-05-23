@@ -21,6 +21,7 @@
 - The modern API also accepts `/v1/busines` and `/v1/grace_cs` as legacy typo aliases that resolve to `businesses` and `grade_cs`.
 - Collection routes accept optional integer `limit` and `offset` query parameters. `limit` must be between `1` and `1000`; `offset` must be zero or greater. Unknown query parameters are ignored for compatibility.
 - Collection response metadata reports `total` as the full resource count, `count` as the returned page length, and `offset` as the applied offset.
+- Collection filtering and sorting are not supported yet. Query parameters such as `filter`, `sort`, `q`, or domain-specific planning filters are intentionally ignored until source-backed data semantics and provenance/confidence metadata are defined.
 - `dtoapi/modern/test/response_contract_test.js` pins the typed response envelope.
 - `dtoapi/modern/test/resource_contract_test.js` pins the typed resource/data-access boundary.
 - `dtoapi/modern/test/records_contract_test.js` pins typed record payload wrapping without requiring a database.

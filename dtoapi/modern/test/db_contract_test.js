@@ -61,6 +61,20 @@ const contracts = [
     }
   },
   {
+    path: '/v1/unis?sort=title&filter=business',
+    expected: {
+      id: 1,
+      title: 'Contract University',
+      address: '100 Contract Ave',
+      desc: 'Seeded university row'
+    },
+    expectedMeta: {
+      total: 1,
+      count: 1,
+      offset: 0
+    }
+  },
+  {
     path: '/v1/unis?limit=0',
     statusCode: 400,
     error: 'Bad Request'

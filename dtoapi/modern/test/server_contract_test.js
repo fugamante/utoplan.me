@@ -39,6 +39,7 @@ assert.strictEqual(modernApi.matchRecord('/v1/unknown/1'), null);
 assert.strictEqual(modernApi.matchCollection('/v1/unis/1'), null);
 assert.strictEqual(modernApi.matchCollection('/v1/unknown'), null);
 
+assert.deepStrictEqual(modernApi.SUPPORTED_COLLECTION_QUERY_PARAMS, ['limit', 'offset']);
 assert.deepStrictEqual(modernApi.parseCollectionQuery(new URLSearchParams('')), {
   limit: null,
   offset: 0
@@ -46,6 +47,10 @@ assert.deepStrictEqual(modernApi.parseCollectionQuery(new URLSearchParams('')), 
 assert.deepStrictEqual(modernApi.parseCollectionQuery(new URLSearchParams('limit=25&offset=10&ignored=true')), {
   limit: 25,
   offset: 10
+});
+assert.deepStrictEqual(modernApi.parseCollectionQuery(new URLSearchParams('sort=title&filter=business')), {
+  limit: null,
+  offset: 0
 });
 assert.strictEqual(modernApi.parseCollectionQuery(new URLSearchParams('limit=0')), null);
 assert.strictEqual(modernApi.parseCollectionQuery(new URLSearchParams('limit=1001')), null);
