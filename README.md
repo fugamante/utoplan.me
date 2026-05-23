@@ -27,6 +27,7 @@ npm run docker:test:proxy
 npm run docker:test:start-local-browser
 npm run install:all
 npm run plan:data -- --fixtures=fixtures.json --out=report.json
+npm run plan:data -- --fixtures=data/fixtures/non-production/import-plan-fixtures.json --out=/tmp/utoplan-import-plan.json
 npm run test
 npm run test:browser
 npm run test:data-mapping

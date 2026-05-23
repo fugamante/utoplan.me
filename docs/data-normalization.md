@@ -51,3 +51,8 @@ The fixture JSON shape is:
   "unisCoordinates": []
 }
 ```
+
+Checked-in non-production examples live under `data/fixtures/non-production/`:
+
+- `import-plan-fixtures.json`
+- `import-plan-report.json`
