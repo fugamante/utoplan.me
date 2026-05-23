@@ -11,6 +11,7 @@ var requiredDependencies = [
   'scripts/data_load_plan.js',
   'scripts/data_sql_preview.js',
   'scripts/data_writer_gate.js',
+  'data/mappings/puerto-rico-operator-approval-contract.json',
   'db/migrations/202605230900_add_load_natural_key_indexes.md'
 ];
 var requiredInputs = {};
@@ -49,10 +50,13 @@ assert.deepStrictEqual(requiredInputs.writerGate.requiredFields, {
   'approvedBy',
   'approvedAt',
   'approvalReason',
-  'skippedAcknowledged'
+  'skippedAcknowledged',
+  'skippedSummary',
+  'sourceArtifacts'
 ].forEach(function(field) {
   assert(requiredInputs.operatorApproval.requiredFields.indexOf(field) !== -1);
 });
+assert.strictEqual(requiredInputs.operatorApproval.source, 'data/mappings/puerto-rico-operator-approval-contract.json');
 
 contract.executionPhases.forEach(function(phase) {
   phases[phase.name] = phase;

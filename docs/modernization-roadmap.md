@@ -43,6 +43,7 @@
 - API `/readyz` now reports advisory `loadPolicyIndexes` and `missingLoadPolicyIndexes` metadata without changing the current `baseline-read-v1` read-only readiness gate.
 - `scripts/data_writer_gate.js` blocks writer enablement unless skipped records are acknowledged, SQL previews are unblocked, and `/readyz` reports visible load-policy indexes.
 - `data/mappings/puerto-rico-writer-contract.json` defines the future audited writer execution contract while keeping mutation disabled.
+- `data/mappings/puerto-rico-operator-approval-contract.json` defines the skipped-record approval artifact required by the future writer contract without committing real approvals.
 - `data/fixtures/non-production/` contains checked-in JSON and CSV offline planning fixtures plus an expected report for repeatable local demos.
 - `npm run verify:release` wraps app/API deployment verification for release jobs, and Azure validates the wrapper in sample mode without production secrets.
 - `npm run verify:release-smoke` checks deployed app `/healthz`, public `/v1/unis`, and optional API `/readyz` from configured release URLs.
@@ -161,4 +162,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Add an operator approval artifact contract for acknowledging skipped records before any future writer can be considered.
+Add a validation helper for operator approval artifacts so release evidence can be checked without enabling mutation.

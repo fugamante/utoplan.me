@@ -181,3 +181,22 @@ Run:
 ```sh
 npm run test:data-writer-contract
 ```
+
+## Operator Approval Contract
+
+`data/mappings/puerto-rico-operator-approval-contract.json` defines the approval artifact shape required before skipped records can be treated as acknowledged by a future writer.
+
+It requires:
+
+- neutral operator role or team name instead of personal identifiers;
+- approval timestamp and reason;
+- `skippedAcknowledged: true`;
+- skipped counts copied from `sqlPreview.summary.skipped`;
+- source artifact references for the load plan, SQL preview, and writer gate;
+- no secrets, tokens, private keys, personal email, or real approval records committed to the public repo.
+
+Run:
+
+```sh
+npm run test:data-operator-approval-contract
+```
