@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "scope": "puerto-rico-only",
+  "mappedAt": "2026-05-22",
+  "loadPlanScript": "scripts/data_load_plan.js",
+  "writerStatus": "not-implemented",
+  "requiresOperatorApproval": true,
+  "transaction": {
+    "mode": "single-transaction",
+    "steps": [
+      "Open one database transaction for the entire load plan.",
+      "Verify skipped.rejected and skipped.manualReview are acknowledged by the operator before writes.",
+      "Write rows table by table in dependency order.",
+      "Rollback the entire transaction on the first write, validation, or constraint failure.",
+      "Commit only after all table writes and post-write counts match the load plan summary."
+    ]
+  },
+  "idempotency": {
+    "mode": "upsert-by-natural-key",
+    "tables": [
+      {
+        "table": "muns",
+        "naturalKey": [
+          "county"
+        ],
+        "updateColumns": [
+          "title",
+          "updated_at"
+        ],
+        "notes": "County code is the preserved municipality/county-equivalent identifier."
+      },
+      {
+        "table": "cbps",
+        "naturalKey": [
+          "county",
+          "cnaic"
+        ],
+        "updateColumns": [
+          "total_indus",
+          "total_anual",
+          "cnaic_name",
+          "num_est",
+          "updated_at"
+        ],
+        "notes": "County plus numeric NAICS identifies one CBP row under the current filtered import policy."
+      },
+      {
+        "table": "unis",
+        "naturalKey": [
+          "title",
+          "address"
+        ],
+        "updateColumns": [
+          "desc",
+          "lat",
+          "long",
+          "updated_at"
+        ],
+        "notes": "Title plus address is the dry-run boundary key until a better source identifier is available."
+      }
+    ]
+  },
+  "writeGuards": [
+    "Never write rejected records.",
+    "Never write manual-review records.",
+    "Never write unsupported cached sources.",
+    "Never truncate production tables from this loader.",
+    "Never change table schema from this loader.",
+    "Require explicit operator approval for non-empty skipped records."
+  ]
+}

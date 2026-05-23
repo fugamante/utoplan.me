@@ -100,3 +100,22 @@ npm run plan:data-load -- --plan=report.json --out=load-plan.json
 ```
 
 This is still a dry-run boundary. A future database loader must consume this load plan and remain responsible for transaction handling, idempotency, and operator approval.
+
+## Load Policy
+
+The future database writer must follow `data/mappings/puerto-rico-load-policy.json`.
+
+Current policy:
+
+- writer status is `not-implemented`;
+- one transaction must cover the full load plan;
+- writes must be upserts by table-specific natural keys;
+- rejected, manual-review, and unsupported cached-source records must never be written;
+- production tables must not be truncated by the loader;
+- non-empty skipped records require explicit operator approval before any write.
+
+Run:
+
+```sh
+npm run test:data-load-policy
+```
