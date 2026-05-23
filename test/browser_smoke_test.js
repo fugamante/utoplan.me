@@ -110,6 +110,7 @@ async function main() {
 
   assert.strictEqual(await page.title(), 'Utoplan.me - Modular data visualizer for strategic planning.');
   assert.strictEqual(await page.locator('[data-map="main"]').count(), 1, 'map container should render');
+  assert.strictEqual(await page.locator('[data-map-status="main"][data-state="ready"]').count(), 1, 'map status should mark API data ready');
   assert.strictEqual(await page.locator('[data-ui="layer-menu"] li').count(), 10, 'layer menu should render expected entries');
   assert.strictEqual(await page.locator('.leaflet-tile-pane img.leaflet-tile').count() > 0, true, 'base map tiles should render');
   assert.strictEqual(await page.locator('.leaflet-marker-icon').count(), 1, 'university marker should render');
