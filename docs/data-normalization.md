@@ -61,3 +61,14 @@ Checked-in non-production examples live under `data/fixtures/non-production/`:
 - `muns.csv`
 - `unis.csv`
 - `unis-coordinates.csv`
+
+## Local Source Cache
+
+Registered sources can be downloaded into an ignored local cache for manual planning work:
+
+```sh
+npm run cache:data -- --source=datospr-cbp-2014-municipios
+npm run cache:data -- --all
+```
+
+The cache command only downloads sources listed in `data/sources/puerto-rico.json`, requires HTTPS URLs, writes under `.cache/utoplan-data/`, and writes a sidecar metadata JSON file for each cached source. Downloaded source data is intentionally ignored by git.
