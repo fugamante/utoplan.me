@@ -41,6 +41,7 @@
 - `scripts/data_sql_preview_db_check.js` validates those SQL previews against disposable Docker/Postgres tables inside a rollback-only transaction and requires matching natural-key unique indexes.
 - `db/migrations/202605230900_add_load_natural_key_indexes.md` documents the production migration path, duplicate preflight checks, verification SQL, and rollback SQL for the load-policy natural-key indexes.
 - API `/readyz` now reports advisory `loadPolicyIndexes` and `missingLoadPolicyIndexes` metadata without changing the current `baseline-read-v1` read-only readiness gate.
+- `scripts/data_writer_gate.js` blocks writer enablement unless skipped records are acknowledged, SQL previews are unblocked, and `/readyz` reports visible load-policy indexes.
 - `data/fixtures/non-production/` contains checked-in JSON and CSV offline planning fixtures plus an expected report for repeatable local demos.
 - `npm run verify:release` wraps app/API deployment verification for release jobs, and Azure validates the wrapper in sample mode without production secrets.
 - `npm run verify:release-smoke` checks deployed app `/healthz`, public `/v1/unis`, and optional API `/readyz` from configured release URLs.
@@ -159,4 +160,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Add an explicit writer enablement gate that refuses to run unless skipped records are acknowledged and load-policy indexes are visible.
+Define the audited writer execution contract, still without enabling real database mutation.
