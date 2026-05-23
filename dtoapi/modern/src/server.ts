@@ -8,6 +8,7 @@ import * as records from './records';
 import * as resourceContract from './resource_contract';
 import * as responseContract from './response_contract';
 import * as rootContract from './root_contract';
+import * as sourceMetadata from './source_metadata';
 
 export const CORS_HEADERS: OutgoingHttpHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -123,6 +124,19 @@ function handleReadiness(request: IncomingMessage, response: ServerResponse): vo
   });
 }
 
+function handleSourceMetadata(request: IncomingMessage, response: ServerResponse): void {
+  try {
+    sendJson(request, response, 200, responseContract.serialize(sourceMetadata.payload()));
+  } catch (error) {
+    const metadataError = error as Error;
+    console.error(metadataError.stack || metadataError.message);
+
+    sendJson(request, response, 500, responseContract.serialize(
+      responseContract.errorPayload('Internal Server Error')
+    ));
+  }
+}
+
 function handleRecord(request: IncomingMessage, response: ServerResponse, kind: string, id: number): void {
   records.find(kind, id, function(error, row, resource) {
     if (error) {
@@ -209,6 +223,11 @@ export function createServer(): Server {
       return;
     }
 
+    if (request.method === 'GET' && pathname === '/v1/source-metadata') {
+      handleSourceMetadata(request, response);
+      return;
+    }
+
     const recordMatch = matchRecord(pathname);
     const collectionMatch = matchCollection(pathname);
 
@@ -229,7 +248,7 @@ export function createServer(): Server {
       return;
     }
 
-    if (recordMatch || collectionMatch) {
+    if (recordMatch || collectionMatch || pathname === '/v1/source-metadata') {
       handleMethodNotAllowed(request, response);
       return;
     }

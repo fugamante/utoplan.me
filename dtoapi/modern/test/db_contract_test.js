@@ -20,6 +20,10 @@ const contracts = [
     }
   },
   {
+    path: '/v1/source-metadata',
+    metadataExpected: true
+  },
+  {
     path: '/v1/unis',
     expected: {
       id: 1,
@@ -228,6 +232,16 @@ function runContract(server, index) {
 
       if (contract.rawExpected) {
         assert.deepStrictEqual(body, contract.rawExpected);
+        runContract(server, index + 1);
+        return;
+      }
+
+      if (contract.metadataExpected) {
+        assert.strictEqual(body.scope, 'puerto-rico-only');
+        assert.strictEqual(body.tables.cbps.dataClass, 'source-backed-candidate');
+        assert.strictEqual(body.tables.muns.productionReadiness, 'candidate-needs-review');
+        assert.strictEqual(body.tables.unis.sourceBacked, true);
+        assert.strictEqual(body.blockedTables.businesses.dataClass, 'blocked');
         runContract(server, index + 1);
         return;
       }

@@ -11,6 +11,7 @@ RUN npm --prefix app ci
 
 COPY app ./app/
 COPY dtoapi ./dtoapi/
+COPY data ./data/
 COPY scripts ./scripts/
 COPY test ./test/
 COPY package.json package-lock.json ./

@@ -34,6 +34,7 @@
 - `npm run test:data-normalization` validates that normalization rules reference registered sources and preserved legacy columns.
 - `data/mappings/puerto-rico-provenance-confidence.json` defines source confidence, transform confidence, production readiness, and promotion blockers for the source-backed `cbps`, `muns`, and `unis` baseline.
 - `npm run test:data-provenance-confidence` validates that provenance/confidence assessments reference registered Puerto Rico sources and keep blocked legacy tables blocked.
+- The modern API exposes the provenance/confidence contract through DB-free `GET /v1/source-metadata`, while `/readyz` remains reserved for operational readiness.
 - `scripts/data_normalization.js` provides fixture-backed normalization helpers for NAICS filtering, municipality code coercion, title cleanup, and university coordinate join review behavior.
 - `scripts/data_import_plan.js` provides an offline fixture planning harness and CLI that reports accepted, rejected, and manual-review records without fetching source data or mutating a database.
 - `scripts/data_source_cache.js` downloads only registered HTTPS Puerto Rico sources into an ignored local cache with metadata sidecars, and the offline planner can consume supported cached CSV/JSON sources by source ID while reporting unsupported cached sources explicitly.
@@ -97,7 +98,7 @@ Exit criteria:
 - Add smoke tests for the public read endpoints. Status: complete; database-free root, route, CORS, gzip behavior, and seeded DB endpoints are covered.
 - Document database requirements and seed/reset steps. Status: complete; Docker Compose provides a disposable Postgres test database with deterministic seed data.
 - Document original data provenance before treating seeded or recovered data as production data. Status: in progress; `docs/data-provenance.md` records verified old-branch evidence, while `docs/data-intake.md`, `docs/data-schema-mapping.md`, and the `data/` registry files constrain replacement candidates to Puerto Rico-only sources and preserved schema mappings.
-- Define provenance/confidence metadata before source-backed API/UI promotion. Status: in progress; `data/mappings/puerto-rico-provenance-confidence.json` classifies `cbps`, `muns`, and `unis` as source-backed candidate planning data with unresolved promotion blockers, while `cdepts`, `businesses`, and `grade_cs` remain blocked.
+- Define provenance/confidence metadata before source-backed API/UI promotion. Status: in progress; `data/mappings/puerto-rico-provenance-confidence.json` classifies `cbps`, `muns`, and `unis` as source-backed candidate planning data with unresolved promotion blockers, while `cdepts`, `businesses`, and `grade_cs` remain blocked. The modern API now exposes that contract through `GET /v1/source-metadata` without depending on database readiness.
 - Record runtime compatibility constraints. Status: complete; the Node 8/Nodal compatibility path has been retired after seeded DB read behavior moved to the modern API.
 - Isolate externally observable endpoint behavior before replacement. Status: complete via API contract tests.
 
