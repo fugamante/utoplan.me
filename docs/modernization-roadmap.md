@@ -38,6 +38,7 @@
 - `scripts/data_load_plan.js` converts accepted planner records into dry-run DB-ready row groups while preserving skipped rejected/manual-review records.
 - `data/mappings/puerto-rico-load-policy.json` defines the transaction, idempotency, and write-guard policy required before any future database loader can mutate data.
 - `scripts/data_sql_preview.js` converts a dry-run load plan plus the load policy into parameterized PostgreSQL upsert previews without connecting to a database or enabling writes.
+- `scripts/data_sql_preview_db_check.js` validates those SQL previews against disposable Docker/Postgres tables inside a rollback-only transaction and requires matching natural-key unique indexes.
 - `data/fixtures/non-production/` contains checked-in JSON and CSV offline planning fixtures plus an expected report for repeatable local demos.
 - `npm run verify:release` wraps app/API deployment verification for release jobs, and Azure validates the wrapper in sample mode without production secrets.
 - `npm run verify:release-smoke` checks deployed app `/healthz`, public `/v1/unis`, and optional API `/readyz` from configured release URLs.
@@ -156,4 +157,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Add a disposable database validation harness that applies SQL previews against seeded test tables inside Docker, then rolls back and verifies row counts.
+Document the required production migration path for load-policy natural-key indexes before a real data writer is implemented.

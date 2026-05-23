@@ -22,6 +22,7 @@ Hackathon Neeuko Project by Imaginary Films.
 ```sh
 npm run build
 npm run docker:build
+npm run docker:test:data-sql-preview
 npm run docker:test:db
 npm run docker:test:proxy
 npm run docker:test:start-local-browser
@@ -40,6 +41,7 @@ npm run test:data-normalization
 npm run test:data-plan
 npm run test:data-load-policy
 npm run test:data-sql-preview
+npm run test:data-sql-preview-db
 npm run test:data-sources
 npm run test:db
 npm run test:browser:start-local
@@ -55,6 +57,7 @@ npm run start:local
 docker build -t utoplanme:modernization .
 docker run --rm -p 8080:8080 utoplanme:modernization
 npm run docker:test:db
+npm run docker:test:data-sql-preview
 npm run docker:test:proxy
 npm run docker:test:start-local-browser
 ```
@@ -62,6 +65,8 @@ npm run docker:test:start-local-browser
 The Docker build runs `npm run install:all` and `npm run build`, so it validates clean installs and the API test baseline before producing an image.
 
 `npm run docker:test:db` builds a disposable seeded Postgres image from `Dockerfile.postgres-test`, runs the DB-backed modern API contract tests in a current Node container, and tears the Compose stack down afterward.
+
+`npm run docker:test:data-sql-preview` builds the same disposable seeded Postgres image, applies SQL preview statements inside one transaction, rolls back, and verifies the row counts return to their starting values.
 
 `npm run docker:test:proxy` uses the same seeded Postgres image, starts `npm run start:local` inside the test container, and verifies `/v1/unis` is served through the proxy from real modern API data rather than the offline fixture.
 
