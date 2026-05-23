@@ -276,11 +276,17 @@ function combinePlans(plans) {
 }
 
 function planFixtureRows(fixtures) {
-  return combinePlans([
+  var plan = combinePlans([
     planCbpRows(fixtures.cbps || []),
     planMunicipalityRows(fixtures.muns || []),
     planUniversityRows(fixtures.unis || [], fixtures.unisCoordinates || [])
   ]);
+
+  if (fixtures.unsupportedCacheSources && fixtures.unsupportedCacheSources.length > 0) {
+    plan.unsupportedCacheSources = fixtures.unsupportedCacheSources.slice();
+  }
+
+  return plan;
 }
 
 function readJsonFile(filePath) {
