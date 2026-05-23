@@ -86,3 +86,5 @@ Supported cached planner inputs:
 - `nces-edge-postsecondary-locations-2021-pr`
 
 The official municipality boundary ZIP is intentionally not consumed by the planner yet; it needs DBF extraction support first.
+
+When a cached source is present but unsupported, the planner includes `unsupportedCacheSources` in the report instead of guessing how to handle it.

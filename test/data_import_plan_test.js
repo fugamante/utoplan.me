@@ -253,11 +253,13 @@ fs.writeFileSync(path.join(cacheDir, 'nces-edge-postsecondary-locations-2021-pr.
     };
   })
 }));
+fs.writeFileSync(path.join(cacheDir, 'datospr-official-municipality-boundaries.zip'), 'not-a-real-zip');
 
 [
   ['datospr-cbp-2014-municipios', 'datospr-cbp-2014-municipios.csv'],
   ['datospr-higher-ed-directory-2017-18', 'datospr-higher-ed-directory-2017-18.csv'],
-  ['nces-edge-postsecondary-locations-2021-pr', 'nces-edge-postsecondary-locations-2021-pr.json']
+  ['nces-edge-postsecondary-locations-2021-pr', 'nces-edge-postsecondary-locations-2021-pr.json'],
+  ['datospr-official-municipality-boundaries', 'datospr-official-municipality-boundaries.zip']
 ].forEach(function(entry) {
   fs.writeFileSync(path.join(cacheDir, entry[0] + '.metadata.json'), JSON.stringify({
     id: entry[0],
@@ -282,6 +284,9 @@ assert.strictEqual(cachedPlan.tables.muns.accepted, 0);
 assert.strictEqual(cachedPlan.tables.muns.rejected, 0);
 assert.strictEqual(cachedPlan.tables.unis.accepted, 1);
 assert.strictEqual(cachedPlan.tables.unis.manualReview, 2);
+assert.deepStrictEqual(cachedPlan.unsupportedCacheSources, [
+  'datospr-official-municipality-boundaries'
+]);
 
 fs.rmSync(tmpDir, {
   recursive: true,
