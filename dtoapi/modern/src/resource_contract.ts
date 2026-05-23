@@ -5,7 +5,7 @@ export interface Resource {
   columns: string[];
 }
 
-export type ResourceName = 'unis' | 'muns' | 'cdepts' | 'cbps' | 'busines' | 'grace_cs';
+export type ResourceName = 'unis' | 'muns' | 'cdepts' | 'cbps' | 'businesses' | 'grade_cs';
 
 export type DatabaseRow = Record<string, unknown>;
 
@@ -28,26 +28,45 @@ export const resources: Record<ResourceName, Resource> = {
     table: 'cbps',
     columns: ['id', 'total_indus', 'total_anual', 'cnaic', 'cnaic_name', 'county', 'num_est', 'created_at', 'updated_at']
   },
-  busines: {
+  businesses: {
     table: 'businesses',
     columns: ['id', 'cdepts_id', 'lat', 'long', 'title', 'address', 'created_at', 'updated_at']
   },
-  grace_cs: {
+  grade_cs: {
     table: 'grade_cs',
     columns: ['id', 'uni_id', 'cdepts_id', 'rate', 'year', 'created_at', 'updated_at']
   }
+};
+
+const routeAliases: Record<string, ResourceName> = {
+  busines: 'businesses',
+  grace_cs: 'grade_cs'
 };
 
 function quoteColumn(column: string): string {
   return column === 'desc' || column === 'long' ? '"' + column + '"' : column;
 }
 
+export function resolveName(kind: string): ResourceName | null {
+  if (Object.prototype.hasOwnProperty.call(resources, kind)) {
+    return kind as ResourceName;
+  }
+
+  return routeAliases[kind] || null;
+}
+
 export function get(kind: string): Resource | null {
-  return Object.prototype.hasOwnProperty.call(resources, kind) ? resources[kind as ResourceName] : null;
+  const resourceName = resolveName(kind);
+
+  return resourceName ? resources[resourceName] : null;
 }
 
 export function names(): ResourceName[] {
   return Object.keys(resources) as ResourceName[];
+}
+
+export function routeNames(): string[] {
+  return (Object.keys(resources) as string[]).concat(Object.keys(routeAliases)).sort();
 }
 
 export function selectById(resource: Resource): string {

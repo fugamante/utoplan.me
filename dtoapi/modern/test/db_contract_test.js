@@ -62,6 +62,26 @@ const contracts = [
     }
   },
   {
+    path: '/v1/businesses/1',
+    expected: {
+      id: 1,
+      cdepts_id: 1,
+      title: 'Contract Business',
+      address: '200 Contract St'
+    }
+  },
+  {
+    path: '/v1/grade_cs/1',
+    statusCode: 200,
+    expected: {
+      id: 1,
+      uni_id: 1,
+      cdepts_id: 1,
+      rate: '92',
+      year: '2016'
+    }
+  },
+  {
     path: '/v1/busines/1',
     expected: {
       id: 1,

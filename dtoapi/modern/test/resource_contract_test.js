@@ -8,17 +8,30 @@ assert.deepStrictEqual(resourceContract.names(), [
   'muns',
   'cdepts',
   'cbps',
+  'businesses',
+  'grade_cs'
+]);
+
+assert.deepStrictEqual(resourceContract.routeNames(), [
   'busines',
-  'grace_cs'
+  'businesses',
+  'cbps',
+  'cdepts',
+  'grace_cs',
+  'grade_cs',
+  'muns',
+  'unis'
 ]);
 
 assert.strictEqual(resourceContract.get('missing'), null);
+assert.strictEqual(resourceContract.get('busines'), resourceContract.get('businesses'));
+assert.strictEqual(resourceContract.get('grace_cs'), resourceContract.get('grade_cs'));
 assert.strictEqual(
   resourceContract.selectById(resourceContract.get('unis')),
   'SELECT id, title, address, "desc", lat, "long", created_at, updated_at FROM unis WHERE id = $1 LIMIT 1'
 );
 assert.strictEqual(
-  resourceContract.selectById(resourceContract.get('busines')),
+  resourceContract.selectById(resourceContract.get('businesses')),
   'SELECT id, cdepts_id, lat, "long", title, address, created_at, updated_at FROM businesses WHERE id = $1 LIMIT 1'
 );
 assert.strictEqual(

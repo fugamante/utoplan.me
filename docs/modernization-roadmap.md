@@ -128,6 +128,7 @@ Exit criteria:
 - Harden modern API failure responses. Status: in progress; unsupported methods on known record routes now return explicit `405` responses, and raw database errors are logged server-side instead of exposed in response bodies.
 - Prepare TypeScript-ready response boundaries. Status: complete; `dtoapi/modern/src/response_contract.ts` now owns the typed shared response envelope, error envelope, and JSON serialization contract.
 - Prepare TypeScript-ready resource boundaries. Status: complete; `dtoapi/modern/src/resource_contract.ts` now owns typed resource definitions, public column order, row serialization, and parameterized read-query construction.
+- Clean up API resource naming compatibility. Status: in progress; canonical `/v1/businesses` and `/v1/grade_cs` routes are now covered while legacy typo aliases `/v1/busines` and `/v1/grace_cs` remain accepted.
 - Keep data schema and response contracts stable unless a breaking change is explicitly accepted.
 
 Exit criteria:
