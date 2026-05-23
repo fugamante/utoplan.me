@@ -16,6 +16,7 @@
     "start:api": "npm --prefix dtoapi run start:modern",
     "start:api:modern": "npm --prefix dtoapi run start:modern",
     "start:local": "node scripts/start_integrated.js",
+    "plan:data": "node scripts/data_import_plan.js",
     "test": "npm run test:api && npm run test:app && npm run test:start:local && npm run test:deployment-config && npm run test:deployment-containers && npm run test:migration-artifacts && npm run test:data-sources && npm run test:data-mapping && npm run test:data-normalization && npm run test:data-plan && npm run test:release-preflight && npm run test:release-smoke",
     "test:api": "npm --prefix dtoapi test",
     "test:api:modern": "npm --prefix dtoapi run test:modern",
