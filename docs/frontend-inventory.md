@@ -64,6 +64,7 @@
 - `app/public/src/map.ts` still has a client-side fallback URL from `MapConfig.fallbackDataUrl` for deployments where the preferred API request fails.
 - `npm run start:local` starts the modern API and static app with the proxy origin wired automatically.
 - `npm run docker:test:proxy` validates `npm run start:local` against the seeded modern API and confirms same-origin `/v1/unis` does not read from the offline fixture.
+- `npm run test:browser` validates Chromium behavior for API-ready, offline fallback, and no-data error map states.
 - `npm run docker:test:start-local-browser` validates the rendered map against the seeded `start:local` path in Chromium.
 - `app/app.js` exposes `/healthz` with proxy and demo-fixture state for runtime readiness checks.
 
@@ -71,5 +72,5 @@
 
 - `app/app.js` remains dependency-free static-server glue.
 - `app/public/js/*.js` are committed browser assets compiled from `app/public/src/*.ts`.
-- `app/test/*.js` and `test/browser_smoke_test.js` are compatibility/smoke tests for the compiled browser output.
+- `app/test/*.js`, `test/browser_smoke_test.js`, and `test/browser_map_states_test.js` are compatibility/smoke tests for the compiled browser output.
 - Vendored and Unity-generated JavaScript remains isolated under `app/public/vendor/` and `app/public/Untitled/`.

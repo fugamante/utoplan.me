@@ -29,7 +29,7 @@
     "test:api:modern": "npm --prefix dtoapi run test:modern",
     "test:api:modern-db": "npm --prefix dtoapi/modern run test:db",
     "test:app": "npm --prefix app test",
-    "test:browser": "node test/browser_smoke_test.js",
+    "test:browser": "node test/browser_smoke_test.js && node test/browser_map_states_test.js",
     "test:browser:start-local": "node test/start_local_browser_test.js",
     "test:db": "npm run docker:test:db",
     "test:deployment-containers": "node test/deployment_container_contract_test.js",
