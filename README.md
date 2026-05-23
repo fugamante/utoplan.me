@@ -68,6 +68,8 @@ The Docker build runs `npm run install:all` and `npm run build`, so it validates
 
 `npm run docker:test:data-sql-preview` builds the same disposable seeded Postgres image, applies SQL preview statements inside one transaction, rolls back, and verifies the row counts return to their starting values.
 
+`npm run docker:test:all-db` runs the DB-backed API, SQL preview rollback, proxy, and browser-backed local-start checks against disposable seeded Postgres environments.
+
 `npm run docker:test:proxy` uses the same seeded Postgres image, starts `npm run start:local` inside the test container, and verifies `/v1/unis` is served through the proxy from real modern API data rather than the offline fixture.
 
 `npm run docker:test:start-local-browser` runs Chromium against the seeded `start:local` path and verifies the map renders modern API data without fetching the offline fixture.

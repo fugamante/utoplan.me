@@ -10,6 +10,8 @@ The current baseline covers the public read tables and columns used by `dtoapi/m
 
 The initial baseline artifact is `db/migrations/202605211200_baseline_read_v1.md`.
 
+The natural-key index artifact for future Puerto Rico loader upserts is `db/migrations/202605230900_add_load_natural_key_indexes.md`.
+
 ## Artifact Location
 
 Store migration artifacts in `db/migrations/`.
@@ -31,6 +33,7 @@ Use `db/migrations/TEMPLATE.md` for new changes. Each artifact must describe:
 - Keep destructive or incompatible changes in a separate release after the old code path is retired.
 - Never run schema mutation from `app`, `api`, `/readyz`, `/healthz`, or container startup.
 - Update the `baseline-read-v1` readiness contract only when the modern API requires a new read table or column.
+- Apply the natural-key indexes before enabling any writer that uses the Puerto Rico load policy upsert keys.
 
 ## Review Checklist
 

@@ -8,7 +8,21 @@ var root = path.join(__dirname, '..');
 var migrationsDir = path.join(root, 'db', 'migrations');
 var readme = fs.readFileSync(path.join(migrationsDir, 'README.md'), 'utf8');
 var template = fs.readFileSync(path.join(migrationsDir, 'TEMPLATE.md'), 'utf8');
-var baseline = fs.readFileSync(path.join(migrationsDir, '202605211200_baseline_read_v1.md'), 'utf8');
+var migrationFiles = fs.readdirSync(migrationsDir).filter(function(fileName) {
+  return /^[0-9]{12}_.+\.md$/.test(fileName);
+});
+var migrations = migrationFiles.map(function(fileName) {
+  return {
+    fileName: fileName,
+    body: fs.readFileSync(path.join(migrationsDir, fileName), 'utf8')
+  };
+});
+var baseline = migrations.filter(function(migration) {
+  return migration.fileName === '202605211200_baseline_read_v1.md';
+})[0].body;
+var naturalKeyIndexes = migrations.filter(function(migration) {
+  return migration.fileName === '202605230900_add_load_natural_key_indexes.md';
+})[0].body;
 var docs = fs.readFileSync(path.join(root, 'docs', 'database-migrations.md'), 'utf8');
 
 [
@@ -22,7 +36,9 @@ var docs = fs.readFileSync(path.join(root, 'docs', 'database-migrations.md'), 'u
 ].forEach(function(heading) {
   assert(readme.indexOf('`' + heading + '`') !== -1, heading + ' should be required');
   assert(template.indexOf('## ' + heading) !== -1, heading + ' should be in the template');
-  assert(baseline.indexOf('## ' + heading) !== -1, heading + ' should be in the baseline artifact');
+  migrations.forEach(function(migration) {
+    assert(migration.body.indexOf('## ' + heading) !== -1, heading + ' should be in ' + migration.fileName);
+  });
 });
 
 assert(readme.indexOf('YYYYMMDDHHMM_short_action.md') !== -1);
@@ -31,3 +47,12 @@ assert(docs.indexOf('Never run schema mutation') !== -1);
 assert(baseline.indexOf('schemaVersion') !== -1);
 assert(baseline.indexOf('baseline-read-v1') !== -1);
 assert(baseline.indexOf('No production apply step is required') !== -1);
+
+assert(docs.indexOf('202605230900_add_load_natural_key_indexes.md') !== -1);
+assert(naturalKeyIndexes.indexOf('CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS cbps_county_cnaic_unique') !== -1);
+assert(naturalKeyIndexes.indexOf('CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS muns_county_unique') !== -1);
+assert(naturalKeyIndexes.indexOf('CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS unis_title_address_unique') !== -1);
+assert(naturalKeyIndexes.indexOf('DROP INDEX CONCURRENTLY IF EXISTS cbps_county_cnaic_unique') !== -1);
+assert(naturalKeyIndexes.indexOf('npm run docker:test:data-sql-preview') !== -1);
+assert(naturalKeyIndexes.indexOf('All three duplicate checks must return zero rows') !== -1);
+assert(naturalKeyIndexes.indexOf('All three incomplete-key checks should return zero before a writer is enabled') !== -1);
