@@ -36,6 +36,7 @@ npm run plan:data-load -- --plan=/tmp/utoplan-import-plan.json --out=/tmp/utopla
 npm run preview:data-sql -- --load-plan=/tmp/utoplan-load-plan.json --out=/tmp/utoplan-sql-preview.json
 npm run gate:data-writer -- --sql-preview=/tmp/utoplan-sql-preview.json --readyz=/tmp/utoplan-readyz.json --acknowledge-skipped --out=/tmp/utoplan-writer-gate.json
 npm run validate:operator-approval -- --approval=/tmp/utoplan-approval.json --sql-preview=/tmp/utoplan-sql-preview.json --writer-gate=/tmp/utoplan-writer-gate.json --out=/tmp/utoplan-approval-validation.json
+npm run bundle:release-evidence -- --readyz=/tmp/utoplan-readyz.json --out-dir=/tmp/utoplan-release-evidence --acknowledge-skipped
 npm run test
 npm run test:browser
 npm run test:data-mapping
@@ -48,6 +49,7 @@ npm run test:data-writer-gate
 npm run test:data-writer-contract
 npm run test:data-operator-approval-contract
 npm run test:data-operator-approval-validate
+npm run test:data-release-evidence-bundle
 npm run test:data-sources
 npm run test:db
 npm run test:browser:start-local
