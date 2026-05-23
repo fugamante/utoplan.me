@@ -62,7 +62,8 @@
       "reason": "municipality title is required",
       "row": {
         "municipio": "",
-        "countyfp": "001"
+        "countyfp": "001",
+        "cntyidfp": ""
       }
     }
   ],
@@ -74,6 +75,11 @@
       "reason": "multiple coordinate rows share the same match score",
       "row": {
         "Nombre de la Institución": "Sample College",
+        "Unidad Académica": "",
+        "Principal Ejecutivo": "",
+        "Telefono": "",
+        "Dirección Pág Web": "",
+        "Correo Electrónico": "",
         "Dirección Física": "Main Street",
         "Dirección Física 2": "",
         "Pueblo": "San Juan"
@@ -86,6 +92,11 @@
       "reason": "no exact normalized name and municipality match",
       "row": {
         "Nombre de la Institución": "Unknown Institute",
+        "Unidad Académica": "",
+        "Principal Ejecutivo": "",
+        "Telefono": "",
+        "Dirección Pág Web": "",
+        "Correo Electrónico": "",
         "Dirección Física": "No Match",
         "Dirección Física 2": "",
         "Pueblo": "Ponce"

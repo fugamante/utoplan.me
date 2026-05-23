@@ -16,6 +16,79 @@ function readArg(args, name, defaultValue) {
   return value;
 }
 
+function parseCsv(text) {
+  var rows = [];
+  var row = [];
+  var field = '';
+  var inQuotes = false;
+  var index;
+  var current;
+  var next;
+
+  for (index = 0; index < text.length; index += 1) {
+    current = text[index];
+    next = text[index + 1];
+
+    if (inQuotes) {
+      if (current === '"' && next === '"') {
+        field += '"';
+        index += 1;
+      } else if (current === '"') {
+        inQuotes = false;
+      } else {
+        field += current;
+      }
+      continue;
+    }
+
+    if (current === '"') {
+      inQuotes = true;
+    } else if (current === ',') {
+      row.push(field);
+      field = '';
+    } else if (current === '\n') {
+      row.push(field);
+      rows.push(row);
+      row = [];
+      field = '';
+    } else if (current !== '\r') {
+      field += current;
+    }
+  }
+
+  if (field !== '' || row.length > 0) {
+    row.push(field);
+    rows.push(row);
+  }
+
+  if (inQuotes) {
+    throw new Error('CSV has an unterminated quoted field');
+  }
+
+  return rows;
+}
+
+function rowsFromCsv(text) {
+  var parsed = parseCsv(text).filter(function(row) {
+    return row.some(function(value) {
+      return String(value).trim() !== '';
+    });
+  });
+  var headers;
+
+  if (parsed.length === 0) {
+    return [];
+  }
+
+  headers = parsed[0];
+  return parsed.slice(1).map(function(row) {
+    return headers.reduce(function(record, header, index) {
+      record[header] = row[index] || '';
+      return record;
+    }, {});
+  });
+}
+
 function issue(table, sourceId, rowIndex, reason, row) {
   return {
     table: table,
@@ -207,23 +280,55 @@ function readJsonFile(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
 
+function readCsvFile(filePath) {
+  return rowsFromCsv(fs.readFileSync(filePath, 'utf8'));
+}
+
 function writeJsonFile(filePath, value) {
   fs.writeFileSync(filePath, JSON.stringify(value, null, 2) + '\n');
+}
+
+function readCsvFixtures(args) {
+  var paths = {
+    cbps: readArg(args, 'cbps-csv', null),
+    muns: readArg(args, 'muns-csv', null),
+    unis: readArg(args, 'unis-csv', null),
+    unisCoordinates: readArg(args, 'unis-coordinates-csv', null)
+  };
+
+  if (!paths.cbps && !paths.muns && !paths.unis && !paths.unisCoordinates) {
+    return null;
+  }
+
+  return {
+    cbps: paths.cbps ? readCsvFile(paths.cbps) : [],
+    muns: paths.muns ? readCsvFile(paths.muns) : [],
+    unis: paths.unis ? readCsvFile(paths.unis) : [],
+    unisCoordinates: paths.unisCoordinates ? readCsvFile(paths.unisCoordinates) : []
+  };
 }
 
 function run(args) {
   var fixturePath = readArg(args, 'fixtures', null);
   var outPath = readArg(args, 'out', null);
+  var csvFixtures;
   var fixtures;
   var plan;
 
-  if (!fixturePath) {
-    console.error('Missing required --fixtures=<path> argument');
+  try {
+    csvFixtures = readCsvFixtures(args);
+  } catch (error) {
+    console.error('Failed to read fixture CSV: ' + error.message);
+    return 1;
+  }
+
+  if (!fixturePath && !csvFixtures) {
+    console.error('Missing fixture input. Use --fixtures=<path> or CSV fixture arguments');
     return 1;
   }
 
   try {
-    fixtures = readJsonFile(fixturePath);
+    fixtures = csvFixtures || readJsonFile(fixturePath);
   } catch (error) {
     console.error('Failed to read fixture JSON: ' + error.message);
     return 1;
@@ -250,9 +355,11 @@ if (require.main === module) {
 }
 
 module.exports = {
+  parseCsv: parseCsv,
   planCbpRows: planCbpRows,
   planMunicipalityRows: planMunicipalityRows,
   planUniversityRows: planUniversityRows,
   planFixtureRows: planFixtureRows,
+  rowsFromCsv: rowsFromCsv,
   run: run
 };
