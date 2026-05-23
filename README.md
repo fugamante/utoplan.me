@@ -31,6 +31,7 @@ npm run plan:data -- --fixtures=fixtures.json --out=report.json
 npm run plan:data -- --fixtures=data/fixtures/non-production/import-plan-fixtures.json --out=/tmp/utoplan-import-plan.json
 npm run plan:data -- --cbps-csv=data/fixtures/non-production/cbps.csv --muns-csv=data/fixtures/non-production/muns.csv --unis-csv=data/fixtures/non-production/unis.csv --unis-coordinates-csv=data/fixtures/non-production/unis-coordinates.csv --out=/tmp/utoplan-import-plan.json
 npm run plan:data -- --cache-dir=.cache/utoplan-data --out=/tmp/utoplan-import-plan.json
+npm run plan:data-load -- --plan=/tmp/utoplan-import-plan.json --out=/tmp/utoplan-load-plan.json
 npm run test
 npm run test:browser
 npm run test:data-mapping

@@ -88,3 +88,15 @@ Supported cached planner inputs:
 The official municipality boundary ZIP is intentionally not consumed by the planner yet; it needs DBF extraction support first.
 
 When a cached source is present but unsupported, the planner includes `unsupportedCacheSources` in the report instead of guessing how to handle it.
+
+## Load Boundary
+
+`scripts/data_load_plan.js` converts an accepted planning report into DB-ready row groups without connecting to a database or executing SQL. It adds one import timestamp to `created_at` and `updated_at`, carries rejected/manual-review records into `skipped`, and keeps unsupported cached source IDs visible.
+
+Run:
+
+```sh
+npm run plan:data-load -- --plan=report.json --out=load-plan.json
+```
+
+This is still a dry-run boundary. A future database loader must consume this load plan and remain responsible for transaction handling, idempotency, and operator approval.
