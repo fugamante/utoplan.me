@@ -1,6 +1,9 @@
 'use strict';
 
 var fs = require('fs');
+var path = require('path');
+
+var DEFAULT_CONFIDENCE_PATH = path.join(__dirname, '..', 'data', 'mappings', 'puerto-rico-provenance-confidence.json');
 
 function readArg(args, name, defaultValue) {
   var prefix = '--' + name + '=';
@@ -23,6 +26,10 @@ function writeJsonFile(filePath, value) {
   fs.writeFileSync(filePath, JSON.stringify(value, null, 2) + '\n');
 }
 
+function readConfidenceContract(filePath) {
+  return readJsonFile(filePath || DEFAULT_CONFIDENCE_PATH);
+}
+
 function withTimestamps(record, timestamp) {
   return Object.assign({}, record, {
     created_at: timestamp,
@@ -33,6 +40,7 @@ function withTimestamps(record, timestamp) {
 function emptyLoadPlan(timestamp) {
   return {
     generatedAt: timestamp,
+    provenanceContract: 'data/mappings/puerto-rico-provenance-confidence.json',
     rows: {
       cbps: [],
       muns: [],
@@ -58,8 +66,42 @@ function emptyLoadPlan(timestamp) {
   };
 }
 
+function assessmentIndex(confidenceContract) {
+  return ((confidenceContract || {}).tableAssessments || []).reduce(function(index, assessment) {
+    index[assessment.table] = assessment;
+    return index;
+  }, {});
+}
+
+function rowProvenance(item, confidenceContract) {
+  var assessment = assessmentIndex(confidenceContract)[item.table];
+
+  if (!assessment) {
+    return {
+      sourceId: item.sourceId,
+      rowIndex: item.rowIndex,
+      sourceConfidence: 'blocked',
+      transformConfidence: 'blocked',
+      productionReadiness: 'blocked',
+      sourceBacked: false,
+      notes: 'No provenance confidence assessment exists for this table.'
+    };
+  }
+
+  return {
+    sourceId: item.sourceId,
+    rowIndex: item.rowIndex,
+    sourceConfidence: assessment.sourceConfidence,
+    transformConfidence: assessment.transformConfidence,
+    productionReadiness: assessment.productionReadiness,
+    sourceBacked: !!assessment.sourceBacked,
+    notes: assessment.notes
+  };
+}
+
 function buildLoadPlan(planningReport, options) {
   var timestamp = options && options.timestamp ? options.timestamp : new Date().toISOString();
+  var confidenceContract = options && options.provenanceContract ? options.provenanceContract : readConfidenceContract();
   var loadPlan = emptyLoadPlan(timestamp);
 
   (planningReport.accepted || []).forEach(function(item) {
@@ -70,6 +112,7 @@ function buildLoadPlan(planningReport, options) {
     loadPlan.rows[item.table].push({
       sourceId: item.sourceId,
       rowIndex: item.rowIndex,
+      provenance: rowProvenance(item, confidenceContract),
       record: withTimestamps(item.record, timestamp)
     });
   });
@@ -132,5 +175,7 @@ if (require.main === module) {
 
 module.exports = {
   buildLoadPlan: buildLoadPlan,
+  readConfidenceContract: readConfidenceContract,
+  rowProvenance: rowProvenance,
   run: run
 };

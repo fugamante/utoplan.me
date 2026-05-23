@@ -21,6 +21,13 @@ Before writing import scripts:
 - Define the municipality code normalization from `countyfp` / `cntyidfp` / `fipscty` / `cencty` into the legacy integer `muns.county` and `cbps.county` fields.
 - Define the deterministic join from Datos.PR higher education directory rows to NCES EDGE coordinate rows.
 
+Before promoting source-backed rows to API/UI planning use:
+
+- Attach row-level provenance from `data/mappings/puerto-rico-provenance-confidence.json`.
+- Keep `sourceConfidence`, `transformConfidence`, `productionReadiness`, and `sourceBacked` visible in dry-run evidence.
+- Treat `candidate-needs-review` rows as planning candidates, not production-grade facts.
+- Keep required promotion blockers visible until release evidence explicitly resolves or waives them.
+
 ## Validation
 
 Run:
@@ -30,6 +37,12 @@ npm run test:data-mapping
 ```
 
 The root `npm run test` command also runs this check.
+
+Run provenance/confidence validation with:
+
+```sh
+npm run test:data-provenance-confidence
+```
 
 ## Normalization Rules
 

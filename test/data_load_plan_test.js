@@ -31,6 +31,19 @@ assert.deepStrictEqual(loadPlan.summary, {
   }
 });
 
+assert.strictEqual(loadPlan.provenanceContract, 'data/mappings/puerto-rico-provenance-confidence.json');
+assert.deepStrictEqual(loadPlan.rows.cbps[0].provenance, {
+  sourceId: 'datospr-cbp-2014-municipios',
+  rowIndex: 0,
+  sourceConfidence: 'medium',
+  transformConfidence: 'low',
+  productionReadiness: 'candidate-needs-review',
+  sourceBacked: true,
+  notes: 'Municipality-level CBP data is Puerto Rico-scoped, but important legacy field semantics are still unresolved.'
+});
+assert.strictEqual(loadPlan.rows.muns[0].provenance.transformConfidence, 'medium');
+assert.strictEqual(loadPlan.rows.unis[0].provenance.transformConfidence, 'low');
+
 assert.deepStrictEqual(loadPlan.rows.cbps[0].record, {
   total_indus: 653,
   total_anual: 11348,
@@ -61,6 +74,21 @@ assert.deepStrictEqual(loadPlan.rows.unis[0].record, {
 
 assert.strictEqual(loadPlan.skipped.rejected.length, planningReport.rejected.length);
 assert.strictEqual(loadPlan.skipped.manualReview.length, planningReport.manualReview.length);
+assert.deepStrictEqual(loader.rowProvenance({
+  table: 'businesses',
+  sourceId: 'missing-source',
+  rowIndex: 99
+}, {
+  tableAssessments: []
+}), {
+  sourceId: 'missing-source',
+  rowIndex: 99,
+  sourceConfidence: 'blocked',
+  transformConfidence: 'blocked',
+  productionReadiness: 'blocked',
+  sourceBacked: false,
+  notes: 'No provenance confidence assessment exists for this table.'
+});
 
 fs.writeFileSync(planPath, JSON.stringify(planningReport, null, 2));
 

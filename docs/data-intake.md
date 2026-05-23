@@ -16,6 +16,8 @@ Each accepted source must record:
 
 Do not import broad national datasets unless the registry entry includes a deterministic Puerto Rico filter and the import script enforces that filter.
 
+Source-backed planning data must also have a provenance/confidence assessment before it is promoted beyond dry-run artifacts. The machine-readable assessment lives in `data/mappings/puerto-rico-provenance-confidence.json`.
+
 ## Current Candidate Sources
 
 - `cbps`: Datos.PR County Business Patterns 2014 Puerto Rico CSV and municipality CSV.
@@ -41,3 +43,13 @@ The root `npm run test` command also runs this check.
 ## Schema Mapping
 
 The current source-to-schema mapping is documented in `docs/data-schema-mapping.md` and enforced by `npm run test:data-mapping`.
+
+## Provenance And Confidence
+
+The current source-backed baseline covers `cbps`, `muns`, and `unis` only. These rows are candidate planning data, not production-grade facts. `cdepts`, `businesses`, and `grade_cs` remain blocked until a Puerto Rico-only source, license, scope, and transform path are recorded.
+
+Run:
+
+```sh
+npm run test:data-provenance-confidence
+```
