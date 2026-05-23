@@ -119,3 +119,16 @@ Run:
 ```sh
 npm run test:data-load-policy
 ```
+
+## SQL Preview
+
+`scripts/data_sql_preview.js` converts the dry-run load plan into parameterized PostgreSQL upsert statements without connecting to a database or executing SQL. It quotes identifiers, uses the natural keys and update columns from `data/mappings/puerto-rico-load-policy.json`, and reports blocked reasons when skipped records still need operator acknowledgement.
+
+Run:
+
+```sh
+npm run preview:data-sql -- --load-plan=load-plan.json --out=sql-preview.json
+npm run test:data-sql-preview
+```
+
+The preview output remains `dryRunOnly: true` and `mutationAllowed: false`; it is an inspection artifact, not a writer.
