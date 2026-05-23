@@ -44,6 +44,7 @@
 - `scripts/data_writer_gate.js` blocks writer enablement unless skipped records are acknowledged, SQL previews are unblocked, and `/readyz` reports visible load-policy indexes.
 - `data/mappings/puerto-rico-writer-contract.json` defines the future audited writer execution contract while keeping mutation disabled.
 - `data/mappings/puerto-rico-operator-approval-contract.json` defines the skipped-record approval artifact required by the future writer contract without committing real approvals.
+- `scripts/data_operator_approval_validate.js` validates operator approval artifacts against the SQL preview and writer gate without enabling mutation.
 - `data/fixtures/non-production/` contains checked-in JSON and CSV offline planning fixtures plus an expected report for repeatable local demos.
 - `npm run verify:release` wraps app/API deployment verification for release jobs, and Azure validates the wrapper in sample mode without production secrets.
 - `npm run verify:release-smoke` checks deployed app `/healthz`, public `/v1/unis`, and optional API `/readyz` from configured release URLs.
@@ -162,4 +163,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Add a validation helper for operator approval artifacts so release evidence can be checked without enabling mutation.
+Add an end-to-end dry-run release evidence bundle command that produces plan, preview, gate, and validation artifacts without mutating data.

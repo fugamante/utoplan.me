@@ -14,7 +14,8 @@ var requiredFields = [
   'approvalReason',
   'skippedAcknowledged',
   'skippedSummary',
-  'sourceArtifacts'
+  'sourceArtifacts',
+  'acknowledgements'
 ];
 var requiredAcknowledgements = [
   'Rejected records will not be written.',
@@ -45,6 +46,7 @@ assert.deepStrictEqual(contract.fieldRules.skippedAcknowledged, {
 });
 assert.strictEqual(contract.fieldRules.approvedBy.description.indexOf('avoid personal identifiers') !== -1, true);
 assert.strictEqual(contract.fieldRules.skippedSummary.valueSource, 'sqlPreview.summary.skipped');
+assert.strictEqual(contract.fieldRules.acknowledgements.valueSource, 'requiredAcknowledgements');
 
 [
   'rejected',
@@ -65,6 +67,7 @@ assert.strictEqual(contract.fieldRules.skippedSummary.valueSource, 'sqlPreview.s
 requiredAcknowledgements.forEach(function(acknowledgement) {
   assert(contract.requiredAcknowledgements.indexOf(acknowledgement) !== -1);
 });
+assert(contract.requiredFields.indexOf('acknowledgements') !== -1);
 
 [
   'password',
