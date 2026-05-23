@@ -1,7 +1,14 @@
 'use strict';
 
 var fs = require('fs');
+var path = require('path');
 var normalization = require('./data_normalization');
+
+var CACHE_SOURCE_KEYS = {
+  'datospr-cbp-2014-municipios': 'cbps',
+  'datospr-higher-ed-directory-2017-18': 'unis',
+  'nces-edge-postsecondary-locations-2021-pr': 'unisCoordinates'
+};
 
 function readArg(args, name, defaultValue) {
   var prefix = '--' + name + '=';
@@ -284,8 +291,26 @@ function readCsvFile(filePath) {
   return rowsFromCsv(fs.readFileSync(filePath, 'utf8'));
 }
 
+function readCoordinateJsonFile(filePath) {
+  var parsed = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  var rows = Array.isArray(parsed) ? parsed : parsed.features || [];
+
+  return rows.map(function(row) {
+    return row.attributes || row;
+  });
+}
+
 function writeJsonFile(filePath, value) {
   fs.writeFileSync(filePath, JSON.stringify(value, null, 2) + '\n');
+}
+
+function emptyFixtures() {
+  return {
+    cbps: [],
+    muns: [],
+    unis: [],
+    unisCoordinates: []
+  };
 }
 
 function readCsvFixtures(args) {
@@ -308,9 +333,55 @@ function readCsvFixtures(args) {
   };
 }
 
+function metadataFiles(cacheDir) {
+  if (!cacheDir || !fs.existsSync(cacheDir)) {
+    return [];
+  }
+
+  return fs.readdirSync(cacheDir).filter(function(fileName) {
+    return fileName.indexOf('.metadata.json') !== -1;
+  }).map(function(fileName) {
+    return path.join(cacheDir, fileName);
+  });
+}
+
+function absoluteCacheDataPath(cacheDir, metadata) {
+  if (path.isAbsolute(metadata.dataPath)) {
+    return metadata.dataPath;
+  }
+
+  return path.join(cacheDir, path.basename(metadata.dataPath));
+}
+
+function readCacheFixtures(cacheDir) {
+  var fixtures = emptyFixtures();
+  var unsupported = [];
+
+  metadataFiles(cacheDir).forEach(function(metadataFile) {
+    var metadata = readJsonFile(metadataFile);
+    var key = CACHE_SOURCE_KEYS[metadata.id];
+    var dataPath = absoluteCacheDataPath(cacheDir, metadata);
+
+    if (!key) {
+      unsupported.push(metadata.id);
+      return;
+    }
+
+    if (key === 'unisCoordinates') {
+      fixtures[key] = readCoordinateJsonFile(dataPath);
+    } else {
+      fixtures[key] = readCsvFile(dataPath);
+    }
+  });
+
+  fixtures.unsupportedCacheSources = unsupported;
+  return fixtures;
+}
+
 function run(args) {
   var fixturePath = readArg(args, 'fixtures', null);
   var outPath = readArg(args, 'out', null);
+  var cacheDir = readArg(args, 'cache-dir', null);
   var csvFixtures;
   var fixtures;
   var plan;
@@ -322,15 +393,15 @@ function run(args) {
     return 1;
   }
 
-  if (!fixturePath && !csvFixtures) {
-    console.error('Missing fixture input. Use --fixtures=<path> or CSV fixture arguments');
+  if (!fixturePath && !csvFixtures && !cacheDir) {
+    console.error('Missing fixture input. Use --fixtures=<path>, CSV fixture arguments, or --cache-dir=<path>');
     return 1;
   }
 
   try {
-    fixtures = csvFixtures || readJsonFile(fixturePath);
+    fixtures = csvFixtures || (cacheDir ? readCacheFixtures(cacheDir) : readJsonFile(fixturePath));
   } catch (error) {
-    console.error('Failed to read fixture JSON: ' + error.message);
+    console.error('Failed to read planning input: ' + error.message);
     return 1;
   }
 
@@ -355,6 +426,9 @@ if (require.main === module) {
 }
 
 module.exports = {
+  CACHE_SOURCE_KEYS: CACHE_SOURCE_KEYS,
+  readCacheFixtures: readCacheFixtures,
+  readCoordinateJsonFile: readCoordinateJsonFile,
   parseCsv: parseCsv,
   planCbpRows: planCbpRows,
   planMunicipalityRows: planMunicipalityRows,

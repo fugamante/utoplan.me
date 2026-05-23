@@ -166,8 +166,11 @@ var sampleFixturePath = path.join(__dirname, '..', 'data', 'fixtures', 'non-prod
 var sampleReportPath = path.join(__dirname, '..', 'data', 'fixtures', 'non-production', 'import-plan-report.json');
 var sampleOutPath = path.join(tmpDir, 'sample-report.json');
 var sampleCsvOutPath = path.join(tmpDir, 'sample-csv-report.json');
+var cacheDir = path.join(tmpDir, 'cache');
+var cachedOutPath = path.join(tmpDir, 'cached-report.json');
 var sampleResult;
 var sampleCsvResult;
+var cachedResult;
 
 fs.writeFileSync(fixturePath, JSON.stringify(fixtures, null, 2));
 
@@ -239,6 +242,46 @@ assert.deepStrictEqual(
   JSON.parse(fs.readFileSync(sampleCsvOutPath, 'utf8')),
   JSON.parse(fs.readFileSync(sampleReportPath, 'utf8'))
 );
+
+fs.mkdirSync(cacheDir);
+fs.copyFileSync(path.join(__dirname, '..', 'data', 'fixtures', 'non-production', 'cbps.csv'), path.join(cacheDir, 'datospr-cbp-2014-municipios.csv'));
+fs.copyFileSync(path.join(__dirname, '..', 'data', 'fixtures', 'non-production', 'unis.csv'), path.join(cacheDir, 'datospr-higher-ed-directory-2017-18.csv'));
+fs.writeFileSync(path.join(cacheDir, 'nces-edge-postsecondary-locations-2021-pr.json'), JSON.stringify({
+  features: fixtures.unisCoordinates.map(function(row) {
+    return {
+      attributes: row
+    };
+  })
+}));
+
+[
+  ['datospr-cbp-2014-municipios', 'datospr-cbp-2014-municipios.csv'],
+  ['datospr-higher-ed-directory-2017-18', 'datospr-higher-ed-directory-2017-18.csv'],
+  ['nces-edge-postsecondary-locations-2021-pr', 'nces-edge-postsecondary-locations-2021-pr.json']
+].forEach(function(entry) {
+  fs.writeFileSync(path.join(cacheDir, entry[0] + '.metadata.json'), JSON.stringify({
+    id: entry[0],
+    dataPath: entry[1]
+  }));
+});
+
+cachedResult = childProcess.spawnSync(process.execPath, [
+  'scripts/data_import_plan.js',
+  '--cache-dir=' + cacheDir,
+  '--out=' + cachedOutPath
+], {
+  cwd: path.join(__dirname, '..'),
+  encoding: 'utf8'
+});
+
+assert.strictEqual(cachedResult.status, 0);
+var cachedPlan = JSON.parse(fs.readFileSync(cachedOutPath, 'utf8'));
+assert.strictEqual(cachedPlan.tables.cbps.accepted, 1);
+assert.strictEqual(cachedPlan.tables.cbps.rejected, 1);
+assert.strictEqual(cachedPlan.tables.muns.accepted, 0);
+assert.strictEqual(cachedPlan.tables.muns.rejected, 0);
+assert.strictEqual(cachedPlan.tables.unis.accepted, 1);
+assert.strictEqual(cachedPlan.tables.unis.manualReview, 2);
 
 fs.rmSync(tmpDir, {
   recursive: true,
