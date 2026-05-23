@@ -30,3 +30,7 @@ npm run test:data-mapping
 ```
 
 The root `npm run test` command also runs this check.
+
+## Normalization Rules
+
+Import normalization rules are documented in `docs/data-normalization.md` and enforced by `npm run test:data-normalization`.

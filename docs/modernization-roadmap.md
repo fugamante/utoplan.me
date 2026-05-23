@@ -30,6 +30,8 @@
 - `npm run test:data-sources` validates that registered import candidates are Puerto Rico-only or explicitly filtered to Puerto Rico.
 - `docs/data-schema-mapping.md` and `data/mappings/puerto-rico-schema-map.json` map Puerto Rico source candidates to the preserved legacy schema before import work.
 - `npm run test:data-mapping` validates that source mappings reference registered sources and preserve legacy table columns.
+- `docs/data-normalization.md` and `data/mappings/puerto-rico-normalization.json` define deterministic import normalization rules for Puerto Rico source data.
+- `npm run test:data-normalization` validates that normalization rules reference registered sources and preserved legacy columns.
 - `npm run verify:release` wraps app/API deployment verification for release jobs, and Azure validates the wrapper in sample mode without production secrets.
 - `npm run verify:release-smoke` checks deployed app `/healthz`, public `/v1/unis`, and optional API `/readyz` from configured release URLs.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
@@ -147,4 +149,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Define deterministic normalization rules for CBP NAICS filtering, municipality code joins, and higher-education coordinate joins before writing import scripts.
+Implement fixture-backed normalization helpers for numeric NAICS filtering, municipality code normalization, and the university coordinate join review path before writing networked import scripts.
