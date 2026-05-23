@@ -32,12 +32,14 @@ npm run plan:data -- --fixtures=data/fixtures/non-production/import-plan-fixture
 npm run plan:data -- --cbps-csv=data/fixtures/non-production/cbps.csv --muns-csv=data/fixtures/non-production/muns.csv --unis-csv=data/fixtures/non-production/unis.csv --unis-coordinates-csv=data/fixtures/non-production/unis-coordinates.csv --out=/tmp/utoplan-import-plan.json
 npm run plan:data -- --cache-dir=.cache/utoplan-data --out=/tmp/utoplan-import-plan.json
 npm run plan:data-load -- --plan=/tmp/utoplan-import-plan.json --out=/tmp/utoplan-load-plan.json
+npm run preview:data-sql -- --load-plan=/tmp/utoplan-load-plan.json --out=/tmp/utoplan-sql-preview.json
 npm run test
 npm run test:browser
 npm run test:data-mapping
 npm run test:data-normalization
 npm run test:data-plan
 npm run test:data-load-policy
+npm run test:data-sql-preview
 npm run test:data-sources
 npm run test:db
 npm run test:browser:start-local
