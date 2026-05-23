@@ -200,3 +200,16 @@ Run:
 ```sh
 npm run test:data-operator-approval-contract
 ```
+
+## Operator Approval Validation
+
+`scripts/data_operator_approval_validate.js` validates a release approval artifact against the operator approval contract, SQL preview, and writer gate output. It exits nonzero when approval evidence is incomplete, skipped counts do not match the SQL preview, required acknowledgements are missing, the writer gate does not allow enablement, or forbidden fields such as tokens/secrets are present.
+
+Run:
+
+```sh
+npm run validate:operator-approval -- --approval=approval.json --sql-preview=sql-preview.json --writer-gate=writer-gate.json --out=approval-validation.json
+npm run test:data-operator-approval-validate
+```
+
+The validation result keeps `mutationAllowed: false`; it only checks release evidence.

@@ -12,7 +12,8 @@
     "approvalReason",
     "skippedAcknowledged",
     "skippedSummary",
-    "sourceArtifacts"
+    "sourceArtifacts",
+    "acknowledgements"
   ],
   "fieldRules": {
     "schemaVersion": {
@@ -49,6 +50,10 @@
         "sqlPreviewGeneratedAt",
         "writerGateSchemaVersion"
       ]
+    },
+    "acknowledgements": {
+      "type": "array",
+      "valueSource": "requiredAcknowledgements"
     }
   },
   "requiredAcknowledgements": [
