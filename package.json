@@ -11,7 +11,7 @@
     "docker:test:modern-db": "docker compose run --build --rm modern-api-test; status=$?; docker compose down -v; exit $status",
     "docker:test:proxy": "docker compose run --build --rm app-modern-proxy-test; status=$?; docker compose down -v; exit $status",
     "docker:test:start-local-browser": "docker compose run --build --rm start-local-browser-test; status=$?; docker compose down -v; exit $status",
-    "docker:test:all-db": "npm run docker:test:modern-db && npm run docker:test:proxy && npm run docker:test:start-local-browser",
+    "docker:test:all-db": "npm run docker:test:modern-db && npm run docker:test:data-sql-preview && npm run docker:test:proxy && npm run docker:test:start-local-browser",
     "install:all": "npm ci && npm --prefix app ci && npm --prefix dtoapi ci && npm --prefix dtoapi/modern ci",
     "start:app": "npm --prefix app start",
     "start:api": "npm --prefix dtoapi run start:modern",
