@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 1,
+  "scope": "puerto-rico-only",
+  "mappedAt": "2026-05-22",
+  "schemaMapping": "data/mappings/puerto-rico-schema-map.json",
+  "rules": [
+    {
+      "id": "cbps-current-schema-naics",
+      "table": "cbps",
+      "targetColumns": [
+        "cnaic"
+      ],
+      "status": "ready",
+      "sourceIds": [
+        "datospr-cbp-2014-municipios"
+      ],
+      "sourceColumns": [
+        "naics"
+      ],
+      "policy": "numeric-only",
+      "steps": [
+        "Trim source naics value.",
+        "Accept only values matching ^[0-9]+$.",
+        "Convert accepted values to base-10 integer for cbps.cnaic.",
+        "Reject aggregate or placeholder values such as ------, 23----, and values containing non-digits until a string-compatible schema migration exists."
+      ],
+      "rejectOnFailure": true,
+      "notes": "The preserved legacy schema stores cnaic as integer, so aggregate NAICS placeholders cannot be imported without a schema migration."
+    },
+    {
+      "id": "cbps-county-code",
+      "table": "cbps",
+      "targetColumns": [
+        "county"
+      ],
+      "status": "ready",
+      "sourceIds": [
+        "datospr-cbp-2014-municipios"
+      ],
+      "sourceColumns": [
+        "fipscty",
+        "cencty"
+      ],
+      "policy": "prefer-fipscty-integer",
+      "steps": [
+        "Prefer fipscty when present.",
+        "Fallback to cencty when fipscty is blank.",
+        "Trim leading and trailing whitespace.",
+        "Accept only values matching ^[0-9]+$.",
+        "Convert accepted values to base-10 integer for cbps.county."
+      ],
+      "rejectOnFailure": true,
+      "notes": "The source CSV uses Puerto Rico municipality/county-equivalent codes."
+    },
+    {
+      "id": "muns-county-code",
+      "table": "muns",
+      "targetColumns": [
+        "county"
+      ],
+      "status": "ready",
+      "sourceIds": [
+        "datospr-official-municipality-boundaries",
+        "datospr-cbp-2014-municipios"
+      ],
+      "sourceColumns": [
+        "countyfp",
+        "cntyidfp",
+        "fipscty",
+        "cencty"
+      ],
+      "policy": "prefer-boundary-countyfp-integer",
+      "steps": [
+        "Prefer countyfp from municipios.dbf when present.",
+        "Fallback to cntyidfp after removing a leading state FIPS prefix 72 when the value has five digits.",
+        "Fallback to fipscty, then cencty, from the CBP municipality CSV when reconciling tabular rows.",
+        "Trim leading and trailing whitespace.",
+        "Accept only values matching ^[0-9]+$ after normalization.",
+        "Convert accepted values to base-10 integer for muns.county."
+      ],
+      "rejectOnFailure": true,
+      "notes": "DBF inspection confirmed countyfp and cntyidfp fields in the official boundary ZIP."
+    },
+    {
+      "id": "muns-title",
+      "table": "muns",
+      "targetColumns": [
+        "title"
+      ],
+      "status": "ready",
+      "sourceIds": [
+        "datospr-official-municipality-boundaries"
+      ],
+      "sourceColumns": [
+        "municipio"
+      ],
+      "policy": "trim-title",
+      "steps": [
+        "Read municipio from municipios.dbf.",
+        "Trim leading and trailing whitespace.",
+        "Collapse internal whitespace to a single space.",
+        "Reject blank titles."
+      ],
+      "rejectOnFailure": true,
+      "notes": "DBF inspection confirmed municipio as the municipality title field."
+    },
+    {
+      "id": "unis-coordinate-join",
+      "table": "unis",
+      "targetColumns": [
+        "lat",
+        "long"
+      ],
+      "status": "needs-review",
+      "sourceIds": [
+        "datospr-higher-ed-directory-2017-18",
+        "nces-edge-postsecondary-locations-2021-pr"
+      ],
+      "sourceColumns": [
+        "Nombre de la Institución",
+        "Dirección Física",
+        "Dirección Física 2",
+        "Pueblo",
+        "NAME",
+        "STREET",
+        "CITY",
+        "LAT",
+        "LON"
+      ],
+      "policy": "deterministic-name-address-join",
+      "steps": [
+        "Normalize institution names by lowercasing, removing accents, replacing punctuation with spaces, removing legal suffix noise, and collapsing whitespace.",
+        "Normalize municipality/city values by lowercasing, removing accents, and collapsing whitespace.",
+        "Normalize street/address values by lowercasing, removing accents, replacing punctuation with spaces, expanding common road tokens only through a reviewed dictionary, and collapsing whitespace.",
+        "Require exact normalized name match and exact normalized municipality/city match for automatic coordinate joins.",
+        "Use normalized address token overlap only as a tie-breaker when more than one NCES row matches the same normalized name and municipality.",
+        "Reject ambiguous or unmatched rows into a manual review artifact instead of guessing coordinates."
+      ],
+      "rejectOnFailure": true,
+      "notes": "This rule is intentionally not marked ready until the importer records a fixture-backed join implementation and manual-review output contract."
+    },
+    {
+      "id": "record-timestamps",
+      "table": "*",
+      "targetColumns": [
+        "created_at",
+        "updated_at"
+      ],
+      "status": "ready",
+      "sourceIds": [],
+      "sourceColumns": [],
+      "policy": "import-run-timestamp",
+      "steps": [
+        "Use the same import run timestamp for created_at and updated_at on newly imported rows.",
+        "Do not derive timestamps from source publication dates unless a future schema explicitly records source metadata separately."
+      ],
+      "rejectOnFailure": false,
+      "notes": "Keeps legacy read columns populated without implying source row freshness."
+    }
+  ]
+}
