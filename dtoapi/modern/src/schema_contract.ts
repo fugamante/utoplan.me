@@ -5,10 +5,23 @@ import type {DatabaseRow, Resource} from './resource_contract';
 
 export const BASELINE_SCHEMA_VERSION = 'baseline-read-v1';
 
+export interface ExpectedLoadIndex {
+  table: string;
+  name: string;
+  columns: string[];
+}
+
+export interface LoadIndexStatus {
+  ok: boolean;
+  missing: string[];
+  unavailable: boolean;
+}
+
 export interface SchemaStatus {
   version: string;
   ok: boolean;
   missing: string[];
+  loadIndexes?: LoadIndexStatus;
 }
 
 function expectedColumns(): Record<string, string[]> {
@@ -35,6 +48,42 @@ export function statusQuery(): string {
 
 export function statusParams(): string[][] {
   return [expectedTables()];
+}
+
+export function expectedLoadIndexes(): ExpectedLoadIndex[] {
+  return [
+    {
+      table: 'cbps',
+      name: 'cbps_county_cnaic_unique',
+      columns: ['county', 'cnaic']
+    },
+    {
+      table: 'muns',
+      name: 'muns_county_unique',
+      columns: ['county']
+    },
+    {
+      table: 'unis',
+      name: 'unis_title_address_unique',
+      columns: ['title', 'address']
+    }
+  ];
+}
+
+export function loadIndexStatusQuery(): string {
+  return [
+    'SELECT tablename, indexname, indexdef',
+    'FROM pg_indexes',
+    "WHERE schemaname = 'public'",
+    'AND indexname = ANY($1)',
+    'ORDER BY indexname'
+  ].join(' ');
+}
+
+export function loadIndexStatusParams(): string[][] {
+  return [expectedLoadIndexes().map(function(index: ExpectedLoadIndex) {
+    return index.name;
+  })];
 }
 
 export function evaluate(rows: DatabaseRow[]): SchemaStatus {
@@ -71,5 +120,39 @@ export function evaluate(rows: DatabaseRow[]): SchemaStatus {
     version: BASELINE_SCHEMA_VERSION,
     ok: missing.length === 0,
     missing: missing
+  };
+}
+
+export function unavailableLoadIndexes(): LoadIndexStatus {
+  return {
+    ok: false,
+    missing: expectedLoadIndexes().map(function(index: ExpectedLoadIndex) {
+      return index.name;
+    }),
+    unavailable: true
+  };
+}
+
+export function evaluateLoadIndexes(rows: DatabaseRow[]): LoadIndexStatus {
+  const actual = rows.reduce(function(found: Record<string, DatabaseRow>, row: DatabaseRow) {
+    found[String(row.indexname || '')] = row;
+    return found;
+  }, {});
+
+  const missing = expectedLoadIndexes().reduce(function(results: string[], expected: ExpectedLoadIndex) {
+    const row = actual[expected.name];
+    const indexDef = String(row ? row.indexdef || '' : '').toLowerCase();
+
+    if (!row || String(row.tablename || '') !== expected.table || indexDef.indexOf('unique index') === -1) {
+      results.push(expected.name);
+    }
+
+    return results;
+  }, []);
+
+  return {
+    ok: missing.length === 0,
+    missing: missing,
+    unavailable: false
   };
 }

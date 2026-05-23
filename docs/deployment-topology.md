@@ -30,7 +30,7 @@ docker compose -f docker-compose.integrated.yml up --build
 
 The app is exposed on `http://127.0.0.1:8080` by default. The API is only exposed inside the Compose network.
 
-Both services expose `/healthz` for shallow process health. The API also exposes `/readyz`, which checks database reachability. The Compose baseline waits for API readiness before starting the app and marks the app healthy only after its own `/healthz` responds.
+Both services expose `/healthz` for shallow process health. The API also exposes `/readyz`, which checks database reachability and the read-schema contract. The response includes advisory load-policy index status for future writer prerequisites, but those indexes do not change the current read-only readiness gate. The Compose baseline waits for API readiness before starting the app and marks the app healthy only after its own `/healthz` responds.
 
 The API container fails fast in production when neither `DATABASE_URL` nor `DATABASE_HOST`, `DATABASE_USER`, and `DATABASE_DB` are configured.
 

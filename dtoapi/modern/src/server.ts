@@ -71,6 +71,8 @@ function handleHealth(request: IncomingMessage, response: ServerResponse): void 
 
 function handleReadiness(request: IncomingMessage, response: ServerResponse): void {
   db.ready(function(error: Error | null, status) {
+    const loadIndexes = status && status.loadIndexes ? status.loadIndexes : null;
+
     if (error) {
       console.error(error.stack || error.message);
 
@@ -79,7 +81,9 @@ function handleReadiness(request: IncomingMessage, response: ServerResponse): vo
         service: 'utoplan-modern-api',
         database: status ? 'ok' : 'unavailable',
         schema: status ? 'unavailable' : 'unknown',
-        schemaVersion: status ? status.version : null
+        schemaVersion: status ? status.version : null,
+        loadPolicyIndexes: loadIndexes ? (loadIndexes.ok ? 'ok' : 'missing') : 'unknown',
+        missingLoadPolicyIndexes: loadIndexes ? loadIndexes.missing : []
       }));
       return;
     }
@@ -89,7 +93,9 @@ function handleReadiness(request: IncomingMessage, response: ServerResponse): vo
       service: 'utoplan-modern-api',
       database: 'ok',
       schema: 'ok',
-      schemaVersion: status ? status.version : null
+      schemaVersion: status ? status.version : null,
+      loadPolicyIndexes: loadIndexes ? (loadIndexes.ok ? 'ok' : (loadIndexes.unavailable ? 'unavailable' : 'missing')) : 'unknown',
+      missingLoadPolicyIndexes: loadIndexes ? loadIndexes.missing : []
     }));
   });
 }

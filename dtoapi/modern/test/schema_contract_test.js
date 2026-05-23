@@ -21,6 +21,29 @@ assert.deepStrictEqual(schemaContract.statusParams(), [[
   'muns',
   'unis'
 ]]);
+assert.deepStrictEqual(schemaContract.expectedLoadIndexes(), [
+  {
+    table: 'cbps',
+    name: 'cbps_county_cnaic_unique',
+    columns: ['county', 'cnaic']
+  },
+  {
+    table: 'muns',
+    name: 'muns_county_unique',
+    columns: ['county']
+  },
+  {
+    table: 'unis',
+    name: 'unis_title_address_unique',
+    columns: ['title', 'address']
+  }
+]);
+assert(schemaContract.loadIndexStatusQuery().indexOf('pg_indexes') !== -1);
+assert.deepStrictEqual(schemaContract.loadIndexStatusParams(), [[
+  'cbps_county_cnaic_unique',
+  'muns_county_unique',
+  'unis_title_address_unique'
+]]);
 
 const healthyRows = [
   ['unis', 'id'],
@@ -83,3 +106,51 @@ const missing = schemaContract.evaluate(healthyRows.filter(function(row) {
 
 assert.strictEqual(missing.ok, false);
 assert(missing.missing.indexOf('unis.title') !== -1);
+
+assert.deepStrictEqual(schemaContract.evaluateLoadIndexes([
+  {
+    tablename: 'cbps',
+    indexname: 'cbps_county_cnaic_unique',
+    indexdef: 'CREATE UNIQUE INDEX cbps_county_cnaic_unique ON public.cbps USING btree (county, cnaic)'
+  },
+  {
+    tablename: 'muns',
+    indexname: 'muns_county_unique',
+    indexdef: 'CREATE UNIQUE INDEX muns_county_unique ON public.muns USING btree (county)'
+  },
+  {
+    tablename: 'unis',
+    indexname: 'unis_title_address_unique',
+    indexdef: 'CREATE UNIQUE INDEX unis_title_address_unique ON public.unis USING btree (title, address)'
+  }
+]), {
+  ok: true,
+  missing: [],
+  unavailable: false
+});
+
+assert.deepStrictEqual(schemaContract.evaluateLoadIndexes([
+  {
+    tablename: 'cbps',
+    indexname: 'cbps_county_cnaic_unique',
+    indexdef: 'CREATE INDEX cbps_county_cnaic_unique ON public.cbps USING btree (county, cnaic)'
+  }
+]), {
+  ok: false,
+  missing: [
+    'cbps_county_cnaic_unique',
+    'muns_county_unique',
+    'unis_title_address_unique'
+  ],
+  unavailable: false
+});
+
+assert.deepStrictEqual(schemaContract.unavailableLoadIndexes(), {
+  ok: false,
+  missing: [
+    'cbps_county_cnaic_unique',
+    'muns_county_unique',
+    'unis_title_address_unique'
+  ],
+  unavailable: true
+});

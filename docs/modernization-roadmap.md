@@ -40,6 +40,7 @@
 - `scripts/data_sql_preview.js` converts a dry-run load plan plus the load policy into parameterized PostgreSQL upsert previews without connecting to a database or enabling writes.
 - `scripts/data_sql_preview_db_check.js` validates those SQL previews against disposable Docker/Postgres tables inside a rollback-only transaction and requires matching natural-key unique indexes.
 - `db/migrations/202605230900_add_load_natural_key_indexes.md` documents the production migration path, duplicate preflight checks, verification SQL, and rollback SQL for the load-policy natural-key indexes.
+- API `/readyz` now reports advisory `loadPolicyIndexes` and `missingLoadPolicyIndexes` metadata without changing the current `baseline-read-v1` read-only readiness gate.
 - `data/fixtures/non-production/` contains checked-in JSON and CSV offline planning fixtures plus an expected report for repeatable local demos.
 - `npm run verify:release` wraps app/API deployment verification for release jobs, and Azure validates the wrapper in sample mode without production secrets.
 - `npm run verify:release-smoke` checks deployed app `/healthz`, public `/v1/unis`, and optional API `/readyz` from configured release URLs.
@@ -158,4 +159,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Add schema/readiness visibility for load-policy index prerequisites without changing the current read-only API readiness contract.
+Add an explicit writer enablement gate that refuses to run unless skipped records are acknowledged and load-policy indexes are visible.
