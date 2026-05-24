@@ -10,6 +10,180 @@
   "migrationArtifacts": [
     "db/migrations/202605241000_reserve_session_profile_tables.md"
   ],
+  "anonymousApiContract": {
+    "contractStatus": "draft-no-runtime",
+    "schemaStatus": "blocked-requires-anonymous-storage-migration",
+    "ownershipModel": "caller-owned-anonymous-session",
+    "storageModel": {
+      "reservedMigrationRequired": true,
+      "doNotUseTables": [
+        "demo_sessions",
+        "user_accounts"
+      ],
+      "requiredFutureTables": [
+        "anonymous_sessions",
+        "anonymous_planning_profiles",
+        "anonymous_profile_events"
+      ],
+      "reason": "Reserved password-account tables require account_id and password metadata, which must not be faked for anonymous profiles."
+    },
+    "tokenPolicy": {
+      "transport": "HttpOnly Secure SameSite=Lax cookie",
+      "storage": "hash-only",
+      "minimumEntropyBits": 128,
+      "expirationHours": 24,
+      "csrfProtection": "required-for-mutating-methods",
+      "cors": "same-origin-only-for-profile-routes",
+      "corsPolicy": {
+        "profileRoutesAllowWildcardOrigin": false,
+        "requireExplicitOriginAllowlist": true,
+        "setVaryOriginWhenAllowed": true,
+        "denyInvalidOriginPreflight": true
+      },
+      "csrfPolicy": {
+        "requiredMethods": [
+          "POST",
+          "PUT",
+          "DELETE"
+        ],
+        "requiredChecks": [
+          "same-origin Origin or Referer validation",
+          "X-CSRF-Token header bound to the anonymous session or bootstrap page state"
+        ],
+        "failureStatus": 403
+      },
+      "rotation": "required-on-session-renewal",
+      "rawTokenLogging": "forbidden"
+    },
+    "profileSchema": {
+      "schemaVersion": 1,
+      "rowVersion": "positive-integer",
+      "maxBodyBytes": 2048,
+      "unknownFields": "reject",
+      "fields": [
+        "businessIdea",
+        "selectedMunicipalityId",
+        "selectedCategoryId"
+      ]
+    },
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/v1/anonymous-sessions",
+        "status": "reserved-not-implemented",
+        "purpose": "Create an anonymous caller-owned session and empty planning profile.",
+        "existingCookieRule": "ignore expired, revoked, or attacker-supplied anonymous cookies; rotate any active anonymous cookie by revoking the previous anonymous session and issuing a newly generated server token",
+        "requestBody": {
+          "profile": "optional profile object matching profileSchema fields"
+        },
+        "successStatus": 201,
+        "responseFields": [
+          "schemaVersion",
+          "scope",
+          "mode",
+          "session.publicId",
+          "session.expiresAt",
+          "profile.schemaVersion",
+          "profile.rowVersion",
+          "profile.updatedAt",
+          "profile.data"
+        ],
+        "failureStatuses": [
+          400,
+          403,
+          409,
+          413,
+          422,
+          429,
+          500
+        ]
+      },
+      {
+        "method": "GET",
+        "path": "/v1/profile",
+        "status": "reserved-not-implemented",
+        "purpose": "Return the profile owned by the anonymous session cookie.",
+        "requiresAuthenticatedSession": true,
+        "ownershipInvariant": "token hash matches active anonymous session; session is not expired or revoked; profile belongs to session; profile is not deleted",
+        "successStatus": 200,
+        "responseFields": [
+          "schemaVersion",
+          "profile.schemaVersion",
+          "profile.rowVersion",
+          "profile.updatedAt",
+          "profile.data"
+        ],
+        "failureStatuses": [
+          401,
+          404,
+          410,
+          429,
+          500
+        ]
+      },
+      {
+        "method": "PUT",
+        "path": "/v1/profile",
+        "status": "reserved-not-implemented",
+        "purpose": "Replace the caller-owned profile using optimistic concurrency.",
+        "requiresAuthenticatedSession": true,
+        "ownershipInvariant": "token hash matches active anonymous session; session is not expired or revoked; profile belongs to session; profile is not deleted",
+        "concurrencyRule": "server increments rowVersion atomically with UPDATE ... WHERE anonymous_session_id = caller_session_id AND row_version = expected AND deleted_at IS NULL RETURNING; stale or non-owned writes return 409 or 404 without updating",
+        "requestBody": {
+          "rowVersion": "required current profile row version",
+          "profile": "required profile object matching profileSchema fields"
+        },
+        "successStatus": 200,
+        "responseFields": [
+          "schemaVersion",
+          "profile.schemaVersion",
+          "profile.rowVersion",
+          "profile.updatedAt",
+          "profile.data"
+        ],
+        "failureStatuses": [
+          400,
+          401,
+          403,
+          404,
+          409,
+          413,
+          422,
+          429,
+          500
+        ]
+      },
+      {
+        "method": "DELETE",
+        "path": "/v1/profile",
+        "status": "reserved-not-implemented",
+        "purpose": "Soft-delete the caller-owned profile and revoke the anonymous session.",
+        "requiresAuthenticatedSession": true,
+        "ownershipInvariant": "token hash matches active anonymous session; session is not expired or revoked; profile belongs to session",
+        "successStatus": 204,
+        "failureStatuses": [
+          401,
+          403,
+          404,
+          410,
+          429,
+          500
+        ]
+      }
+    ],
+    "errorContract": {
+      "400": "invalid_request",
+      "401": "unauthorized",
+      "403": "csrf_or_origin_rejected",
+      "404": "not_found",
+      "409": "version_conflict",
+      "410": "profile_deleted",
+      "413": "profile_too_large",
+      "422": "invalid_profile",
+      "429": "rate_limited",
+      "500": "internal_error"
+    }
+  },
   "requiredBeforeProductionAuth": [
     "Document account identifier policy and avoid public personal identifiers in repository artifacts.",
     "Document password storage requirements using a memory-hard password hashing algorithm and per-password salts.",
@@ -77,9 +251,69 @@
         "updated_at",
         "deleted_at"
       ]
+    },
+    {
+      "name": "profile_events",
+      "status": "reserved-not-implemented",
+      "minimumColumns": [
+        "id",
+        "account_id",
+        "profile_id",
+        "event_name",
+        "created_at",
+        "metadata"
+      ]
+    }
+  ],
+  "anonymousProposedTables": [
+    {
+      "name": "anonymous_sessions",
+      "status": "reserved-not-implemented",
+      "minimumColumns": [
+        "id",
+        "public_id",
+        "token_hash",
+        "created_at",
+        "expires_at",
+        "rotated_at",
+        "revoked_at"
+      ]
+    },
+    {
+      "name": "anonymous_planning_profiles",
+      "status": "reserved-not-implemented",
+      "minimumColumns": [
+        "id",
+        "anonymous_session_id",
+        "schema_version",
+        "row_version",
+        "profile",
+        "created_at",
+        "updated_at",
+        "deleted_at"
+      ]
+    },
+    {
+      "name": "anonymous_profile_events",
+      "status": "reserved-not-implemented",
+      "minimumColumns": [
+        "id",
+        "anonymous_session_id",
+        "anonymous_profile_id",
+        "event_name",
+        "created_at",
+        "metadata"
+      ]
     }
   ],
   "endpointPlan": [
+    {
+      "method": "POST",
+      "path": "/v1/anonymous-sessions",
+      "status": "reserved-not-implemented",
+      "requiresHttps": true,
+      "mode": "anonymous"
+    },
     {
       "method": "POST",
       "path": "/v1/session/login",
@@ -117,18 +351,28 @@
     "Do not expose profile JSON through wildcard CORS without an authenticated session design.",
     "Do not add production auth endpoints before the migration artifact, tests, and rollback plan exist.",
     "Do not reuse demo_sessions for production accounts.",
+    "Do not fake user_accounts rows for anonymous sessions.",
+    "Do not allow profile reads or writes without proving caller ownership through a server-validated session token.",
+    "Do not overwrite profiles without rowVersion optimistic concurrency checks.",
     "Do not put personal identifiers in checked-in seeds, docs, branch names, commit messages, or PR text.",
     "Do not write user profile data to source-backed planning tables."
   ],
   "auditEvents": [
+    "session.anonymous.created",
+    "session.anonymous.rejected",
+    "session.anonymous.revoked",
     "session.login.started",
     "session.login.succeeded",
     "session.login.failed",
     "session.logout.succeeded",
     "profile.read.succeeded",
+    "profile.read.rejected",
     "profile.write.succeeded",
+    "profile.write.rejected",
     "profile.delete.succeeded",
-    "profile.write.rejected"
+    "profile.delete.rejected",
+    "profile.export.succeeded",
+    "profile.delete.retention_applied"
   ],
   "retention": {
     "defaultProfileRetentionDays": 365,

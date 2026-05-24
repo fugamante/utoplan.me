@@ -15,6 +15,7 @@ This report covers the current modernization branch after adding:
 - browser-local planning profile persistence
 - production session/auth contract reservation
 - reserved production session/profile table migration artifact
+- anonymous session/profile API contract reservation with separate anonymous storage, route-specific CORS, CSRF, and caller-owned concurrency requirements
 - Docker Postgres demo seed and demo Compose topology
 - readiness coverage for the required demo session table
 - release smoke support for demo-session validation
