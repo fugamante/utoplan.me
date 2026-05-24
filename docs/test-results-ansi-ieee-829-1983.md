@@ -19,6 +19,7 @@ This report covers the current modernization branch after adding:
 - anonymous session/profile migration artifact and threat-reviewed runtime sequence
 - anonymous CORS/CSRF runtime scaffolding with reserved endpoints still returning `501`
 - anonymous token hashing, secure-cookie, transaction, and data-access scaffolding with reserved endpoints still returning `501`
+- anonymous rate-limit and profile body-validation scaffolding with reserved endpoints still returning `501`
 - Docker Postgres demo seed and demo Compose topology
 - readiness coverage for the required demo session table
 - release smoke support for demo-session validation
@@ -82,6 +83,13 @@ Current anonymous CORS/CSRF scaffolding slice rerun:
 Current anonymous data-access/token scaffolding slice rerun:
 
 - `npm --prefix dtoapi/modern test`: Pass
+- `npm test`: Pass
+- `npm run docker:test:proxy`: Pass
+
+Current anonymous rate-limit/body-validation scaffolding slice rerun:
+
+- `npm --prefix dtoapi/modern test`: Pass
+- `npm run test:session-auth-contract`: Pass
 - `npm test`: Pass
 - `npm run docker:test:proxy`: Pass
 

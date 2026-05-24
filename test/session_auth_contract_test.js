@@ -63,8 +63,14 @@ assert.strictEqual(contract.anonymousApiContract.tokenPolicy.csrfPolicy.rotation
 assert.strictEqual(contract.anonymousApiContract.tokenPolicy.rateLimitPolicy.preAuthKey, 'client ip plus normalized origin');
 assert.strictEqual(contract.anonymousApiContract.tokenPolicy.rateLimitPolicy.sessionKey, 'anonymous session public id after authentication');
 assert.strictEqual(contract.anonymousApiContract.tokenPolicy.rateLimitPolicy.failureStatus, 429);
+assert.strictEqual(contract.anonymousApiContract.tokenPolicy.rateLimitPolicy.scaffoldStorage, 'process-local-fixed-window');
+assert.strictEqual(contract.anonymousApiContract.tokenPolicy.rateLimitPolicy.defaultLimit, 60);
+assert.strictEqual(contract.anonymousApiContract.tokenPolicy.rateLimitPolicy.defaultWindowMs, 60000);
 assert.strictEqual(contract.anonymousApiContract.profileSchema.maxBodyBytes, 2048);
 assert.strictEqual(contract.anonymousApiContract.profileSchema.unknownFields, 'reject');
+assert.strictEqual(contract.anonymousApiContract.profileSchema.businessIdeaMaxLength, 160);
+assert.strictEqual(contract.anonymousApiContract.profileSchema.selectedMunicipalityId, 'positive-integer');
+assert.strictEqual(contract.anonymousApiContract.profileSchema.selectedCategoryIdPattern, '^[a-z][a-z0-9_]{1,63}$');
 assert.deepStrictEqual(contract.anonymousApiContract.profileSchema.fields, [
   'businessIdea',
   'selectedMunicipalityId',
