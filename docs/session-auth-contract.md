@@ -125,4 +125,4 @@ Production implementation must provide deletion and export behavior. Public seed
 
 ## Next Implementation Gate
 
-The next safe implementation step is adding release smoke coverage for a deployed anonymous runtime, then implementing a concrete shared limiter provider if the deployment target cannot enforce the approved anonymous scopes at the edge. Password auth remains disabled until the contract requirements are satisfied.
+The next safe implementation step is implementing a concrete shared limiter provider if the deployment target cannot enforce the approved anonymous scopes at the edge, then running the opt-in anonymous release smoke against the candidate environment. Password auth remains disabled until the contract requirements are satisfied.

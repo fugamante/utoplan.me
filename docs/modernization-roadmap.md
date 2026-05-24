@@ -65,7 +65,7 @@
 - `scripts/data_release_evidence_bundle.js` builds a local dry-run release evidence directory with plan, preview, gate, approval, validation, and manifest artifacts without mutating data.
 - `data/fixtures/non-production/` contains checked-in JSON and CSV offline planning fixtures plus an expected report for repeatable local demos.
 - `npm run verify:release` wraps app/API deployment verification for release jobs, and Azure validates the wrapper in sample mode without production secrets.
-- `npm run verify:release-smoke` checks deployed app `/healthz`, public `/v1/unis`, public `/v1/planning/context-demo`, and optional API `/readyz` from configured release URLs.
+- `npm run verify:release-smoke` checks deployed app `/healthz`, public `/v1/unis`, public `/v1/planning/context-demo`, and optional API `/readyz` from configured release URLs. With `UTOPLAN_ANONYMOUS_SMOKE=1`, it also verifies the gate-mounted anonymous create/read/update/delete flow through the app origin.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
 
 ## Target Outcomes
@@ -202,4 +202,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Add deployed release-smoke coverage for the gate-mounted anonymous flow, then implement a concrete shared limiter provider if the deployment target cannot enforce the approved anonymous scopes at the edge.
+Implement a concrete shared limiter provider if the deployment target cannot enforce the approved anonymous scopes at the edge, then run the opt-in anonymous release smoke against the candidate environment.
