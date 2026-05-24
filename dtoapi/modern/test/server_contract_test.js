@@ -140,32 +140,40 @@ server.listen(0, '127.0.0.1', function() {
           assert.strictEqual(methodResponse.statusCode, 405);
           assert.strictEqual(JSON.parse(methodResponse.body).meta.error, 'Method Not Allowed');
 
-          request(server, '/readyz', function(error, response) {
-            assert.ifError(error);
-            assert.strictEqual(response.statusCode, 200);
-            assert.strictEqual(JSON.parse(response.body).database, 'ok');
-            assert.strictEqual(JSON.parse(response.body).schema, 'ok');
-            assert.strictEqual(JSON.parse(response.body).schemaVersion, 'baseline-read-v1');
-            assert.strictEqual(JSON.parse(response.body).loadPolicyIndexes, 'missing');
-            assert.deepStrictEqual(JSON.parse(response.body).missingLoadPolicyIndexes, ['unis_title_address_unique']);
+          request(server, '/v1/demo/session?session=demo-session-1', function(sessionMethodError, sessionMethodResponse) {
+            assert.ifError(sessionMethodError);
+            assert.strictEqual(sessionMethodResponse.statusCode, 405);
+            assert.strictEqual(JSON.parse(sessionMethodResponse.body).meta.error, 'Method Not Allowed');
 
-            db.ready = function(callback) {
-              callback(new Error('database unavailable'));
-            };
-            console.error = function() {};
+            request(server, '/readyz', function(error, response) {
+              assert.ifError(error);
+              assert.strictEqual(response.statusCode, 200);
+              assert.strictEqual(JSON.parse(response.body).database, 'ok');
+              assert.strictEqual(JSON.parse(response.body).schema, 'ok');
+              assert.strictEqual(JSON.parse(response.body).schemaVersion, 'baseline-read-v1');
+              assert.strictEqual(JSON.parse(response.body).loadPolicyIndexes, 'missing');
+              assert.deepStrictEqual(JSON.parse(response.body).missingLoadPolicyIndexes, ['unis_title_address_unique']);
 
-            request(server, '/readyz', function(failedError, failedResponse) {
-              assert.ifError(failedError);
-              assert.strictEqual(failedResponse.statusCode, 503);
-              assert.strictEqual(JSON.parse(failedResponse.body).database, 'unavailable');
-              assert.strictEqual(JSON.parse(failedResponse.body).schema, 'unknown');
+              db.ready = function(callback) {
+                callback(new Error('database unavailable'));
+              };
+              console.error = function() {};
 
-              db.ready = originalReady;
-              console.error = originalError;
-              server.close(function(closeError) {
-                assert.ifError(closeError);
+              request(server, '/readyz', function(failedError, failedResponse) {
+                assert.ifError(failedError);
+                assert.strictEqual(failedResponse.statusCode, 503);
+                assert.strictEqual(JSON.parse(failedResponse.body).database, 'unavailable');
+                assert.strictEqual(JSON.parse(failedResponse.body).schema, 'unknown');
+
+                db.ready = originalReady;
+                console.error = originalError;
+                server.close(function(closeError) {
+                  assert.ifError(closeError);
+                });
               });
             });
+          }, {
+            method: 'POST'
           });
         }, {
           method: 'POST'

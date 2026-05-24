@@ -13,6 +13,7 @@
 - `dtoapi/modern/src/root_contract.ts` owns the typed shared response shape for the root endpoint.
 - `dtoapi/modern/src/source_metadata.ts` owns the DB-free source metadata endpoint contract for Puerto Rico-only planning data provenance.
 - `dtoapi/modern/src/planning_context.ts` owns the DB-free demo planning context contract for fixture-backed municipality/category facts.
+- `dtoapi/modern/src/demo_session.ts` owns the first DB-backed local demo session/profile contract and composes it with the live planning context response.
 - `dtoapi/test/modern_root_contract_test.js` verifies status, JSON body, CORS headers, and gzip behavior.
 - `dtoapi/modern/src/db.ts` owns the typed Postgres connection boundary, environment-derived connection config, query callback contract, and pool close lifecycle.
 - `dtoapi/modern/src/resource_contract.ts` owns typed resource definitions, public column order, row serialization, and `SELECT ... WHERE id = $1` query construction.
@@ -26,13 +27,15 @@
 - Collection filtering and sorting are not supported yet. Query parameters such as `filter`, `sort`, `q`, or domain-specific planning filters are intentionally ignored until source-backed data semantics and provenance/confidence metadata are defined.
 - `/v1/source-metadata` exposes the checked-in provenance/confidence contract as read-only API metadata. It distinguishes source-backed candidate tables (`cbps`, `muns`, `unis`) from blocked tables (`cdepts`, `businesses`, `grade_cs`) without connecting to the database.
 - `/v1/planning/context-demo` exposes the fixture-backed planning context read model. It returns selected municipality/category data, source-backed CBP facts, confidence, unresolved questions, and no scores or recommendations.
-- `/v1/planning/context` is the DB-backed planning context endpoint. It accepts only `municipality=<positive integer>` and `category=<candidate business category id>`. The first live slice resolves municipality and category, returns no facts or scores yet, returns `404 Not Found` when the municipality is absent, and returns `400 Bad Request` for invalid or unsupported query parameters.
+- `/v1/planning/context` is the DB-backed planning context endpoint. It accepts only `municipality=<positive integer>` and `category=<candidate business category id>`. The first live slice resolves municipality and category, attaches matching source-backed CBP facts, returns no signals or scores, returns `404 Not Found` when the municipality is absent, and returns `400 Bad Request` for invalid or unsupported query parameters.
+- `/v1/demo/session` is the DB-backed local demo session endpoint. It accepts only `session=<known demo session id>`, returns the saved neutral demo profile plus the live planning context for its selected municipality/category, returns `404 Not Found` when the session is absent, and returns `400 Bad Request` for invalid or unsupported query parameters. It is not an authentication or account-management API. Production-mode deployments must set `UTOPLAN_DEMO_SESSIONS=1` before the route is exposed.
 - `/readyz` remains operational readiness only; source metadata is intentionally kept out of readiness so provenance visibility does not depend on database health.
 - `dtoapi/modern/test/response_contract_test.js` pins the typed response envelope.
 - `dtoapi/modern/test/resource_contract_test.js` pins the typed resource/data-access boundary.
 - `dtoapi/modern/test/records_contract_test.js` pins typed record payload wrapping without requiring a database.
 - `dtoapi/modern/test/source_metadata_test.js` pins the source metadata transformation without requiring a database.
 - `dtoapi/modern/test/planning_context_test.js` pins the demo planning context transformation without requiring a database.
+- `dtoapi/modern/test/demo_session_test.js` pins the demo session query validation and row serialization without requiring a database.
 - `dtoapi/modern/test/root_contract_test.js` pins the typed root response contract without requiring a server.
 - `dtoapi/modern/test/server_contract_test.js` pins server route matching and gzip detection helpers without requiring a database.
 - `dtoapi/modern/tsconfig.json` compiles TypeScript contract sources to ignored CommonJS output under `dtoapi/modern/lib/` before tests or runtime entrypoints execute.

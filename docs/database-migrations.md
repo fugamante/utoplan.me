@@ -6,13 +6,15 @@ Production database changes are explicit release artifacts, not application star
 
 The modern API expects the `baseline-read-v1` read schema. API `/readyz` verifies that baseline before the API is marked ready.
 
-The current baseline covers the public read tables and columns used by `dtoapi/modern/src/resource_contract.ts`.
+The current baseline covers the public read tables and columns used by `dtoapi/modern/src/resource_contract.ts`, plus the additive `demo_sessions` table required by the DB-backed local demo session endpoint while that endpoint is active.
 
 The initial baseline artifact is `db/migrations/202605211200_baseline_read_v1.md`.
 
 The natural-key index artifact for future Puerto Rico loader upserts is `db/migrations/202605230900_add_load_natural_key_indexes.md`.
 
 API `/readyz` reports those index prerequisites as advisory `loadPolicyIndexes` metadata. Missing load-policy indexes do not fail the current `baseline-read-v1` readiness gate.
+
+The demo session artifact for local DB-backed sessions is `db/migrations/202605240900_add_demo_sessions.md`.
 
 ## Artifact Location
 

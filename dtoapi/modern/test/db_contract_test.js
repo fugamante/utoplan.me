@@ -32,6 +32,20 @@ const contracts = [
     liveContextExpected: true
   },
   {
+    path: '/v1/demo/session?session=demo-session-1',
+    demoSessionExpected: true
+  },
+  {
+    path: '/v1/demo/session?session=missing-session',
+    statusCode: 404,
+    error: 'Not Found'
+  },
+  {
+    path: '/v1/demo/session?session=x',
+    statusCode: 400,
+    error: 'Bad Request'
+  },
+  {
     path: '/v1/planning/context?municipality=999&category=professional_services',
     statusCode: 404,
     error: 'Not Found'
@@ -304,6 +318,24 @@ function runContract(server, index) {
         });
         assert.strictEqual(body.signals.length, 0);
         assert.strictEqual(body.confidence.label, 'low');
+        runContract(server, index + 1);
+        return;
+      }
+
+      if (contract.demoSessionExpected) {
+        assert.strictEqual(body.scope, 'puerto-rico-only');
+        assert.strictEqual(body.mode, 'demo-db-session');
+        assert.strictEqual(body.session.id, 'demo-session-1');
+        assert.strictEqual(body.session.displayName, 'Demo planner');
+        assert.strictEqual(body.session.selectedMunicipalityId, 1);
+        assert.strictEqual(body.session.selectedCategoryId, 'professional_services');
+        assert.strictEqual(body.session.profile.businessIdea, 'Accounting and back-office services');
+        assert.strictEqual(body.planningContext.mode, 'live-db');
+        assert.strictEqual(body.planningContext.selectedMunicipality.id, '1');
+        assert.strictEqual(body.planningContext.selectedCategory.id, 'professional_services');
+        assert.strictEqual(body.planningContext.facts.length, 3);
+        assert.strictEqual(body.planningContext.signals.length, 0);
+        assert.strictEqual(body.planningContext.confidence.label, 'low');
         runContract(server, index + 1);
         return;
       }

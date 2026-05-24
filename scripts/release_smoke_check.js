@@ -92,6 +92,19 @@ function checkPlanningContext(result) {
   }
 }
 
+function checkDemoSession(result) {
+  checkStatus(result, 200, 'app /v1/demo/session');
+  if (!result.body || result.body.scope !== 'puerto-rico-only' || result.body.mode !== 'demo-db-session') {
+    throw new Error('app /v1/demo/session returned an unexpected payload');
+  }
+  if (!result.body.session || result.body.session.id !== 'demo-session-1') {
+    throw new Error('app /v1/demo/session must include the seeded demo session');
+  }
+  if (!result.body.planningContext || result.body.planningContext.mode !== 'live-db') {
+    throw new Error('app /v1/demo/session must include live planning context');
+  }
+}
+
 function checkApiReady(result) {
   checkStatus(result, 200, 'api /readyz');
   if (!result.body || result.body.status !== 'ok' || result.body.database !== 'ok' || result.body.schema !== 'ok') {
@@ -135,6 +148,14 @@ function runChecks(env, requester, callback) {
       label: 'api /readyz',
       url: joinUrl(apiUrl, '/readyz'),
       validate: checkApiReady
+    });
+  }
+
+  if (env.UTOPLAN_DEMO_SESSION_ID) {
+    checks.push({
+      label: 'app /v1/demo/session',
+      url: joinUrl(appUrl, '/v1/demo/session?session=' + encodeURIComponent(env.UTOPLAN_DEMO_SESSION_ID)),
+      validate: checkDemoSession
     });
   }
 
@@ -185,6 +206,7 @@ if (require.main === module) {
 module.exports = {
   checkApiReady: checkApiReady,
   checkAppHealth: checkAppHealth,
+  checkDemoSession: checkDemoSession,
   checkPlanningContext: checkPlanningContext,
   checkUnis: checkUnis,
   joinUrl: joinUrl,

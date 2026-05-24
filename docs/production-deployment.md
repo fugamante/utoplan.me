@@ -70,7 +70,7 @@ Run Docker compatibility checks when Docker is available, because the production
 
 `npm run verify:release` wraps the app and API deployment verifiers for release jobs. CI runs it with `UTOPLAN_RELEASE_SAMPLE=1` to validate wiring without production secrets; production release jobs must omit sample mode and provide real platform environment values.
 
-After deploying a candidate release, run `npm run verify:release-smoke` with `UTOPLAN_APP_URL` set to the public app origin. Set `UTOPLAN_API_URL` only when the API readiness URL is reachable from the release job network.
+After deploying a candidate release, run `npm run verify:release-smoke` with `UTOPLAN_APP_URL` set to the public app origin. Set `UTOPLAN_API_URL` only when the API readiness URL is reachable from the release job network. For a demo environment that intentionally exposes seeded DB-backed demo sessions, set `UTOPLAN_DEMO_SESSION_ID=demo-session-1` for the smoke run and enable the API endpoint with `UTOPLAN_DEMO_SESSIONS=1`.
 
 Confirm these release facts before deployment:
 
@@ -83,7 +83,7 @@ Confirm these release facts before deployment:
 
 ## Migration And Seed Policy
 
-The current modern API reads the existing DTO schema. The production baseline is `baseline-read-v1`, which requires the public read tables and columns used by the modern API resource contract. This project does not yet contain a production migration runner.
+The current modern API reads the existing DTO schema plus the additive `demo_sessions` table required by the local/demo session endpoint while that endpoint is active. The production baseline is `baseline-read-v1`, which requires the public read tables, columns used by the modern API resource contract, and the demo session table added by `db/migrations/202605240900_add_demo_sessions.md`. This project does not yet contain a production migration runner.
 
 Migration artifacts live under `db/migrations/`; use `docs/database-migrations.md` for the artifact format, release policy, and review checklist.
 
@@ -107,13 +107,22 @@ Do not add startup-time schema mutation to either service. Production startup sh
 5. Wait for `GET /readyz` on the API to return `200`.
 6. Deploy the app with `UTOPLAN_API_ORIGIN` pointing at the API service.
 7. Wait for `GET /healthz` on the app to return `200`.
-8. Smoke test the public app origin and verify `/v1/unis` plus `/v1/planning/context-demo` are served through the app origin.
+8. Smoke test the public app origin and verify `/v1/unis` plus `/v1/planning/context-demo` are served through the app origin. Demo environments should also verify `/v1/demo/session?session=demo-session-1`.
 
 Example smoke checks:
 
 ```sh
 UTOPLAN_APP_URL=https://app.example.com \
 UTOPLAN_API_URL=https://api.example.internal \
+npm run verify:release-smoke
+```
+
+Demo smoke check:
+
+```sh
+UTOPLAN_APP_URL=https://app.example.com \
+UTOPLAN_API_URL=https://api.example.internal \
+UTOPLAN_DEMO_SESSION_ID=demo-session-1 \
 npm run verify:release-smoke
 ```
 
@@ -132,6 +141,7 @@ Rollback immediately when:
 - Either service fails readiness checks after deployment.
 - The app health response shows fixture mode enabled.
 - `/v1/unis` or `/v1/planning/context-demo` fails through the public app origin.
+- A demo release has `UTOPLAN_DEMO_SESSIONS=1` but `/v1/demo/session?session=demo-session-1` fails through the public app origin.
 - The API logs database connection or query failures after rollout.
 - Browser smoke checks show missing map data or uncaught page errors.
 
@@ -142,5 +152,6 @@ Rollback order:
 3. Verify API `/readyz`.
 4. Verify app `/healthz`.
 5. Verify `/v1/unis` and `/v1/planning/context-demo` from the public app origin.
+6. For demo releases, verify `/v1/demo/session?session=demo-session-1` or disable `UTOPLAN_DEMO_SESSIONS`.
 
 If a release included a production database change, follow the release-specific database rollback note before restoring app traffic. If no safe database rollback exists, keep the previous compatible application version in service and escalate the data fix separately.

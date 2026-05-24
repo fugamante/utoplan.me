@@ -39,6 +39,20 @@ smoke.checkPlanningContext({
   }
 });
 
+smoke.checkDemoSession({
+  statusCode: 200,
+  body: {
+    scope: 'puerto-rico-only',
+    mode: 'demo-db-session',
+    session: {
+      id: 'demo-session-1'
+    },
+    planningContext: {
+      mode: 'live-db'
+    }
+  }
+});
+
 smoke.checkApiReady({
   statusCode: 200,
   body: {
@@ -80,6 +94,19 @@ function requester(url, callback) {
         signals: []
       }
     },
+    'https://app.example.com/v1/demo/session?session=demo-session-1': {
+      statusCode: 200,
+      body: {
+        scope: 'puerto-rico-only',
+        mode: 'demo-db-session',
+        session: {
+          id: 'demo-session-1'
+        },
+        planningContext: {
+          mode: 'live-db'
+        }
+      }
+    },
     'https://api.example.internal/readyz': {
       statusCode: 200,
       body: {
@@ -95,14 +122,16 @@ function requester(url, callback) {
 
 smoke.runChecks({
   UTOPLAN_APP_URL: 'https://app.example.com',
-  UTOPLAN_API_URL: 'https://api.example.internal'
+  UTOPLAN_API_URL: 'https://api.example.internal',
+  UTOPLAN_DEMO_SESSION_ID: 'demo-session-1'
 }, requester, function(error, labels) {
   assert.ifError(error);
   assert.deepStrictEqual(labels, [
     'app /healthz',
     'app /v1/unis',
     'app /v1/planning/context-demo',
-    'api /readyz'
+    'api /readyz',
+    'app /v1/demo/session'
   ]);
 });
 

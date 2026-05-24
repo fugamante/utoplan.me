@@ -17,7 +17,7 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "npm run build && node test/response_contract_test.js && node test/resource_contract_test.js && node test/schema_contract_test.js && node test/records_contract_test.js && node test/source_metadata_test.js && node test/planning_context_test.js && node test/db_contract_unit_test.js && node test/root_contract_test.js && node test/server_contract_test.js && node test/runtime_config_test.js",
+    "test": "npm run build && node test/response_contract_test.js && node test/resource_contract_test.js && node test/schema_contract_test.js && node test/records_contract_test.js && node test/source_metadata_test.js && node test/planning_context_test.js && node test/demo_session_test.js && node test/db_contract_unit_test.js && node test/root_contract_test.js && node test/server_contract_test.js && node test/runtime_config_test.js",
     "test:db": "npm run build && node test/db_contract_test.js"
   }
 }
