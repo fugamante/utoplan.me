@@ -35,6 +35,56 @@ assert.deepStrictEqual(verifier.validateConfig({
   service: 'api'
 }), []);
 
+assert.deepStrictEqual(verifier.validateConfig(Object.assign(validEnv(), {
+  UTOPLAN_ANONYMOUS_RUNTIME: '1',
+  UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE: 'edge',
+  UTOPLAN_ANONYMOUS_EDGE_RATE_LIMIT: '1',
+  UTOPLAN_ANONYMOUS_ALLOWED_ORIGINS: 'https://app.example.com'
+}), {
+  service: 'api'
+}), []);
+
+assert.deepStrictEqual(verifier.validateConfig(Object.assign(validEnv(), {
+  UTOPLAN_ANONYMOUS_RUNTIME: '1',
+  UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE: 'shared',
+  UTOPLAN_TRUST_PROXY: '1',
+  UTOPLAN_ANONYMOUS_SHARED_RATE_LIMIT: '1',
+  UTOPLAN_ANONYMOUS_ALLOWED_ORIGINS: 'https://app.example.com'
+}), {
+  service: 'api'
+}), []);
+
+var invalidAnonymous = verifier.validateConfig(Object.assign(validEnv(), {
+  UTOPLAN_ANONYMOUS_RUNTIME: '1',
+  UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE: 'local'
+}), {
+  service: 'api'
+});
+
+assert(invalidAnonymous.indexOf('UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE must be shared or edge when anonymous runtime is enabled') !== -1);
+assert(invalidAnonymous.indexOf('UTOPLAN_ANONYMOUS_ALLOWED_ORIGINS is required when anonymous runtime is enabled') !== -1);
+
+var invalidAnonymousShared = verifier.validateConfig(Object.assign(validEnv(), {
+  UTOPLAN_ANONYMOUS_RUNTIME: '1',
+  UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE: 'shared',
+  UTOPLAN_ANONYMOUS_ALLOWED_ORIGINS: 'https://app.example.com'
+}), {
+  service: 'api'
+});
+
+assert(invalidAnonymousShared.indexOf('UTOPLAN_TRUST_PROXY=1 is required for shared anonymous rate limiting') !== -1);
+assert(invalidAnonymousShared.indexOf('UTOPLAN_ANONYMOUS_SHARED_RATE_LIMIT=1 is required for shared anonymous rate limiting') !== -1);
+
+var invalidAnonymousEdge = verifier.validateConfig(Object.assign(validEnv(), {
+  UTOPLAN_ANONYMOUS_RUNTIME: '1',
+  UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE: 'edge',
+  UTOPLAN_ANONYMOUS_ALLOWED_ORIGINS: 'https://app.example.com'
+}), {
+  service: 'api'
+});
+
+assert(invalidAnonymousEdge.indexOf('UTOPLAN_ANONYMOUS_EDGE_RATE_LIMIT=1 is required for edge anonymous rate limiting') !== -1);
+
 var invalid = verifier.validateConfig({
   NODE_ENV: 'development',
   PORT: '70000',

@@ -99,7 +99,7 @@ Anonymous rate-limit rejections must return `429` without revealing whether a se
 
 Profile writes must enforce caller ownership in the same atomic update as optimistic concurrency, using the anonymous session owner, expected `rowVersion`, and non-deleted profile predicate in one write statement.
 
-This anonymous contract now has a separate anonymous storage migration artifact, runtime sequence document, route-specific CORS/CSRF scaffolding, token-hashing helpers, anonymous data-access scaffolding, process-local rate-limit scaffolding, profile body-validation helpers, endpoint-level reserved-route tests, transactional create/delete composition helpers, a separate enabled-runtime schema readiness gate, release-gated activation scaffolding, reserved-route `429` response coverage, pure handler-composition scaffolding, and gated server mounting for anonymous create/read/write/delete. Runtime endpoints remain fail-closed until the artifact is reviewed/applied as part of a release and shared or edge production rate limits are configured. The existing `user_accounts` and `planning_profiles.account_id` reservation is for password-account work and must not be filled with dummy account rows for anonymous users.
+This anonymous contract now has a separate anonymous storage migration artifact, runtime sequence document, route-specific CORS/CSRF scaffolding, token-hashing helpers, anonymous data-access scaffolding, process-local rate-limit scaffolding, profile body-validation helpers, endpoint-level reserved-route tests, transactional create/delete composition helpers, a separate enabled-runtime schema readiness gate, release-gated activation scaffolding with explicit edge/shared limiter attestations, reserved-route `429` response coverage, pure handler-composition scaffolding, and gated server mounting for anonymous create/read/write/delete. Runtime endpoints remain fail-closed until the artifact is reviewed/applied as part of a release and shared or edge production rate limits are configured. The existing `user_accounts` and `planning_profiles.account_id` reservation is for password-account work and must not be filled with dummy account rows for anonymous users.
 
 ## Privacy Rules
 
@@ -125,4 +125,4 @@ Production implementation must provide deletion and export behavior. Public seed
 
 ## Next Implementation Gate
 
-The next safe implementation step is replacing the current local anonymous limiter with a shared or edge-backed production limiter contract, then adding release smoke coverage for a deployed anonymous runtime. Password auth remains disabled until the contract requirements are satisfied.
+The next safe implementation step is adding release smoke coverage for a deployed anonymous runtime, then implementing a concrete shared limiter provider if the deployment target cannot enforce the approved anonymous scopes at the edge. Password auth remains disabled until the contract requirements are satisfied.

@@ -144,6 +144,7 @@ function runtimeDeps(overrides) {
 
 const originalRuntime = process.env.UTOPLAN_ANONYMOUS_RUNTIME;
 const originalRateLimitMode = process.env.UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE;
+const originalEdgeRateLimit = process.env.UTOPLAN_ANONYMOUS_EDGE_RATE_LIMIT;
 
 function restoreEnv() {
   if (originalRuntime === undefined) {
@@ -157,10 +158,17 @@ function restoreEnv() {
   } else {
     process.env.UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE = originalRateLimitMode;
   }
+
+  if (originalEdgeRateLimit === undefined) {
+    delete process.env.UTOPLAN_ANONYMOUS_EDGE_RATE_LIMIT;
+  } else {
+    process.env.UTOPLAN_ANONYMOUS_EDGE_RATE_LIMIT = originalEdgeRateLimit;
+  }
 }
 
 process.env.UTOPLAN_ANONYMOUS_RUNTIME = '1';
 process.env.UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE = 'edge';
+process.env.UTOPLAN_ANONYMOUS_EDGE_RATE_LIMIT = '1';
 
 const enabledServer = modernApi.createServer({
   anonymousSchemaReady: function(callback) {

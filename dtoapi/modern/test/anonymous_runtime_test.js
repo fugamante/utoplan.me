@@ -50,7 +50,8 @@ assert.deepStrictEqual(anonymousRuntime.anonymousRuntimeGate({
   enabled: false,
   rateLimitMode: 'shared',
   errors: [
-    'shared anonymous rate limiting requires trusted proxy client identity'
+    'shared anonymous rate limiting requires trusted proxy client identity',
+    'shared anonymous rate limiting requires UTOPLAN_ANONYMOUS_SHARED_RATE_LIMIT=1'
   ]
 });
 
@@ -62,13 +63,27 @@ assert.deepStrictEqual(anonymousRuntime.anonymousRuntimeGate({
   enabled: false,
   rateLimitMode: 'edge',
   errors: [
-    'anonymous schema readiness must be confirmed'
+    'anonymous schema readiness must be confirmed',
+    'edge anonymous rate limiting requires UTOPLAN_ANONYMOUS_EDGE_RATE_LIMIT=1'
   ]
 });
 
 assert.deepStrictEqual(anonymousRuntime.anonymousRuntimeGate({
   UTOPLAN_ANONYMOUS_RUNTIME: '1',
   UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE: 'edge'
+}, true), {
+  requested: true,
+  enabled: false,
+  rateLimitMode: 'edge',
+  errors: [
+    'edge anonymous rate limiting requires UTOPLAN_ANONYMOUS_EDGE_RATE_LIMIT=1'
+  ]
+});
+
+assert.deepStrictEqual(anonymousRuntime.anonymousRuntimeGate({
+  UTOPLAN_ANONYMOUS_RUNTIME: '1',
+  UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE: 'edge',
+  UTOPLAN_ANONYMOUS_EDGE_RATE_LIMIT: '1'
 }, true), {
   requested: true,
   enabled: true,
@@ -80,6 +95,20 @@ assert.deepStrictEqual(anonymousRuntime.anonymousRuntimeGate({
   UTOPLAN_ANONYMOUS_RUNTIME: '1',
   UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE: 'shared',
   UTOPLAN_TRUST_PROXY: '1'
+}, true), {
+  requested: true,
+  enabled: false,
+  rateLimitMode: 'shared',
+  errors: [
+    'shared anonymous rate limiting requires UTOPLAN_ANONYMOUS_SHARED_RATE_LIMIT=1'
+  ]
+});
+
+assert.deepStrictEqual(anonymousRuntime.anonymousRuntimeGate({
+  UTOPLAN_ANONYMOUS_RUNTIME: '1',
+  UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE: 'shared',
+  UTOPLAN_TRUST_PROXY: '1',
+  UTOPLAN_ANONYMOUS_SHARED_RATE_LIMIT: '1'
 }, true), {
   requested: true,
   enabled: true,
