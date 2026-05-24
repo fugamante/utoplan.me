@@ -12,6 +12,17 @@ assert.strictEqual(planningContext.naicsMatches(541611, '541'), true);
 assert.strictEqual(planningContext.naicsMatches(722, '541611'), false);
 assert.strictEqual(planningContext.categoryById(categoryContract, 'professional_services').displayName, 'Professional services');
 assert.strictEqual(planningContext.categoryById(categoryContract, 'missing'), null);
+assert.strictEqual(planningContext.selectMunicipalityById(), 'SELECT id, title, county FROM muns WHERE id = $1 LIMIT 1');
+assert.deepStrictEqual(planningContext.municipalityFromRow({
+  id: 7,
+  title: 'Ponce',
+  county: 113
+}), {
+  id: '7',
+  title: 'Ponce',
+  county: 113,
+  geographyLevel: 'municipality'
+});
 assert.deepStrictEqual(planningContext.SUPPORTED_LIVE_QUERY_PARAMS, ['municipality', 'category']);
 assert.deepStrictEqual(planningContext.parseLiveQuery(new URLSearchParams('municipality=1&category=professional_services'), categoryContract), {
   ok: true,
