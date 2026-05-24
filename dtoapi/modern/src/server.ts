@@ -18,6 +18,13 @@ export const CORS_HEADERS: OutgoingHttpHeaders = {
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
 };
 
+export const ANONYMOUS_SESSION_COOKIE_NAME = 'utoplan_anon_session';
+export const ANONYMOUS_CSRF_HEADER = 'x-csrf-token';
+export const DEFAULT_ANONYMOUS_ALLOWED_ORIGINS = [
+  'http://127.0.0.1:18083',
+  'http://localhost:18083'
+];
+
 export const MAX_COLLECTION_LIMIT = 1000;
 export const SUPPORTED_COLLECTION_QUERY_PARAMS = ['limit', 'offset'];
 
@@ -52,18 +59,110 @@ export function parseCollectionQuery(params: URLSearchParams): records.Collectio
   };
 }
 
-function sendJson(
+export function isAnonymousSessionPath(pathname: string): boolean {
+  return pathname === '/v1/anonymous-sessions';
+}
+
+export function isAnonymousProfilePath(pathname: string): boolean {
+  return pathname === '/v1/profile';
+}
+
+export function isAnonymousReservedPath(pathname: string): boolean {
+  return isAnonymousSessionPath(pathname) || isAnonymousProfilePath(pathname);
+}
+
+export function anonymousAllowedOrigins(): string[] {
+  const configured = process.env.UTOPLAN_ANONYMOUS_ALLOWED_ORIGINS;
+
+  if (!configured) {
+    return DEFAULT_ANONYMOUS_ALLOWED_ORIGINS;
+  }
+
+  return configured.split(',').map(function(origin) {
+    return origin.trim();
+  }).filter(function(origin) {
+    return origin !== '';
+  });
+}
+
+export function anonymousAllowedMethods(pathname: string): string {
+  if (isAnonymousSessionPath(pathname)) {
+    return 'POST, OPTIONS';
+  }
+
+  if (isAnonymousProfilePath(pathname)) {
+    return 'GET, PUT, DELETE, OPTIONS';
+  }
+
+  return 'OPTIONS';
+}
+
+export function anonymousCorsHeaders(pathname: string, origin: string | undefined, allowedOrigins?: string[]): OutgoingHttpHeaders | null {
+  if (!isAnonymousReservedPath(pathname)) {
+    return CORS_HEADERS;
+  }
+
+  if (!origin) {
+    return {
+      Vary: 'Origin'
+    };
+  }
+
+  const origins = allowedOrigins || anonymousAllowedOrigins();
+
+  if (origins.indexOf(origin) === -1) {
+    return null;
+  }
+
+  return {
+    'Access-Control-Allow-Origin': origin,
+    'Access-Control-Allow-Credentials': 'true',
+    'Access-Control-Allow-Headers': 'Origin, Content-Type, Accept, X-CSRF-Token',
+    'Access-Control-Allow-Methods': anonymousAllowedMethods(pathname),
+    Vary: 'Origin'
+  };
+}
+
+export function hasSameOriginSignal(request: IncomingMessage, allowedOrigins?: string[]): boolean {
+  const origin = typeof request.headers.origin === 'string' ? request.headers.origin : '';
+  const referer = typeof request.headers.referer === 'string' ? request.headers.referer : '';
+  const origins = allowedOrigins || anonymousAllowedOrigins();
+
+  if (origin) {
+    return origins.indexOf(origin) !== -1;
+  }
+
+  if (referer) {
+    try {
+      const refererOrigin = new URL(referer).origin;
+      return origins.indexOf(refererOrigin) !== -1;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  return false;
+}
+
+export function hasCsrfHeader(request: IncomingMessage): boolean {
+  const value = request.headers[ANONYMOUS_CSRF_HEADER];
+
+  if (Array.isArray(value)) {
+    return value.some(function(item) {
+      return item.trim() !== '';
+    });
+  }
+
+  return typeof value === 'string' && value.trim() !== '';
+}
+
+function sendBody(
   request: IncomingMessage,
   response: ServerResponse,
   statusCode: number,
   body: string,
-  extraHeaders?: OutgoingHttpHeaders
+  headers: OutgoingHttpHeaders
 ): void {
-  const headers = Object.assign({}, CORS_HEADERS, extraHeaders || {}, {
-    'Content-Type': 'application/json; charset=utf-8',
-    'X-Powered-By': 'utoplan-modern-api'
-  });
-
   if (acceptsGzip(request)) {
     zlib.gzip(body, function(error: Error | null, compressed: Buffer) {
       if (error) {
@@ -82,6 +181,47 @@ function sendJson(
 
   response.writeHead(statusCode, headers);
   response.end(body);
+}
+
+function sendJson(
+  request: IncomingMessage,
+  response: ServerResponse,
+  statusCode: number,
+  body: string,
+  extraHeaders?: OutgoingHttpHeaders
+): void {
+  sendBody(request, response, statusCode, body, Object.assign({}, CORS_HEADERS, extraHeaders || {}, {
+    'Content-Type': 'application/json; charset=utf-8',
+    'X-Powered-By': 'utoplan-modern-api'
+  }));
+}
+
+function sendAnonymousJson(
+  request: IncomingMessage,
+  response: ServerResponse,
+  pathname: string,
+  statusCode: number,
+  body: string,
+  extraHeaders?: OutgoingHttpHeaders
+): void {
+  const origin = typeof request.headers.origin === 'string' ? request.headers.origin : undefined;
+  const corsHeaders = anonymousCorsHeaders(pathname, origin);
+
+  if (corsHeaders === null) {
+    sendBody(request, response, 403, responseContract.serialize(
+      responseContract.errorPayload('Forbidden')
+    ), {
+      'Content-Type': 'application/json; charset=utf-8',
+      'X-Powered-By': 'utoplan-modern-api',
+      Vary: 'Origin'
+    });
+    return;
+  }
+
+  sendBody(request, response, statusCode, body, Object.assign({}, corsHeaders, extraHeaders || {}, {
+    'Content-Type': 'application/json; charset=utf-8',
+    'X-Powered-By': 'utoplan-modern-api'
+  }));
 }
 
 function handleRoot(request: IncomingMessage, response: ServerResponse): void {
@@ -224,11 +364,31 @@ function handleNotImplemented(request: IncomingMessage, response: ServerResponse
   ));
 }
 
+function handleAnonymousNotImplemented(request: IncomingMessage, response: ServerResponse, pathname: string): void {
+  sendAnonymousJson(request, response, pathname, 501, responseContract.serialize(
+    responseContract.errorPayload('Not Implemented')
+  ));
+}
+
+function handleAnonymousForbidden(request: IncomingMessage, response: ServerResponse, pathname: string): void {
+  sendAnonymousJson(request, response, pathname, 403, responseContract.serialize(
+    responseContract.errorPayload('Forbidden')
+  ));
+}
+
 function handleMethodNotAllowed(request: IncomingMessage, response: ServerResponse): void {
   sendJson(request, response, 405, responseContract.serialize(
     responseContract.errorPayload('Method Not Allowed')
   ), {
     Allow: 'GET, OPTIONS'
+  });
+}
+
+function handleAnonymousMethodNotAllowed(request: IncomingMessage, response: ServerResponse, pathname: string): void {
+  sendAnonymousJson(request, response, pathname, 405, responseContract.serialize(
+    responseContract.errorPayload('Method Not Allowed')
+  ), {
+    Allow: anonymousAllowedMethods(pathname).replace(', OPTIONS', '')
   });
 }
 
@@ -242,6 +402,23 @@ export function createServer(): Server {
   return http.createServer(function(request: IncomingMessage, response: ServerResponse) {
     const requestUrl = new URL(request.url || '/', 'http://127.0.0.1');
     const pathname = requestUrl.pathname;
+
+    if (request.method === 'OPTIONS' && isAnonymousReservedPath(pathname)) {
+      const origin = typeof request.headers.origin === 'string' ? request.headers.origin : undefined;
+      const corsHeaders = anonymousCorsHeaders(pathname, origin);
+
+      if (corsHeaders === null) {
+        response.writeHead(403, {
+          Vary: 'Origin'
+        });
+        response.end();
+        return;
+      }
+
+      response.writeHead(204, corsHeaders);
+      response.end();
+      return;
+    }
 
     if (request.method === 'OPTIONS') {
       response.writeHead(204, CORS_HEADERS);
@@ -316,6 +493,41 @@ export function createServer(): Server {
       }
 
       handleDemoSession(request, response, query.query);
+      return;
+    }
+
+    if (isAnonymousSessionPath(pathname)) {
+      if (request.method === 'POST') {
+        if (!hasSameOriginSignal(request)) {
+          handleAnonymousForbidden(request, response, pathname);
+          return;
+        }
+
+        handleAnonymousNotImplemented(request, response, pathname);
+        return;
+      }
+
+      handleAnonymousMethodNotAllowed(request, response, pathname);
+      return;
+    }
+
+    if (isAnonymousProfilePath(pathname)) {
+      if (request.method === 'GET') {
+        handleAnonymousNotImplemented(request, response, pathname);
+        return;
+      }
+
+      if (request.method === 'PUT' || request.method === 'DELETE') {
+        if (!hasSameOriginSignal(request) || !hasCsrfHeader(request)) {
+          handleAnonymousForbidden(request, response, pathname);
+          return;
+        }
+
+        handleAnonymousNotImplemented(request, response, pathname);
+        return;
+      }
+
+      handleAnonymousMethodNotAllowed(request, response, pathname);
       return;
     }
 

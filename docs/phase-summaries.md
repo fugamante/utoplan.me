@@ -70,12 +70,13 @@ The branch now has a DB-backed demo path:
 - reserved production session/profile table migration artifact
 - anonymous session/profile API contract reserved without runtime endpoints, including separate anonymous storage, route-specific CORS, CSRF checks, and caller-owned optimistic concurrency
 - anonymous storage migration artifact and threat-reviewed runtime sequence reserved without enabling endpoints
+- route-specific CORS and CSRF runtime scaffolding for reserved anonymous endpoints while endpoint behavior remains disabled
 - `docker-compose.demo.yml` for a runnable local DB-backed demo
 
 Remaining product work:
 
 - browser-local saved profile flow
 - production authentication/session design
-- route-specific CORS and CSRF runtime scaffolding plus endpoint tests for the reserved anonymous session/profile endpoints
+- anonymous session/profile data-access and token-hashing scaffolding for the reserved anonymous endpoints
 - richer source-backed demo dataset
 - final audit after the remaining roadmap items are complete
