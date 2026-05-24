@@ -49,14 +49,14 @@ function baseDeps(overrides) {
     createPublicId: function() {
       return 'anon_public_11';
     },
-    checkRateLimit: function(input) {
-      return {
+    checkRateLimit: function(input, callback) {
+      callback(null, {
         allowed: true,
         key: 'test:' + input.scope,
         limit: 10,
         remaining: 9,
         resetAtMs: now.getTime() + 5000
-      };
+      });
     },
     createSession: function(input, callback) {
       assert.strictEqual(input.publicId, 'anon_public_11');
@@ -146,14 +146,14 @@ handlers.handleCreateAnonymousSession(request(JSON.stringify({
     businessIdea: 'Kiosk'
   }
 })), baseDeps({
-  checkRateLimit: function() {
-    return {
+  checkRateLimit: function(input, callback) {
+    callback(null, {
       allowed: false,
       key: 'limited',
       limit: 1,
       remaining: 0,
       resetAtMs: now.getTime() + 5000
-    };
+    });
   }
 }), function(error, result) {
   assert.ifError(error);
@@ -232,20 +232,20 @@ handlers.handleReadAnonymousProfile(request('', {
   cookie: 'utoplan_anon_session=safeTokenValue'
 }), baseDeps({
   readRateLimitCalls: 0,
-  checkRateLimit: function(input) {
+  checkRateLimit: function(input, callback) {
     this.readRateLimitCalls += 1;
     if (this.readRateLimitCalls === 1) {
       assert.strictEqual(input.sessionPublicId, null);
     } else {
       assert.strictEqual(input.sessionPublicId, 'anon_public_11');
     }
-    return {
+    callback(null, {
       allowed: true,
       key: 'session-read',
       limit: 10,
       remaining: 9,
       resetAtMs: now.getTime() + 5000
-    };
+    });
   }
 }), function(error, result) {
   assert.ifError(error);
@@ -288,16 +288,16 @@ handlers.handleUpdateAnonymousProfile(request(JSON.stringify({
   cookie: 'utoplan_anon_session=safeTokenValue',
   'x-csrf-token': 'safeTokenValue'
 }), baseDeps({
-  checkRateLimit: function(input) {
+  checkRateLimit: function(input, callback) {
     assert.strictEqual(input.scope, 'profile_write');
     assert.strictEqual(input.sessionPublicId, 'anon_public_11');
-    return {
+    callback(null, {
       allowed: true,
       key: 'session-write',
       limit: 10,
       remaining: 9,
       resetAtMs: now.getTime() + 5000
-    };
+    });
   }
 }), function(error, result) {
   assert.ifError(error);
@@ -349,26 +349,27 @@ handlers.handleUpdateAnonymousProfile(request(JSON.stringify({
   cookie: 'utoplan_anon_session=safeTokenValue',
   'x-csrf-token': 'badTokenValue'
 }), baseDeps({
-  checkRateLimit: function(input) {
+  checkRateLimit: function(input, callback) {
     if (input.scope === 'csrf_failure') {
       assert.strictEqual(input.failureType, 'invalid_csrf');
       assert.strictEqual(input.sessionPublicId, 'anon_public_11');
-      return {
+      callback(null, {
         allowed: false,
         key: 'csrf-failure',
         limit: 1,
         remaining: 0,
         resetAtMs: now.getTime() + 5000
-      };
+      });
+      return;
     }
 
-    return {
+    callback(null, {
       allowed: true,
       key: 'test:' + input.scope,
       limit: 10,
       remaining: 9,
       resetAtMs: now.getTime() + 5000
-    };
+    });
   }
 }), function(error, result) {
   assert.ifError(error);
@@ -430,16 +431,16 @@ handlers.handleDeleteAnonymousProfile(request('', {
   cookie: 'utoplan_anon_session=safeTokenValue',
   'x-csrf-token': 'safeTokenValue'
 }), baseDeps({
-  checkRateLimit: function(input) {
+  checkRateLimit: function(input, callback) {
     assert.strictEqual(input.scope, 'profile_delete');
     assert.strictEqual(input.sessionPublicId, 'anon_public_11');
-    return {
+    callback(null, {
       allowed: true,
       key: 'session-delete',
       limit: 10,
       remaining: 9,
       resetAtMs: now.getTime() + 5000
-    };
+    });
   }
 }), function(error, result) {
   assert.ifError(error);

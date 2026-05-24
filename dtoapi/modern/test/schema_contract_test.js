@@ -27,12 +27,14 @@ assert.deepStrictEqual(schemaContract.statusParams(), [[
 assert.deepStrictEqual(schemaContract.expectedAnonymousTables(), [
   'anonymous_planning_profiles',
   'anonymous_profile_events',
+  'anonymous_rate_limit_buckets',
   'anonymous_sessions'
 ]);
 assert.strictEqual(schemaContract.anonymousStatusQuery(), schemaContract.statusQuery());
 assert.deepStrictEqual(schemaContract.anonymousStatusParams(), [[
   'anonymous_planning_profiles',
   'anonymous_profile_events',
+  'anonymous_rate_limit_buckets',
   'anonymous_sessions'
 ]]);
 assert.deepStrictEqual(schemaContract.expectedLoadIndexes(), [
@@ -65,7 +67,9 @@ assert.deepStrictEqual(schemaContract.anonymousIndexStatusParams(), [[
   'anonymous_planning_profiles_session_active_unique',
   'anonymous_planning_profiles_retention_index',
   'anonymous_profile_events_session_created_index',
-  'anonymous_profile_events_profile_created_index'
+  'anonymous_profile_events_profile_created_index',
+  'anonymous_rate_limit_buckets_pkey',
+  'anonymous_rate_limit_buckets_reset_index'
 ]]);
 
 const healthyRows = [
@@ -212,7 +216,12 @@ const anonymousRows = [
   ['anonymous_profile_events', 'anonymous_profile_id'],
   ['anonymous_profile_events', 'event_name'],
   ['anonymous_profile_events', 'created_at'],
-  ['anonymous_profile_events', 'metadata']
+  ['anonymous_profile_events', 'metadata'],
+  ['anonymous_rate_limit_buckets', 'rate_limit_key'],
+  ['anonymous_rate_limit_buckets', 'scope'],
+  ['anonymous_rate_limit_buckets', 'request_count'],
+  ['anonymous_rate_limit_buckets', 'reset_at'],
+  ['anonymous_rate_limit_buckets', 'updated_at']
 ].map(function(row) {
   return {
     table_name: row[0],
@@ -227,7 +236,9 @@ const anonymousIndexRows = [
   ['anonymous_planning_profiles', 'anonymous_planning_profiles_session_active_unique', 'CREATE UNIQUE INDEX anonymous_planning_profiles_session_active_unique ON public.anonymous_planning_profiles USING btree (anonymous_session_id) WHERE deleted_at IS NULL'],
   ['anonymous_planning_profiles', 'anonymous_planning_profiles_retention_index', 'CREATE INDEX anonymous_planning_profiles_retention_index ON public.anonymous_planning_profiles USING btree (deleted_at, updated_at)'],
   ['anonymous_profile_events', 'anonymous_profile_events_session_created_index', 'CREATE INDEX anonymous_profile_events_session_created_index ON public.anonymous_profile_events USING btree (anonymous_session_id, created_at)'],
-  ['anonymous_profile_events', 'anonymous_profile_events_profile_created_index', 'CREATE INDEX anonymous_profile_events_profile_created_index ON public.anonymous_profile_events USING btree (anonymous_profile_id, created_at)']
+  ['anonymous_profile_events', 'anonymous_profile_events_profile_created_index', 'CREATE INDEX anonymous_profile_events_profile_created_index ON public.anonymous_profile_events USING btree (anonymous_profile_id, created_at)'],
+  ['anonymous_rate_limit_buckets', 'anonymous_rate_limit_buckets_pkey', 'CREATE UNIQUE INDEX anonymous_rate_limit_buckets_pkey ON public.anonymous_rate_limit_buckets USING btree (rate_limit_key)'],
+  ['anonymous_rate_limit_buckets', 'anonymous_rate_limit_buckets_reset_index', 'CREATE INDEX anonymous_rate_limit_buckets_reset_index ON public.anonymous_rate_limit_buckets USING btree (reset_at)']
 ].map(function(row) {
   return {
     tablename: row[0],

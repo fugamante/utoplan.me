@@ -234,21 +234,30 @@ function anonymousEdgeRateLimit(input: anonymousRateLimit.RateLimitInput): anony
 }
 
 function anonymousRuntimeCanUseDefaultDependencies(): boolean {
-  return anonymousRuntime.anonymousRateLimitMode() === 'edge' && process.env.UTOPLAN_ANONYMOUS_EDGE_RATE_LIMIT === '1';
+  return (
+    (anonymousRuntime.anonymousRateLimitMode() === 'edge' && process.env.UTOPLAN_ANONYMOUS_EDGE_RATE_LIMIT === '1') ||
+    (anonymousRuntime.anonymousRateLimitMode() === 'shared' && process.env.UTOPLAN_ANONYMOUS_SHARED_RATE_LIMIT === '1')
+  );
 }
 
-function anonymousDefaultRateLimit(input: anonymousRateLimit.RateLimitInput): anonymousRateLimit.RateLimitDecision {
+function anonymousDefaultRateLimit(input: anonymousRateLimit.RateLimitInput, callback: anonymousRateLimit.RateLimitCallback): void {
   if (anonymousRuntime.anonymousRateLimitMode() === 'edge') {
-    return anonymousEdgeRateLimit(input);
+    callback(null, anonymousEdgeRateLimit(input));
+    return;
   }
 
-  return {
+  if (anonymousRuntime.anonymousRateLimitMode() === 'shared') {
+    anonymousRateLimit.checkSharedRateLimit(input, callback);
+    return;
+  }
+
+  callback(null, {
     allowed: false,
     key: 'anonymous:unavailable:' + input.scope,
     limit: 1,
     remaining: 0,
     resetAtMs: (input.nowMs || Date.now()) + anonymousRateLimit.DEFAULT_WINDOW_MS
-  };
+  });
 }
 
 function anonymousFailureRateLimitDecision(

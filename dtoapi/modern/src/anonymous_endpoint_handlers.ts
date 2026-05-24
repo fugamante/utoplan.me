@@ -25,7 +25,7 @@ export interface AnonymousEndpointDependencies {
   trustedProxy?: boolean;
   createSecret(): anonymousSecurity.TokenPair;
   createPublicId(): string;
-  checkRateLimit(input: anonymousRateLimit.RateLimitInput): anonymousRateLimit.RateLimitDecision;
+  checkRateLimit(input: anonymousRateLimit.RateLimitInput, callback: anonymousRateLimit.RateLimitCallback): void;
   createSession(input: anonymousProfile.CreateAnonymousSessionInput, callback: anonymousProfile.AnonymousProfileCallback): void;
   findSessionByTokenHash(tokenHash: Buffer, callback: anonymousProfile.AnonymousSessionCallback): void;
   findProfile(anonymousSessionId: number, callback: anonymousProfile.AnonymousProfileCallback): void;
@@ -37,6 +37,7 @@ export interface AnonymousEndpointDependencies {
 }
 
 export type AnonymousEndpointCallback = (error: Error | null, result?: AnonymousEndpointResult) => void;
+type CsrfCallback = (error: Error | null, result?: AnonymousEndpointResult | null) => void;
 
 export interface AnonymousAuthenticatedSession {
   session: anonymousProfile.AnonymousSessionRow;
@@ -146,19 +147,48 @@ function hasSameOriginSignal(request: AnonymousEndpointRequest, deps: AnonymousE
   return false;
 }
 
-function verifyCsrf(request: AnonymousEndpointRequest, deps: AnonymousEndpointDependencies, session: anonymousProfile.AnonymousSessionRow): AnonymousEndpointResult | null {
-  if (!anonymousSecurity.verifyCsrfToken(request.headers['x-csrf-token'], session.csrfTokenHash)) {
-    const decision = deps.checkRateLimit(failureRateLimitInput(request, deps, 'csrf_failure', 'invalid_csrf', session.publicId));
-    const limited = rateLimitedResult(decision, request.now.getTime());
-
-    if (limited) {
-      return limited;
+function checkRateLimit(
+  request: AnonymousEndpointRequest,
+  deps: AnonymousEndpointDependencies,
+  input: anonymousRateLimit.RateLimitInput,
+  callback: anonymousRateLimit.RateLimitCallback
+): void {
+  deps.checkRateLimit(input, function(error, decision) {
+    if (error) {
+      callback(error);
+      return;
     }
 
-    return errorResult(403, 'Forbidden');
+    if (!decision) {
+      callback(new Error('anonymous rate limit did not return a decision'));
+      return;
+    }
+
+    callback(null, decision);
+  });
+}
+
+function verifyCsrf(request: AnonymousEndpointRequest, deps: AnonymousEndpointDependencies, session: anonymousProfile.AnonymousSessionRow, callback: CsrfCallback): void {
+  if (!anonymousSecurity.verifyCsrfToken(request.headers['x-csrf-token'], session.csrfTokenHash)) {
+    checkRateLimit(request, deps, failureRateLimitInput(request, deps, 'csrf_failure', 'invalid_csrf', session.publicId), function(error, decision) {
+      if (error) {
+        callback(error);
+        return;
+      }
+
+      const limited = rateLimitedResult(decision as anonymousRateLimit.RateLimitDecision, request.now.getTime());
+
+      if (limited) {
+        callback(null, limited);
+        return;
+      }
+
+      callback(null, errorResult(403, 'Forbidden'));
+    });
+    return;
   }
 
-  return null;
+  callback(null, null);
 }
 
 export function authenticateAnonymousSession(request: AnonymousEndpointRequest, deps: AnonymousEndpointDependencies, callback: AnonymousAuthCallback): void {
@@ -199,168 +229,186 @@ export function authenticateAnonymousSession(request: AnonymousEndpointRequest, 
 }
 
 export function handleCreateAnonymousSession(request: AnonymousEndpointRequest, deps: AnonymousEndpointDependencies, callback: AnonymousEndpointCallback): void {
-  const decision = deps.checkRateLimit(rateLimitInput(request, deps, 'anonymous_session_creation'));
-  const limited = rateLimitedResult(decision, request.now.getTime());
+  checkRateLimit(request, deps, rateLimitInput(request, deps, 'anonymous_session_creation'), function(rateLimitError, decision) {
+    const limited = decision ? rateLimitedResult(decision, request.now.getTime()) : null;
 
-  if (limited) {
-    deps.recordEvent(eventInput('session.anonymous.rejected', null, null, 'rate_limited'), function(eventError) {
-      callback(eventError, eventError ? undefined : limited);
-    });
-    return;
-  }
+    if (rateLimitError) {
+      callback(rateLimitError);
+      return;
+    }
 
-  const validation = profileValidation.validateAnonymousSessionCreateBody(request.body);
+    if (limited) {
+      deps.recordEvent(eventInput('session.anonymous.rejected', null, null, 'rate_limited'), function(eventError) {
+        callback(eventError, eventError ? undefined : limited);
+      });
+      return;
+    }
 
-  if (!validation.ok || !validation.profile) {
-    const validationResult = validationErrorResult(validation);
+    const validation = profileValidation.validateAnonymousSessionCreateBody(request.body);
 
-    deps.recordEvent(eventInput('session.anonymous.rejected', null, null, String(validationResult.statusCode)), function(eventError) {
-      callback(eventError, eventError ? undefined : validationResult);
-    });
-    return;
-  }
+    if (!validation.ok || !validation.profile) {
+      const validationResult = validationErrorResult(validation);
 
-  function createSession(): void {
-    const sessionSecret = deps.createSecret();
-    const csrfSecret = deps.createSecret();
-    const publicId = deps.createPublicId();
-    const expiresAt = new Date(request.now.getTime() + anonymousSecurity.SESSION_TTL_HOURS * 60 * 60 * 1000);
+      deps.recordEvent(eventInput('session.anonymous.rejected', null, null, String(validationResult.statusCode)), function(eventError) {
+        callback(eventError, eventError ? undefined : validationResult);
+      });
+      return;
+    }
 
-    deps.createSession({
-      publicId: publicId,
-      tokenHash: sessionSecret.hash,
-      csrfTokenHash: csrfSecret.hash,
-      expiresAt: expiresAt,
-      profile: validation.profile as anonymousProfile.AnonymousProfileData
-    }, function(error, profile) {
+    function createSession(): void {
+      const sessionSecret = deps.createSecret();
+      const csrfSecret = deps.createSecret();
+      const publicId = deps.createPublicId();
+      const expiresAt = new Date(request.now.getTime() + anonymousSecurity.SESSION_TTL_HOURS * 60 * 60 * 1000);
+
+      deps.createSession({
+        publicId: publicId,
+        tokenHash: sessionSecret.hash,
+        csrfTokenHash: csrfSecret.hash,
+        expiresAt: expiresAt,
+        profile: validation.profile as anonymousProfile.AnonymousProfileData
+      }, function(error, profile) {
+        if (error) {
+          callback(error);
+          return;
+        }
+
+        if (!profile) {
+          callback(null, errorResult(500, 'Internal Server Error'));
+          return;
+        }
+
+        deps.recordEvent(eventInput('session.anonymous.created', profile.anonymousSessionId, profile.id, 'created'), function(eventError) {
+          if (eventError) {
+            callback(eventError);
+            return;
+          }
+
+          callback(null, response(201, {
+            meta: responseContract.meta(1),
+            data: [{
+              session: {
+                publicId: publicId
+              },
+              profile: anonymousProfile.profileEnvelope(profile),
+              csrfToken: csrfSecret.raw
+            }]
+          }, {
+            'Set-Cookie': anonymousSecurity.sessionCookie(sessionSecret.raw, {
+              now: request.now
+            })
+          }));
+        });
+      });
+    }
+
+    const existingToken = anonymousSecurity.readAnonymousSessionCookie(request.headers.cookie);
+
+    if (!existingToken) {
+      createSession();
+      return;
+    }
+
+    deps.findSessionByTokenHash(anonymousSecurity.hashToken(existingToken), function(error, existingSession) {
       if (error) {
         callback(error);
         return;
       }
 
-      if (!profile) {
-        callback(null, errorResult(500, 'Internal Server Error'));
-        return;
-      }
-
-      deps.recordEvent(eventInput('session.anonymous.created', profile.anonymousSessionId, profile.id, 'created'), function(eventError) {
-        if (eventError) {
-          callback(eventError);
-          return;
-        }
-
-        callback(null, response(201, {
-          meta: responseContract.meta(1),
-          data: [{
-            session: {
-              publicId: publicId
-            },
-            profile: anonymousProfile.profileEnvelope(profile),
-            csrfToken: csrfSecret.raw
-          }]
-        }, {
-          'Set-Cookie': anonymousSecurity.sessionCookie(sessionSecret.raw, {
-            now: request.now
-          })
-        }));
-      });
-    });
-  }
-
-  const existingToken = anonymousSecurity.readAnonymousSessionCookie(request.headers.cookie);
-
-  if (!existingToken) {
-    createSession();
-    return;
-  }
-
-  deps.findSessionByTokenHash(anonymousSecurity.hashToken(existingToken), function(error, existingSession) {
-    if (error) {
-      callback(error);
-      return;
-    }
-
-    if (!existingSession) {
-      createSession();
-      return;
-    }
-
-    deps.revokeSession({
-      anonymousSessionId: existingSession.id,
-      revokeReason: 'session_rotated'
-    }, function(revokeError, revokedSession) {
-      if (revokeError) {
-        callback(revokeError);
-        return;
-      }
-
-      if (!revokedSession) {
+      if (!existingSession) {
         createSession();
         return;
       }
 
-      deps.recordEvent(eventInput('session.anonymous.revoked', revokedSession.id, null, 'session_rotated'), function(eventError) {
-        if (eventError) {
-          callback(eventError);
+      deps.revokeSession({
+        anonymousSessionId: existingSession.id,
+        revokeReason: 'session_rotated'
+      }, function(revokeError, revokedSession) {
+        if (revokeError) {
+          callback(revokeError);
           return;
         }
 
-        createSession();
+        if (!revokedSession) {
+          createSession();
+          return;
+        }
+
+        deps.recordEvent(eventInput('session.anonymous.revoked', revokedSession.id, null, 'session_rotated'), function(eventError) {
+          if (eventError) {
+            callback(eventError);
+            return;
+          }
+
+          createSession();
+        });
       });
     });
   });
 }
 
 export function handleReadAnonymousProfile(request: AnonymousEndpointRequest, deps: AnonymousEndpointDependencies, callback: AnonymousEndpointCallback): void {
-  const preAuthDecision = deps.checkRateLimit(rateLimitInput(request, deps, 'profile_read'));
-  const preAuthLimited = rateLimitedResult(preAuthDecision, request.now.getTime());
+  checkRateLimit(request, deps, rateLimitInput(request, deps, 'profile_read'), function(preAuthError, preAuthDecision) {
+    const preAuthLimited = preAuthDecision ? rateLimitedResult(preAuthDecision, request.now.getTime()) : null;
 
-  if (preAuthLimited) {
-    callback(null, preAuthLimited);
-    return;
-  }
-
-  authenticateAnonymousSession(request, deps, function(error, authResult) {
-    if (error) {
-      callback(error);
+    if (preAuthError) {
+      callback(preAuthError);
       return;
     }
 
-    if (!authResult) {
-      callback(null, errorResult(500, 'Internal Server Error'));
+    if (preAuthLimited) {
+      callback(null, preAuthLimited);
       return;
     }
 
-    if (!authResult.ok || !authResult.auth) {
-      callback(null, authResult.result || errorResult(401, 'Unauthorized'));
-      return;
-    }
-
-    const decision = deps.checkRateLimit(rateLimitInput(request, deps, 'profile_read', authResult.auth.session.publicId));
-    const limited = rateLimitedResult(decision, request.now.getTime());
-
-    if (limited) {
-      callback(null, limited);
-      return;
-    }
-
-    deps.findProfileState(authResult.auth.session.id, function(profileError, profile) {
-      if (profileError) {
-        callback(profileError);
+    authenticateAnonymousSession(request, deps, function(error, authResult) {
+      if (error) {
+        callback(error);
         return;
       }
 
-      if (!profile) {
-        callback(null, errorResult(404, 'Not Found'));
+      if (!authResult) {
+        callback(null, errorResult(500, 'Internal Server Error'));
         return;
       }
 
-      if (profile.deletedAt) {
-        callback(null, errorResult(410, 'Gone'));
+      if (!authResult.ok || !authResult.auth) {
+        callback(null, authResult.result || errorResult(401, 'Unauthorized'));
         return;
       }
 
-      callback(null, response(200, responseContract.payload([anonymousProfile.profileEnvelope(profile)])));
+      checkRateLimit(request, deps, rateLimitInput(request, deps, 'profile_read', authResult.auth.session.publicId), function(rateLimitError, decision) {
+        const limited = decision ? rateLimitedResult(decision, request.now.getTime()) : null;
+
+        if (rateLimitError) {
+          callback(rateLimitError);
+          return;
+        }
+
+        if (limited) {
+          callback(null, limited);
+          return;
+        }
+
+        deps.findProfileState((authResult.auth as AnonymousAuthenticatedSession).session.id, function(profileError, profile) {
+          if (profileError) {
+            callback(profileError);
+            return;
+          }
+
+          if (!profile) {
+            callback(null, errorResult(404, 'Not Found'));
+            return;
+          }
+
+          if (profile.deletedAt) {
+            callback(null, errorResult(410, 'Gone'));
+            return;
+          }
+
+          callback(null, response(200, responseContract.payload([anonymousProfile.profileEnvelope(profile)])));
+        });
+      });
     });
   });
 }
@@ -382,53 +430,64 @@ export function handleUpdateAnonymousProfile(request: AnonymousEndpointRequest, 
       return;
     }
 
-    const csrfResult = verifyCsrf(request, deps, authResult.auth.session);
-
-    if (csrfResult) {
-      callback(null, csrfResult);
-      return;
-    }
-
-    const decision = deps.checkRateLimit(rateLimitInput(request, deps, 'profile_write', authResult.auth.session.publicId));
-    const limited = rateLimitedResult(decision, request.now.getTime());
-
-    if (limited) {
-      callback(null, limited);
-      return;
-    }
-
-    const validation = profileValidation.validateAnonymousProfilePutBody(request.body);
-
-    if (!validation.ok || !validation.profile || !validation.rowVersion) {
-      callback(null, validationErrorResult(validation));
-      return;
-    }
-
-    const session = authResult.auth.session;
-
-    deps.updateProfile({
-      anonymousSessionId: session.id,
-      expectedRowVersion: validation.rowVersion,
-      profile: validation.profile
-    }, function(updateError, profile) {
-      if (updateError) {
-        callback(updateError);
+    verifyCsrf(request, deps, authResult.auth.session, function(csrfError, csrfResult) {
+      if (csrfError) {
+        callback(csrfError);
         return;
       }
 
-      if (!profile) {
-        deps.findProfile(session.id, function(findError, existingProfile) {
-          if (findError) {
-            callback(findError);
+      if (csrfResult) {
+        callback(null, csrfResult);
+        return;
+      }
+
+      checkRateLimit(request, deps, rateLimitInput(request, deps, 'profile_write', (authResult.auth as AnonymousAuthenticatedSession).session.publicId), function(rateLimitError, decision) {
+        const limited = decision ? rateLimitedResult(decision, request.now.getTime()) : null;
+
+        if (rateLimitError) {
+          callback(rateLimitError);
+          return;
+        }
+
+        if (limited) {
+          callback(null, limited);
+          return;
+        }
+
+        const validation = profileValidation.validateAnonymousProfilePutBody(request.body);
+
+        if (!validation.ok || !validation.profile || !validation.rowVersion) {
+          callback(null, validationErrorResult(validation));
+          return;
+        }
+
+        const session = (authResult.auth as AnonymousAuthenticatedSession).session;
+
+        deps.updateProfile({
+          anonymousSessionId: session.id,
+          expectedRowVersion: validation.rowVersion,
+          profile: validation.profile
+        }, function(updateError, profile) {
+          if (updateError) {
+            callback(updateError);
             return;
           }
 
-          callback(null, existingProfile ? errorResult(409, 'Conflict') : errorResult(404, 'Not Found'));
-        });
-        return;
-      }
+          if (!profile) {
+            deps.findProfile(session.id, function(findError, existingProfile) {
+              if (findError) {
+                callback(findError);
+                return;
+              }
 
-      callback(null, response(200, responseContract.payload([anonymousProfile.profileEnvelope(profile)])));
+              callback(null, existingProfile ? errorResult(409, 'Conflict') : errorResult(404, 'Not Found'));
+            });
+            return;
+          }
+
+          callback(null, response(200, responseContract.payload([anonymousProfile.profileEnvelope(profile)])));
+        });
+      });
     });
   });
 }
@@ -450,51 +509,62 @@ export function handleDeleteAnonymousProfile(request: AnonymousEndpointRequest, 
       return;
     }
 
-    const csrfResult = verifyCsrf(request, deps, authResult.auth.session);
-
-    if (csrfResult) {
-      callback(null, csrfResult);
-      return;
-    }
-
-    const decision = deps.checkRateLimit(rateLimitInput(request, deps, 'profile_delete', authResult.auth.session.publicId));
-    const limited = rateLimitedResult(decision, request.now.getTime());
-
-    if (limited) {
-      callback(null, limited);
-      return;
-    }
-
-    deps.deleteProfileAndRevoke({
-      anonymousSessionId: authResult.auth.session.id,
-      revokeReason: 'profile_deleted'
-    }, function(deleteError, deleted) {
-      if (deleteError) {
-        callback(deleteError);
+    verifyCsrf(request, deps, authResult.auth.session, function(csrfError, csrfResult) {
+      if (csrfError) {
+        callback(csrfError);
         return;
       }
 
-      if (!deleted) {
-        callback(null, errorResult(500, 'Internal Server Error'));
+      if (csrfResult) {
+        callback(null, csrfResult);
         return;
       }
 
-      if (!deleted.session) {
-        callback(null, errorResult(500, 'Internal Server Error'));
-        return;
-      }
+      checkRateLimit(request, deps, rateLimitInput(request, deps, 'profile_delete', (authResult.auth as AnonymousAuthenticatedSession).session.publicId), function(rateLimitError, decision) {
+        const limited = decision ? rateLimitedResult(decision, request.now.getTime()) : null;
 
-      if (!deleted.profile) {
-        callback(null, errorResult(410, 'Gone'));
-        return;
-      }
+        if (rateLimitError) {
+          callback(rateLimitError);
+          return;
+        }
 
-      callback(null, {
-        statusCode: 204,
-        headers: jsonHeaders({
-          'Set-Cookie': anonymousSecurity.clearSessionCookie()
-        }),
-        body: ''
+        if (limited) {
+          callback(null, limited);
+          return;
+        }
+
+        deps.deleteProfileAndRevoke({
+          anonymousSessionId: (authResult.auth as AnonymousAuthenticatedSession).session.id,
+          revokeReason: 'profile_deleted'
+        }, function(deleteError, deleted) {
+          if (deleteError) {
+            callback(deleteError);
+            return;
+          }
+
+          if (!deleted) {
+            callback(null, errorResult(500, 'Internal Server Error'));
+            return;
+          }
+
+          if (!deleted.session) {
+            callback(null, errorResult(500, 'Internal Server Error'));
+            return;
+          }
+
+          if (!deleted.profile) {
+            callback(null, errorResult(410, 'Gone'));
+            return;
+          }
+
+          callback(null, {
+            statusCode: 204,
+            headers: jsonHeaders({
+              'Set-Cookie': anonymousSecurity.clearSessionCookie()
+            }),
+            body: ''
+          });
+        });
       });
     });
   });

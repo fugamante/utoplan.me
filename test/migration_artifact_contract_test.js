@@ -29,6 +29,9 @@ var sessionProfileTables = migrations.filter(function(migration) {
 var anonymousSessionProfileTables = migrations.filter(function(migration) {
   return migration.fileName === '202605241100_reserve_anonymous_session_profile_tables.md';
 })[0].body;
+var anonymousRateLimitBuckets = migrations.filter(function(migration) {
+  return migration.fileName === '202605241200_add_anonymous_rate_limit_buckets.md';
+})[0].body;
 var docs = fs.readFileSync(path.join(root, 'docs', 'database-migrations.md'), 'utf8');
 
 [
@@ -101,3 +104,12 @@ assert(anonymousSessionProfileTables.indexOf('Anonymous session/profile endpoint
 assert(anonymousSessionProfileTables.indexOf('Expected API readiness remains versioned as `baseline-read-v1`') !== -1);
 assert(anonymousSessionProfileTables.indexOf('DROP TABLE IF EXISTS anonymous_profile_events') < anonymousSessionProfileTables.indexOf('DROP TABLE IF EXISTS anonymous_planning_profiles'));
 assert(anonymousSessionProfileTables.indexOf('DROP TABLE IF EXISTS anonymous_planning_profiles') < anonymousSessionProfileTables.indexOf('DROP TABLE IF EXISTS anonymous_sessions'));
+
+assert(docs.indexOf('202605241200_add_anonymous_rate_limit_buckets.md') !== -1);
+assert(anonymousRateLimitBuckets.indexOf('CREATE TABLE IF NOT EXISTS anonymous_rate_limit_buckets') !== -1);
+assert(anonymousRateLimitBuckets.indexOf('rate_limit_key text PRIMARY KEY') !== -1);
+assert(anonymousRateLimitBuckets.indexOf('request_count integer NOT NULL DEFAULT 0') !== -1);
+assert(anonymousRateLimitBuckets.indexOf('reset_at timestamptz NOT NULL') !== -1);
+assert(anonymousRateLimitBuckets.indexOf('anonymous_rate_limit_buckets_reset_index') !== -1);
+assert(anonymousRateLimitBuckets.indexOf('Do not seed this table. It is runtime-owned counter state.') !== -1);
+assert(anonymousRateLimitBuckets.indexOf('DROP TABLE IF EXISTS anonymous_rate_limit_buckets') !== -1);
