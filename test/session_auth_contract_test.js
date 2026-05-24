@@ -246,7 +246,7 @@ assert.strictEqual(contract.retention.publicSeedsAllowed, false);
   'anonymous_planning_profiles_retention_index',
   'profile.export.rejected',
   'client IP plus normalized Origin',
-  'Runtime route work may begin only after'
+  'Runtime success behavior may begin only after'
 ].forEach(function(fragment) {
   assert(runtimeSequence.indexOf(fragment) !== -1, 'runtime sequence should mention ' + fragment);
 });

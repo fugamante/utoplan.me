@@ -2,6 +2,7 @@
 
 const assert = require('assert');
 const http = require('http');
+const anonymousRateLimit = require('../lib/anonymous_rate_limit');
 const anonymousRuntime = require('../lib/anonymous_runtime');
 const modernApi = require('../lib/server');
 
@@ -60,6 +61,8 @@ const acceptedGateEnv = {
 };
 const originalAnonymousRuntime = process.env.UTOPLAN_ANONYMOUS_RUNTIME;
 const originalAnonymousRateLimitMode = process.env.UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE;
+const originalReservedRateLimit = process.env.UTOPLAN_ANONYMOUS_RESERVED_RATE_LIMIT;
+const originalReservedRateLimitWindow = process.env.UTOPLAN_ANONYMOUS_RESERVED_RATE_LIMIT_WINDOW_MS;
 
 process.env.UTOPLAN_ANONYMOUS_RUNTIME = acceptedGateEnv.UTOPLAN_ANONYMOUS_RUNTIME;
 process.env.UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE = acceptedGateEnv.UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE;
@@ -79,6 +82,18 @@ function restoreRuntimeEnv() {
     delete process.env.UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE;
   } else {
     process.env.UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE = originalAnonymousRateLimitMode;
+  }
+
+  if (originalReservedRateLimit === undefined) {
+    delete process.env.UTOPLAN_ANONYMOUS_RESERVED_RATE_LIMIT;
+  } else {
+    process.env.UTOPLAN_ANONYMOUS_RESERVED_RATE_LIMIT = originalReservedRateLimit;
+  }
+
+  if (originalReservedRateLimitWindow === undefined) {
+    delete process.env.UTOPLAN_ANONYMOUS_RESERVED_RATE_LIMIT_WINDOW_MS;
+  } else {
+    process.env.UTOPLAN_ANONYMOUS_RESERVED_RATE_LIMIT_WINDOW_MS = originalReservedRateLimitWindow;
   }
 }
 
@@ -251,6 +266,96 @@ server.listen(0, '127.0.0.1', async function() {
     assert.strictEqual(deniedProfileMethod.headers.allow, 'GET, PUT, DELETE');
     assert.strictEqual(deniedProfileMethod.headers['access-control-allow-origin'], allowedOrigin);
     assertReservedJson(deniedProfileMethod, 'Method Not Allowed');
+
+    anonymousRateLimit.resetAnonymousRateLimits();
+    process.env.UTOPLAN_ANONYMOUS_RESERVED_RATE_LIMIT = '1';
+    process.env.UTOPLAN_ANONYMOUS_RESERVED_RATE_LIMIT_WINDOW_MS = '5000';
+
+    const firstLimitedProfileRead = await request(server, '/v1/profile', {
+      headers: {
+        Origin: allowedOrigin
+      }
+    });
+    assert.strictEqual(firstLimitedProfileRead.statusCode, 501);
+    assertReservedJson(firstLimitedProfileRead, 'Not Implemented');
+
+    const limitedProfileRead = await request(server, '/v1/profile', {
+      headers: {
+        Origin: allowedOrigin
+      }
+    });
+    assert.strictEqual(limitedProfileRead.statusCode, 429);
+    assert.strictEqual(limitedProfileRead.headers['access-control-allow-origin'], allowedOrigin);
+    assert.strictEqual(limitedProfileRead.headers['retry-after'], '5');
+    assert.strictEqual(limitedProfileRead.headers['ratelimit-limit'], undefined);
+    assert.strictEqual(limitedProfileRead.headers['ratelimit-remaining'], undefined);
+    assert.strictEqual(limitedProfileRead.headers['ratelimit-reset'], undefined);
+    assert.strictEqual(limitedProfileRead.headers['set-cookie'], undefined);
+    assertReservedJson(limitedProfileRead, 'Too Many Requests');
+
+    anonymousRateLimit.resetAnonymousRateLimits();
+
+    const firstLimitedSession = await request(server, '/v1/anonymous-sessions', {
+      method: 'POST',
+      headers: {
+        Origin: allowedOrigin
+      }
+    });
+    assert.strictEqual(firstLimitedSession.statusCode, 501);
+
+    const limitedSession = await request(server, '/v1/anonymous-sessions', {
+      method: 'POST',
+      headers: {
+        Origin: allowedOrigin
+      }
+    });
+    assert.strictEqual(limitedSession.statusCode, 429);
+    assert.strictEqual(limitedSession.headers['access-control-allow-origin'], allowedOrigin);
+    assert.strictEqual(limitedSession.headers['retry-after'], '5');
+    assert.strictEqual(limitedSession.headers['set-cookie'], undefined);
+    assertReservedJson(limitedSession, 'Too Many Requests');
+
+    const forbiddenSessionBeforeRateLimit = await request(server, '/v1/anonymous-sessions', {
+      method: 'POST',
+      headers: {
+        Origin: 'https://evil.example'
+      }
+    });
+    assert.strictEqual(forbiddenSessionBeforeRateLimit.statusCode, 403);
+    assertReservedJson(forbiddenSessionBeforeRateLimit, 'Forbidden');
+
+    anonymousRateLimit.resetAnonymousRateLimits();
+
+    const firstLimitedProfileWrite = await request(server, '/v1/profile', {
+      method: 'PUT',
+      headers: {
+        Origin: allowedOrigin,
+        'X-CSRF-Token': 'csrf-token'
+      }
+    });
+    assert.strictEqual(firstLimitedProfileWrite.statusCode, 501);
+
+    const limitedProfileWrite = await request(server, '/v1/profile', {
+      method: 'PUT',
+      headers: {
+        Origin: allowedOrigin,
+        'X-CSRF-Token': 'csrf-token'
+      }
+    });
+    assert.strictEqual(limitedProfileWrite.statusCode, 429);
+    assert.strictEqual(limitedProfileWrite.headers['access-control-allow-origin'], allowedOrigin);
+    assert.strictEqual(limitedProfileWrite.headers['retry-after'], '5');
+    assert.strictEqual(limitedProfileWrite.headers['set-cookie'], undefined);
+    assertReservedJson(limitedProfileWrite, 'Too Many Requests');
+
+    const forbiddenProfileWriteBeforeRateLimit = await request(server, '/v1/profile', {
+      method: 'PUT',
+      headers: {
+        Origin: allowedOrigin
+      }
+    });
+    assert.strictEqual(forbiddenProfileWriteBeforeRateLimit.statusCode, 403);
+    assertReservedJson(forbiddenProfileWriteBeforeRateLimit, 'Forbidden');
 
     server.close(function(closeError) {
       restoreRuntimeEnv();

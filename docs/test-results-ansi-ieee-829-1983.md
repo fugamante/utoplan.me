@@ -23,6 +23,7 @@ This report covers the current modernization branch after adding:
 - endpoint-level reserved anonymous route contracts and production rate-limit policy helpers with reserved endpoints still returning `501`
 - transactional anonymous runtime composition helpers and separate anonymous schema readiness gates with reserved endpoints still returning `501`
 - release-gated anonymous runtime activation controls with reserved endpoints still returning `501`
+- reserved-route `429` response contracts and pure anonymous create/read handler composition with endpoint success behavior still disabled
 - Docker Postgres demo seed and demo Compose topology
 - readiness coverage for the required demo session table
 - release smoke support for demo-session validation
@@ -112,6 +113,14 @@ Current anonymous runtime activation gate slice rerun:
 - `npm run docker:test:proxy`: Pass
 - `git diff --check`: Pass
 
+Current anonymous reserved-rate-limit/handler-composition slice rerun:
+
+- `npm --prefix dtoapi/modern test`: Pass
+- `npm run test:session-auth-contract`: Pass
+- `npm test`: Pass
+- `npm run docker:test:proxy`: Pass
+- `git diff --check`: Pass
+
 ## Evaluation
 
 The tested branch satisfies the current modernization acceptance criteria for:
@@ -130,7 +139,7 @@ None observed in the validation commands listed above.
 ## Residual Risks
 
 - Production-grade user accounts, passwords, and privacy controls are not implemented.
-- Anonymous session/profile runtime endpoints remain disabled pending rate-limit response contracts, endpoint handler composition, and shared/edge production rate limiting.
+- Anonymous session/profile runtime endpoints remain disabled pending full anonymous endpoint implementation, shared/edge production rate limiting, release-reviewed anonymous schema readiness, and success/failure endpoint tests.
 - Demo seed data is intentionally non-production and should not be confused with a complete source-backed product dataset.
 - CBP field semantics still carry low transform confidence.
 - Planning signals remain intentionally absent until more source-backed data and product rules are defined.

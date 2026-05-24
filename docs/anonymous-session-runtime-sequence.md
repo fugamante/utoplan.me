@@ -90,7 +90,7 @@ Required controls:
 
 ## Rate Limits
 
-Initial runtime implementation must reserve these limit keys and apply them before any profile mutation. The current scaffold uses a process-local fixed-window helper for deterministic tests only: default limit `60`, default window `60000` ms, and stable non-secret keys. Public or multi-instance runtime must use shared storage or an edge/platform limiter before endpoint activation.
+Initial runtime implementation must reserve these limit keys and apply them before any profile mutation. The current scaffold uses a process-local fixed-window helper for deterministic tests and reserved-route `429` contract coverage only: default limit `60`, default window `60000` ms, and stable non-secret keys. Public or multi-instance runtime must use shared storage or an edge/platform limiter before endpoint activation.
 
 - anonymous session creation: client IP plus normalized Origin
 - profile reads: anonymous session public id after authentication, with IP plus Origin fallback before authentication
@@ -147,11 +147,11 @@ Allowed profile data is object-only and may contain only:
 
 ## Implementation Gate
 
-Runtime route work may begin only after:
+Runtime success behavior may begin only after:
 
-- the anonymous migration artifact is reviewed
-- route-specific CORS helpers are designed apart from current wildcard public-read behavior
-- CSRF token generation, hashing, and validation helpers are designed
-- shared production rate-limit storage is selected
-- focused endpoint tests cover success, ownership failure, CSRF failure, CORS failure, stale writes, delete/revoke, and audit events
+- the anonymous migration artifact is reviewed and applied
+- route-specific CORS, CSRF, token, body-validation, rate-limit response, and handler-composition scaffolding remain green
+- shared production rate-limit storage or edge limiting is selected
+- trusted client-IP boundary behavior is configured and tested
 - release-gated runtime activation fails closed unless shared/edge rate limiting and anonymous schema readiness are configured
+- focused endpoint tests cover success, ownership failure, CSRF failure, CORS failure, stale writes, delete/revoke, retention, and audit events

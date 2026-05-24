@@ -96,7 +96,7 @@ Anonymous rate-limit rejections must return `429` without revealing whether a se
 
 Profile writes must enforce caller ownership in the same atomic update as optimistic concurrency, using the anonymous session owner, expected `rowVersion`, and non-deleted profile predicate in one write statement.
 
-This anonymous contract now has a separate anonymous storage migration artifact, runtime sequence document, route-specific CORS/CSRF scaffolding, token-hashing helpers, anonymous data-access scaffolding, process-local rate-limit scaffolding, profile body-validation helpers, endpoint-level reserved-route tests, transactional create/delete composition helpers, a separate enabled-runtime schema readiness gate, and release-gated activation scaffolding. Runtime endpoints remain blocked until the artifact is reviewed/applied as part of a release and endpoint tests cover ownership, stale writes, deletion, audit, retention, `429` response behavior, and shared production rate limits. The existing `user_accounts` and `planning_profiles.account_id` reservation is for password-account work and must not be filled with dummy account rows for anonymous users.
+This anonymous contract now has a separate anonymous storage migration artifact, runtime sequence document, route-specific CORS/CSRF scaffolding, token-hashing helpers, anonymous data-access scaffolding, process-local rate-limit scaffolding, profile body-validation helpers, endpoint-level reserved-route tests, transactional create/delete composition helpers, a separate enabled-runtime schema readiness gate, release-gated activation scaffolding, reserved-route `429` response coverage, and pure handler-composition scaffolding. Runtime endpoints remain blocked until the artifact is reviewed/applied as part of a release and endpoint tests cover ownership, stale writes, deletion, audit, retention, and shared production rate limits. The existing `user_accounts` and `planning_profiles.account_id` reservation is for password-account work and must not be filled with dummy account rows for anonymous users.
 
 ## Privacy Rules
 
@@ -122,4 +122,4 @@ Production implementation must provide deletion and export behavior. Public seed
 
 ## Next Implementation Gate
 
-The next safe implementation step is rate-limit response contract tests plus anonymous endpoint handler composition. Any endpoint implementation should come after the anonymous migration artifact passes release review and should keep password auth disabled until the contract requirements are satisfied.
+The next safe implementation step is anonymous route implementation behind the release activation gate. Endpoint implementation should come after the anonymous migration artifact passes release review, anonymous schema readiness is green, shared or edge production rate limiting is selected, and password auth remains disabled until the contract requirements are satisfied.

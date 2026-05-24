@@ -82,6 +82,22 @@ assert.strictEqual(rateLimit.retryAfterSeconds({
   remaining: 0,
   resetAtMs: 5300
 }, 300), 5);
+assert.deepStrictEqual(rateLimit.anonymousRateLimitHeaders({
+  allowed: false,
+  key: third.key,
+  limit: third.limit,
+  remaining: 0,
+  resetAtMs: 5300
+}, 300), {
+  'Retry-After': '5'
+});
+assert.strictEqual(rateLimit.anonymousRateLimitHeaders({
+  allowed: false,
+  key: third.key,
+  limit: third.limit,
+  remaining: 0,
+  resetAtMs: 200
+}, 300)['RateLimit-Limit'], undefined);
 
 const afterReset = rateLimit.checkRateLimit({
   scope: 'anonymous_session_creation',
