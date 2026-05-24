@@ -40,6 +40,7 @@
 - The modern API exposes that fixture-backed read model through DB-free `GET /v1/planning/context-demo`.
 - The modern API exposes the first live planning-context slice through `GET /v1/planning/context?municipality=...&category=...`, resolving municipality/category from the database and returning source-backed CBP facts with visible provenance confidence while keeping signals and scores empty.
 - The seeded Docker/Postgres demo now includes a neutral `demo_sessions` table and `GET /v1/demo/session?session=demo-session-1` returns a saved local demo profile composed with live planning context.
+- `docs/product-scope.md`, `docs/demo-manual.md`, `docs/phase-summaries.md`, and `docs/test-results-ansi-ieee-829-1983.md` capture the current product boundary, demo operation path, roadmap phase summaries, and validation evidence.
 - `scripts/data_normalization.js` provides fixture-backed normalization helpers for NAICS filtering, municipality code coercion, title cleanup, and university coordinate join review behavior.
 - `scripts/data_import_plan.js` provides an offline fixture planning harness and CLI that reports accepted, rejected, and manual-review records without fetching source data or mutating a database.
 - `scripts/data_source_cache.js` downloads only registered HTTPS Puerto Rico sources into an ignored local cache with metadata sidecars, and the offline planner can consume supported cached CSV/JSON sources by source ID while reporting unsupported cached sources explicitly.
