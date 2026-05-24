@@ -1,0 +1,305 @@
+{
+  "schemaVersion": 1,
+  "scope": "puerto-rico-only",
+  "mappedAt": "2026-05-23",
+  "sourceRegistry": "data/sources/puerto-rico.json",
+  "schemaMapping": "data/mappings/puerto-rico-schema-map.json",
+  "provenanceContract": "data/mappings/puerto-rico-provenance-confidence.json",
+  "naicsVersion": "2012",
+  "status": "draft-category-crosswalk",
+  "notes": "Curated starter categories for planning context. These mappings are product assumptions for filtering CBP facts; they are not legal, financial, zoning, or market advice.",
+  "requiredBeforePlanningEndpoint": [
+    "Validate category labels and assumptions with product review.",
+    "Confirm CBP NAICS coverage and suppression behavior for each mapped code family.",
+    "Decide how aggregate NAICS codes should be handled before ranking or scoring.",
+    "Keep confidence and limitations visible in any planning response."
+  ],
+  "categories": [
+    {
+      "id": "restaurant_cafe",
+      "displayName": "Restaurant or cafe",
+      "description": "Food service establishment such as a restaurant, cafe, limited-service eatery, or drinking place.",
+      "mappedNaics": [
+        {
+          "code": "722511",
+          "title": "Full-service restaurants",
+          "match": "primary"
+        },
+        {
+          "code": "722513",
+          "title": "Limited-service restaurants",
+          "match": "primary"
+        },
+        {
+          "code": "722515",
+          "title": "Snack and nonalcoholic beverage bars",
+          "match": "supporting"
+        },
+        {
+          "code": "722410",
+          "title": "Drinking places",
+          "match": "supporting"
+        }
+      ],
+      "assumptions": [
+        "Needs customer access, food-service permitting, utilities, and location-specific zoning review.",
+        "CBP activity can show related establishment presence but not current demand or site viability."
+      ],
+      "confidence": "medium",
+      "status": "candidate",
+      "limitations": [
+        "Does not separate cuisine, service model, capacity, or alcohol licensing.",
+        "Does not estimate foot traffic, revenue, rent, or permit approval likelihood."
+      ]
+    },
+    {
+      "id": "small_grocery",
+      "displayName": "Small grocery",
+      "description": "Neighborhood-scale food, grocery, or convenience retail establishment.",
+      "mappedNaics": [
+        {
+          "code": "445110",
+          "title": "Supermarkets and other grocery stores",
+          "match": "primary"
+        },
+        {
+          "code": "445120",
+          "title": "Convenience stores",
+          "match": "primary"
+        },
+        {
+          "code": "445299",
+          "title": "All other specialty food stores",
+          "match": "supporting"
+        }
+      ],
+      "assumptions": [
+        "Needs customer access, supply logistics, refrigeration/utilities, and local retail compatibility review.",
+        "ACS and accessibility data are needed before drawing demand or access conclusions."
+      ],
+      "confidence": "medium",
+      "status": "candidate",
+      "limitations": [
+        "Does not distinguish small neighborhood groceries from larger supermarkets.",
+        "Does not account for inventory model, delivery radius, or food-access need."
+      ]
+    },
+    {
+      "id": "clinic_health_service",
+      "displayName": "Clinic or health service",
+      "description": "Ambulatory health, medical office, clinic, or outpatient service establishment.",
+      "mappedNaics": [
+        {
+          "code": "621111",
+          "title": "Offices of physicians",
+          "match": "primary"
+        },
+        {
+          "code": "621210",
+          "title": "Offices of dentists",
+          "match": "supporting"
+        },
+        {
+          "code": "621330",
+          "title": "Offices of mental health practitioners",
+          "match": "supporting"
+        },
+        {
+          "code": "621498",
+          "title": "All other outpatient care centers",
+          "match": "supporting"
+        }
+      ],
+      "assumptions": [
+        "Needs licensing, accessibility, utilities, and professional workforce review.",
+        "Education institution proximity is only a weak context signal until program and workforce data are added."
+      ],
+      "confidence": "low",
+      "status": "candidate",
+      "limitations": [
+        "Does not model provider specialty, payer mix, regulation, or certificate requirements.",
+        "Does not estimate community health need or provider shortage."
+      ]
+    },
+    {
+      "id": "software_service_office",
+      "displayName": "Software or service office",
+      "description": "Software, technical consulting, or lower-impact office-based service activity.",
+      "mappedNaics": [
+        {
+          "code": "541511",
+          "title": "Custom computer programming services",
+          "match": "primary"
+        },
+        {
+          "code": "541512",
+          "title": "Computer systems design services",
+          "match": "primary"
+        },
+        {
+          "code": "541519",
+          "title": "Other computer related services",
+          "match": "supporting"
+        }
+      ],
+      "assumptions": [
+        "Often has lower land-use complexity than food, lodging, or clinical uses.",
+        "Needs broadband, workforce, and office suitability context before strong planning signals."
+      ],
+      "confidence": "medium",
+      "status": "candidate",
+      "limitations": [
+        "Does not distinguish remote-first, client-facing, or back-office operating models.",
+        "Does not measure broadband quality, labor availability, or customer demand."
+      ]
+    },
+    {
+      "id": "lodging_tourism",
+      "displayName": "Lodging or tourism service",
+      "description": "Traveler accommodation or tourism-facing establishment.",
+      "mappedNaics": [
+        {
+          "code": "721110",
+          "title": "Hotels and motels",
+          "match": "primary"
+        },
+        {
+          "code": "721191",
+          "title": "Bed-and-breakfast inns",
+          "match": "supporting"
+        },
+        {
+          "code": "561520",
+          "title": "Tour operators",
+          "match": "supporting"
+        },
+        {
+          "code": "561510",
+          "title": "Travel agencies",
+          "match": "supporting"
+        }
+      ],
+      "assumptions": [
+        "Needs tourism context, zoning, hazard, infrastructure, and permit review.",
+        "CBP establishment presence is not a substitute for lodging demand or occupancy data."
+      ],
+      "confidence": "low",
+      "status": "candidate",
+      "limitations": [
+        "Does not include short-term rental platform activity.",
+        "Does not evaluate tourism flows, seasonality, property availability, or hazard exposure."
+      ]
+    },
+    {
+      "id": "construction_service",
+      "displayName": "Construction service",
+      "description": "Construction contractor or trade service business.",
+      "mappedNaics": [
+        {
+          "code": "236220",
+          "title": "Commercial and institutional building construction",
+          "match": "supporting"
+        },
+        {
+          "code": "238210",
+          "title": "Electrical contractors and other wiring installation contractors",
+          "match": "supporting"
+        },
+        {
+          "code": "238220",
+          "title": "Plumbing, heating, and air-conditioning contractors",
+          "match": "supporting"
+        },
+        {
+          "code": "238990",
+          "title": "Other specialty trade contractors",
+          "match": "primary"
+        }
+      ],
+      "assumptions": [
+        "Related activity may be better understood once permit trends are added.",
+        "Workforce and storage/yard needs vary widely by trade."
+      ],
+      "confidence": "low",
+      "status": "candidate",
+      "limitations": [
+        "Does not cover every construction trade or contractor scale.",
+        "Does not infer project demand, bonding capacity, or permitting workload."
+      ]
+    },
+    {
+      "id": "professional_services",
+      "displayName": "Professional services",
+      "description": "Office-based professional, technical, consulting, accounting, legal, or advisory service.",
+      "mappedNaics": [
+        {
+          "code": "541110",
+          "title": "Offices of lawyers",
+          "match": "supporting"
+        },
+        {
+          "code": "541211",
+          "title": "Offices of certified public accountants",
+          "match": "supporting"
+        },
+        {
+          "code": "541611",
+          "title": "Administrative management and general management consulting services",
+          "match": "primary"
+        },
+        {
+          "code": "541990",
+          "title": "All other professional, scientific, and technical services",
+          "match": "supporting"
+        }
+      ],
+      "assumptions": [
+        "Usually office-oriented, but client access, workforce, and business density still matter.",
+        "Category is intentionally broad and should be narrowed for specialized planning."
+      ],
+      "confidence": "medium",
+      "status": "candidate",
+      "limitations": [
+        "Combines many professional services with different demand drivers.",
+        "Does not estimate client base, pricing, or licensing needs."
+      ]
+    },
+    {
+      "id": "education_training",
+      "displayName": "Education or training center",
+      "description": "Instructional, tutoring, vocational, or training-service establishment.",
+      "mappedNaics": [
+        {
+          "code": "611310",
+          "title": "Colleges, universities, and professional schools",
+          "match": "supporting"
+        },
+        {
+          "code": "611430",
+          "title": "Professional and management development training",
+          "match": "primary"
+        },
+        {
+          "code": "611519",
+          "title": "Other technical and trade schools",
+          "match": "primary"
+        },
+        {
+          "code": "611691",
+          "title": "Exam preparation and tutoring",
+          "match": "supporting"
+        }
+      ],
+      "assumptions": [
+        "Needs population, workforce, education ecosystem, and zoning/use context.",
+        "Existing institution presence may indicate ecosystem context but can also indicate competition."
+      ],
+      "confidence": "low",
+      "status": "candidate",
+      "limitations": [
+        "Does not distinguish accredited institutions from informal training services.",
+        "Does not model program demand, licensing, accreditation, or student pipeline."
+      ]
+    }
+  ]
+}
