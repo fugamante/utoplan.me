@@ -44,6 +44,21 @@ The strongest source matches found so far are:
 
 The `api.utoplan.me` host no longer resolves, and this pass did not recover archived API responses. Treat all row-level data from the original API as unrecovered.
 
+## Legacy Schema Mapping Snapshot (2026-05-24)
+
+Field-level mapping evidence for registered Puerto Rico candidates now exists
+for `cbps` and `unis` in `docs/data-source-schema-mapping.md`.
+
+Current status:
+
+- `cbps`: source-header evidence supports direct mapping for `cnaic`,
+  `total_anual`, and `num_est`; municipality CSV also supports `county`.
+  `total_indus` and `cnaic_name` still need explicit transform decisions where
+  fields are missing or ambiguous.
+- `unis`: source-header evidence supports `title` and a deterministic
+  `address` transform, but no coordinate fields are present for `lat`/`long`.
+  Geocoding policy remains a blocking decision for import readiness.
+
 ## Provenance Gap
 
 Before production use, public release, or broad data refresh work, identify and record:

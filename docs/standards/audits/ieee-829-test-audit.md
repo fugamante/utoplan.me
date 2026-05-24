@@ -50,7 +50,7 @@ evidence and must record restoration of the formal baseline as an action item.
 | `docs/deployment-topology.md` | Test design, item transmittal | Does test coverage exercise the app/API/private API topology? |
 | `docs/production-deployment.md` | Procedure, summary, release gate | Are deployment checks runnable and release blocking? |
 | `docs/data-intake.md` | Test design, quality gate | Are Puerto Rico-only source controls validated before import? |
-| `data/sources/puerto-rico.json` | Test item, test data | Are source records scoped, licensed, and dated? |
+| `data/sources/puerto-rico.json` | Test item, test data | Are source records scoped, licensed, dated, and mapped to active legacy columns where evidence exists? |
 | `db/migrations/*.md` | Test item, transmittal | Are database baselines and changes tied to readiness behavior? |
 | `dtoapi/test/*.js` | API test cases | Do preserved compatibility tests cover public behavior? |
 | `dtoapi/modern/test/*.js` | API test cases | Do typed contracts, errors, records, and readiness stay covered? |
@@ -79,6 +79,8 @@ release branch, production deployment, or merge that changes app/API behavior.
   deployment documentation.
 - Confirm data-source registry changes pass the Puerto Rico-only source scope
   check before import scripts or production-style data claims are accepted.
+- Confirm `cbps` and `unis` registry entries include `legacySchemaMap` coverage
+  for preserved legacy columns, with unresolved-field notes where needed.
 - Confirm test data, seed data, and production data are identified separately in
   test procedures and release summaries.
 - Confirm release smoke procedures identify the commit, image/artifact, app URL,

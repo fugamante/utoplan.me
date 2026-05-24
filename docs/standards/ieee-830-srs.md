@@ -37,6 +37,7 @@ Puerto Rico data coverage and documents unresolved provenance gaps.
 - `docs/production-deployment.md`
 - `docs/data-intake.md`
 - `docs/data-provenance.md`
+- `docs/data-source-schema-mapping.md`
 - `docs/database-migrations.md`
 - `db/migrations/202605211200_baseline_read_v1.md`
 - `docs/standards/ieee-730-sqa-plan.md`
@@ -169,6 +170,9 @@ contracts working while rebuilding the data and technical foundation.
 - Candidate source records shall be registered before import work begins.
 - Registry entries shall declare whether the source is Puerto Rico-only or
   requires a deterministic Puerto Rico filter such as Census `state:72`.
+- Registry entries that target active preserved tables with available evidence
+  (currently `cbps` and `unis`) shall include legacy-column mapping coverage and
+  unresolved-field notes.
 - Import work shall not use broad national datasets unless the registry and
   importer both enforce the approved Puerto Rico filter.
 
@@ -186,7 +190,7 @@ contracts working while rebuilding the data and technical foundation.
 | FR-008 | Production startup shall fail on missing API database configuration. | Deployment verification and production API startup reject missing DB config. |
 | FR-009 | The release flow shall smoke test the public app origin and data path. | `npm run verify:release-smoke` checks app `/healthz`, public `/v1/unis`, and optional API `/readyz`. |
 | FR-010 | Database schema changes shall be handled as explicit migration artifacts. | New schema work includes artifact sections for preflight, apply, verify, rollback, and readiness impact. |
-| FR-011 | New production-style data sources shall be registered before import. | `npm run test:data-sources` passes and registry entries include required source metadata. |
+| FR-011 | New production-style data sources shall be registered before import. | `npm run test:data-sources` passes and registry entries include required source metadata plus legacy mapping evidence for active mapped tables. |
 | FR-012 | Unresolved legacy tables shall remain blocked for production import. | `cdepts`, `businesses`, and `grade_cs` imports are blocked until source, license, and transform path are recorded. |
 | FR-013 | Public behavior changes shall update related requirements, design, test, and release docs. | Relevant IEEE and project docs change in the same bundle as the behavior change. |
 
@@ -257,6 +261,7 @@ contracts working while rebuilding the data and technical foundation.
 | --- | --- | --- |
 | DR-001 | Active production-style data scope shall remain Puerto Rico-only. | Registry entries are Puerto Rico-only or enforce a documented Puerto Rico filter. |
 | DR-002 | Every accepted source shall record publisher, portal, license, URLs, retrieval date, target endpoint, status, and source-basis note. | `npm run test:data-sources` passes and manual review confirms complete metadata. |
+| DR-002A | Active mapped tables (`cbps`, `unis`) shall include source-to-legacy column coverage evidence and unresolved-field notes in the registry. | `npm run test:data-sources` enforces `legacySchemaMap` coverage and `docs/data-source-schema-mapping.md` documents the same mapping. |
 | DR-003 | Demo fixtures, test seed data, replacement candidates, and production data shall remain distinguishable. | Docs and health checks identify fixture mode; release checks verify fixture mode is absent. |
 | DR-004 | Original hackathon dataset provenance gaps shall remain visible until resolved. | `docs/data-provenance.md` records known evidence and unresolved source gaps. |
 | DR-005 | Source-to-endpoint transforms shall be documented before production import. | Import PRs include field mapping, filters, license evidence, and target endpoint impact. |
@@ -296,7 +301,7 @@ an explicit accepted risk:
 | FR-011 | Source-backed data intake | `npm run test:data-sources` |
 | FR-012 | Provenance risk control | `docs/data-provenance.md`, source registry review |
 | FR-013 | Documentation consistency | Standards and project-doc review |
-| DR-001 - DR-006 | Trustworthy Puerto Rico data product | Registry tests, provenance docs, import review, future recommendation tests |
+| DR-001 - DR-006, DR-002A | Trustworthy Puerto Rico data product | Registry tests, provenance docs, source-schema mapping docs, import review, future recommendation tests |
 
 ## 13. Open Requirements And Risks
 

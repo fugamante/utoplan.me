@@ -239,7 +239,7 @@ release evidence, and audit record.
 | Modern API | `docs/api-modernization.md`, IEEE 830 SRS | API notes, IEEE 1016 SDD | `npm run test:api`, `npm run test:api:modern` |
 | Database read baseline | `docs/database-migrations.md`, migration artifacts | `db/migrations/`, readiness design | `npm run test:migration-artifacts`, `npm run docker:test:db` |
 | Deployment topology | `docs/deployment-topology.md`, production runbook | IEEE 1016 SDD | Docker proxy/browser tests, deployment verification |
-| Data provenance | `docs/data-intake.md`, `docs/data-provenance.md` | Source registry, import design | `npm run test:data-sources`, data review |
+| Data provenance | `docs/data-intake.md`, `docs/data-provenance.md`, `docs/data-source-schema-mapping.md` | Source registry, import design | `npm run test:data-sources`, data review |
 | Release readiness | IEEE 730 SQA, IEEE 829 test document, production runbook | Release checklist | Release smoke, audit record, rollback review |
 | Standards corpus | This plan and peer IEEE documents | Audit hooks | Standards audit and document diffs |
 
@@ -257,8 +257,8 @@ Keep V&V records concise and reconstructable:
 - Migration artifacts with preflight, apply, verification, rollback, and
   post-deploy checks.
 - Data registry entries and provenance notes with publisher, license, source
-  URL, resource URL, Puerto Rico filter, retrieval date, target endpoint, and
-  candidate status.
+  URL, resource URL, Puerto Rico filter, retrieval date, target endpoint,
+  candidate status, and active-table legacy mapping coverage evidence.
 - Release summaries with artifact source, commit SHA, health/readiness status,
   smoke result, audit result, open anomalies, and rollback path.
 - Standards update notes when accepted recommendations change governance,

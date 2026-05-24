@@ -38,6 +38,7 @@ Out of scope unless explicitly revived:
 - `docs/database-migrations.md`
 - `docs/data-intake.md`
 - `docs/data-provenance.md`
+- `docs/data-source-schema-mapping.md`
 - `docs/deployment-topology.md`
 - `docs/frontend-inventory.md`
 - `docs/modernization-roadmap.md`
@@ -138,9 +139,14 @@ Each source record must capture:
 - Target legacy table or endpoint.
 - Candidate status and source-basis note.
 - Registry retrieval date.
+- Legacy-source-to-target coverage for active mapped tables (`cbps`, `unis`)
+  using `legacySchemaMap` in the registry.
 
 Broad national datasets are acceptable only when the registry records the
 Puerto Rico filter and the import implementation enforces it.
+
+Field-level mapping evidence for the active mapped tables is documented in
+`docs/data-source-schema-mapping.md`.
 
 ### 6.2 Database Baseline
 

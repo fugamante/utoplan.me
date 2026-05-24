@@ -164,7 +164,8 @@ product and operational purpose.
   explicitly approved in requirements, data registry, provenance docs, and V&V
   evidence.
 - Source entries include publisher, portal, license, source URL, resource or API
-  URL, target endpoint or table, source-basis note, status, and retrieval date.
+  URL, target endpoint or table, source-basis note, status, retrieval date, and
+  active-table legacy mapping coverage where evidence exists.
 - Broad national sources remain blocked unless deterministic Puerto Rico
   filtering is documented and enforced by import code.
 - Demo fixture data, test seed data, recovered legacy data, replacement

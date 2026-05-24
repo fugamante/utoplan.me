@@ -194,6 +194,8 @@ Data validation protects provenance and scope:
 - Every source must include publisher, portal, license, source URL, resource or
   API URL, target legacy table or endpoint, retrieval date, candidate status,
   and source-basis note.
+- Sources targeting active mapped tables (`cbps`, `unis`) must include
+  `legacySchemaMap` coverage entries with unresolved-field notes where needed.
 - Broad national datasets are blocked unless the registry and import path
   enforce a deterministic Puerto Rico filter.
 - Unresolved legacy tables remain blocked for production-style import until
@@ -233,7 +235,7 @@ Release validation checks that the intended commit can be operated safely:
 | TC-016 | Live release smoke | `UTOPLAN_APP_URL=<url> npm run verify:release-smoke` | Public app health and `/v1/unis` smoke pass |
 | TC-017 | API readiness | `curl -fsS <api-origin>/readyz` | API reports ready only with DB and schema available |
 | TC-018 | App health | `curl -fsS <app-origin>/healthz` | App reports expected service, proxy state, and no fixture leakage |
-| TC-019 | Source registry | `npm run test:data-sources` | Registered sources are Puerto Rico-only or explicitly filtered |
+| TC-019 | Source registry | `npm run test:data-sources` | Registered sources are Puerto Rico-only or explicitly filtered, and `cbps`/`unis` entries include `legacySchemaMap` coverage evidence |
 | TC-020 | Migration artifacts | `npm run test:migration-artifacts` | Migration documents include required release and rollback fields |
 | TC-021 | Security audit | Run all documented `npm audit` commands | Current lockfile-backed audit reports no blocking vulnerabilities |
 

@@ -97,6 +97,7 @@ Audits should use repository evidence first:
 - `docs/frontend-inventory.md`
 - `docs/data-intake.md`
 - `docs/data-provenance.md`
+- `docs/data-source-schema-mapping.md`
 - `docs/database-migrations.md`
 - `docs/deployment-topology.md`
 - `docs/production-deployment.md`

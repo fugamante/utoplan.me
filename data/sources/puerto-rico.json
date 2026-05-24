@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "scope": "puerto-rico-only",
-  "retrievedAt": "2026-05-22",
+  "retrievedAt": "2026-05-24",
   "sources": [
     {
       "id": "datospr-cbp-2014-puerto-rico",
@@ -17,7 +17,55 @@
       "resourceUrl": "https://datos.estadisticas.pr/dataset/b0e448f9-d41a-4064-8536-a1b8b2b9f04b/resource/4503472e-77a7-4b29-b4aa-8945cfa7664c/download/cbp14pr.csv",
       "resourceId": "4503472e-77a7-4b29-b4aa-8945cfa7664c",
       "sourceBasis": "Repository evidence points the legacy cbps endpoint at 2014 Census business-pattern data. This resource is already scoped to Puerto Rico.",
-      "notes": "Candidate replacement for the legacy cbps table; confirm column mapping before import."
+      "notes": "Candidate replacement for the legacy cbps table; confirm transform decisions before import.",
+      "legacySchemaMap": {
+        "table": "cbps",
+        "evidenceDate": "2026-05-24",
+        "evidenceType": "resource-header",
+        "columnCoverage": [
+          {
+            "legacyColumn": "cnaic",
+            "sourceFields": [
+              "naics"
+            ],
+            "coverage": "exact"
+          },
+          {
+            "legacyColumn": "total_anual",
+            "sourceFields": [
+              "ap"
+            ],
+            "coverage": "exact"
+          },
+          {
+            "legacyColumn": "num_est",
+            "sourceFields": [
+              "est"
+            ],
+            "coverage": "exact"
+          },
+          {
+            "legacyColumn": "total_indus",
+            "sourceFields": [
+              "emp"
+            ],
+            "coverage": "derived",
+            "notes": "Candidate employment-count mapping; legacy field meaning remains ambiguous."
+          },
+          {
+            "legacyColumn": "county",
+            "sourceFields": [],
+            "coverage": "missing",
+            "notes": "Puerto Rico aggregate file does not include county or municipality code."
+          },
+          {
+            "legacyColumn": "cnaic_name",
+            "sourceFields": [],
+            "coverage": "missing",
+            "notes": "NAICS title text is not present in this CSV header."
+          }
+        ]
+      }
     },
     {
       "id": "datospr-cbp-2014-municipios",
@@ -34,7 +82,56 @@
       "resourceUrl": "https://datos.estadisticas.pr/dataset/b0e448f9-d41a-4064-8536-a1b8b2b9f04b/resource/4828e082-6c0d-4d3f-be12-ab6aeb34eb59/download/cbp14pr_mun.csv",
       "resourceId": "4828e082-6c0d-4d3f-be12-ab6aeb34eb59",
       "sourceBasis": "Municipality-level 2014 County Business Patterns data for Puerto Rico.",
-      "notes": "Use as the preferred municipality-level CBP source if it preserves the legacy county/municipality join shape."
+      "notes": "Use as the preferred municipality-level CBP source if it preserves the legacy county/municipality join shape.",
+      "legacySchemaMap": {
+        "table": "cbps",
+        "evidenceDate": "2026-05-24",
+        "evidenceType": "resource-header",
+        "columnCoverage": [
+          {
+            "legacyColumn": "cnaic",
+            "sourceFields": [
+              "naics"
+            ],
+            "coverage": "exact"
+          },
+          {
+            "legacyColumn": "total_anual",
+            "sourceFields": [
+              "ap"
+            ],
+            "coverage": "exact"
+          },
+          {
+            "legacyColumn": "num_est",
+            "sourceFields": [
+              "est"
+            ],
+            "coverage": "exact"
+          },
+          {
+            "legacyColumn": "county",
+            "sourceFields": [
+              "fipscty"
+            ],
+            "coverage": "exact"
+          },
+          {
+            "legacyColumn": "total_indus",
+            "sourceFields": [
+              "emp"
+            ],
+            "coverage": "derived",
+            "notes": "Candidate employment-count mapping; legacy field meaning remains ambiguous."
+          },
+          {
+            "legacyColumn": "cnaic_name",
+            "sourceFields": [],
+            "coverage": "missing",
+            "notes": "NAICS title text is not present in this CSV header."
+          }
+        ]
+      }
     },
     {
       "id": "datospr-higher-ed-directory-2017-18",
@@ -50,7 +147,52 @@
       "resourceUrl": "https://datos.estadisticas.pr/dataset/ccf64cca-d0d6-4539-a803-70aeba73ea12/resource/818869e2-82c6-4189-bff8-40616e5d3010/download/directorio_de_instituciones_de_educaci_n_superior__puerto_rico__a_o_acad_mico_2017-18.csv",
       "resourceId": "818869e2-82c6-4189-bff8-40616e5d3010",
       "sourceBasis": "Puerto Rico higher education institution directory that can replace or refresh the legacy unis endpoint after field mapping.",
-      "notes": "This resource was published after the 2016 hackathon, so it is not confirmed original input."
+      "notes": "This resource was published after the 2016 hackathon, so it is not confirmed original input.",
+      "legacySchemaMap": {
+        "table": "unis",
+        "evidenceDate": "2026-05-24",
+        "evidenceType": "resource-header",
+        "columnCoverage": [
+          {
+            "legacyColumn": "title",
+            "sourceFields": [
+              "Nombre de la Institución"
+            ],
+            "coverage": "exact"
+          },
+          {
+            "legacyColumn": "address",
+            "sourceFields": [
+              "Dirección Física",
+              "Dirección Física 2",
+              "Pueblo"
+            ],
+            "coverage": "derived",
+            "notes": "Deterministic concatenation is possible."
+          },
+          {
+            "legacyColumn": "desc",
+            "sourceFields": [
+              "Unidad Académica",
+              "Principal Ejecutivo"
+            ],
+            "coverage": "derived",
+            "notes": "Needs deterministic formatting policy."
+          },
+          {
+            "legacyColumn": "lat",
+            "sourceFields": [],
+            "coverage": "missing",
+            "notes": "No coordinate fields in the source header."
+          },
+          {
+            "legacyColumn": "long",
+            "sourceFields": [],
+            "coverage": "missing",
+            "notes": "No coordinate fields in the source header."
+          }
+        ]
+      }
     },
     {
       "id": "datospr-official-municipality-boundaries",
@@ -82,7 +224,55 @@
       "sourceUrl": "https://www.census.gov/data/developers/data-sets/cbp-zbp/cbp-api.2014.html",
       "apiUrl": "https://api.census.gov/data/2014/cbp?get=ESTAB,PAYANN,NAICS2012,NAICS2012_TTL&for=county:*&in=state:72",
       "sourceBasis": "Direct Census API fallback for 2014 CBP data, constrained to Puerto Rico by FIPS state code 72.",
-      "notes": "Use only if the Datos.PR CBP files are unavailable or insufficient."
+      "notes": "Use only if the Datos.PR CBP files are unavailable or insufficient.",
+      "legacySchemaMap": {
+        "table": "cbps",
+        "evidenceDate": "2026-05-24",
+        "evidenceType": "api-fields",
+        "columnCoverage": [
+          {
+            "legacyColumn": "num_est",
+            "sourceFields": [
+              "ESTAB"
+            ],
+            "coverage": "exact"
+          },
+          {
+            "legacyColumn": "total_anual",
+            "sourceFields": [
+              "PAYANN"
+            ],
+            "coverage": "exact"
+          },
+          {
+            "legacyColumn": "cnaic",
+            "sourceFields": [
+              "NAICS2012"
+            ],
+            "coverage": "exact"
+          },
+          {
+            "legacyColumn": "cnaic_name",
+            "sourceFields": [
+              "NAICS2012_TTL"
+            ],
+            "coverage": "exact"
+          },
+          {
+            "legacyColumn": "county",
+            "sourceFields": [
+              "for=county:*"
+            ],
+            "coverage": "exact"
+          },
+          {
+            "legacyColumn": "total_indus",
+            "sourceFields": [],
+            "coverage": "missing",
+            "notes": "Fallback query does not include an unambiguous total_indus field."
+          }
+        ]
+      }
     }
   ],
   "unresolvedTargets": [

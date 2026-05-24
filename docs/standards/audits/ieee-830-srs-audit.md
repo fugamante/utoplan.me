@@ -117,6 +117,8 @@ the current project surface.
 - Each accepted production-style source requires publisher, portal, license,
   source URL, resource/API URL, target endpoint/table, status, source-basis
   note, and registry retrieval date.
+- `cbps` and `unis` source entries require `legacySchemaMap` column coverage
+  evidence with unresolved-field notes when coverage is partial.
 - Broad national datasets require deterministic Puerto Rico filtering in both
   the registry and import logic.
 - Demo fixtures, test seed data, recovered legacy data, and production data are
@@ -165,7 +167,8 @@ observable behavior changes.
 - Requirements distinguish mandatory production gates from optional
   optimizations.
 - Requirements that depend on external data name the source, scope, license,
-  retrieval expectation, and transform boundary.
+  retrieval expectation, transform boundary, and mapped target-column coverage
+  when available.
 - Requirements that alter public behavior name the API route, UI path, status
   code, response body, or browser-visible outcome.
 - Requirements that affect operations name the environment variable, health

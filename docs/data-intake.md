@@ -13,8 +13,23 @@ Each accepted source must record:
 - Target legacy table or endpoint.
 - Candidate status and a short source-basis note.
 - Retrieval date at the registry level.
+- Legacy-schema mapping evidence for active target tables where mapping
+  evidence exists.
 
 Do not import broad national datasets unless the registry entry includes a deterministic Puerto Rico filter and the import script enforces that filter.
+
+## Legacy Schema Mapping Gate
+
+Before writing import scripts, map candidate source fields to preserved legacy
+read-schema columns in `dtoapi/modern/src/resource_contract.ts`.
+
+Current mapping evidence is documented in
+`docs/data-source-schema-mapping.md` and reflected in
+`data/sources/puerto-rico.json` under `legacySchemaMap` for `cbps` and `unis`
+candidates.
+
+Keep unresolved columns explicit (for example, `missing` or `derived`) and do
+not promote a source to production import on demo fixtures or seed rows.
 
 ## Current Candidate Sources
 

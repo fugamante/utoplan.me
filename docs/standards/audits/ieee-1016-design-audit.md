@@ -159,6 +159,9 @@ changes:
   `db/migrations/`.
 - Compare data-intake and provenance docs against `data/sources/puerto-rico.json`
   and any import, seed, or fixture changes.
+- Confirm active mapped tables (`cbps`, `unis`) have consistent
+  `legacySchemaMap` coverage in the registry and
+  `docs/data-source-schema-mapping.md`.
 - Confirm design claims that mention tests are backed by executable tests or a
   documented manual verification procedure.
 
