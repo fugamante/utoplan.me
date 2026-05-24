@@ -1,0 +1,4 @@
+FROM postgres:12-alpine
+
+COPY docker/postgres/init.sql /docker-entrypoint-initdb.d/001_contract_data.sql
+COPY docker/postgres/anonymous.sql /docker-entrypoint-initdb.d/002_anonymous_runtime.sql

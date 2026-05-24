@@ -11,6 +11,7 @@
     "docker:test:modern-db": "docker compose run --build --rm modern-api-test; status=$?; docker compose down -v; exit $status",
     "docker:test:proxy": "docker compose run --build --rm app-modern-proxy-test; status=$?; docker compose down -v; exit $status",
     "docker:test:start-local-browser": "docker compose run --build --rm start-local-browser-test; status=$?; docker compose down -v; exit $status",
+    "docker:test:anonymous-runtime": "docker compose -f docker-compose.anonymous.yml up --build --wait --wait-timeout 120; status=$?; if [ $status -eq 0 ]; then UTOPLAN_APP_URL=http://127.0.0.1:18084 UTOPLAN_API_URL=http://127.0.0.1:13001 UTOPLAN_ANONYMOUS_SMOKE=1 npm run verify:release-smoke; status=$?; fi; docker compose -f docker-compose.anonymous.yml down -v; exit $status",
     "docker:test:all-db": "npm run docker:test:modern-db && npm run docker:test:data-sql-preview && npm run docker:test:proxy && npm run docker:test:start-local-browser",
     "install:all": "npm ci && npm --prefix app ci && npm --prefix dtoapi ci && npm --prefix dtoapi/modern ci",
     "start:app": "npm --prefix app start",

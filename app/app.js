@@ -85,10 +85,13 @@ function sendHealth(response) {
 
 function proxyApi(request, response) {
   var target = new URL(request.url, apiOrigin);
+  var clientIp = request.socket && request.socket.remoteAddress ? request.socket.remoteAddress : '';
   var proxyRequest = http.request(target, {
     method: request.method,
     headers: Object.assign({}, request.headers, {
-      host: target.host
+      host: target.host,
+      'x-forwarded-for': clientIp,
+      'x-real-ip': clientIp
     })
   }, function(proxyResponse) {
     response.writeHead(proxyResponse.statusCode || 502, proxyResponse.headers);
@@ -106,6 +109,10 @@ function proxyApi(request, response) {
 }
 
 function serve(request, response) {
+  if (apiOrigin && isApiPath(request.url)) {
+    return proxyApi(request, response);
+  }
+
   if (request.method !== 'GET' && request.method !== 'HEAD') {
     return send(response, 405, 'Method Not Allowed', {
       'Content-Type': 'text/plain; charset=utf-8',
@@ -115,10 +122,6 @@ function serve(request, response) {
 
   if (request.url.split('?')[0] === '/healthz') {
     return sendHealth(response);
-  }
-
-  if (apiOrigin && isApiPath(request.url)) {
-    return proxyApi(request, response);
   }
 
   if (demoFixture && request.url.split('?')[0] === '/v1/unis') {

@@ -20,9 +20,10 @@ npm run install:all
 npm test
 npm run docker:test:modern-db
 npm run docker:test:proxy
+npm run docker:test:anonymous-runtime
 ```
 
-These checks verify the API contracts, seeded Docker Postgres behavior, and app-origin proxy behavior.
+These checks verify the API contracts, seeded Docker Postgres behavior, app-origin proxy behavior, and the disposable anonymous-runtime smoke path.
 
 ## Start The DB-Backed Demo
 
@@ -71,10 +72,27 @@ npm run verify:release-smoke
 
 Production-mode API containers expose `/v1/demo/session` only when `UTOPLAN_DEMO_SESSIONS=1` is set.
 
+## Anonymous Runtime Smoke
+
+The anonymous runtime smoke is a disposable validation stack, not the normal demo environment:
+
+```sh
+npm run docker:test:anonymous-runtime
+```
+
+It starts Docker Postgres with the anonymous storage and shared limiter tables, the modern API with shared anonymous runtime config, and the static app proxy. The exposed local ports are:
+
+- App: `http://127.0.0.1:18084`
+- API: `http://127.0.0.1:13001`
+- Postgres: `127.0.0.1:15433`
+
+The script runs `npm run verify:release-smoke` with `UTOPLAN_ANONYMOUS_SMOKE=1`, then tears the stack down with volumes removed.
+
 ## Stop And Clean Up
 
 ```sh
 docker compose -f docker-compose.demo.yml down -v
+docker compose -f docker-compose.anonymous.yml down -v
 ```
 
 The `-v` flag removes the seeded demo database volume.

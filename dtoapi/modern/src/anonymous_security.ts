@@ -22,6 +22,14 @@ export function generateOpaqueToken(bytes?: number): string {
   return generateToken(bytes);
 }
 
+export function generatePublicId(bytes: number = 24): string {
+  if (!Number.isInteger(bytes) || bytes < 16) {
+    throw new Error('public id entropy must be at least 128 bits');
+  }
+
+  return crypto.randomBytes(bytes).toString('hex');
+}
+
 export function generateToken(bytes: number = TOKEN_BYTES): string {
   if (!Number.isInteger(bytes) || bytes < 16) {
     throw new Error('token entropy must be at least 128 bits');

@@ -11,6 +11,15 @@ assert(!token.includes('/'));
 assert(!token.includes('='));
 assert.notStrictEqual(anonymousSecurity.generateOpaqueToken(), anonymousSecurity.generateOpaqueToken());
 
+const publicId = anonymousSecurity.generatePublicId();
+assert.strictEqual(typeof publicId, 'string');
+assert(publicId.length >= 32);
+assert(/^[a-z0-9][a-z0-9_-]{20,63}$/.test(publicId));
+assert.notStrictEqual(anonymousSecurity.generatePublicId(), anonymousSecurity.generatePublicId());
+assert.throws(function() {
+  anonymousSecurity.generatePublicId(15);
+}, /at least 128 bits/);
+
 assert.throws(function() {
   anonymousSecurity.generateToken(15);
 }, /at least 128 bits/);
