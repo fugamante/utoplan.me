@@ -75,7 +75,7 @@ export interface CreatedAnonymousSession {
 }
 
 export interface DeletedAnonymousProfile {
-  profile: AnonymousProfileRow;
+  profile: AnonymousProfileRow | null;
   session: AnonymousSessionRow | null;
 }
 
@@ -345,12 +345,7 @@ export function deleteOwnedProfileAndRevokeWithExecutor(executor: db.QueryExecut
       return;
     }
 
-    if (!deleteResult.rows[0]) {
-      callback(null, null);
-      return;
-    }
-
-    const profile = profileRow(deleteResult.rows[0]);
+    const profile = deleteResult.rows[0] ? profileRow(deleteResult.rows[0]) : null;
 
     executor.query(revokeAnonymousSessionQuery(), [
       input.anonymousSessionId,

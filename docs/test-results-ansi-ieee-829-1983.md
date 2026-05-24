@@ -23,7 +23,7 @@ This report covers the current modernization branch after adding:
 - endpoint-level reserved anonymous route contracts and production rate-limit policy helpers with reserved endpoints still returning `501`
 - transactional anonymous runtime composition helpers and separate anonymous schema readiness gates with reserved endpoints still returning `501`
 - release-gated anonymous runtime activation controls with reserved endpoints still returning `501`
-- reserved-route `429` response contracts and pure anonymous create/read handler composition with endpoint success behavior still disabled
+- reserved-route `429` response contracts and pure anonymous create/read/write/delete handler composition with same-origin/CSRF mutating checks and endpoint success behavior still disabled
 - Docker Postgres demo seed and demo Compose topology
 - readiness coverage for the required demo session table
 - release smoke support for demo-session validation
@@ -114,6 +114,14 @@ Current anonymous runtime activation gate slice rerun:
 - `git diff --check`: Pass
 
 Current anonymous reserved-rate-limit/handler-composition slice rerun:
+
+- `npm --prefix dtoapi/modern test`: Pass
+- `npm run test:session-auth-contract`: Pass
+- `npm test`: Pass
+- `npm run docker:test:proxy`: Pass
+- `git diff --check`: Pass
+
+Current anonymous write/delete handler-composition slice rerun:
 
 - `npm --prefix dtoapi/modern test`: Pass
 - `npm run test:session-auth-contract`: Pass
