@@ -37,7 +37,7 @@
     "verify:release-smoke": "node scripts/release_smoke_check.js"
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=18"
   },
   "devDependencies": {
     "@playwright/test": "^1.60.0"
