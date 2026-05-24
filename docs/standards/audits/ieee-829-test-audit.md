@@ -32,10 +32,11 @@ Maintain or cross-reference evidence for these IEEE 829 test document classes:
 - Test summary report: release or audit-period decision record, passed gates,
   failed gates, residual risk, and follow-up recommendations.
 
-If a formal standalone IEEE 829 document does not exist yet, the audit may
-accept a clearly named repository document, test file, CI job, or runbook section
-as interim evidence. Interim evidence must identify the missing formal document
-as an action item.
+The formal IEEE 829 document baseline is
+`docs/standards/ieee-829-test-document.md`. If that artifact is temporarily
+unavailable during an in-flight branch review, the audit may accept a clearly
+named repository document, test file, CI job, or runbook section as interim
+evidence and must record restoration of the formal baseline as an action item.
 
 ## Current Evidence Map
 
@@ -220,9 +221,27 @@ Release decision:
 
 ## Open Audit Items
 
-- Create formal IEEE 829 test plan and summary documents once the broader
-  standards document set is established under `docs/standards/`.
 - Add explicit traceability from future IEEE 830 requirements to API, frontend,
   data, and deployment test cases.
 - Add a recurring test log convention for local audit runs and release
   candidates so command evidence is retained without committing transient logs.
+
+## Active Recommendations
+
+### RECO-829-2026-05-24-01
+
+- Class: optimization
+- Finding: IEEE 829 traceability and log conventions are still described as open
+  items instead of a concrete, reusable record format.
+- Acceptance evidence:
+  - A documented test log location and template under `docs/standards/` or
+    `docs/`.
+  - One completed release-candidate or audit-period test summary that records
+    commands run, environment, pass/fail gates, skipped checks, and residual
+    risk.
+  - Cross-reference from `docs/standards/ieee-829-test-document.md` and this
+    audit corpus to the chosen log convention.
+- Revisit trigger:
+  - Next release-candidate bundle, or sooner if a required quality gate fails
+    and incident traceability is incomplete.
+- Status: proposed

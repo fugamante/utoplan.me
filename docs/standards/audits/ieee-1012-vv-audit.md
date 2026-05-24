@@ -73,9 +73,11 @@ Review these artifacts during each IEEE 1012 audit:
 | `app/test/`, `dtoapi/test/`, `dtoapi/modern/test/`, and `test/` | verification implementation | Do tests prove requirements and design contracts rather than only implementation details? |
 | Dockerfiles, Compose files, CI definitions, and verification scripts | environment validation | Do container and CI paths exercise the intended release topology? |
 
-If a formal IEEE 1012 V&V plan does not exist yet, accept the SRS, SDD evidence,
+The formal IEEE 1012 V&V plan baseline is
+`docs/standards/ieee-1012-vv-plan.md`. If that artifact is temporarily
+unavailable during an in-flight branch review, accept the SRS, SDD evidence,
 test document, SQA plan, SCM plan, roadmap, and this corpus as interim V&V
-evidence. Record the missing formal plan as an open action until created.
+evidence and record restoration of the formal baseline as an open action.
 
 ## Verification Checklist
 
