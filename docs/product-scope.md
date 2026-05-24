@@ -38,6 +38,8 @@ The first session model has two intentionally separate layers:
 
 Neither layer is a production account system. The current branch does not implement passwords, durable user authentication, role-based access, account recovery, or retention policy controls. Production user profiles require a separate privacy and authentication design before public use.
 
+That production boundary is reserved in `docs/session-auth-contract.md` and `data/mappings/puerto-rico-session-auth-contract.json`. Production auth remains blocked until that contract is satisfied.
+
 ## Data Boundaries
 
 Allowed in the current product slice:
@@ -60,3 +62,4 @@ Next work should move from seeded demo session toward a deliberate user-session 
 - browser-local saved planning profile
 - database-backed saved session/profile
 - username/password login only after privacy, retention, and authentication requirements are documented
+- migration artifacts for reserved production session tables before any auth endpoints are enabled
