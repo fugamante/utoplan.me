@@ -137,6 +137,16 @@ async function main() {
   assert.strictEqual(body.meta.count, 1);
   assert.strictEqual(body.data[0].title, 'Contract University');
   assert.notStrictEqual(body.data[0].title, 'University of Puerto Rico');
+
+  const contextResponse = await request(appPort, '/v1/planning/context-demo');
+  const contextBody = JSON.parse(contextResponse.body);
+
+  assert.strictEqual(contextResponse.statusCode, 200, 'proxied planning context should return HTTP 200');
+  assert.strictEqual(contextResponse.headers['x-powered-by'], 'utoplan-modern-api');
+  assert.strictEqual(contextBody.mode, 'demo-fixture');
+  assert.strictEqual(contextBody.selectedCategory.id, 'professional_services');
+  assert.strictEqual(contextBody.facts.length, 3);
+  assert.strictEqual(contextBody.signals.length, 0);
 }
 
 process.on('exit', stopLocal);

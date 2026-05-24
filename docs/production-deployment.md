@@ -107,7 +107,7 @@ Do not add startup-time schema mutation to either service. Production startup sh
 5. Wait for `GET /readyz` on the API to return `200`.
 6. Deploy the app with `UTOPLAN_API_ORIGIN` pointing at the API service.
 7. Wait for `GET /healthz` on the app to return `200`.
-8. Smoke test the public app origin and verify `/v1/unis` is served through the app origin.
+8. Smoke test the public app origin and verify `/v1/unis` plus `/v1/planning/context-demo` are served through the app origin.
 
 Example smoke checks:
 
@@ -131,7 +131,7 @@ Rollback immediately when:
 
 - Either service fails readiness checks after deployment.
 - The app health response shows fixture mode enabled.
-- `/v1/unis` fails through the public app origin.
+- `/v1/unis` or `/v1/planning/context-demo` fails through the public app origin.
 - The API logs database connection or query failures after rollout.
 - Browser smoke checks show missing map data or uncaught page errors.
 
@@ -141,6 +141,6 @@ Rollback order:
 2. Restore the previous API artifact.
 3. Verify API `/readyz`.
 4. Verify app `/healthz`.
-5. Verify `/v1/unis` from the public app origin.
+5. Verify `/v1/unis` and `/v1/planning/context-demo` from the public app origin.
 
 If a release included a production database change, follow the release-specific database rollback note before restoring app traffic. If no safe database rollback exists, keep the previous compatible application version in service and escalate the data fix separately.

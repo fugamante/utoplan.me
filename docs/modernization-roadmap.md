@@ -54,7 +54,7 @@
 - `scripts/data_release_evidence_bundle.js` builds a local dry-run release evidence directory with plan, preview, gate, approval, validation, and manifest artifacts without mutating data.
 - `data/fixtures/non-production/` contains checked-in JSON and CSV offline planning fixtures plus an expected report for repeatable local demos.
 - `npm run verify:release` wraps app/API deployment verification for release jobs, and Azure validates the wrapper in sample mode without production secrets.
-- `npm run verify:release-smoke` checks deployed app `/healthz`, public `/v1/unis`, and optional API `/readyz` from configured release URLs.
+- `npm run verify:release-smoke` checks deployed app `/healthz`, public `/v1/unis`, public `/v1/planning/context-demo`, and optional API `/readyz` from configured release URLs.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
 
 ## Target Outcomes
