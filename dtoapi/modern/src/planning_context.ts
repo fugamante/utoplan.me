@@ -24,6 +24,8 @@ export const DEFAULT_FIXTURE_PATH = path.join(
   'planning-context-fixture.json'
 );
 
+export const SUPPORTED_LIVE_QUERY_PARAMS = ['municipality', 'category'];
+
 export interface Municipality {
   id: string;
   title: string;
@@ -123,6 +125,17 @@ export interface PlanningContextPayload {
   suggestedNextChecks: string[];
 }
 
+export interface LiveContextQuery {
+  municipality: number;
+  category: string;
+}
+
+export interface QueryParseResult {
+  ok: boolean;
+  query: LiveContextQuery | null;
+  error: string | null;
+}
+
 export function readJsonFile<T>(filePath: string): T {
   return JSON.parse(fs.readFileSync(filePath, 'utf8')) as T;
 }
@@ -152,6 +165,58 @@ export function matchedNaics(rowCode: string | number, category: BusinessCategor
   return category.mappedNaics.filter(function(naics) {
     return naicsMatches(rowCode, naics.code);
   });
+}
+
+export function parseLiveQuery(params: URLSearchParams, categoryContract: CategoryContract): QueryParseResult {
+  const unknownParams = Array.from(params.keys()).filter(function(key) {
+    return SUPPORTED_LIVE_QUERY_PARAMS.indexOf(key) === -1;
+  });
+  const municipality = params.get('municipality');
+  const category = params.get('category');
+  const integerPattern = /^[0-9]+$/;
+  const categoryPattern = /^[a-z0-9]+(_[a-z0-9]+){0,2}$/;
+  const categoryRecord = category ? categoryById(categoryContract, category) : null;
+
+  if (unknownParams.length > 0) {
+    return {
+      ok: false,
+      query: null,
+      error: 'Unsupported query parameter: ' + unknownParams[0]
+    };
+  }
+
+  if (!municipality || !integerPattern.test(municipality) || Number(municipality) < 1) {
+    return {
+      ok: false,
+      query: null,
+      error: 'municipality must be a positive integer'
+    };
+  }
+
+  if (!category || !categoryPattern.test(category)) {
+    return {
+      ok: false,
+      query: null,
+      error: 'category must be a known business category id'
+    };
+  }
+
+  if (!categoryRecord || categoryRecord.status !== 'candidate') {
+    return {
+      ok: false,
+      query: null,
+      error: 'category must be a known candidate business category'
+    };
+  }
+
+  return {
+    ok: true,
+    query: {
+      municipality: Number(municipality),
+      category: category
+    },
+    error: null
+  };
 }
 
 export function confidenceFromFacts(facts: PlanningFact[]): string {

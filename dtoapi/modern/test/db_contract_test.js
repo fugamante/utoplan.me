@@ -28,6 +28,16 @@ const contracts = [
     planningContextExpected: true
   },
   {
+    path: '/v1/planning/context?municipality=1&category=professional_services',
+    statusCode: 501,
+    error: 'Not Implemented'
+  },
+  {
+    path: '/v1/planning/context?municipality=1&category=missing',
+    statusCode: 400,
+    error: 'Bad Request'
+  },
+  {
     path: '/v1/unis',
     expected: {
       id: 1,
