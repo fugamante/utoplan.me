@@ -14,6 +14,14 @@ export type CloseCallback = (error?: Error) => void;
 
 export type ReadyCallback = (error: Error | null, status?: schemaContract.SchemaStatus) => void;
 
+export interface QueryExecutor {
+  query(text: string, params: unknown[], callback: QueryCallback): void;
+}
+
+export type TransactionCallback = (error?: Error) => void;
+
+export type TransactionWork = (client: QueryExecutor, done: TransactionCallback) => void;
+
 let pool: Pool | null = null;
 
 function value(primary: string | undefined, fallback: string | undefined): string | undefined {
@@ -59,6 +67,51 @@ function getPool(): Pool {
 export function query(text: string, params: unknown[], callback: QueryCallback): void {
   getPool().query(text, params, function(error: Error, result: PgQueryResult<DatabaseRow>) {
     callback(error || null, result);
+  });
+}
+
+export function transaction(work: TransactionWork, callback: TransactionCallback): void {
+  getPool().connect(function(connectError, client, release) {
+    if (connectError) {
+      callback(connectError);
+      return;
+    }
+
+    if (!client || !release) {
+      callback(new Error('database transaction client unavailable'));
+      return;
+    }
+
+    function finish(error?: Error): void {
+      release();
+      callback(error);
+    }
+
+    client.query('BEGIN', [], function(beginError: Error) {
+      if (beginError) {
+        finish(beginError);
+        return;
+      }
+
+      work({
+        query: function(text: string, params: unknown[], queryCallback: QueryCallback): void {
+          client.query(text, params, function(error: Error, result: PgQueryResult<DatabaseRow>) {
+            queryCallback(error || null, result);
+          });
+        }
+      }, function(workError?: Error) {
+        if (workError) {
+          client.query('ROLLBACK', [], function(rollbackError: Error) {
+            finish(rollbackError || workError);
+          });
+          return;
+        }
+
+        client.query('COMMIT', [], function(commitError: Error) {
+          finish(commitError || undefined);
+        });
+      });
+    });
   });
 }
 

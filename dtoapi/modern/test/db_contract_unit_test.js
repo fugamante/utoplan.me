@@ -68,6 +68,7 @@ try {
     connectionString: 'postgres://example'
   });
   assert.strictEqual(db.hasExplicitConnectionConfig(), true);
+  assert.strictEqual(typeof db.transaction, 'function');
 } finally {
   restore();
 }
