@@ -147,6 +147,16 @@ async function main() {
   assert.strictEqual(contextBody.selectedCategory.id, 'professional_services');
   assert.strictEqual(contextBody.facts.length, 3);
   assert.strictEqual(contextBody.signals.length, 0);
+
+  const sessionResponse = await request(appPort, '/v1/demo/session?session=demo-session-1');
+  const sessionBody = JSON.parse(sessionResponse.body);
+
+  assert.strictEqual(sessionResponse.statusCode, 200, 'proxied demo session should return HTTP 200');
+  assert.strictEqual(sessionResponse.headers['x-powered-by'], 'utoplan-modern-api');
+  assert.strictEqual(sessionBody.mode, 'demo-db-session');
+  assert.strictEqual(sessionBody.session.id, 'demo-session-1');
+  assert.strictEqual(sessionBody.planningContext.mode, 'live-db');
+  assert.strictEqual(sessionBody.planningContext.facts.length, 3);
 }
 
 process.on('exit', stopLocal);

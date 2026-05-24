@@ -4,6 +4,7 @@ import http, {type IncomingMessage, type OutgoingHttpHeaders, type Server, type 
 import {URL} from 'url';
 import zlib from 'zlib';
 import * as db from './db';
+import * as demoSession from './demo_session';
 import * as records from './records';
 import * as planningContext from './planning_context';
 import * as resourceContract from './resource_contract';
@@ -151,6 +152,26 @@ function handlePlanningContextDemo(request: IncomingMessage, response: ServerRes
   }
 }
 
+function handleDemoSession(request: IncomingMessage, response: ServerResponse, query: demoSession.DemoSessionQuery): void {
+  demoSession.payload(query, function(error, payload) {
+    if (error) {
+      console.error(error.stack || error.message);
+
+      sendJson(request, response, 500, responseContract.serialize(
+        responseContract.errorPayload('Internal Server Error')
+      ));
+      return;
+    }
+
+    if (!payload) {
+      handleNotFound(request, response);
+      return;
+    }
+
+    sendJson(request, response, 200, responseContract.serialize(payload));
+  });
+}
+
 function handleRecord(request: IncomingMessage, response: ServerResponse, kind: string, id: number): void {
   records.find(kind, id, function(error, row, resource) {
     if (error) {
@@ -281,6 +302,23 @@ export function createServer(): Server {
       return;
     }
 
+    if (request.method === 'GET' && pathname === '/v1/demo/session') {
+      if (!demoSession.endpointEnabled()) {
+        handleNotFound(request, response);
+        return;
+      }
+
+      const query = demoSession.parseSessionQuery(requestUrl.searchParams);
+
+      if (!query.ok || !query.query) {
+        handleBadRequest(request, response);
+        return;
+      }
+
+      handleDemoSession(request, response, query.query);
+      return;
+    }
+
     const recordMatch = matchRecord(pathname);
     const collectionMatch = matchCollection(pathname);
 
@@ -301,7 +339,7 @@ export function createServer(): Server {
       return;
     }
 
-    if (recordMatch || collectionMatch || pathname === '/v1/source-metadata' || pathname === '/v1/planning/context-demo' || pathname === '/v1/planning/context') {
+    if (recordMatch || collectionMatch || pathname === '/v1/source-metadata' || pathname === '/v1/planning/context-demo' || pathname === '/v1/planning/context' || pathname === '/v1/demo/session') {
       handleMethodNotAllowed(request, response);
       return;
     }

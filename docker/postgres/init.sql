@@ -57,9 +57,24 @@ CREATE TABLE cdepts (
   updated_at timestamp
 );
 
+CREATE TABLE demo_sessions (
+  id serial PRIMARY KEY,
+  public_id varchar(64) NOT NULL,
+  display_name varchar(255) NOT NULL,
+  municipality_id integer NOT NULL REFERENCES muns(id),
+  category_id varchar(64) NOT NULL,
+  profile jsonb NOT NULL DEFAULT '{}'::jsonb,
+  created_at timestamp NOT NULL DEFAULT NOW(),
+  updated_at timestamp NOT NULL DEFAULT NOW(),
+  CHECK (public_id ~ '^[a-z0-9][a-z0-9_-]{2,63}$'),
+  CHECK (category_id ~ '^[a-z0-9]+(_[a-z0-9]+){0,2}$'),
+  CHECK (jsonb_typeof(profile) = 'object')
+);
+
 CREATE UNIQUE INDEX cbps_county_cnaic_unique ON cbps (county, cnaic);
 CREATE UNIQUE INDEX muns_county_unique ON muns (county);
 CREATE UNIQUE INDEX unis_title_address_unique ON unis (title, address);
+CREATE UNIQUE INDEX demo_sessions_public_id_unique ON demo_sessions (public_id);
 
 INSERT INTO unis (id, title, address, "desc", lat, long, created_at, updated_at)
 VALUES (1, 'Contract University', '100 Contract Ave', 'Seeded university row', 18.42, -66.06, NOW(), NOW());
@@ -79,9 +94,27 @@ VALUES (1, 'Contract Municipality', 1, NOW(), NOW());
 INSERT INTO cdepts (id, cnaic, created_at, updated_at)
 VALUES (1, 541, NOW(), NOW());
 
+INSERT INTO demo_sessions (id, public_id, display_name, municipality_id, category_id, profile, created_at, updated_at)
+VALUES (
+  1,
+  'demo-session-1',
+  'Demo planner',
+  1,
+  'professional_services',
+  '{
+    "businessIdea": "Accounting and back-office services",
+    "planningStage": "explore",
+    "savedBy": "local-demo",
+    "notes": "Non-production seeded profile for validating DB-backed demo sessions."
+  }'::jsonb,
+  NOW(),
+  NOW()
+);
+
 SELECT setval('unis_id_seq', 1, true);
 SELECT setval('grade_cs_id_seq', 1, true);
 SELECT setval('businesses_id_seq', 1, true);
 SELECT setval('cbps_id_seq', 1, true);
 SELECT setval('muns_id_seq', 1, true);
 SELECT setval('cdepts_id_seq', 1, true);
+SELECT setval('demo_sessions_id_seq', 1, true);

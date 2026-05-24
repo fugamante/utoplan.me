@@ -25,11 +25,15 @@ export interface SchemaStatus {
 }
 
 function expectedColumns(): Record<string, string[]> {
-  return Object.keys(resources).reduce(function(expected: Record<string, string[]>, name: string) {
+  const expected = Object.keys(resources).reduce(function(columns: Record<string, string[]>, name: string) {
     const resource = resources[name as keyof typeof resources] as Resource;
-    expected[resource.table] = resource.columns.slice();
-    return expected;
+    columns[resource.table] = resource.columns.slice();
+    return columns;
   }, {});
+
+  expected.demo_sessions = ['id', 'public_id', 'display_name', 'municipality_id', 'category_id', 'profile', 'created_at', 'updated_at'];
+
+  return expected;
 }
 
 export function expectedTables(): string[] {
