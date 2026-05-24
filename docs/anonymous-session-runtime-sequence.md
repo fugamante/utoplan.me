@@ -104,6 +104,23 @@ Rejected requests should return `429` when the rate limit is exceeded and should
 
 Origin normalization lowercases valid URL origins, maps missing Origin to `none`, and maps malformed Origin to `invalid`. Rate-limit keys must not include cookies, raw session tokens, CSRF tokens, request bodies, profile text, or profile field names.
 
+### Production Rate-Limit Decision
+
+Endpoint activation requires a shared or edge limiter selected in release configuration. The process-local helper is unit-test-only scaffolding and must not protect public anonymous endpoints because it resets on restart, is per Node process, and cannot coordinate across containers or regions.
+
+The production limiter must provide:
+
+- atomic increment plus expiry for each fixed-window key
+- consistent TTL/window behavior across all API instances
+- a trusted clock source for reset calculations
+- fail-closed behavior for mutating anonymous routes when the limiter is unavailable
+- structured metrics for allowed, rejected, limiter-unavailable, and malformed-client-key outcomes
+- exact per-scope limits approved in release notes before endpoint activation
+
+The API may compute rate-limit keys only when it receives a trusted client IP signal from the private app proxy or deployment edge. Public boundaries must strip inbound forwarding headers and inject a single trusted client IP signal. Until that deployment behavior is configured and tested, anonymous runtime endpoints remain blocked.
+
+Every `429` response must include `Retry-After` as delta seconds using `ceil((resetAtMs - nowMs) / 1000)` with a minimum value of `1`. The first public runtime slice will not expose `RateLimit-Limit`, `RateLimit-Remaining`, or `RateLimit-Reset`; add those headers only after a separate client-facing contract is accepted.
+
 ## Body Validation
 
 Profile request bodies are capped at `2048` UTF-8 bytes before JSON parsing. Malformed JSON returns `400 invalid_request`; oversized bodies return `413 profile_too_large`; invalid profile shape returns `422 invalid_profile`.
@@ -137,3 +154,4 @@ Runtime route work may begin only after:
 - CSRF token generation, hashing, and validation helpers are designed
 - shared production rate-limit storage is selected
 - focused endpoint tests cover success, ownership failure, CSRF failure, CORS failure, stale writes, delete/revoke, and audit events
+- release-gated runtime activation fails closed unless shared/edge rate limiting and anonymous schema readiness are configured

@@ -28,6 +28,18 @@ assert.strictEqual(rateLimit.rateLimitKey({
 
 assert.strictEqual(rateLimit.normalizedOrigin(null), 'none');
 assert.strictEqual(rateLimit.normalizedOrigin('not a url'), 'invalid');
+assert.strictEqual(rateLimit.clientIpForRateLimit({
+  'x-forwarded-for': '198.51.100.20, 10.0.0.10',
+  'x-real-ip': '198.51.100.30'
+}, '127.0.0.1', true), '198.51.100.20');
+assert.strictEqual(rateLimit.clientIpForRateLimit({
+  'x-forwarded-for': '198.51.100.20',
+  'x-real-ip': '198.51.100.30'
+}, '127.0.0.1', false), '127.0.0.1');
+assert.strictEqual(rateLimit.clientIpForRateLimit({
+  'x-real-ip': '198.51.100.30'
+}, '127.0.0.1', true), '198.51.100.30');
+assert.strictEqual(rateLimit.clientIpForRateLimit({}, undefined, false), 'unknown');
 
 const first = rateLimit.checkRateLimit({
   scope: 'anonymous_session_creation',
@@ -62,6 +74,14 @@ const third = rateLimit.checkRateLimit({
 });
 assert.strictEqual(third.allowed, false);
 assert.strictEqual(third.remaining, 0);
+assert.strictEqual(rateLimit.retryAfterSeconds(third, 300), 1);
+assert.strictEqual(rateLimit.retryAfterSeconds({
+  allowed: false,
+  key: third.key,
+  limit: third.limit,
+  remaining: 0,
+  resetAtMs: 5300
+}, 300), 5);
 
 const afterReset = rateLimit.checkRateLimit({
   scope: 'anonymous_session_creation',

@@ -42,6 +42,21 @@ UTOPLAN_API_ORIGIN=http://api:3001
 
 Secrets must come from the deployment platform secret store. Do not commit production credentials, generated `.env` files, or exported environment dumps.
 
+## Trusted Client Identity
+
+The API is private behind the app service or deployment edge, so public clients must not be able to send trusted rate-limit identity headers directly to the API. Public boundaries must strip inbound `Forwarded`, `X-Forwarded-For`, `X-Real-IP`, and platform-specific client IP headers before injecting the deployment-controlled client IP signal used by private services.
+
+When anonymous session/profile runtime endpoints are enabled, rate-limit keys must use:
+
+- direct socket address only when the request reaches the API without a trusted proxy
+- the first `X-Forwarded-For` hop only when the immediate upstream is the trusted app proxy or edge
+- `X-Real-IP` only as a trusted-proxy fallback when `X-Forwarded-For` is absent
+- `unknown` only as a fail-closed condition for mutating anonymous routes
+
+Do not enable public anonymous profile writes unless the deployed proxy/edge behavior is documented in release notes and covered by a smoke or platform check. The current process-local limiter is unit-test-only scaffolding and does not satisfy production rate limiting.
+
+Reserved anonymous runtime activation uses `UTOPLAN_ANONYMOUS_RUNTIME=1` plus `UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE=shared` or `edge`. Shared mode also requires `UTOPLAN_TRUST_PROXY=1` and a documented proxy chain. These variables are scaffolding gates only in the current branch; the HTTP endpoints remain disabled until handler composition and rate-limit response contracts are implemented.
+
 ## Preflight Checklist
 
 Run these checks before promoting a release candidate:

@@ -69,6 +69,7 @@ try {
   });
   assert.strictEqual(db.hasExplicitConnectionConfig(), true);
   assert.strictEqual(typeof db.transaction, 'function');
+  assert.strictEqual(typeof db.anonymousReady, 'function');
 } finally {
   restore();
 }

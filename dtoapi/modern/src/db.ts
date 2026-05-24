@@ -13,6 +13,7 @@ export type QueryCallback = (error: Error | null, result: QueryResult) => void;
 export type CloseCallback = (error?: Error) => void;
 
 export type ReadyCallback = (error: Error | null, status?: schemaContract.SchemaStatus) => void;
+export type AnonymousReadyCallback = (error: Error | null, status?: schemaContract.AnonymousSchemaStatus) => void;
 
 export interface QueryExecutor {
   query(text: string, params: unknown[], callback: QueryCallback): void;
@@ -132,6 +133,33 @@ export function ready(callback: ReadyCallback): void {
 
     query(schemaContract.loadIndexStatusQuery(), schemaContract.loadIndexStatusParams(), function(indexError: Error | null, indexResult: QueryResult) {
       status.loadIndexes = indexError ? schemaContract.unavailableLoadIndexes() : schemaContract.evaluateLoadIndexes(indexResult.rows);
+      callback(null, status);
+    });
+  });
+}
+
+export function anonymousReady(callback: AnonymousReadyCallback): void {
+  query(schemaContract.anonymousStatusQuery(), schemaContract.anonymousStatusParams(), function(error: Error | null, result: QueryResult) {
+    if (error) {
+      callback(error);
+      return;
+    }
+
+    query(schemaContract.anonymousIndexStatusQuery(), schemaContract.anonymousIndexStatusParams(), function(indexError: Error | null, indexResult: QueryResult) {
+      let status: schemaContract.AnonymousSchemaStatus;
+
+      if (indexError) {
+        callback(indexError);
+        return;
+      }
+
+      status = schemaContract.evaluateAnonymous(result.rows, indexResult.rows);
+
+      if (!status.ok) {
+        callback(new Error('anonymous database schema does not match ' + status.version), status);
+        return;
+      }
+
       callback(null, status);
     });
   });

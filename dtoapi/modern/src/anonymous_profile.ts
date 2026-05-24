@@ -66,10 +66,23 @@ export interface UpdateProfileInput {
 
 export interface DeleteProfileInput {
   anonymousSessionId: number;
+  revokeReason?: string;
+}
+
+export interface CreatedAnonymousSession {
+  session: AnonymousSessionRow;
+  profile: AnonymousProfileRow;
+}
+
+export interface DeletedAnonymousProfile {
+  profile: AnonymousProfileRow;
+  session: AnonymousSessionRow | null;
 }
 
 export type AnonymousSessionCallback = (error: Error | null, row: AnonymousSessionRow | null) => void;
 export type AnonymousProfileCallback = (error: Error | null, row: AnonymousProfileRow | null) => void;
+export type CreatedAnonymousSessionCallback = (error: Error | null, result: CreatedAnonymousSession | null) => void;
+export type DeletedAnonymousProfileCallback = (error: Error | null, result: DeletedAnonymousProfile | null) => void;
 
 export function insertAnonymousSessionQuery(): string {
   return [
@@ -218,7 +231,25 @@ export function profileEnvelope(row: AnonymousProfileRow): AnonymousProfileEnvel
 }
 
 export function createAnonymousSession(input: CreateAnonymousSessionInput, callback: AnonymousProfileCallback): void {
-  db.query(insertAnonymousSessionQuery(), [
+  let created: CreatedAnonymousSession | null = null;
+
+  db.transaction(function(client, done) {
+    createAnonymousSessionWithExecutor(client, input, function(error, result) {
+      if (error) {
+        done(error);
+        return;
+      }
+
+      created = result;
+      done();
+    });
+  }, function(error) {
+    callback(error || null, error ? null : (created ? created.profile : null));
+  });
+}
+
+export function createAnonymousSessionWithExecutor(executor: db.QueryExecutor, input: CreateAnonymousSessionInput, callback: CreatedAnonymousSessionCallback): void {
+  executor.query(insertAnonymousSessionQuery(), [
     input.publicId,
     input.tokenHash,
     input.csrfTokenHash,
@@ -236,7 +267,7 @@ export function createAnonymousSession(input: CreateAnonymousSessionInput, callb
 
     const session = sessionRow(sessionResult.rows[0]);
 
-    db.query(insertAnonymousProfileQuery(), [
+    executor.query(insertAnonymousProfileQuery(), [
       session.id,
       PROFILE_SCHEMA_VERSION,
       input.profile
@@ -246,7 +277,15 @@ export function createAnonymousSession(input: CreateAnonymousSessionInput, callb
         return;
       }
 
-      callback(null, profileResult.rows[0] ? profileRow(profileResult.rows[0]) : null);
+      if (!profileResult.rows[0]) {
+        callback(new Error('anonymous profile insert returned no row'), null);
+        return;
+      }
+
+      callback(null, {
+        session: session,
+        profile: profileRow(profileResult.rows[0])
+      });
     });
   });
 }
@@ -296,5 +335,54 @@ export function softDeleteOwnedProfile(input: DeleteProfileInput, callback: Anon
     }
 
     callback(null, result.rows[0] ? profileRow(result.rows[0]) : null);
+  });
+}
+
+export function deleteOwnedProfileAndRevokeWithExecutor(executor: db.QueryExecutor, input: DeleteProfileInput, callback: DeletedAnonymousProfileCallback): void {
+  executor.query(softDeleteOwnedProfileQuery(), [input.anonymousSessionId], function(deleteError, deleteResult) {
+    if (deleteError) {
+      callback(deleteError, null);
+      return;
+    }
+
+    if (!deleteResult.rows[0]) {
+      callback(null, null);
+      return;
+    }
+
+    const profile = profileRow(deleteResult.rows[0]);
+
+    executor.query(revokeAnonymousSessionQuery(), [
+      input.anonymousSessionId,
+      input.revokeReason || 'profile_deleted'
+    ], function(revokeError, revokeResult) {
+      if (revokeError) {
+        callback(revokeError, null);
+        return;
+      }
+
+      callback(null, {
+        profile: profile,
+        session: revokeResult.rows[0] ? sessionRow(revokeResult.rows[0]) : null
+      });
+    });
+  });
+}
+
+export function deleteOwnedProfileAndRevoke(input: DeleteProfileInput, callback: DeletedAnonymousProfileCallback): void {
+  let deleted: DeletedAnonymousProfile | null = null;
+
+  db.transaction(function(client, done) {
+    deleteOwnedProfileAndRevokeWithExecutor(client, input, function(error, result) {
+      if (error) {
+        done(error);
+        return;
+      }
+
+      deleted = result;
+      done();
+    });
+  }, function(error) {
+    callback(error || null, error ? null : deleted);
   });
 }
