@@ -29,8 +29,12 @@ const contracts = [
   },
   {
     path: '/v1/planning/context?municipality=1&category=professional_services',
-    statusCode: 501,
-    error: 'Not Implemented'
+    liveContextExpected: true
+  },
+  {
+    path: '/v1/planning/context?municipality=999&category=professional_services',
+    statusCode: 404,
+    error: 'Not Found'
   },
   {
     path: '/v1/planning/context?municipality=1&category=missing',
@@ -268,6 +272,20 @@ function runContract(server, index) {
         assert.strictEqual(body.facts.length, 3);
         assert.strictEqual(body.signals.length, 0);
         assert.strictEqual(body.confidence.label, 'low');
+        runContract(server, index + 1);
+        return;
+      }
+
+      if (contract.liveContextExpected) {
+        assert.strictEqual(body.scope, 'puerto-rico-only');
+        assert.strictEqual(body.mode, 'live-db');
+        assert.strictEqual(body.selectedMunicipality.id, '1');
+        assert.strictEqual(body.selectedMunicipality.title, 'Contract Municipality');
+        assert.strictEqual(body.selectedMunicipality.county, 1);
+        assert.strictEqual(body.selectedCategory.id, 'professional_services');
+        assert.deepStrictEqual(body.facts, []);
+        assert.strictEqual(body.signals.length, 0);
+        assert.strictEqual(body.confidence.label, 'unknown');
         runContract(server, index + 1);
         return;
       }

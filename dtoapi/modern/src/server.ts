@@ -256,12 +256,28 @@ export function createServer(): Server {
     if (request.method === 'GET' && pathname === '/v1/planning/context') {
       const query = planningContext.parseLiveQuery(requestUrl.searchParams, planningContext.readCategoryContract());
 
-      if (!query.ok) {
+      if (!query.ok || !query.query) {
         handleBadRequest(request, response);
         return;
       }
 
-      handleNotImplemented(request, response);
+      planningContext.livePayload(query.query, function(error, payload) {
+        if (error) {
+          console.error(error.stack || error.message);
+
+          sendJson(request, response, 500, responseContract.serialize(
+            responseContract.errorPayload('Internal Server Error')
+          ));
+          return;
+        }
+
+        if (!payload) {
+          handleNotFound(request, response);
+          return;
+        }
+
+        sendJson(request, response, 200, responseContract.serialize(payload));
+      });
       return;
     }
 

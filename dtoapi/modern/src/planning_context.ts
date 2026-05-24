@@ -2,6 +2,8 @@
 
 import fs from 'fs';
 import path from 'path';
+import * as db from './db';
+import type {DatabaseRow} from './resource_contract';
 
 export const DEFAULT_CATEGORY_PATH = path.join(
   __dirname,
@@ -108,10 +110,11 @@ export interface PlanningFact {
 export interface PlanningContextPayload {
   schemaVersion: number;
   scope: string;
-  mode: 'demo-fixture';
+  mode: 'demo-fixture' | 'live-db';
   generatedFrom: {
     categoryMapping: string;
-    fixture: string;
+    fixture?: string;
+    databaseSchema?: string;
   };
   selectedMunicipality: Municipality;
   selectedCategory: BusinessCategory;
@@ -135,6 +138,8 @@ export interface QueryParseResult {
   query: LiveContextQuery | null;
   error: string | null;
 }
+
+export type LiveContextCallback = (error: Error | null, payload: PlanningContextPayload | null) => void;
 
 export function readJsonFile<T>(filePath: string): T {
   return JSON.parse(fs.readFileSync(filePath, 'utf8')) as T;
@@ -235,6 +240,48 @@ export function confidenceFromFacts(facts: PlanningFact[]): string {
   return facts.length > 0 ? 'high' : 'unknown';
 }
 
+function selectedCategory(category: BusinessCategory): BusinessCategory {
+  return {
+    id: category.id,
+    displayName: category.displayName,
+    mappedNaics: category.mappedNaics,
+    assumptions: category.assumptions,
+    confidence: category.confidence,
+    status: category.status,
+    limitations: category.limitations
+  };
+}
+
+function basePayload(
+  mode: 'demo-fixture' | 'live-db',
+  generatedFrom: PlanningContextPayload['generatedFrom'],
+  municipality: Municipality,
+  category: BusinessCategory,
+  facts: PlanningFact[],
+  categoryContract: CategoryContract
+): PlanningContextPayload {
+  return {
+    schemaVersion: 1,
+    scope: 'puerto-rico-only',
+    mode: mode,
+    generatedFrom: generatedFrom,
+    selectedMunicipality: municipality,
+    selectedCategory: selectedCategory(category),
+    facts: facts,
+    signals: [],
+    confidence: {
+      label: confidenceFromFacts(facts),
+      basis: facts.length > 0 ? 'Lowest visible source or transform confidence among selected facts.' : 'No source-backed facts are attached to this live context yet.'
+    },
+    unresolvedQuestions: categoryContract.requiredBeforePlanningEndpoint.concat(category.limitations),
+    suggestedNextChecks: [
+      'Review source confidence and transform confidence before using these facts in UI planning summaries.',
+      'Confirm that the selected NAICS mappings are appropriate for the business idea.',
+      'Add ACS, unemployment, zoning, or permit context before presenting feasibility signals.'
+    ]
+  };
+}
+
 function baseFact(input: PlanningContextInput, row: CbpRow, matches: NaicsMapping[]) {
   return {
     table: 'cbps',
@@ -298,29 +345,17 @@ export function buildPayload(input: PlanningContextInput, categoryContract: Cate
 
   const facts = cbpFacts(input, category);
 
-  return {
-    schemaVersion: 1,
-    scope: 'puerto-rico-only',
-    mode: 'demo-fixture',
-    generatedFrom: {
+  return basePayload(
+    'demo-fixture',
+    {
       categoryMapping: 'data/mappings/puerto-rico-business-categories.json',
       fixture: 'data/fixtures/non-production/planning-context-fixture.json'
     },
-    selectedMunicipality: input.selectedMunicipality,
-    selectedCategory: category,
-    facts: facts,
-    signals: [],
-    confidence: {
-      label: confidenceFromFacts(facts),
-      basis: 'Lowest visible source or transform confidence among selected facts.'
-    },
-    unresolvedQuestions: categoryContract.requiredBeforePlanningEndpoint.concat(category.limitations),
-    suggestedNextChecks: [
-      'Review source confidence and transform confidence before using these facts in UI planning summaries.',
-      'Confirm that the selected NAICS mappings are appropriate for the business idea.',
-      'Add ACS, unemployment, zoning, or permit context before presenting feasibility signals.'
-    ]
-  };
+    input.selectedMunicipality,
+    category,
+    facts,
+    categoryContract
+  );
 }
 
 export function payload(
@@ -328,4 +363,51 @@ export function payload(
   categoryPath: string = DEFAULT_CATEGORY_PATH
 ): PlanningContextPayload {
   return buildPayload(readFixture(fixturePath), readCategoryContract(categoryPath));
+}
+
+export function selectMunicipalityById(): string {
+  return 'SELECT id, title, county FROM muns WHERE id = $1 LIMIT 1';
+}
+
+export function municipalityFromRow(row: DatabaseRow): Municipality {
+  return {
+    id: String(row.id),
+    title: String(row.title),
+    county: Number(row.county),
+    geographyLevel: 'municipality'
+  };
+}
+
+export function livePayload(query: LiveContextQuery, callback: LiveContextCallback): void {
+  const categoryContract = readCategoryContract();
+  const category = categoryById(categoryContract, query.category);
+
+  if (!category) {
+    callback(null, null);
+    return;
+  }
+
+  db.query(selectMunicipalityById(), [query.municipality], function(error, result) {
+    if (error) {
+      callback(error, null);
+      return;
+    }
+
+    if (!result.rows[0]) {
+      callback(null, null);
+      return;
+    }
+
+    callback(null, basePayload(
+      'live-db',
+      {
+        categoryMapping: 'data/mappings/puerto-rico-business-categories.json',
+        databaseSchema: 'baseline-read-v1'
+      },
+      municipalityFromRow(result.rows[0]),
+      category,
+      [],
+      categoryContract
+    ));
+  });
 }
