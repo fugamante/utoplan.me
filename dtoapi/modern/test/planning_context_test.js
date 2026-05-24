@@ -12,6 +12,20 @@ assert.strictEqual(planningContext.naicsMatches(541611, '541'), true);
 assert.strictEqual(planningContext.naicsMatches(722, '541611'), false);
 assert.strictEqual(planningContext.categoryById(categoryContract, 'professional_services').displayName, 'Professional services');
 assert.strictEqual(planningContext.categoryById(categoryContract, 'missing'), null);
+assert.deepStrictEqual(planningContext.SUPPORTED_LIVE_QUERY_PARAMS, ['municipality', 'category']);
+assert.deepStrictEqual(planningContext.parseLiveQuery(new URLSearchParams('municipality=1&category=professional_services'), categoryContract), {
+  ok: true,
+  query: {
+    municipality: 1,
+    category: 'professional_services'
+  },
+  error: null
+});
+assert.strictEqual(planningContext.parseLiveQuery(new URLSearchParams('category=professional_services'), categoryContract).ok, false);
+assert.strictEqual(planningContext.parseLiveQuery(new URLSearchParams('municipality=0&category=professional_services'), categoryContract).ok, false);
+assert.strictEqual(planningContext.parseLiveQuery(new URLSearchParams('municipality=abc&category=professional_services'), categoryContract).ok, false);
+assert.strictEqual(planningContext.parseLiveQuery(new URLSearchParams('municipality=1&category=missing'), categoryContract).ok, false);
+assert.strictEqual(planningContext.parseLiveQuery(new URLSearchParams('municipality=1&category=professional_services&score=true'), categoryContract).ok, false);
 
 assert.strictEqual(payload.schemaVersion, 1);
 assert.strictEqual(payload.scope, 'puerto-rico-only');

@@ -197,6 +197,12 @@ function handleBadRequest(request: IncomingMessage, response: ServerResponse): v
   ));
 }
 
+function handleNotImplemented(request: IncomingMessage, response: ServerResponse): void {
+  sendJson(request, response, 501, responseContract.serialize(
+    responseContract.errorPayload('Not Implemented')
+  ));
+}
+
 function handleMethodNotAllowed(request: IncomingMessage, response: ServerResponse): void {
   sendJson(request, response, 405, responseContract.serialize(
     responseContract.errorPayload('Method Not Allowed')
@@ -247,6 +253,18 @@ export function createServer(): Server {
       return;
     }
 
+    if (request.method === 'GET' && pathname === '/v1/planning/context') {
+      const query = planningContext.parseLiveQuery(requestUrl.searchParams, planningContext.readCategoryContract());
+
+      if (!query.ok) {
+        handleBadRequest(request, response);
+        return;
+      }
+
+      handleNotImplemented(request, response);
+      return;
+    }
+
     const recordMatch = matchRecord(pathname);
     const collectionMatch = matchCollection(pathname);
 
@@ -267,7 +285,7 @@ export function createServer(): Server {
       return;
     }
 
-    if (recordMatch || collectionMatch || pathname === '/v1/source-metadata' || pathname === '/v1/planning/context-demo') {
+    if (recordMatch || collectionMatch || pathname === '/v1/source-metadata' || pathname === '/v1/planning/context-demo' || pathname === '/v1/planning/context') {
       handleMethodNotAllowed(request, response);
       return;
     }

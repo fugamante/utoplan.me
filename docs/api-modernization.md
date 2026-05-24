@@ -26,6 +26,7 @@
 - Collection filtering and sorting are not supported yet. Query parameters such as `filter`, `sort`, `q`, or domain-specific planning filters are intentionally ignored until source-backed data semantics and provenance/confidence metadata are defined.
 - `/v1/source-metadata` exposes the checked-in provenance/confidence contract as read-only API metadata. It distinguishes source-backed candidate tables (`cbps`, `muns`, `unis`) from blocked tables (`cdepts`, `businesses`, `grade_cs`) without connecting to the database.
 - `/v1/planning/context-demo` exposes the fixture-backed planning context read model. It returns selected municipality/category data, source-backed CBP facts, confidence, unresolved questions, and no scores or recommendations.
+- `/v1/planning/context` is reserved for the DB-backed planning context endpoint. It accepts only `municipality=<positive integer>` and `category=<candidate business category id>`. Valid requests return `501 Not Implemented` until live reads are implemented; invalid or unsupported query parameters return `400 Bad Request`.
 - `/readyz` remains operational readiness only; source metadata is intentionally kept out of readiness so provenance visibility does not depend on database health.
 - `dtoapi/modern/test/response_contract_test.js` pins the typed response envelope.
 - `dtoapi/modern/test/resource_contract_test.js` pins the typed resource/data-access boundary.
