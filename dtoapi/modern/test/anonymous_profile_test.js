@@ -249,6 +249,19 @@ anonymousProfile.deleteOwnedProfileAndRevokeWithExecutor(deleteExecutor, {
 const alreadyDeletedExecutor = executorFor([
   {
     rows: []
+  },
+  {
+    rows: [{
+      id: '11',
+      public_id: 'anon_public_11',
+      token_hash: tokenHash,
+      csrf_token_hash: csrfTokenHash,
+      created_at: '2026-05-24T00:00:00.000Z',
+      last_seen_at: null,
+      expires_at: '2026-05-25T00:00:00.000Z',
+      revoked_at: '2026-05-24T01:00:00.000Z',
+      revoke_reason: 'profile_deleted'
+    }]
   }
 ]);
 
@@ -256,6 +269,9 @@ anonymousProfile.deleteOwnedProfileAndRevokeWithExecutor(alreadyDeletedExecutor,
   anonymousSessionId: 11
 }, function(error, result) {
   assert.ifError(error);
-  assert.strictEqual(alreadyDeletedExecutor.calls.length, 1);
-  assert.strictEqual(result, null);
+  assert.strictEqual(alreadyDeletedExecutor.calls.length, 2);
+  assert.strictEqual(alreadyDeletedExecutor.calls[0].text, anonymousProfile.softDeleteOwnedProfileQuery());
+  assert.strictEqual(alreadyDeletedExecutor.calls[1].text, anonymousProfile.revokeAnonymousSessionQuery());
+  assert.strictEqual(result.profile, null);
+  assert.strictEqual(result.session.revokeReason, 'profile_deleted');
 });

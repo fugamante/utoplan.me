@@ -76,7 +76,7 @@ The branch now has a DB-backed demo path:
 - endpoint-level reserved anonymous route contracts and production rate-limit policy notes while endpoint behavior remains disabled
 - transactional anonymous runtime composition helpers and separate anonymous schema readiness gates while endpoint behavior remains disabled
 - release-gated anonymous runtime activation controls while endpoint behavior remains disabled
-- reserved-route `429` response contracts and pure anonymous create/read handler composition while endpoint success behavior remains disabled
+- reserved-route `429` response contracts and pure anonymous create/read/write/delete handler composition with same-origin/CSRF mutating checks and deleted-profile `410` behavior while endpoint success behavior remains disabled
 - `docker-compose.demo.yml` for a runnable local DB-backed demo
 
 Remaining product work:
