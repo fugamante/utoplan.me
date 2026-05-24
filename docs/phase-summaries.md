@@ -67,12 +67,13 @@ The branch now has a DB-backed demo path:
 - `GET /v1/demo/session?session=demo-session-1` for saved demo profile plus live context
 - browser-local planning profile panel for local business idea, municipality, and category preferences
 - production session/auth contract reserved without enabling account endpoints
+- reserved production session/profile table migration artifact
 - `docker-compose.demo.yml` for a runnable local DB-backed demo
 
 Remaining product work:
 
 - browser-local saved profile flow
 - production authentication/session design
-- migration artifacts for reserved production session/profile tables
+- reviewed anonymous session/profile API design for the reserved production tables
 - richer source-backed demo dataset
 - final audit after the remaining roadmap items are complete

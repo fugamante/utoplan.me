@@ -23,6 +23,9 @@ var baseline = migrations.filter(function(migration) {
 var naturalKeyIndexes = migrations.filter(function(migration) {
   return migration.fileName === '202605230900_add_load_natural_key_indexes.md';
 })[0].body;
+var sessionProfileTables = migrations.filter(function(migration) {
+  return migration.fileName === '202605241000_reserve_session_profile_tables.md';
+})[0].body;
 var docs = fs.readFileSync(path.join(root, 'docs', 'database-migrations.md'), 'utf8');
 
 [
@@ -56,3 +59,16 @@ assert(naturalKeyIndexes.indexOf('DROP INDEX CONCURRENTLY IF EXISTS cbps_county_
 assert(naturalKeyIndexes.indexOf('npm run docker:test:data-sql-preview') !== -1);
 assert(naturalKeyIndexes.indexOf('All three duplicate checks must return zero rows') !== -1);
 assert(naturalKeyIndexes.indexOf('All three incomplete-key checks should return zero before a writer is enabled') !== -1);
+
+assert(docs.indexOf('202605241000_reserve_session_profile_tables.md') !== -1);
+assert(sessionProfileTables.indexOf('CREATE TABLE IF NOT EXISTS user_accounts') !== -1);
+assert(sessionProfileTables.indexOf('CREATE TABLE IF NOT EXISTS user_sessions') !== -1);
+assert(sessionProfileTables.indexOf('CREATE TABLE IF NOT EXISTS planning_profiles') !== -1);
+assert(sessionProfileTables.indexOf('CREATE TABLE IF NOT EXISTS profile_events') !== -1);
+assert(sessionProfileTables.indexOf('token_hash bytea NOT NULL') !== -1);
+assert(sessionProfileTables.indexOf('password_hash text NOT NULL') !== -1);
+assert(sessionProfileTables.indexOf('planning_profiles_account_active_unique') !== -1);
+assert(sessionProfileTables.indexOf('Do not seed these tables with real or sample user data in production.') !== -1);
+assert(sessionProfileTables.indexOf('Production auth endpoints enabled: no') !== -1);
+assert(sessionProfileTables.indexOf('Expected API readiness remains versioned as `baseline-read-v1`') !== -1);
+assert(sessionProfileTables.indexOf('DROP TABLE IF EXISTS profile_events') !== -1);

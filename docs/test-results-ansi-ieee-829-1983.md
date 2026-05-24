@@ -14,6 +14,7 @@ This report covers the current modernization branch after adding:
 - DB-backed seeded demo session/profile read model
 - browser-local planning profile persistence
 - production session/auth contract reservation
+- reserved production session/profile table migration artifact
 - Docker Postgres demo seed and demo Compose topology
 - readiness coverage for the required demo session table
 - release smoke support for demo-session validation
@@ -54,6 +55,7 @@ This report covers the current modernization branch after adding:
 | Static app profile contracts | `npm --prefix app test` | Pass |
 | Browser profile persistence smoke | `node test/browser_smoke_test.js` | Pass |
 | Session/auth contract | `npm run test:session-auth-contract` | Pass |
+| Migration artifact contracts | `npm run test:migration-artifacts` | Pass |
 | Demo Compose configuration | `docker compose -f docker-compose.demo.yml config` | Pass |
 | Demo Compose runtime smoke | `docker compose -f docker-compose.demo.yml up --build -d` plus `npm run verify:release-smoke` with `UTOPLAN_DEMO_SESSION_ID=demo-session-1` | Pass |
 

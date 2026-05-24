@@ -33,8 +33,11 @@ The reserved production model is:
 - `user_accounts` for account identity and password hash metadata
 - `user_sessions` for hashed server-side session tokens
 - `planning_profiles` for authenticated saved planning profile data
+- `profile_events` for a minimal audit trail without storing full profile payloads
 
-These tables are not implemented yet. `demo_sessions` must remain local/demo-only. In plain terms: demo_sessions must remain local/demo-only. It must not be promoted into production account storage.
+The reservation artifact is `db/migrations/202605241000_reserve_session_profile_tables.md`. It is additive and must not enable endpoints by itself.
+
+These tables are not active in the current API yet. `demo_sessions` must remain local/demo-only. In plain terms: demo_sessions must remain local/demo-only. It must not be promoted into production account storage.
 
 ## Reserved Endpoints
 
@@ -69,4 +72,4 @@ Production implementation must provide deletion and export behavior. Public seed
 
 ## Next Implementation Gate
 
-The next safe implementation step is to add migration artifacts and contract tests for the reserved tables without enabling production auth endpoints. Any endpoint implementation should come after those artifacts pass review.
+The next safe implementation step is a reviewed API design for anonymous session bootstrap and caller-owned profile reads/writes. Any endpoint implementation should come after the reserved-table migration artifact passes review and should keep production auth disabled until the contract requirements are satisfied.

@@ -16,6 +16,8 @@ API `/readyz` reports those index prerequisites as advisory `loadPolicyIndexes` 
 
 The demo session artifact for local DB-backed sessions is `db/migrations/202605240900_add_demo_sessions.md`.
 
+The reserved production session/profile table artifact is `db/migrations/202605241000_reserve_session_profile_tables.md`. It is additive and must not enable production auth endpoints by itself.
+
 ## Artifact Location
 
 Store migration artifacts in `db/migrations/`.
