@@ -57,6 +57,20 @@ Run category validation with:
 npm run test:data-business-categories
 ```
 
+## Planning Context Fixture
+
+`scripts/planning_context.js` builds a fixture-backed planning context from a
+selected municipality, a business category, and CBP rows. It emits explicit
+facts, confidence, unresolved questions, and suggested next checks. It does not
+create scores, ranks, or recommendation language.
+
+Run:
+
+```sh
+npm run plan:context -- --fixture=data/fixtures/non-production/planning-context-fixture.json
+npm run test:planning-context
+```
+
 ## Normalization Rules
 
 Import normalization rules are documented in `docs/data-normalization.md` and enforced by `npm run test:data-normalization`.

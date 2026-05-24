@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "scope": "puerto-rico-only",
+  "selectedMunicipality": {
+    "id": "mun-001",
+    "title": "Adjuntas",
+    "county": 1,
+    "geographyLevel": "municipality"
+  },
+  "selectedCategoryId": "professional_services",
+  "cbps": [
+    {
+      "sourceId": "datospr-cbp-2014-municipios",
+      "rowIndex": 0,
+      "record": {
+        "total_indus": 653,
+        "total_anual": 11348,
+        "cnaic": 541,
+        "cnaic_name": "Professional, Scientific, and Technical Services",
+        "county": 1,
+        "num_est": 128
+      },
+      "provenance": {
+        "sourceId": "datospr-cbp-2014-municipios",
+        "rowIndex": 0,
+        "sourceConfidence": "medium",
+        "transformConfidence": "low",
+        "productionReadiness": "candidate-needs-review",
+        "sourceBacked": true,
+        "notes": "Municipality-level CBP data is Puerto Rico-scoped, but important legacy field semantics are still unresolved."
+      }
+    },
+    {
+      "sourceId": "datospr-cbp-2014-municipios",
+      "rowIndex": 1,
+      "record": {
+        "total_indus": 40,
+        "total_anual": 900,
+        "cnaic": 722,
+        "cnaic_name": "Food Services and Drinking Places",
+        "county": 1,
+        "num_est": 8
+      },
+      "provenance": {
+        "sourceId": "datospr-cbp-2014-municipios",
+        "rowIndex": 1,
+        "sourceConfidence": "medium",
+        "transformConfidence": "low",
+        "productionReadiness": "candidate-needs-review",
+        "sourceBacked": true,
+        "notes": "Municipality-level CBP data is Puerto Rico-scoped, but important legacy field semantics are still unresolved."
+      }
+    }
+  ]
+}
