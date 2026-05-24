@@ -79,6 +79,19 @@ function checkUnis(result) {
   }
 }
 
+function checkPlanningContext(result) {
+  checkStatus(result, 200, 'app /v1/planning/context-demo');
+  if (!result.body || result.body.scope !== 'puerto-rico-only' || result.body.mode !== 'demo-fixture') {
+    throw new Error('app /v1/planning/context-demo returned an unexpected payload');
+  }
+  if (!result.body.selectedCategory || result.body.selectedCategory.id !== 'professional_services') {
+    throw new Error('app /v1/planning/context-demo must include the demo business category');
+  }
+  if (!Array.isArray(result.body.facts) || result.body.facts.length === 0 || !Array.isArray(result.body.signals) || result.body.signals.length !== 0) {
+    throw new Error('app /v1/planning/context-demo must return facts without scores or signals');
+  }
+}
+
 function checkApiReady(result) {
   checkStatus(result, 200, 'api /readyz');
   if (!result.body || result.body.status !== 'ok' || result.body.database !== 'ok' || result.body.schema !== 'ok') {
@@ -109,6 +122,11 @@ function runChecks(env, requester, callback) {
       label: 'app /v1/unis',
       url: joinUrl(appUrl, '/v1/unis'),
       validate: checkUnis
+    },
+    {
+      label: 'app /v1/planning/context-demo',
+      url: joinUrl(appUrl, '/v1/planning/context-demo'),
+      validate: checkPlanningContext
     }
   ];
 
@@ -167,6 +185,7 @@ if (require.main === module) {
 module.exports = {
   checkApiReady: checkApiReady,
   checkAppHealth: checkAppHealth,
+  checkPlanningContext: checkPlanningContext,
   checkUnis: checkUnis,
   joinUrl: joinUrl,
   runChecks: runChecks

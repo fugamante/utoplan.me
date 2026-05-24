@@ -26,6 +26,19 @@ smoke.checkUnis({
   }
 });
 
+smoke.checkPlanningContext({
+  statusCode: 200,
+  body: {
+    scope: 'puerto-rico-only',
+    mode: 'demo-fixture',
+    selectedCategory: {
+      id: 'professional_services'
+    },
+    facts: [{factType: 'establishment_count'}],
+    signals: []
+  }
+});
+
 smoke.checkApiReady({
   statusCode: 200,
   body: {
@@ -55,6 +68,18 @@ function requester(url, callback) {
         data: [{id: 1}]
       }
     },
+    'https://app.example.com/v1/planning/context-demo': {
+      statusCode: 200,
+      body: {
+        scope: 'puerto-rico-only',
+        mode: 'demo-fixture',
+        selectedCategory: {
+          id: 'professional_services'
+        },
+        facts: [{factType: 'establishment_count'}],
+        signals: []
+      }
+    },
     'https://api.example.internal/readyz': {
       statusCode: 200,
       body: {
@@ -76,6 +101,7 @@ smoke.runChecks({
   assert.deepStrictEqual(labels, [
     'app /healthz',
     'app /v1/unis',
+    'app /v1/planning/context-demo',
     'api /readyz'
   ]);
 });
