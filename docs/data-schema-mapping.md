@@ -44,6 +44,19 @@ Run provenance/confidence validation with:
 npm run test:data-provenance-confidence
 ```
 
+## Business Category Crosswalk
+
+`data/mappings/puerto-rico-business-categories.json` defines the first curated
+BusinessCategory-to-NAICS crosswalk for planning context. It is a draft product
+mapping that can filter CBP facts by business idea, not a scoring model or
+recommendation engine.
+
+Run category validation with:
+
+```sh
+npm run test:data-business-categories
+```
+
 ## Normalization Rules
 
 Import normalization rules are documented in `docs/data-normalization.md` and enforced by `npm run test:data-normalization`.
