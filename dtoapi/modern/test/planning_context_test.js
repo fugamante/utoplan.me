@@ -1,0 +1,57 @@
+'use strict';
+
+const assert = require('assert');
+const planningContext = require('../lib/planning_context');
+
+const categoryContract = planningContext.readCategoryContract();
+const fixture = planningContext.readFixture();
+const payload = planningContext.buildPayload(fixture, categoryContract);
+
+assert.strictEqual(planningContext.naicsMatches(541, '541611'), true);
+assert.strictEqual(planningContext.naicsMatches(541611, '541'), true);
+assert.strictEqual(planningContext.naicsMatches(722, '541611'), false);
+assert.strictEqual(planningContext.categoryById(categoryContract, 'professional_services').displayName, 'Professional services');
+assert.strictEqual(planningContext.categoryById(categoryContract, 'missing'), null);
+
+assert.strictEqual(payload.schemaVersion, 1);
+assert.strictEqual(payload.scope, 'puerto-rico-only');
+assert.strictEqual(payload.mode, 'demo-fixture');
+assert.strictEqual(payload.selectedMunicipality.title, 'Adjuntas');
+assert.strictEqual(payload.selectedCategory.id, 'professional_services');
+assert.strictEqual(payload.facts.length, 3);
+assert.deepStrictEqual(payload.facts.map(function(fact) {
+  return fact.factType;
+}), [
+  'establishment_count',
+  'annual_payroll',
+  'employment_count'
+]);
+assert.strictEqual(payload.signals.length, 0);
+assert.strictEqual(payload.confidence.label, 'low');
+assert(payload.unresolvedQuestions.some(function(question) {
+  return question.indexOf('Keep confidence and limitations visible') !== -1;
+}));
+assert(payload.suggestedNextChecks.some(function(check) {
+  return check.indexOf('Add ACS') !== -1;
+}));
+
+payload.facts.forEach(function(fact) {
+  assert.strictEqual(fact.table, 'cbps');
+  assert.strictEqual(fact.place.county, 1);
+  assert.strictEqual(fact.naics.code, '541');
+  assert.deepStrictEqual(fact.naics.matchedCategoryCodes, [
+    '541110',
+    '541211',
+    '541611',
+    '541990'
+  ]);
+  assert.strictEqual(fact.confidence.source, 'medium');
+  assert.strictEqual(fact.confidence.transform, 'low');
+  assert.strictEqual(fact.confidence.sourceBacked, true);
+});
+
+assert.throws(function() {
+  planningContext.buildPayload(Object.assign({}, fixture, {
+    selectedCategoryId: 'missing'
+  }), categoryContract);
+}, /Unknown business category/);
