@@ -5,6 +5,7 @@ import {URL} from 'url';
 import zlib from 'zlib';
 import * as db from './db';
 import * as records from './records';
+import * as planningContext from './planning_context';
 import * as resourceContract from './resource_contract';
 import * as responseContract from './response_contract';
 import * as rootContract from './root_contract';
@@ -137,6 +138,19 @@ function handleSourceMetadata(request: IncomingMessage, response: ServerResponse
   }
 }
 
+function handlePlanningContextDemo(request: IncomingMessage, response: ServerResponse): void {
+  try {
+    sendJson(request, response, 200, responseContract.serialize(planningContext.payload()));
+  } catch (error) {
+    const contextError = error as Error;
+    console.error(contextError.stack || contextError.message);
+
+    sendJson(request, response, 500, responseContract.serialize(
+      responseContract.errorPayload('Internal Server Error')
+    ));
+  }
+}
+
 function handleRecord(request: IncomingMessage, response: ServerResponse, kind: string, id: number): void {
   records.find(kind, id, function(error, row, resource) {
     if (error) {
@@ -228,6 +242,11 @@ export function createServer(): Server {
       return;
     }
 
+    if (request.method === 'GET' && pathname === '/v1/planning/context-demo') {
+      handlePlanningContextDemo(request, response);
+      return;
+    }
+
     const recordMatch = matchRecord(pathname);
     const collectionMatch = matchCollection(pathname);
 
@@ -248,7 +267,7 @@ export function createServer(): Server {
       return;
     }
 
-    if (recordMatch || collectionMatch || pathname === '/v1/source-metadata') {
+    if (recordMatch || collectionMatch || pathname === '/v1/source-metadata' || pathname === '/v1/planning/context-demo') {
       handleMethodNotAllowed(request, response);
       return;
     }

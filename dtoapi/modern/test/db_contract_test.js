@@ -24,6 +24,10 @@ const contracts = [
     metadataExpected: true
   },
   {
+    path: '/v1/planning/context-demo',
+    planningContextExpected: true
+  },
+  {
     path: '/v1/unis',
     expected: {
       id: 1,
@@ -242,6 +246,18 @@ function runContract(server, index) {
         assert.strictEqual(body.tables.muns.productionReadiness, 'candidate-needs-review');
         assert.strictEqual(body.tables.unis.sourceBacked, true);
         assert.strictEqual(body.blockedTables.businesses.dataClass, 'blocked');
+        runContract(server, index + 1);
+        return;
+      }
+
+      if (contract.planningContextExpected) {
+        assert.strictEqual(body.scope, 'puerto-rico-only');
+        assert.strictEqual(body.mode, 'demo-fixture');
+        assert.strictEqual(body.selectedMunicipality.title, 'Adjuntas');
+        assert.strictEqual(body.selectedCategory.id, 'professional_services');
+        assert.strictEqual(body.facts.length, 3);
+        assert.strictEqual(body.signals.length, 0);
+        assert.strictEqual(body.confidence.label, 'low');
         runContract(server, index + 1);
         return;
       }

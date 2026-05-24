@@ -123,40 +123,48 @@ server.listen(0, '127.0.0.1', function() {
     assert.strictEqual(JSON.parse(metadataResponse.body).tables.unis.dataClass, 'source-backed-candidate');
     assert.strictEqual(JSON.parse(metadataResponse.body).blockedTables.businesses.dataClass, 'blocked');
 
-    request(server, '/v1/source-metadata', function(methodError, methodResponse) {
-      assert.ifError(methodError);
-      assert.strictEqual(methodResponse.statusCode, 405);
-      assert.strictEqual(JSON.parse(methodResponse.body).meta.error, 'Method Not Allowed');
+    request(server, '/v1/planning/context-demo', function(contextError, contextResponse) {
+      assert.ifError(contextError);
+      assert.strictEqual(contextResponse.statusCode, 200);
+      assert.strictEqual(JSON.parse(contextResponse.body).mode, 'demo-fixture');
+      assert.strictEqual(JSON.parse(contextResponse.body).selectedCategory.id, 'professional_services');
+      assert.strictEqual(JSON.parse(contextResponse.body).signals.length, 0);
 
-      request(server, '/readyz', function(error, response) {
-        assert.ifError(error);
-        assert.strictEqual(response.statusCode, 200);
-        assert.strictEqual(JSON.parse(response.body).database, 'ok');
-        assert.strictEqual(JSON.parse(response.body).schema, 'ok');
-        assert.strictEqual(JSON.parse(response.body).schemaVersion, 'baseline-read-v1');
-        assert.strictEqual(JSON.parse(response.body).loadPolicyIndexes, 'missing');
-        assert.deepStrictEqual(JSON.parse(response.body).missingLoadPolicyIndexes, ['unis_title_address_unique']);
+      request(server, '/v1/source-metadata', function(methodError, methodResponse) {
+        assert.ifError(methodError);
+        assert.strictEqual(methodResponse.statusCode, 405);
+        assert.strictEqual(JSON.parse(methodResponse.body).meta.error, 'Method Not Allowed');
 
-        db.ready = function(callback) {
-          callback(new Error('database unavailable'));
-        };
-        console.error = function() {};
+        request(server, '/readyz', function(error, response) {
+          assert.ifError(error);
+          assert.strictEqual(response.statusCode, 200);
+          assert.strictEqual(JSON.parse(response.body).database, 'ok');
+          assert.strictEqual(JSON.parse(response.body).schema, 'ok');
+          assert.strictEqual(JSON.parse(response.body).schemaVersion, 'baseline-read-v1');
+          assert.strictEqual(JSON.parse(response.body).loadPolicyIndexes, 'missing');
+          assert.deepStrictEqual(JSON.parse(response.body).missingLoadPolicyIndexes, ['unis_title_address_unique']);
 
-        request(server, '/readyz', function(failedError, failedResponse) {
-          assert.ifError(failedError);
-          assert.strictEqual(failedResponse.statusCode, 503);
-          assert.strictEqual(JSON.parse(failedResponse.body).database, 'unavailable');
-          assert.strictEqual(JSON.parse(failedResponse.body).schema, 'unknown');
+          db.ready = function(callback) {
+            callback(new Error('database unavailable'));
+          };
+          console.error = function() {};
 
-          db.ready = originalReady;
-          console.error = originalError;
-          server.close(function(closeError) {
-            assert.ifError(closeError);
+          request(server, '/readyz', function(failedError, failedResponse) {
+            assert.ifError(failedError);
+            assert.strictEqual(failedResponse.statusCode, 503);
+            assert.strictEqual(JSON.parse(failedResponse.body).database, 'unavailable');
+            assert.strictEqual(JSON.parse(failedResponse.body).schema, 'unknown');
+
+            db.ready = originalReady;
+            console.error = originalError;
+            server.close(function(closeError) {
+              assert.ifError(closeError);
+            });
           });
         });
+      }, {
+        method: 'POST'
       });
-    }, {
-      method: 'POST'
     });
   });
 });
