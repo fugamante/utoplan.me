@@ -85,7 +85,7 @@ Run Docker compatibility checks when Docker is available, because the production
 
 `npm run verify:release` wraps the app and API deployment verifiers for release jobs. CI runs it with `UTOPLAN_RELEASE_SAMPLE=1` to validate wiring without production secrets; production release jobs must omit sample mode and provide real platform environment values.
 
-After deploying a candidate release, run `npm run verify:release-smoke` with `UTOPLAN_APP_URL` set to the public app origin. Set `UTOPLAN_API_URL` only when the API readiness URL is reachable from the release job network. For a demo environment that intentionally exposes seeded DB-backed demo sessions, set `UTOPLAN_DEMO_SESSION_ID=demo-session-1` for the smoke run and enable the API endpoint with `UTOPLAN_DEMO_SESSIONS=1`.
+After deploying a candidate release, run `npm run verify:release-smoke` with `UTOPLAN_APP_URL` set to the public app origin. Set `UTOPLAN_API_URL` only when the API readiness URL is reachable from the release job network. For a demo environment that intentionally exposes seeded DB-backed demo sessions, set `UTOPLAN_DEMO_SESSION_ID=demo-session-1` for the smoke run and enable the API endpoint with `UTOPLAN_DEMO_SESSIONS=1`. For an anonymous-runtime candidate, set `UTOPLAN_ANONYMOUS_SMOKE=1`; this performs a same-origin anonymous create/read/update/delete flow through the app origin and should run only after the anonymous storage migration, schema readiness gate, and edge/shared limiter contract are active.
 
 Confirm these release facts before deployment:
 
@@ -122,7 +122,7 @@ Do not add startup-time schema mutation to either service. Production startup sh
 5. Wait for `GET /readyz` on the API to return `200`.
 6. Deploy the app with `UTOPLAN_API_ORIGIN` pointing at the API service.
 7. Wait for `GET /healthz` on the app to return `200`.
-8. Smoke test the public app origin and verify `/v1/unis` plus `/v1/planning/context-demo` are served through the app origin. Demo environments should also verify `/v1/demo/session?session=demo-session-1`.
+8. Smoke test the public app origin and verify `/v1/unis` plus `/v1/planning/context-demo` are served through the app origin. Demo environments should also verify `/v1/demo/session?session=demo-session-1`. Anonymous-runtime candidates should also run the opt-in anonymous create/read/update/delete smoke.
 
 Example smoke checks:
 
@@ -138,6 +138,15 @@ Demo smoke check:
 UTOPLAN_APP_URL=https://app.example.com \
 UTOPLAN_API_URL=https://api.example.internal \
 UTOPLAN_DEMO_SESSION_ID=demo-session-1 \
+npm run verify:release-smoke
+```
+
+Anonymous runtime smoke check:
+
+```sh
+UTOPLAN_APP_URL=https://app.example.com \
+UTOPLAN_API_URL=https://api.example.internal \
+UTOPLAN_ANONYMOUS_SMOKE=1 \
 npm run verify:release-smoke
 ```
 

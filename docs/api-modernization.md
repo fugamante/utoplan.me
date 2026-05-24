@@ -77,4 +77,4 @@ The modern API must pass preserved endpoint contracts before additional endpoint
 
 ## Next Slice
 
-Next, add release smoke coverage for the real gate-mounted anonymous runtime, then implement a concrete shared limiter provider if the deployment target does not enforce anonymous limits at the edge. Test migration to TypeScript is optional and lower priority than product behavior or CI hardening.
+Next, implement a concrete shared limiter provider if the deployment target does not enforce anonymous limits at the edge, then run the opt-in anonymous release smoke against the candidate environment. Test migration to TypeScript is optional and lower priority than product behavior or CI hardening.
