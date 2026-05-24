@@ -47,6 +47,7 @@
 - `db/migrations/202605241100_reserve_anonymous_session_profile_tables.md` and `docs/anonymous-session-runtime-sequence.md` reserve the anonymous storage and threat-reviewed runtime sequence without enabling endpoints.
 - The modern API now includes route-specific anonymous CORS/CSRF scaffolding and tests while keeping reserved anonymous endpoints at `501 Not Implemented`.
 - The modern API now includes anonymous token hashing/cookie helpers, transaction scaffolding, and anonymous session/profile SQL helpers while keeping reserved anonymous endpoints disabled.
+- The modern API now includes anonymous fixed-window rate-limit scaffolding and profile body-validation helpers while keeping reserved anonymous endpoints disabled.
 - `docs/product-scope.md`, `docs/demo-manual.md`, `docs/phase-summaries.md`, and `docs/test-results-ansi-ieee-829-1983.md` capture the current product boundary, demo operation path, roadmap phase summaries, and validation evidence.
 - `scripts/data_normalization.js` provides fixture-backed normalization helpers for NAICS filtering, municipality code coercion, title cleanup, and university coordinate join review behavior.
 - `scripts/data_import_plan.js` provides an offline fixture planning harness and CLI that reports accepted, rejected, and manual-review records without fetching source data or mutating a database.
@@ -123,6 +124,7 @@ Exit criteria:
 - Define anonymous session/profile API contract. Status: storage and runtime sequence reservation complete; endpoint shapes, same-origin cookie ownership, route-specific CORS, CSRF checks, optimistic concurrency with caller ownership, allowed profile fields, anonymous storage artifact, runtime sequence, and failure modes are reserved without runtime implementation.
 - Add anonymous CORS/CSRF runtime scaffolding. Status: complete; reserved anonymous routes avoid wildcard CORS, deny invalid preflights, require configured same-origin signals, gate post-bootstrap writes on `X-CSRF-Token` presence, and still return `501` for unimplemented runtime behavior.
 - Add anonymous data-access and token-hashing scaffolding. Status: complete; token generation, hash-only comparison, secure cookie helpers, anonymous SQL builders, row mappers, response envelope helpers, and transaction support are covered without enabling endpoint behavior.
+- Add anonymous rate-limit and profile body-validation scaffolding. Status: complete; process-local fixed-window limiter keys, profile body-size checks, JSON parse failures, envelope validation, allowed fields, municipality/category validation, and `businessIdea` limits are covered without enabling endpoint behavior.
 - Record runtime compatibility constraints. Status: complete; the Node 8/Nodal compatibility path has been retired after seeded DB read behavior moved to the modern API.
 - Isolate externally observable endpoint behavior before replacement. Status: complete via API contract tests.
 
@@ -195,4 +197,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Decide and scaffold anonymous rate-limit behavior plus profile body validation before implementing `POST /v1/anonymous-sessions` or caller-owned `/v1/profile` routes.
+Add endpoint-level anonymous session/profile contract tests and shared-rate-limit decision notes before implementing `POST /v1/anonymous-sessions` or caller-owned `/v1/profile` routes.

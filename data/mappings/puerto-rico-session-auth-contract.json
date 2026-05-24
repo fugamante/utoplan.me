@@ -71,6 +71,10 @@
         "rotation": "rotate on anonymous session creation and invalidate on session revoke"
       },
       "rateLimitPolicy": {
+        "scaffoldStorage": "process-local-fixed-window",
+        "productionStorageRequired": "shared-or-edge-rate-limit-before-public-runtime",
+        "defaultLimit": 60,
+        "defaultWindowMs": 60000,
         "preAuthKey": "client ip plus normalized origin",
         "sessionKey": "anonymous session public id after authentication",
         "failureKey": "client ip plus normalized origin plus failure type",
@@ -94,6 +98,9 @@
       "rowVersion": "positive-integer",
       "maxBodyBytes": 2048,
       "unknownFields": "reject",
+      "businessIdeaMaxLength": 160,
+      "selectedMunicipalityId": "positive-integer",
+      "selectedCategoryIdPattern": "^[a-z][a-z0-9_]{1,63}$",
       "fields": [
         "businessIdea",
         "selectedMunicipalityId",

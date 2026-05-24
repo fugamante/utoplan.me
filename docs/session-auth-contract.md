@@ -94,7 +94,7 @@ Cookie-backed profile routes must not inherit wildcard CORS behavior. Runtime im
 
 Profile writes must enforce caller ownership in the same atomic update as optimistic concurrency, using the anonymous session owner, expected `rowVersion`, and non-deleted profile predicate in one write statement.
 
-This anonymous contract now has a separate anonymous storage migration artifact, runtime sequence document, route-specific CORS/CSRF scaffolding, token-hashing helpers, and anonymous data-access scaffolding. Runtime endpoints remain blocked until the artifact is reviewed/applied as part of a release and endpoint tests cover body validation, ownership, stale writes, deletion, audit, retention, and rate limits. The existing `user_accounts` and `planning_profiles.account_id` reservation is for password-account work and must not be filled with dummy account rows for anonymous users.
+This anonymous contract now has a separate anonymous storage migration artifact, runtime sequence document, route-specific CORS/CSRF scaffolding, token-hashing helpers, anonymous data-access scaffolding, process-local rate-limit scaffolding, and profile body-validation helpers. Runtime endpoints remain blocked until the artifact is reviewed/applied as part of a release and endpoint tests cover ownership, stale writes, deletion, audit, retention, and shared production rate limits. The existing `user_accounts` and `planning_profiles.account_id` reservation is for password-account work and must not be filled with dummy account rows for anonymous users.
 
 ## Privacy Rules
 
@@ -120,4 +120,4 @@ Production implementation must provide deletion and export behavior. Public seed
 
 ## Next Implementation Gate
 
-The next safe implementation step is anonymous rate-limit behavior plus profile body validation scaffolding. Any endpoint implementation should come after the anonymous migration artifact passes release review and should keep password auth disabled until the contract requirements are satisfied.
+The next safe implementation step is endpoint-level anonymous session/profile contract tests plus shared-rate-limit decision notes. Any endpoint implementation should come after the anonymous migration artifact passes release review and should keep password auth disabled until the contract requirements are satisfied.

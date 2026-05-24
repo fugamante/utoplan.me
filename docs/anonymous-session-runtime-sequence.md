@@ -90,7 +90,7 @@ Required controls:
 
 ## Rate Limits
 
-Initial runtime implementation must reserve these limit keys and apply them before any profile mutation:
+Initial runtime implementation must reserve these limit keys and apply them before any profile mutation. The current scaffold uses a process-local fixed-window helper for deterministic tests only: default limit `60`, default window `60000` ms, and stable non-secret keys. Public or multi-instance runtime must use shared storage or an edge/platform limiter before endpoint activation.
 
 - anonymous session creation: client IP plus normalized Origin
 - profile reads: anonymous session public id after authentication, with IP plus Origin fallback before authentication
@@ -101,6 +101,20 @@ Initial runtime implementation must reserve these limit keys and apply them befo
 - repeated token failures: client IP plus normalized Origin plus failure type
 
 Rejected requests should return `429` when the rate limit is exceeded and should not reveal whether a session or profile exists.
+
+Origin normalization lowercases valid URL origins, maps missing Origin to `none`, and maps malformed Origin to `invalid`. Rate-limit keys must not include cookies, raw session tokens, CSRF tokens, request bodies, profile text, or profile field names.
+
+## Body Validation
+
+Profile request bodies are capped at `2048` UTF-8 bytes before JSON parsing. Malformed JSON returns `400 invalid_request`; oversized bodies return `413 profile_too_large`; invalid profile shape returns `422 invalid_profile`.
+
+Allowed profile data is object-only and may contain only:
+
+- `businessIdea`: optional string, maximum 160 JavaScript string characters, no truncation
+- `selectedMunicipalityId`: optional positive integer, no string coercion
+- `selectedCategoryId`: optional string matching `^[a-z][a-z0-9_]{1,63}$`
+
+`POST /v1/anonymous-sessions` accepts an optional top-level `profile` object and rejects unknown top-level fields. `PUT /v1/profile` requires a positive integer `rowVersion` and a valid top-level `profile` object.
 
 ## Retention And Export
 
@@ -121,5 +135,5 @@ Runtime route work may begin only after:
 - the anonymous migration artifact is reviewed
 - route-specific CORS helpers are designed apart from current wildcard public-read behavior
 - CSRF token generation, hashing, and validation helpers are designed
-- rate-limit storage and failure behavior are selected
+- shared production rate-limit storage is selected
 - focused endpoint tests cover success, ownership failure, CSRF failure, CORS failure, stale writes, delete/revoke, and audit events

@@ -35,6 +35,7 @@
 - Anonymous session/profile endpoints are contract-reserved but not implemented. The reserved shape is `POST /v1/anonymous-sessions`, `GET /v1/profile`, `PUT /v1/profile`, and `DELETE /v1/profile`; it requires same-origin cookie ownership, hash-only token storage, route-specific non-wildcard CORS, CSRF protection for writes, row-version optimistic concurrency with caller ownership in the same update, the anonymous-compatible storage migration artifact `db/migrations/202605241100_reserve_anonymous_session_profile_tables.md`, the runtime sequence in `docs/anonymous-session-runtime-sequence.md`, and explicit non-use of `demo_sessions` or password-account rows for anonymous profile storage.
 - Anonymous CORS/CSRF scaffolding is implemented without enabling the reserved endpoints. Reserved anonymous route methods still return `501 Not Implemented`, while route-specific preflight handling rejects disallowed Origins, avoids wildcard CORS, allows only configured Origins, requires strict same-origin signals for session bootstrap, and gates `PUT`/`DELETE` on `X-CSRF-Token` header presence.
 - Anonymous token/data-access scaffolding is implemented without enabling the reserved endpoints. Token helpers generate high-entropy base64url secrets, store only hashes, verify with timing-safe comparison, omit cookie `Domain`, and expose clear-cookie helpers. Data-access helpers reserve SQL for active session lookup, active/deleted profile distinction, row-version profile updates, caller-owned soft delete, session revocation, and audit event inserts.
+- Anonymous rate-limit and profile body-validation scaffolding is implemented without enabling the reserved endpoints. The rate-limit helper is process-local fixed-window scaffolding for tests only; public runtime still needs shared or edge rate-limit storage. Profile validation enforces the 2048-byte body cap before parsing, allowed fields only, positive integer municipality ids, category id pattern checks, and 160-character `businessIdea` limit.
 - `/readyz` remains operational readiness only; source metadata is intentionally kept out of readiness so provenance visibility does not depend on database health.
 - `dtoapi/modern/test/response_contract_test.js` pins the typed response envelope.
 - `dtoapi/modern/test/resource_contract_test.js` pins the typed resource/data-access boundary.
@@ -44,6 +45,8 @@
 - `dtoapi/modern/test/demo_session_test.js` pins the demo session query validation and row serialization without requiring a database.
 - `dtoapi/modern/test/anonymous_profile_test.js` pins anonymous session/profile SQL and row/envelope mapping without requiring a database.
 - `dtoapi/modern/test/anonymous_token_test.js` pins anonymous token hashing, CSRF verification, cookie parsing, and cookie construction without requiring a database.
+- `dtoapi/modern/test/anonymous_rate_limit_test.js` pins anonymous rate-limit key generation and fixed-window decisions without enabling endpoint runtime behavior.
+- `dtoapi/modern/test/anonymous_profile_validation_test.js` pins anonymous profile body-size, JSON parse, top-level envelope, row-version, and field validation without enabling endpoint runtime behavior.
 - `dtoapi/modern/test/anonymous_security_test.js` pins anonymous route CORS and CSRF scaffolding without requiring a database or enabling endpoint runtime behavior.
 - `dtoapi/modern/test/root_contract_test.js` pins the typed root response contract without requiring a server.
 - `dtoapi/modern/test/server_contract_test.js` pins server route matching and gzip detection helpers without requiring a database.
@@ -65,4 +68,4 @@ The modern API must pass preserved endpoint contracts before additional endpoint
 
 ## Next Slice
 
-Decide and scaffold anonymous rate-limit behavior plus profile body validation before implementing anonymous profile routes under `dtoapi/modern/src/`. Test migration to TypeScript is optional and lower priority than product behavior or CI hardening.
+Add endpoint-level anonymous session/profile contract tests and shared-rate-limit decision notes before implementing anonymous profile routes under `dtoapi/modern/src/`. Test migration to TypeScript is optional and lower priority than product behavior or CI hardening.
