@@ -37,6 +37,29 @@
       </ul>
     </form>
   </div>
+  <section id="profilePanel" data-ui="profile-panel" aria-label="Planning profile">
+    <div class="profileField">
+      <label for="businessIdea">Business idea</label>
+      <input id="businessIdea" data-ui="profile-business-idea" maxlength="160" type="text" value="">
+    </div>
+    <div class="profileRow">
+      <div class="profileField">
+        <label for="municipalityId">Municipality</label>
+        <input id="municipalityId" data-ui="profile-municipality" min="1" step="1" type="number" value="1">
+      </div>
+      <div class="profileField">
+        <label for="categoryId">Category</label>
+        <input id="categoryId" data-ui="profile-category" type="text" value="professional_services">
+      </div>
+    </div>
+    <div class="profileActions">
+      <button type="button" data-ui="profile-save">Save</button>
+      <button type="button" data-ui="profile-load">Load</button>
+      <button type="button" data-ui="profile-clear">Clear</button>
+      <a data-ui="profile-context-link" href="/v1/planning/context?municipality=1&amp;category=professional_services">Context</a>
+    </div>
+    <div class="profileStatus" data-ui="profile-status" role="status" aria-live="polite"></div>
+  </section>
   <!-- Related -->
   <div id="sidebar" data-ui="sidebar">
    <!--<a class="arrowButton arrowHide" href="#">&#9658;</a> -->

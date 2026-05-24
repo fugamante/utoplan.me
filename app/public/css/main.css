@@ -73,6 +73,75 @@ body {
   background: rgba(255, 255, 255, 0.7);
   list-style-type: none;
 }
+#profilePanel{
+  position: absolute;
+  top: 12px;
+  right: 56px;
+  z-index: 1000;
+  width: 318px;
+  max-width: calc(100vw - 112px);
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.88);
+  color: #222;
+  font-size: 14px;
+  line-height: 18px;
+}
+.profileField{
+  margin-bottom: 8px;
+}
+.profileField label{
+  display: block;
+  margin-bottom: 4px;
+  font-size: 12px;
+}
+.profileField input{
+  box-sizing: border-box;
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #777;
+  background: #fff;
+}
+.profileRow{
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 8px;
+}
+.profileActions{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 2px;
+}
+.profileActions button,
+.profileActions a{
+  padding: 7px 8px;
+  border: 1px solid #555;
+  background: #fff;
+  color: #111;
+  font-size: 13px;
+  text-decoration: none;
+}
+@media (max-width: 520px){
+  #profilePanel{
+    top: 168px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+    max-width: none;
+  }
+  .profileActions button,
+  .profileActions a{
+    flex: 1 1 92px;
+    text-align: center;
+  }
+}
+.profileStatus{
+  min-height: 18px;
+  margin-top: 8px;
+  color: #2f5f5a;
+  font-size: 12px;
+}
 a:active{
   color: #555;
 }

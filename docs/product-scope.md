@@ -26,13 +26,17 @@ The current slice supports:
 - Source-backed CBP facts for the selected municipality/category
 - No scores, rankings, or recommendations
 - DB-backed seeded demo session through `/v1/demo/session?session=demo-session-1`
+- Browser-local planning profile saved under `utoplan.planningProfile.v1`
 - Docker Postgres demo data seeded from checked-in non-production contracts
 
 ## Session Scope
 
-The first session model is a local/demo read model. It stores a neutral public session id, display name, selected municipality, selected category, and a JSON profile payload in `demo_sessions`.
+The first session model has two intentionally separate layers:
 
-It is not a production account system. It does not implement passwords, durable user authentication, role-based access, account recovery, or retention policy controls. Production user profiles require a separate privacy and authentication design before public use.
+- browser-local profile storage for business idea, municipality, and category preferences
+- DB-backed local/demo session storage for seeded demo profile composition through `demo_sessions`
+
+Neither layer is a production account system. The current branch does not implement passwords, durable user authentication, role-based access, account recovery, or retention policy controls. Production user profiles require a separate privacy and authentication design before public use.
 
 ## Data Boundaries
 

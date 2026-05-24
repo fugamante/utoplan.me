@@ -112,6 +112,7 @@ async function main() {
   assert.strictEqual(await page.locator('[data-map="main"]').count(), 1, 'map container should render');
   assert.strictEqual(await page.locator('[data-map-status="main"][data-state="ready"]').count(), 1, 'map status should mark API data ready');
   assert.strictEqual(await page.locator('[data-ui="layer-menu"] li').count(), 10, 'layer menu should render expected entries');
+  assert.strictEqual(await page.locator('[data-ui="profile-panel"]').count(), 1, 'planning profile panel should render');
   assert.strictEqual(await page.locator('.leaflet-tile-pane img.leaflet-tile').count() > 0, true, 'base map tiles should render');
   assert.strictEqual(await page.locator('.leaflet-marker-icon').count(), 1, 'university marker should render');
   assert(requestedPaths.includes('/v1/unis'), 'map should try the modern API endpoint first');
@@ -139,6 +140,28 @@ async function main() {
     await page.locator('[data-ui="layer-visibility"].eyeOpened').count() >= 2,
     'layer eye click should open an additional layer icon'
   );
+
+  await page.locator('[data-ui="profile-business-idea"]').fill('Back office services');
+  await page.locator('[data-ui="profile-municipality"]').fill('1');
+  await page.locator('[data-ui="profile-category"]').fill('professional_services');
+  await page.locator('[data-ui="profile-save"]').click();
+  assert.strictEqual(await page.locator('[data-ui="profile-status"]').textContent(), 'Profile saved locally.');
+  assert.strictEqual(
+    await page.locator('[data-ui="profile-context-link"]').getAttribute('href'),
+    '/v1/planning/context?municipality=1&category=professional_services'
+  );
+
+  await page.reload({ waitUntil: 'networkidle' });
+  assert.strictEqual(await page.locator('[data-ui="profile-business-idea"]').inputValue(), 'Back office services');
+  assert.strictEqual(await page.locator('[data-ui="profile-municipality"]').inputValue(), '1');
+  assert.strictEqual(await page.locator('[data-ui="profile-category"]').inputValue(), 'professional_services');
+  assert(!requestedPaths.includes('/v1/demo/session'), 'browser-local profile should not auto-fetch demo sessions');
+
+  await page.setViewportSize({ width: 320, height: 720 });
+  const overflow = await page.locator('[data-ui="profile-panel"]').evaluate(function(element) {
+    return element.scrollWidth > element.clientWidth;
+  });
+  assert.strictEqual(overflow, false, 'profile panel should not overflow on narrow viewports');
 
   assert.deepStrictEqual(pageErrors, [], 'page should not throw runtime errors');
   assert.deepStrictEqual(consoleMessages, [], 'page should not log browser console errors or warnings');

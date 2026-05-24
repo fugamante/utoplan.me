@@ -65,6 +65,7 @@ The branch now has a DB-backed demo path:
 - Docker Postgres seeded with source-backed candidate read data and a neutral demo session
 - `GET /v1/planning/context` for live municipality/category context
 - `GET /v1/demo/session?session=demo-session-1` for saved demo profile plus live context
+- browser-local planning profile panel for local business idea, municipality, and category preferences
 - `docker-compose.demo.yml` for a runnable local DB-backed demo
 
 Remaining product work:
