@@ -283,9 +283,27 @@ function runContract(server, index) {
         assert.strictEqual(body.selectedMunicipality.title, 'Contract Municipality');
         assert.strictEqual(body.selectedMunicipality.county, 1);
         assert.strictEqual(body.selectedCategory.id, 'professional_services');
-        assert.deepStrictEqual(body.facts, []);
+        assert.strictEqual(body.facts.length, 3);
+        assert.deepStrictEqual(body.facts.map(function(fact) {
+          return fact.factType;
+        }), [
+          'establishment_count',
+          'annual_payroll',
+          'employment_count'
+        ]);
+        body.facts.forEach(function(fact) {
+          assert.strictEqual(fact.table, 'cbps');
+          assert.strictEqual(fact.sourceId, 'datospr-cbp-2014-municipios');
+          assert.strictEqual(fact.rowIndex, 1);
+          assert.strictEqual(fact.place.county, 1);
+          assert.strictEqual(fact.naics.code, '541');
+          assert.strictEqual(fact.confidence.source, 'medium');
+          assert.strictEqual(fact.confidence.transform, 'low');
+          assert.strictEqual(fact.confidence.productionReadiness, 'candidate-needs-review');
+          assert.strictEqual(fact.confidence.sourceBacked, true);
+        });
         assert.strictEqual(body.signals.length, 0);
-        assert.strictEqual(body.confidence.label, 'unknown');
+        assert.strictEqual(body.confidence.label, 'low');
         runContract(server, index + 1);
         return;
       }

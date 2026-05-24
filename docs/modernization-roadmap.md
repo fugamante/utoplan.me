@@ -37,7 +37,8 @@
 - The modern API exposes the provenance/confidence contract through DB-free `GET /v1/source-metadata`, while `/readyz` remains reserved for operational readiness.
 - `data/mappings/puerto-rico-business-categories.json` defines the first draft BusinessCategory-to-NAICS crosswalk for planning context, and `npm run test:data-business-categories` validates it.
 - `scripts/planning_context.js` and `data/fixtures/non-production/planning-context-fixture.json` prove a municipality plus business category can select source-backed CBP facts without creating scores or recommendations.
-- The modern API exposes that fixture-backed read model through DB-free `GET /v1/planning/context-demo` before connecting planning context to live database reads.
+- The modern API exposes that fixture-backed read model through DB-free `GET /v1/planning/context-demo`.
+- The modern API exposes the first live planning-context slice through `GET /v1/planning/context?municipality=...&category=...`, resolving municipality/category from the database and returning source-backed CBP facts with visible provenance confidence while keeping signals and scores empty.
 - `scripts/data_normalization.js` provides fixture-backed normalization helpers for NAICS filtering, municipality code coercion, title cleanup, and university coordinate join review behavior.
 - `scripts/data_import_plan.js` provides an offline fixture planning harness and CLI that reports accepted, rejected, and manual-review records without fetching source data or mutating a database.
 - `scripts/data_source_cache.js` downloads only registered HTTPS Puerto Rico sources into an ignored local cache with metadata sidecars, and the offline planner can consume supported cached CSV/JSON sources by source ID while reporting unsupported cached sources explicitly.
@@ -105,7 +106,7 @@ Exit criteria:
 - Define the first product-level category crosswalk before a planning context endpoint. Status: started; `data/mappings/puerto-rico-business-categories.json` maps eight starter business categories to NAICS 2012 code families with assumptions, confidence, and limitations.
 - Add a planning context read-model fixture before an API endpoint. Status: started; `npm run test:planning-context` validates selected municipality/category input, matched CBP facts, confidence, unresolved questions, and absence of scoring.
 - Expose a demo planning context endpoint before live database reads. Status: started; `/v1/planning/context-demo` serves the fixture-backed read model without scoring or database access.
-- Implement the first live planning context slice. Status: started; `/v1/planning/context` resolves selected municipality and category from live inputs, returns no facts or scores yet, and keeps invalid query and missing municipality behavior pinned.
+- Implement the first live planning context slice. Status: in progress; `/v1/planning/context` resolves selected municipality and category from live inputs, attaches matching source-backed CBP facts, returns no signals or scores, and keeps invalid query and missing municipality behavior pinned.
 - Record runtime compatibility constraints. Status: complete; the Node 8/Nodal compatibility path has been retired after seeded DB read behavior moved to the modern API.
 - Isolate externally observable endpoint behavior before replacement. Status: complete via API contract tests.
 

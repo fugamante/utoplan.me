@@ -26,6 +26,16 @@ export const DEFAULT_FIXTURE_PATH = path.join(
   'planning-context-fixture.json'
 );
 
+export const DEFAULT_CONFIDENCE_PATH = path.join(
+  __dirname,
+  '..',
+  '..',
+  '..',
+  'data',
+  'mappings',
+  'puerto-rico-provenance-confidence.json'
+);
+
 export const SUPPORTED_LIVE_QUERY_PARAMS = ['municipality', 'category'];
 
 export interface Municipality {
@@ -56,6 +66,20 @@ export interface CategoryContract {
   categories: BusinessCategory[];
 }
 
+export interface TableAssessment {
+  table: string;
+  preferredSourceId: string;
+  sourceConfidence: string;
+  transformConfidence: string;
+  productionReadiness: string;
+  sourceBacked: boolean;
+  notes?: string;
+}
+
+export interface ProvenanceContract {
+  tableAssessments: TableAssessment[];
+}
+
 export interface CbpRecord {
   total_indus: number;
   total_anual: number;
@@ -70,6 +94,7 @@ export interface RowProvenance {
   transformConfidence: string;
   productionReadiness: string;
   sourceBacked: boolean;
+  notes?: string;
 }
 
 export interface CbpRow {
@@ -153,9 +178,19 @@ export function readFixture(filePath: string = DEFAULT_FIXTURE_PATH): PlanningCo
   return readJsonFile<PlanningContextInput>(filePath);
 }
 
+export function readConfidenceContract(filePath: string = DEFAULT_CONFIDENCE_PATH): ProvenanceContract {
+  return readJsonFile<ProvenanceContract>(filePath);
+}
+
 export function categoryById(contract: CategoryContract, categoryId: string): BusinessCategory | null {
   return contract.categories.filter(function(category) {
     return category.id === categoryId;
+  })[0] || null;
+}
+
+export function tableAssessmentByName(contract: ProvenanceContract, tableName: string): TableAssessment | null {
+  return contract.tableAssessments.filter(function(assessment) {
+    return assessment.table === tableName;
   })[0] || null;
 }
 
@@ -369,6 +404,10 @@ export function selectMunicipalityById(): string {
   return 'SELECT id, title, county FROM muns WHERE id = $1 LIMIT 1';
 }
 
+export function selectCbpRowsByCounty(): string {
+  return 'SELECT id, total_indus, total_anual, cnaic, cnaic_name, county, num_est FROM cbps WHERE county = $1 ORDER BY id';
+}
+
 export function municipalityFromRow(row: DatabaseRow): Municipality {
   return {
     id: String(row.id),
@@ -378,11 +417,35 @@ export function municipalityFromRow(row: DatabaseRow): Municipality {
   };
 }
 
+export function cbpRowFromDatabase(row: DatabaseRow, assessment: TableAssessment): CbpRow {
+  return {
+    sourceId: assessment.preferredSourceId,
+    rowIndex: Number(row.id || 0),
+    record: {
+      total_indus: Number(row.total_indus),
+      total_anual: Number(row.total_anual),
+      cnaic: Number(row.cnaic),
+      cnaic_name: String(row.cnaic_name || ''),
+      county: Number(row.county),
+      num_est: Number(row.num_est)
+    },
+    provenance: {
+      sourceConfidence: assessment.sourceConfidence,
+      transformConfidence: assessment.transformConfidence,
+      productionReadiness: assessment.productionReadiness,
+      sourceBacked: !!assessment.sourceBacked,
+      notes: assessment.notes
+    }
+  };
+}
+
 export function livePayload(query: LiveContextQuery, callback: LiveContextCallback): void {
   const categoryContract = readCategoryContract();
+  const confidenceContract = readConfidenceContract();
   const category = categoryById(categoryContract, query.category);
+  const cbpAssessment = tableAssessmentByName(confidenceContract, 'cbps');
 
-  if (!category) {
+  if (!category || !cbpAssessment) {
     callback(null, null);
     return;
   }
@@ -398,16 +461,33 @@ export function livePayload(query: LiveContextQuery, callback: LiveContextCallba
       return;
     }
 
-    callback(null, basePayload(
-      'live-db',
-      {
-        categoryMapping: 'data/mappings/puerto-rico-business-categories.json',
-        databaseSchema: 'baseline-read-v1'
-      },
-      municipalityFromRow(result.rows[0]),
-      category,
-      [],
-      categoryContract
-    ));
+    const municipality = municipalityFromRow(result.rows[0]);
+
+    db.query(selectCbpRowsByCounty(), [municipality.county], function(cbpError, cbpResult) {
+      if (cbpError) {
+        callback(cbpError, null);
+        return;
+      }
+
+      const input: PlanningContextInput = {
+        selectedMunicipality: municipality,
+        selectedCategoryId: query.category,
+        cbps: cbpResult.rows.map(function(row) {
+          return cbpRowFromDatabase(row, cbpAssessment);
+        })
+      };
+
+      callback(null, basePayload(
+        'live-db',
+        {
+          categoryMapping: 'data/mappings/puerto-rico-business-categories.json',
+          databaseSchema: 'baseline-read-v1'
+        },
+        municipality,
+        category,
+        cbpFacts(input, category),
+        categoryContract
+      ));
+    });
   });
 }
