@@ -101,6 +101,8 @@ The current modernization work is centered on:
 - `docs/frontend-inventory.md`: static app source and asset inventory.
 - `docs/modernization-roadmap.md`: modernization plan and phase gates.
 - `docs/production-deployment.md`: production deployment checklist and rollback runbook.
+- `docs/standards/`: active IEEE 730, 828, 829, 830, 1016, 1012, and 1058
+  standards corpus plus audit guides for ongoing modernization governance.
 
 ## Root Commands
 

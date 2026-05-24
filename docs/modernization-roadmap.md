@@ -31,6 +31,7 @@
 - `npm run verify:release` wraps app/API deployment verification for release jobs, and Azure validates the wrapper in sample mode without production secrets.
 - `npm run verify:release-smoke` checks deployed app `/healthz`, public `/v1/unis`, and optional API `/readyz` from configured release URLs.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
+- `docs/standards/` now defines the active IEEE 730, 828, 829, 830, 1016, 1012, and 1058 standards corpus, with paired audit guides for keeping quality, configuration, test, requirements, design, V&V, and project-management controls current during ongoing modernization.
 
 ## Target Outcomes
 
@@ -145,4 +146,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Map the registered Puerto Rico source candidates to the preserved legacy API schemas, starting with `cbps` and `unis`, before writing import scripts.
+Map the registered Puerto Rico source candidates to the preserved legacy API schemas, starting with `cbps` and `unis`, before writing import scripts. Keep the standards corpus updated in the same bundle as any resulting requirement, design, data, test, configuration, V&V, or project-management control changes.
