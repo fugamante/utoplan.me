@@ -1,5 +1,7 @@
 'use strict';
 
+import {type IncomingHttpHeaders} from 'http';
+
 export const DEFAULT_LIMIT = 60;
 export const DEFAULT_WINDOW_MS = 60 * 1000;
 
@@ -31,6 +33,22 @@ interface RateLimitBucket {
 
 const buckets: Record<string, RateLimitBucket> = {};
 
+function firstHeaderValue(value: string | string[] | undefined): string {
+  if (Array.isArray(value)) {
+    return value[0] || '';
+  }
+
+  return value || '';
+}
+
+function firstForwardedIp(value: string | string[] | undefined): string {
+  return firstHeaderValue(value).split(',').map(function(part) {
+    return part.trim();
+  }).filter(function(part) {
+    return part !== '';
+  })[0] || '';
+}
+
 export function normalizedOrigin(origin: string | null | undefined): string {
   if (!origin) {
     return 'none';
@@ -45,6 +63,31 @@ export function normalizedOrigin(origin: string | null | undefined): string {
 
 function normalizePart(value: string | null | undefined): string {
   return String(value || 'none').trim().toLowerCase().replace(/[^a-z0-9_.:-]+/g, '_') || 'none';
+}
+
+export function clientIpForRateLimit(headers: IncomingHttpHeaders, remoteAddress: string | undefined, trustedProxy: boolean): string {
+  if (trustedProxy) {
+    const forwardedIp = firstForwardedIp(headers['x-forwarded-for']);
+
+    if (forwardedIp) {
+      return forwardedIp;
+    }
+
+    const realIp = firstHeaderValue(headers['x-real-ip']).trim();
+
+    if (realIp) {
+      return realIp;
+    }
+  }
+
+  return remoteAddress || 'unknown';
+}
+
+export function retryAfterSeconds(decision: RateLimitDecision, nowMs?: number): number {
+  const currentMs = nowMs === undefined ? Date.now() : nowMs;
+  const remainingMs = Math.max(0, decision.resetAtMs - currentMs);
+
+  return Math.max(1, Math.ceil(remainingMs / 1000));
 }
 
 export function preAuthRateLimitKey(input: RateLimitInput): string {

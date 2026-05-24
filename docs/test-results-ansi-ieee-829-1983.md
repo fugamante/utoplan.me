@@ -20,6 +20,9 @@ This report covers the current modernization branch after adding:
 - anonymous CORS/CSRF runtime scaffolding with reserved endpoints still returning `501`
 - anonymous token hashing, secure-cookie, transaction, and data-access scaffolding with reserved endpoints still returning `501`
 - anonymous rate-limit and profile body-validation scaffolding with reserved endpoints still returning `501`
+- endpoint-level reserved anonymous route contracts and production rate-limit policy helpers with reserved endpoints still returning `501`
+- transactional anonymous runtime composition helpers and separate anonymous schema readiness gates with reserved endpoints still returning `501`
+- release-gated anonymous runtime activation controls with reserved endpoints still returning `501`
 - Docker Postgres demo seed and demo Compose topology
 - readiness coverage for the required demo session table
 - release smoke support for demo-session validation
@@ -93,6 +96,22 @@ Current anonymous rate-limit/body-validation scaffolding slice rerun:
 - `npm test`: Pass
 - `npm run docker:test:proxy`: Pass
 
+Current anonymous endpoint/rate-limit policy slice rerun:
+
+- `npm --prefix dtoapi/modern test`: Pass
+
+Current anonymous transaction/schema-gate slice rerun:
+
+- `npm --prefix dtoapi/modern test`: Pass
+
+Current anonymous runtime activation gate slice rerun:
+
+- `npm --prefix dtoapi/modern test`: Pass
+- `npm run test:session-auth-contract`: Pass
+- `npm test`: Pass
+- `npm run docker:test:proxy`: Pass
+- `git diff --check`: Pass
+
 ## Evaluation
 
 The tested branch satisfies the current modernization acceptance criteria for:
@@ -111,6 +130,7 @@ None observed in the validation commands listed above.
 ## Residual Risks
 
 - Production-grade user accounts, passwords, and privacy controls are not implemented.
+- Anonymous session/profile runtime endpoints remain disabled pending rate-limit response contracts, endpoint handler composition, and shared/edge production rate limiting.
 - Demo seed data is intentionally non-production and should not be confused with a complete source-backed product dataset.
 - CBP field semantics still carry low transform confidence.
 - Planning signals remain intentionally absent until more source-backed data and product rules are defined.

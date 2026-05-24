@@ -4,6 +4,7 @@ const assert = require('assert');
 const schemaContract = require('../lib/schema_contract');
 
 assert.strictEqual(schemaContract.BASELINE_SCHEMA_VERSION, 'baseline-read-v1');
+assert.strictEqual(schemaContract.ANONYMOUS_SCHEMA_VERSION, 'anonymous-session-v1');
 assert.deepStrictEqual(schemaContract.expectedTables(), [
   'businesses',
   'cbps',
@@ -22,6 +23,17 @@ assert.deepStrictEqual(schemaContract.statusParams(), [[
   'grade_cs',
   'muns',
   'unis'
+]]);
+assert.deepStrictEqual(schemaContract.expectedAnonymousTables(), [
+  'anonymous_planning_profiles',
+  'anonymous_profile_events',
+  'anonymous_sessions'
+]);
+assert.strictEqual(schemaContract.anonymousStatusQuery(), schemaContract.statusQuery());
+assert.deepStrictEqual(schemaContract.anonymousStatusParams(), [[
+  'anonymous_planning_profiles',
+  'anonymous_profile_events',
+  'anonymous_sessions'
 ]]);
 assert.deepStrictEqual(schemaContract.expectedLoadIndexes(), [
   {
@@ -45,6 +57,15 @@ assert.deepStrictEqual(schemaContract.loadIndexStatusParams(), [[
   'cbps_county_cnaic_unique',
   'muns_county_unique',
   'unis_title_address_unique'
+]]);
+assert.deepStrictEqual(schemaContract.anonymousIndexStatusParams(), [[
+  'anonymous_sessions_public_id_unique',
+  'anonymous_sessions_token_hash_unique',
+  'anonymous_sessions_active_expiry_index',
+  'anonymous_planning_profiles_session_active_unique',
+  'anonymous_planning_profiles_retention_index',
+  'anonymous_profile_events_session_created_index',
+  'anonymous_profile_events_profile_created_index'
 ]]);
 
 const healthyRows = [
@@ -164,3 +185,101 @@ assert.deepStrictEqual(schemaContract.unavailableLoadIndexes(), {
   ],
   unavailable: true
 });
+
+const anonymousRows = [
+  ['anonymous_sessions', 'id'],
+  ['anonymous_sessions', 'public_id'],
+  ['anonymous_sessions', 'token_hash'],
+  ['anonymous_sessions', 'csrf_token_hash'],
+  ['anonymous_sessions', 'created_at'],
+  ['anonymous_sessions', 'last_seen_at'],
+  ['anonymous_sessions', 'expires_at'],
+  ['anonymous_sessions', 'rotated_at'],
+  ['anonymous_sessions', 'revoked_at'],
+  ['anonymous_sessions', 'revoke_reason'],
+  ['anonymous_planning_profiles', 'id'],
+  ['anonymous_planning_profiles', 'anonymous_session_id'],
+  ['anonymous_planning_profiles', 'schema_version'],
+  ['anonymous_planning_profiles', 'row_version'],
+  ['anonymous_planning_profiles', 'profile'],
+  ['anonymous_planning_profiles', 'created_at'],
+  ['anonymous_planning_profiles', 'updated_at'],
+  ['anonymous_planning_profiles', 'deleted_at'],
+  ['anonymous_planning_profiles', 'deletion_requested_at'],
+  ['anonymous_planning_profiles', 'export_requested_at'],
+  ['anonymous_profile_events', 'id'],
+  ['anonymous_profile_events', 'anonymous_session_id'],
+  ['anonymous_profile_events', 'anonymous_profile_id'],
+  ['anonymous_profile_events', 'event_name'],
+  ['anonymous_profile_events', 'created_at'],
+  ['anonymous_profile_events', 'metadata']
+].map(function(row) {
+  return {
+    table_name: row[0],
+    column_name: row[1]
+  };
+});
+
+const anonymousIndexRows = [
+  ['anonymous_sessions', 'anonymous_sessions_public_id_unique', 'CREATE UNIQUE INDEX anonymous_sessions_public_id_unique ON public.anonymous_sessions USING btree (public_id)'],
+  ['anonymous_sessions', 'anonymous_sessions_token_hash_unique', 'CREATE UNIQUE INDEX anonymous_sessions_token_hash_unique ON public.anonymous_sessions USING btree (token_hash)'],
+  ['anonymous_sessions', 'anonymous_sessions_active_expiry_index', 'CREATE INDEX anonymous_sessions_active_expiry_index ON public.anonymous_sessions USING btree (expires_at) WHERE revoked_at IS NULL'],
+  ['anonymous_planning_profiles', 'anonymous_planning_profiles_session_active_unique', 'CREATE UNIQUE INDEX anonymous_planning_profiles_session_active_unique ON public.anonymous_planning_profiles USING btree (anonymous_session_id) WHERE deleted_at IS NULL'],
+  ['anonymous_planning_profiles', 'anonymous_planning_profiles_retention_index', 'CREATE INDEX anonymous_planning_profiles_retention_index ON public.anonymous_planning_profiles USING btree (deleted_at, updated_at)'],
+  ['anonymous_profile_events', 'anonymous_profile_events_session_created_index', 'CREATE INDEX anonymous_profile_events_session_created_index ON public.anonymous_profile_events USING btree (anonymous_session_id, created_at)'],
+  ['anonymous_profile_events', 'anonymous_profile_events_profile_created_index', 'CREATE INDEX anonymous_profile_events_profile_created_index ON public.anonymous_profile_events USING btree (anonymous_profile_id, created_at)']
+].map(function(row) {
+  return {
+    tablename: row[0],
+    indexname: row[1],
+    indexdef: row[2]
+  };
+});
+
+assert.deepStrictEqual(schemaContract.evaluateAnonymous(anonymousRows, anonymousIndexRows), {
+  version: 'anonymous-session-v1',
+  ok: true,
+  missing: [],
+  indexes: {
+    ok: true,
+    missing: [],
+    unavailable: false
+  }
+});
+
+const missingAnonymous = schemaContract.evaluateAnonymous(anonymousRows.filter(function(row) {
+  return row.table_name !== 'anonymous_sessions' || row.column_name !== 'token_hash';
+}), anonymousIndexRows.slice(0, 1));
+assert.strictEqual(missingAnonymous.ok, false);
+assert(missingAnonymous.missing.indexOf('anonymous_sessions.token_hash') !== -1);
+assert(missingAnonymous.indexes.missing.indexOf('anonymous_sessions_token_hash_unique') !== -1);
+
+const wrongAnonymousIndexColumns = anonymousIndexRows.map(function(row) {
+  if (row.indexname !== 'anonymous_sessions_token_hash_unique') {
+    return row;
+  }
+
+  return {
+    tablename: row.tablename,
+    indexname: row.indexname,
+    indexdef: 'CREATE UNIQUE INDEX anonymous_sessions_token_hash_unique ON public.anonymous_sessions USING btree (public_id)'
+  };
+});
+const wrongAnonymousIndexStatus = schemaContract.evaluateAnonymous(anonymousRows, wrongAnonymousIndexColumns);
+assert.strictEqual(wrongAnonymousIndexStatus.ok, false);
+assert(wrongAnonymousIndexStatus.indexes.missing.indexOf('anonymous_sessions_token_hash_unique') !== -1);
+
+const missingAnonymousIndexPredicate = anonymousIndexRows.map(function(row) {
+  if (row.indexname !== 'anonymous_planning_profiles_session_active_unique') {
+    return row;
+  }
+
+  return {
+    tablename: row.tablename,
+    indexname: row.indexname,
+    indexdef: 'CREATE UNIQUE INDEX anonymous_planning_profiles_session_active_unique ON public.anonymous_planning_profiles USING btree (anonymous_session_id)'
+  };
+});
+const missingAnonymousPredicateStatus = schemaContract.evaluateAnonymous(anonymousRows, missingAnonymousIndexPredicate);
+assert.strictEqual(missingAnonymousPredicateStatus.ok, false);
+assert(missingAnonymousPredicateStatus.indexes.missing.indexOf('anonymous_planning_profiles_session_active_unique') !== -1);

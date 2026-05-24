@@ -124,3 +124,138 @@ assert.deepStrictEqual(anonymousProfile.profileEnvelope(profileRow), {
     selectedCategoryId: 'food_services'
   }
 });
+
+function executorFor(results) {
+  const calls = [];
+
+  return {
+    calls: calls,
+    query: function(text, params, callback) {
+      const next = results.shift();
+      calls.push({
+        text: text,
+        params: params
+      });
+
+      if (next.error) {
+        callback(next.error, {
+          rows: []
+        });
+        return;
+      }
+
+      callback(null, {
+        rows: next.rows
+      });
+    }
+  };
+}
+
+const sessionInsertRow = {
+  id: '11',
+  public_id: 'anon_public_11',
+  token_hash: tokenHash,
+  csrf_token_hash: csrfTokenHash,
+  created_at: '2026-05-24T00:00:00.000Z',
+  last_seen_at: null,
+  expires_at: '2026-05-25T00:00:00.000Z',
+  revoked_at: null,
+  revoke_reason: null
+};
+const profileInsertRow = {
+  id: '12',
+  anonymous_session_id: '11',
+  schema_version: '1',
+  row_version: '1',
+  profile: {
+    businessIdea: 'Cafe'
+  },
+  created_at: '2026-05-24T00:00:00.000Z',
+  updated_at: '2026-05-24T00:00:00.000Z',
+  deleted_at: null,
+  deletion_requested_at: null,
+  export_requested_at: null
+};
+const createExecutor = executorFor([
+  {
+    rows: [sessionInsertRow]
+  },
+  {
+    rows: [profileInsertRow]
+  }
+]);
+
+anonymousProfile.createAnonymousSessionWithExecutor(createExecutor, {
+  publicId: 'anon_public_11',
+  tokenHash: tokenHash,
+  csrfTokenHash: csrfTokenHash,
+  expiresAt: new Date('2026-05-25T00:00:00.000Z'),
+  profile: {
+    businessIdea: 'Cafe'
+  }
+}, function(error, result) {
+  assert.ifError(error);
+  assert.strictEqual(createExecutor.calls.length, 2);
+  assert.strictEqual(createExecutor.calls[0].text, anonymousProfile.insertAnonymousSessionQuery());
+  assert.strictEqual(createExecutor.calls[1].text, anonymousProfile.insertAnonymousProfileQuery());
+  assert.strictEqual(createExecutor.calls[1].params[0], 11);
+  assert.strictEqual(result.session.publicId, 'anon_public_11');
+  assert.strictEqual(result.profile.anonymousSessionId, 11);
+});
+
+const deleteExecutor = executorFor([
+  {
+    rows: [{
+      id: '12',
+      anonymous_session_id: '11',
+      schema_version: '1',
+      row_version: '2',
+      profile: '{}',
+      created_at: '2026-05-24T00:00:00.000Z',
+      updated_at: '2026-05-24T01:00:00.000Z',
+      deleted_at: '2026-05-24T01:00:00.000Z',
+      deletion_requested_at: '2026-05-24T01:00:00.000Z',
+      export_requested_at: null
+    }]
+  },
+  {
+    rows: [{
+      id: '11',
+      public_id: 'anon_public_11',
+      token_hash: tokenHash,
+      csrf_token_hash: csrfTokenHash,
+      created_at: '2026-05-24T00:00:00.000Z',
+      last_seen_at: null,
+      expires_at: '2026-05-25T00:00:00.000Z',
+      revoked_at: '2026-05-24T01:00:00.000Z',
+      revoke_reason: 'profile_deleted'
+    }]
+  }
+]);
+
+anonymousProfile.deleteOwnedProfileAndRevokeWithExecutor(deleteExecutor, {
+  anonymousSessionId: 11,
+  revokeReason: 'profile_deleted'
+}, function(error, result) {
+  assert.ifError(error);
+  assert.strictEqual(deleteExecutor.calls.length, 2);
+  assert.strictEqual(deleteExecutor.calls[0].text, anonymousProfile.softDeleteOwnedProfileQuery());
+  assert.strictEqual(deleteExecutor.calls[1].text, anonymousProfile.revokeAnonymousSessionQuery());
+  assert.deepStrictEqual(deleteExecutor.calls[1].params, [11, 'profile_deleted']);
+  assert.strictEqual(result.profile.deletedAt, '2026-05-24T01:00:00.000Z');
+  assert.strictEqual(result.session.revokeReason, 'profile_deleted');
+});
+
+const alreadyDeletedExecutor = executorFor([
+  {
+    rows: []
+  }
+]);
+
+anonymousProfile.deleteOwnedProfileAndRevokeWithExecutor(alreadyDeletedExecutor, {
+  anonymousSessionId: 11
+}, function(error, result) {
+  assert.ifError(error);
+  assert.strictEqual(alreadyDeletedExecutor.calls.length, 1);
+  assert.strictEqual(result, null);
+});

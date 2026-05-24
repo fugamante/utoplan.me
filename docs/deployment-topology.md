@@ -15,6 +15,8 @@ Browser -> app:8080 -> static assets
 
 The browser should only need the app origin. The static app receives `UTOPLAN_API_ORIGIN=http://api:3001`, so `/v1/unis` remains same-origin in browser code while the server-side proxy forwards the request to the API service.
 
+The public boundary must strip untrusted forwarding headers before requests reach the app or API. If the app proxy or deployment edge forwards client identity for rate limiting, it must inject one trusted client IP signal and avoid passing browser-supplied `Forwarded`, `X-Forwarded-For`, or `X-Real-IP` values through unchanged. This is required before anonymous session/profile endpoints can be enabled publicly.
+
 ## Compose Baseline
 
 `docker-compose.integrated.yml` defines the app/API topology without bundling a production database. Provide the database connection through environment variables:
