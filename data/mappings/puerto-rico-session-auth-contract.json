@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "scope": "puerto-rico-only",
+  "contractStatus": "draft-no-production-auth",
+  "implementationStatus": "blocked-pending-design",
+  "currentAllowedModes": [
+    "browser-local-profile",
+    "demo-db-session"
+  ],
+  "requiredBeforeProductionAuth": [
+    "Document account identifier policy and avoid public personal identifiers in repository artifacts.",
+    "Document password storage requirements using a memory-hard password hashing algorithm and per-password salts.",
+    "Document session token requirements, including high-entropy opaque tokens, server-side hashing, expiration, rotation, revocation, and secure cookie transport.",
+    "Document profile data classification, minimization rules, retention period, deletion flow, and export flow.",
+    "Document rate limits for login, session creation, password reset, and profile writes.",
+    "Document audit events that do not record passwords, raw tokens, or sensitive profile text.",
+    "Document migration and rollback artifacts for every new production table before the API depends on it."
+  ],
+  "allowedProfileFields": [
+    {
+      "name": "businessIdea",
+      "classification": "user-provided-planning-text",
+      "maxLength": 160,
+      "required": false
+    },
+    {
+      "name": "selectedMunicipalityId",
+      "classification": "planning-preference",
+      "required": false
+    },
+    {
+      "name": "selectedCategoryId",
+      "classification": "planning-preference",
+      "required": false
+    }
+  ],
+  "proposedTables": [
+    {
+      "name": "user_accounts",
+      "status": "reserved-not-implemented",
+      "minimumColumns": [
+        "id",
+        "public_id",
+        "login_identifier_hash",
+        "password_hash",
+        "password_algorithm",
+        "created_at",
+        "updated_at",
+        "disabled_at"
+      ]
+    },
+    {
+      "name": "user_sessions",
+      "status": "reserved-not-implemented",
+      "minimumColumns": [
+        "id",
+        "account_id",
+        "token_hash",
+        "created_at",
+        "expires_at",
+        "rotated_at",
+        "revoked_at"
+      ]
+    },
+    {
+      "name": "planning_profiles",
+      "status": "reserved-not-implemented",
+      "minimumColumns": [
+        "id",
+        "account_id",
+        "schema_version",
+        "profile",
+        "created_at",
+        "updated_at",
+        "deleted_at"
+      ]
+    }
+  ],
+  "endpointPlan": [
+    {
+      "method": "POST",
+      "path": "/v1/session/login",
+      "status": "reserved-not-implemented",
+      "requiresHttps": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/session/logout",
+      "status": "reserved-not-implemented",
+      "requiresHttps": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/profile",
+      "status": "reserved-not-implemented",
+      "requiresAuthenticatedSession": true
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/profile",
+      "status": "reserved-not-implemented",
+      "requiresAuthenticatedSession": true
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/profile",
+      "status": "reserved-not-implemented",
+      "requiresAuthenticatedSession": true
+    }
+  ],
+  "forbiddenActions": [
+    "Do not store plaintext passwords.",
+    "Do not store raw session tokens.",
+    "Do not expose profile JSON through wildcard CORS without an authenticated session design.",
+    "Do not add production auth endpoints before the migration artifact, tests, and rollback plan exist.",
+    "Do not reuse demo_sessions for production accounts.",
+    "Do not put personal identifiers in checked-in seeds, docs, branch names, commit messages, or PR text.",
+    "Do not write user profile data to source-backed planning tables."
+  ],
+  "auditEvents": [
+    "session.login.started",
+    "session.login.succeeded",
+    "session.login.failed",
+    "session.logout.succeeded",
+    "profile.read.succeeded",
+    "profile.write.succeeded",
+    "profile.delete.succeeded",
+    "profile.write.rejected"
+  ],
+  "retention": {
+    "defaultProfileRetentionDays": 365,
+    "deleteOnUserRequest": true,
+    "exportOnUserRequest": true,
+    "publicSeedsAllowed": false
+  }
+}

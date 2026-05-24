@@ -41,6 +41,7 @@
 - The modern API exposes the first live planning-context slice through `GET /v1/planning/context?municipality=...&category=...`, resolving municipality/category from the database and returning source-backed CBP facts with visible provenance confidence while keeping signals and scores empty.
 - The seeded Docker/Postgres demo now includes a neutral `demo_sessions` table and `GET /v1/demo/session?session=demo-session-1` returns a saved local demo profile composed with live planning context.
 - The static app now includes a browser-local planning profile panel backed by `localStorage`, allowing users to save a business idea, municipality id, and category id without server mutation or authentication claims.
+- `docs/session-auth-contract.md` and `data/mappings/puerto-rico-session-auth-contract.json` reserve the production session/auth boundary while keeping production auth implementation blocked.
 - `docs/product-scope.md`, `docs/demo-manual.md`, `docs/phase-summaries.md`, and `docs/test-results-ansi-ieee-829-1983.md` capture the current product boundary, demo operation path, roadmap phase summaries, and validation evidence.
 - `scripts/data_normalization.js` provides fixture-backed normalization helpers for NAICS filtering, municipality code coercion, title cleanup, and university coordinate join review behavior.
 - `scripts/data_import_plan.js` provides an offline fixture planning harness and CLI that reports accepted, rejected, and manual-review records without fetching source data or mutating a database.
@@ -112,6 +113,7 @@ Exit criteria:
 - Implement the first live planning context slice. Status: in progress; `/v1/planning/context` resolves selected municipality and category from live inputs, attaches matching source-backed CBP facts, returns no signals or scores, and keeps invalid query and missing municipality behavior pinned.
 - Add a DB-backed demo session/profile slice. Status: started; `/v1/demo/session` resolves a neutral seeded session id, returns saved profile choices, composes them with live planning context, and remains read-only with no authentication or account-management claims.
 - Add browser-local profile persistence. Status: started; the map page can save, load, and clear a local planning profile with no API writes, and browser smoke coverage verifies persistence across reloads.
+- Define production session/auth contract. Status: started; production auth endpoints remain reserved and blocked until privacy, retention, migration, rate-limit, ownership, and audit requirements are satisfied.
 - Record runtime compatibility constraints. Status: complete; the Node 8/Nodal compatibility path has been retired after seeded DB read behavior moved to the modern API.
 - Isolate externally observable endpoint behavior before replacement. Status: complete via API contract tests.
 
