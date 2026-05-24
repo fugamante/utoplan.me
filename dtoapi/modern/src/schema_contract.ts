@@ -157,13 +157,13 @@ export function expectedAnonymousIndexes(): ExpectedLoadIndex[] {
       name: 'anonymous_sessions_active_expiry_index',
       columns: ['expires_at'],
       unique: false,
-      predicate: 'where revoked_at is null'
+      predicate: 'revoked_at is null'
     },
     {
       table: 'anonymous_planning_profiles',
       name: 'anonymous_planning_profiles_session_active_unique',
       columns: ['anonymous_session_id'],
-      predicate: 'where deleted_at is null'
+      predicate: 'deleted_at is null'
     },
     {
       table: 'anonymous_planning_profiles',

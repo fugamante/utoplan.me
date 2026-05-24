@@ -298,7 +298,7 @@ function defaultAnonymousDependencies(): anonymousEndpointHandlers.AnonymousEndp
     allowedOrigins: anonymousAllowedOrigins(),
     trustedProxy: process.env.UTOPLAN_TRUST_PROXY === '1',
     createSecret: anonymousSecurity.createAnonymousSecret,
-    createPublicId: anonymousSecurity.generateOpaqueToken,
+    createPublicId: anonymousSecurity.generatePublicId,
     checkRateLimit: anonymousDefaultRateLimit,
     createSession: anonymousProfile.createAnonymousSession,
     findSessionByTokenHash: anonymousProfile.findActiveSessionByTokenHash,

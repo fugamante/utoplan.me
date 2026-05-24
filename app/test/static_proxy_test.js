@@ -7,12 +7,16 @@ var apiPort = process.env.PROXY_SMOKE_API_PORT || '18081';
 var appServer;
 var apiServer;
 
-function request(port, path) {
+function request(port, path, options) {
+  var requestOptions = options || {};
+
   return new Promise(function(resolve, reject) {
-    var req = http.get({
+    var req = http.request({
       hostname: '127.0.0.1',
       port: port,
-      path: path
+      path: path,
+      method: requestOptions.method || 'GET',
+      headers: requestOptions.headers || {}
     }, function(res) {
       var chunks = [];
 
@@ -33,6 +37,10 @@ function request(port, path) {
     req.setTimeout(5000, function() {
       req.destroy(new Error('Timed out requesting ' + path));
     });
+    if (requestOptions.body) {
+      req.write(requestOptions.body);
+    }
+    req.end();
   });
 }
 
@@ -62,7 +70,23 @@ function stopServers() {
 
 function createApiServer() {
   return http.createServer(function(request, response) {
-    if (request.url.split('?')[0] !== '/v1/unis') {
+    var requestPath = request.url.split('?')[0];
+
+    if (requestPath === '/v1/anonymous-sessions') {
+      assert.strictEqual(request.method, 'POST');
+      assert.ok(request.headers['x-forwarded-for'], 'proxy should inject x-forwarded-for');
+      assert.ok(request.headers['x-real-ip'], 'proxy should inject x-real-ip');
+      assert.notStrictEqual(request.headers['x-forwarded-for'], '198.51.100.200');
+
+      response.writeHead(201, {
+        'Content-Type': 'application/json; charset=utf-8',
+        'X-Test-Proxy': 'modern-api'
+      });
+      response.end(JSON.stringify({session: {id: 'proxied-anonymous-session'}}));
+      return;
+    }
+
+    if (requestPath !== '/v1/unis') {
       response.writeHead(404, {
         'Content-Type': 'application/json; charset=utf-8'
       });
@@ -134,6 +158,20 @@ async function main() {
   assert.strictEqual(proxied.statusCode, 200, 'proxied API request should return HTTP 200');
   assert.strictEqual(proxied.headers['x-test-proxy'], 'modern-api');
   assert.strictEqual(body.data[0].title, 'Proxied University');
+
+  var anonymous = await request(appPort, '/v1/anonymous-sessions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Forwarded-For': '198.51.100.200'
+    },
+    body: '{}'
+  });
+  var anonymousBody = JSON.parse(anonymous.body.toString('utf8'));
+
+  assert.strictEqual(anonymous.statusCode, 201, 'proxied anonymous POST should reach the API');
+  assert.strictEqual(anonymous.headers['x-test-proxy'], 'modern-api');
+  assert.strictEqual(anonymousBody.session.id, 'proxied-anonymous-session');
 }
 
 main().then(function() {

@@ -70,6 +70,7 @@ npm run test:release-smoke
 npm run test:browser
 npm run docker:test:db
 npm run docker:test:proxy
+npm run docker:test:anonymous-runtime
 npm run docker:test:start-local-browser
 npm audit
 npm --prefix app audit
@@ -78,6 +79,8 @@ npm --prefix dtoapi/modern audit
 ```
 
 Run Docker compatibility checks when Docker is available, because the production topology depends on container networking and seeded Postgres validation.
+
+`npm run docker:test:anonymous-runtime` uses a disposable Compose stack on ports `18084` for the app, `13001` for the API, and `15433` for Postgres. It applies the anonymous storage plus shared limiter schema to a throwaway database and runs the opt-in anonymous create/read/update/delete release smoke through the app origin.
 
 `npm run verify:deployment` validates the production app/API environment in the current shell. Use `node scripts/verify_deployment_config.js --service=app` or `--service=api` when checking one container at a time.
 

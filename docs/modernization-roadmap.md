@@ -66,6 +66,7 @@
 - `data/fixtures/non-production/` contains checked-in JSON and CSV offline planning fixtures plus an expected report for repeatable local demos.
 - `npm run verify:release` wraps app/API deployment verification for release jobs, and Azure validates the wrapper in sample mode without production secrets.
 - `npm run verify:release-smoke` checks deployed app `/healthz`, public `/v1/unis`, public `/v1/planning/context-demo`, and optional API `/readyz` from configured release URLs. With `UTOPLAN_ANONYMOUS_SMOKE=1`, it also verifies the gate-mounted anonymous create/read/update/delete flow through the app origin.
+- `npm run docker:test:anonymous-runtime` now validates the gate-mounted anonymous create/read/update/delete flow in a disposable shared-limiter Compose stack using ports `18084` app, `13001` API, and `15433` Postgres.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
 
 ## Target Outcomes
@@ -202,4 +203,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Apply the anonymous storage and shared-limiter migration artifacts in a disposable environment, enable shared anonymous runtime config, and run the opt-in anonymous release smoke against that candidate.
+Audit the disposable anonymous-runtime smoke results and proxy/header trust assumptions, then decide whether to fold the anonymous smoke into CI release validation or keep it as an operator-run release hardening check until production deployment details are selected.

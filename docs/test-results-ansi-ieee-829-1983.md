@@ -24,6 +24,7 @@ This report covers the current modernization branch after adding:
 - transactional anonymous runtime composition helpers and separate anonymous schema readiness gates
 - release-gated anonymous runtime activation controls
 - reserved-route `429` response contracts and anonymous create/read/write/delete server mounting with same-origin/CSRF mutating checks and deleted-profile `410`
+- disposable Docker anonymous runtime smoke with shared limiter storage and app-origin proxying
 - Docker Postgres demo seed and demo Compose topology
 - readiness coverage for the required demo session table
 - release smoke support for demo-session validation
@@ -35,6 +36,7 @@ This report covers the current modernization branch after adding:
 - Modern API TypeScript build and unit contracts
 - Modern API Docker/Postgres DB contract
 - App-origin proxy to modern API
+- Disposable anonymous runtime Docker/Postgres smoke
 - Migration artifact format checks
 - Data source, mapping, normalization, provenance, planning, load, writer-gate, and release-evidence checks
 - Release preflight and release smoke scripts
@@ -164,6 +166,15 @@ Current anonymous shared-limiter provider slice rerun:
 - `npm run docker:test:modern-db`: Pass
 - `git diff --check`: Pass
 
+Current disposable anonymous-runtime smoke slice rerun:
+
+- `npm --prefix app test`: Pass
+- `npm run test:deployment-containers`: Pass
+- `docker compose -f docker-compose.anonymous.yml config`: Pass
+- `npm run docker:test:anonymous-runtime`: Pass
+- `npm test`: Pass
+- `git diff --check`: Pass
+
 ## Evaluation
 
 The tested branch satisfies the current modernization acceptance criteria for:
@@ -176,6 +187,7 @@ The tested branch satisfies the current modernization acceptance criteria for:
 - demo release smoke coverage when `UTOPLAN_DEMO_SESSION_ID` is supplied
 - opt-in anonymous release smoke coverage when `UTOPLAN_ANONYMOUS_SMOKE=1` is supplied
 - Postgres-backed shared anonymous limiter storage contract and async mounted-runtime limiter decisions
+- disposable anonymous runtime validation with shared Postgres limiter storage and app-origin proxy trust-header injection
 
 ## Anomalies
 
