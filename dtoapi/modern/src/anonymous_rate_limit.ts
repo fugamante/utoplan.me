@@ -1,6 +1,6 @@
 'use strict';
 
-import {type IncomingHttpHeaders} from 'http';
+import {type IncomingHttpHeaders, type OutgoingHttpHeaders} from 'http';
 
 export const DEFAULT_LIMIT = 60;
 export const DEFAULT_WINDOW_MS = 60 * 1000;
@@ -88,6 +88,12 @@ export function retryAfterSeconds(decision: RateLimitDecision, nowMs?: number): 
   const remainingMs = Math.max(0, decision.resetAtMs - currentMs);
 
   return Math.max(1, Math.ceil(remainingMs / 1000));
+}
+
+export function anonymousRateLimitHeaders(decision: RateLimitDecision, nowMs?: number): OutgoingHttpHeaders {
+  return {
+    'Retry-After': String(retryAfterSeconds(decision, nowMs))
+  };
 }
 
 export function preAuthRateLimitKey(input: RateLimitInput): string {

@@ -3,6 +3,7 @@
 import http, {type IncomingMessage, type OutgoingHttpHeaders, type Server, type ServerResponse} from 'http';
 import {URL} from 'url';
 import zlib from 'zlib';
+import * as anonymousRateLimit from './anonymous_rate_limit';
 import * as db from './db';
 import * as demoSession from './demo_session';
 import * as records from './records';
@@ -154,6 +155,56 @@ export function hasCsrfHeader(request: IncomingMessage): boolean {
   }
 
   return typeof value === 'string' && value.trim() !== '';
+}
+
+export function anonymousRateLimitScope(pathname: string, method: string | undefined): anonymousRateLimit.RateLimitScope | null {
+  if (isAnonymousSessionPath(pathname) && method === 'POST') {
+    return 'anonymous_session_creation';
+  }
+
+  if (isAnonymousProfilePath(pathname) && method === 'GET') {
+    return 'profile_read';
+  }
+
+  if (isAnonymousProfilePath(pathname) && method === 'PUT') {
+    return 'profile_write';
+  }
+
+  if (isAnonymousProfilePath(pathname) && method === 'DELETE') {
+    return 'profile_delete';
+  }
+
+  return null;
+}
+
+function anonymousRateLimitNumber(name: string): number | undefined {
+  const value = process.env[name];
+
+  if (!value || !/^[0-9]+$/.test(value) || Number(value) < 1) {
+    return undefined;
+  }
+
+  return Number(value);
+}
+
+export function anonymousRateLimitDecision(request: IncomingMessage, pathname: string): anonymousRateLimit.RateLimitDecision | null {
+  const scope = anonymousRateLimitScope(pathname, request.method);
+
+  if (!scope) {
+    return null;
+  }
+
+  return anonymousRateLimit.checkAnonymousRateLimit({
+    scope: scope,
+    ip: anonymousRateLimit.clientIpForRateLimit(
+      request.headers,
+      request.socket ? request.socket.remoteAddress || undefined : undefined,
+      process.env.UTOPLAN_TRUST_PROXY === '1'
+    ),
+    origin: typeof request.headers.origin === 'string' ? request.headers.origin : null,
+    limit: anonymousRateLimitNumber('UTOPLAN_ANONYMOUS_RESERVED_RATE_LIMIT'),
+    windowMs: anonymousRateLimitNumber('UTOPLAN_ANONYMOUS_RESERVED_RATE_LIMIT_WINDOW_MS')
+  });
 }
 
 function sendBody(
@@ -376,6 +427,12 @@ function handleAnonymousForbidden(request: IncomingMessage, response: ServerResp
   ));
 }
 
+function handleAnonymousRateLimited(request: IncomingMessage, response: ServerResponse, pathname: string, decision: anonymousRateLimit.RateLimitDecision): void {
+  sendAnonymousJson(request, response, pathname, 429, responseContract.serialize(
+    responseContract.errorPayload('Too Many Requests')
+  ), anonymousRateLimit.anonymousRateLimitHeaders(decision));
+}
+
 function handleMethodNotAllowed(request: IncomingMessage, response: ServerResponse): void {
   sendJson(request, response, 405, responseContract.serialize(
     responseContract.errorPayload('Method Not Allowed')
@@ -503,6 +560,13 @@ export function createServer(): Server {
           return;
         }
 
+        const rateLimitDecision = anonymousRateLimitDecision(request, pathname);
+
+        if (rateLimitDecision && !rateLimitDecision.allowed) {
+          handleAnonymousRateLimited(request, response, pathname, rateLimitDecision);
+          return;
+        }
+
         handleAnonymousNotImplemented(request, response, pathname);
         return;
       }
@@ -513,6 +577,13 @@ export function createServer(): Server {
 
     if (isAnonymousProfilePath(pathname)) {
       if (request.method === 'GET') {
+        const rateLimitDecision = anonymousRateLimitDecision(request, pathname);
+
+        if (rateLimitDecision && !rateLimitDecision.allowed) {
+          handleAnonymousRateLimited(request, response, pathname, rateLimitDecision);
+          return;
+        }
+
         handleAnonymousNotImplemented(request, response, pathname);
         return;
       }
@@ -520,6 +591,13 @@ export function createServer(): Server {
       if (request.method === 'PUT' || request.method === 'DELETE') {
         if (!hasSameOriginSignal(request) || !hasCsrfHeader(request)) {
           handleAnonymousForbidden(request, response, pathname);
+          return;
+        }
+
+        const rateLimitDecision = anonymousRateLimitDecision(request, pathname);
+
+        if (rateLimitDecision && !rateLimitDecision.allowed) {
+          handleAnonymousRateLimited(request, response, pathname, rateLimitDecision);
           return;
         }
 

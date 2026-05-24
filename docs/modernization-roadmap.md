@@ -128,6 +128,7 @@ Exit criteria:
 - Add endpoint-level reserved anonymous route contracts and production rate-limit policy. Status: complete; reserved anonymous routes now have explicit HTTP contract tests for `501`/`403`/`405` envelopes, CORS behavior, method allowlists, Referer fallback, and no cookie issuance. Rate-limit helper tests cover trusted client IP behavior and `Retry-After` calculation while docs keep public runtime blocked until shared/edge limiting is configured.
 - Add transactional anonymous runtime composition and schema readiness gates. Status: complete; session/profile creation and profile delete/session revoke now have executor-based transaction helpers, and `anonymous-session-v1` table/index readiness is defined separately from the current disabled-route `/readyz` contract.
 - Add release-gated anonymous runtime activation controls. Status: complete; anonymous runtime cannot pass activation unless explicitly requested, anonymous schema readiness is confirmed, and rate limiting is shared or edge-backed, with trusted proxy identity required for shared mode.
+- Add reserved-route `429` response contracts and pure endpoint handler composition. Status: complete; reserved anonymous HTTP routes can return `429` with `Retry-After` and no cookies or `RateLimit-*` headers, while the unmounted handler-composition module pins create/read validation, injected rate-limit decisions, token/cookie use, and injected data-access responses without enabling public success behavior.
 - Record runtime compatibility constraints. Status: complete; the Node 8/Nodal compatibility path has been retired after seeded DB read behavior moved to the modern API.
 - Isolate externally observable endpoint behavior before replacement. Status: complete via API contract tests.
 
@@ -200,4 +201,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Add rate-limit response contract tests and anonymous endpoint handler composition before implementing `POST /v1/anonymous-sessions` or caller-owned `/v1/profile` routes.
+Implement anonymous route behavior behind the release activation gate after migration review, anonymous schema readiness, shared or edge production rate limiting, and full success/failure endpoint tests.
