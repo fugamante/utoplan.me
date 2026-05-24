@@ -75,7 +75,7 @@ The branch now has a DB-backed demo path:
 - anonymous rate-limit and profile body-validation scaffolding wired behind the activation gate
 - endpoint-level reserved anonymous route contracts and production rate-limit policy notes
 - transactional anonymous runtime composition helpers and separate anonymous schema readiness gates
-- release-gated anonymous runtime activation controls
+- release-gated anonymous runtime activation controls with explicit edge/shared limiter attestations
 - reserved-route `429` response contracts and anonymous create/read/write/delete server mounting with same-origin/CSRF mutating checks and deleted-profile `410` behavior
 - `docker-compose.demo.yml` for a runnable local DB-backed demo
 
@@ -83,6 +83,6 @@ Remaining product work:
 
 - browser-local saved profile flow
 - production authentication/session design
-- production shared or edge anonymous rate limiting and deployed anonymous runtime smoke coverage
+- deployed anonymous runtime smoke coverage and a concrete shared limiter provider if edge enforcement is unavailable
 - richer source-backed demo dataset
 - final audit after the remaining roadmap items are complete

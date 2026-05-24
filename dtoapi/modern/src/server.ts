@@ -234,7 +234,7 @@ function anonymousEdgeRateLimit(input: anonymousRateLimit.RateLimitInput): anony
 }
 
 function anonymousRuntimeCanUseDefaultDependencies(): boolean {
-  return anonymousRuntime.anonymousRateLimitMode() === 'edge';
+  return anonymousRuntime.anonymousRateLimitMode() === 'edge' && process.env.UTOPLAN_ANONYMOUS_EDGE_RATE_LIMIT === '1';
 }
 
 function anonymousDefaultRateLimit(input: anonymousRateLimit.RateLimitInput): anonymousRateLimit.RateLimitDecision {

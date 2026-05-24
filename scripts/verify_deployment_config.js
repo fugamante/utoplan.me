@@ -85,6 +85,30 @@ function validateApi(env, errors) {
 
   validateDatabase(env, errors);
   validatePort(env.PORT, 'PORT', errors);
+
+  if (env.UTOPLAN_ANONYMOUS_RUNTIME === '1') {
+    if (env.UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE !== 'shared' && env.UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE !== 'edge') {
+      errors.push('UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE must be shared or edge when anonymous runtime is enabled');
+    }
+
+    if (!hasValue(env.UTOPLAN_ANONYMOUS_ALLOWED_ORIGINS)) {
+      errors.push('UTOPLAN_ANONYMOUS_ALLOWED_ORIGINS is required when anonymous runtime is enabled');
+    }
+
+    if (env.UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE === 'shared') {
+      if (env.UTOPLAN_TRUST_PROXY !== '1') {
+        errors.push('UTOPLAN_TRUST_PROXY=1 is required for shared anonymous rate limiting');
+      }
+
+      if (env.UTOPLAN_ANONYMOUS_SHARED_RATE_LIMIT !== '1') {
+        errors.push('UTOPLAN_ANONYMOUS_SHARED_RATE_LIMIT=1 is required for shared anonymous rate limiting');
+      }
+    }
+
+    if (env.UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE === 'edge' && env.UTOPLAN_ANONYMOUS_EDGE_RATE_LIMIT !== '1') {
+      errors.push('UTOPLAN_ANONYMOUS_EDGE_RATE_LIMIT=1 is required for edge anonymous rate limiting');
+    }
+  }
 }
 
 function validateConfig(env, options) {

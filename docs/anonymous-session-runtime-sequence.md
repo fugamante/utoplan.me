@@ -151,9 +151,9 @@ Runtime success behavior is mounted but must remain unreachable until:
 
 - the anonymous migration artifact is reviewed and applied
 - route-specific CORS, CSRF, token, body-validation, rate-limit response, and handler-composition scaffolding remain green
-- shared production rate-limit storage or edge limiting is selected
+- shared production rate-limit storage or edge limiting is selected and explicitly attested in deployment configuration
 - trusted client-IP boundary behavior is configured and tested
 - release-gated runtime activation fails closed unless shared/edge rate limiting and anonymous schema readiness are configured
 - focused endpoint tests cover success, ownership failure, CSRF failure, CORS failure, stale writes, delete/revoke, retention, and audit events
 
-When the gate fails, the server must keep the reserved response contract and must not execute anonymous handler data access. Current gate checks require `UTOPLAN_ANONYMOUS_RUNTIME=1`, anonymous schema readiness, and `UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE=shared` or `edge`; shared mode also requires `UTOPLAN_TRUST_PROXY=1`.
+When the gate fails, the server must keep the reserved response contract and must not execute anonymous handler data access. Current gate checks require `UTOPLAN_ANONYMOUS_RUNTIME=1`, anonymous schema readiness, and `UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE=shared` or `edge`. Edge mode also requires `UTOPLAN_ANONYMOUS_EDGE_RATE_LIMIT=1`. Shared mode requires `UTOPLAN_TRUST_PROXY=1` and `UTOPLAN_ANONYMOUS_SHARED_RATE_LIMIT=1`.

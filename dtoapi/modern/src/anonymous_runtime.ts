@@ -54,6 +54,14 @@ export function anonymousRuntimeGate(env?: RuntimeEnv, schemaReady?: boolean): A
     errors.push('shared anonymous rate limiting requires trusted proxy client identity');
   }
 
+  if (rateLimitMode === 'shared' && values.UTOPLAN_ANONYMOUS_SHARED_RATE_LIMIT !== '1') {
+    errors.push('shared anonymous rate limiting requires UTOPLAN_ANONYMOUS_SHARED_RATE_LIMIT=1');
+  }
+
+  if (rateLimitMode === 'edge' && values.UTOPLAN_ANONYMOUS_EDGE_RATE_LIMIT !== '1') {
+    errors.push('edge anonymous rate limiting requires UTOPLAN_ANONYMOUS_EDGE_RATE_LIMIT=1');
+  }
+
   return {
     requested: true,
     enabled: errors.length === 0,

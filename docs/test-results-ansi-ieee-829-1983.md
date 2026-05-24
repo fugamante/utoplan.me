@@ -137,6 +137,15 @@ Current anonymous gated server-runtime slice rerun:
 - `npm run docker:test:proxy`: Pass
 - `git diff --check`: Pass
 
+Current anonymous limiter activation-contract slice rerun:
+
+- `npm --prefix dtoapi/modern test`: Pass
+- `npm run test:deployment-config`: Pass
+- `npm run test:session-auth-contract`: Pass
+- `npm test`: Pass
+- `npm run docker:test:proxy`: Pass
+- `git diff --check`: Pass
+
 ## Evaluation
 
 The tested branch satisfies the current modernization acceptance criteria for:
@@ -155,7 +164,7 @@ None observed in the validation commands listed above.
 ## Residual Risks
 
 - Production-grade user accounts, passwords, and privacy controls are not implemented.
-- Anonymous session/profile runtime endpoints are mounted behind a fail-closed activation gate, but production exposure still depends on shared/edge production rate limiting, release-reviewed anonymous schema readiness, proxy evidence, and deployed smoke coverage.
+- Anonymous session/profile runtime endpoints are mounted behind a fail-closed activation gate, but production exposure still depends on release-reviewed anonymous schema readiness, proxy evidence, explicit edge/shared limiter attestation, and deployed smoke coverage.
 - Demo seed data is intentionally non-production and should not be confused with a complete source-backed product dataset.
 - CBP field semantics still carry low transform confidence.
 - Planning signals remain intentionally absent until more source-backed data and product rules are defined.

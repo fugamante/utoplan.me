@@ -57,10 +57,12 @@ function assertReservedJson(response, expectedError) {
 const allowedOrigin = 'http://127.0.0.1:18083';
 const acceptedGateEnv = {
   UTOPLAN_ANONYMOUS_RUNTIME: '1',
-  UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE: 'edge'
+  UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE: 'edge',
+  UTOPLAN_ANONYMOUS_EDGE_RATE_LIMIT: '1'
 };
 const originalAnonymousRuntime = process.env.UTOPLAN_ANONYMOUS_RUNTIME;
 const originalAnonymousRateLimitMode = process.env.UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE;
+const originalAnonymousEdgeRateLimit = process.env.UTOPLAN_ANONYMOUS_EDGE_RATE_LIMIT;
 const originalReservedRateLimit = process.env.UTOPLAN_ANONYMOUS_RESERVED_RATE_LIMIT;
 const originalReservedRateLimitWindow = process.env.UTOPLAN_ANONYMOUS_RESERVED_RATE_LIMIT_WINDOW_MS;
 
@@ -82,6 +84,12 @@ function restoreRuntimeEnv() {
     delete process.env.UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE;
   } else {
     process.env.UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE = originalAnonymousRateLimitMode;
+  }
+
+  if (originalAnonymousEdgeRateLimit === undefined) {
+    delete process.env.UTOPLAN_ANONYMOUS_EDGE_RATE_LIMIT;
+  } else {
+    process.env.UTOPLAN_ANONYMOUS_EDGE_RATE_LIMIT = originalAnonymousEdgeRateLimit;
   }
 
   if (originalReservedRateLimit === undefined) {
