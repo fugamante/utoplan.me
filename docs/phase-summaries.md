@@ -68,21 +68,21 @@ The branch now has a DB-backed demo path:
 - browser-local planning profile panel for local business idea, municipality, and category preferences
 - production session/auth contract reserved without enabling account endpoints
 - reserved production session/profile table migration artifact
-- anonymous session/profile API contract reserved without runtime endpoints, including separate anonymous storage, route-specific CORS, CSRF checks, and caller-owned optimistic concurrency
-- anonymous storage migration artifact and threat-reviewed runtime sequence reserved without enabling endpoints
-- route-specific CORS and CSRF runtime scaffolding for reserved anonymous endpoints while endpoint behavior remains disabled
-- anonymous token hashing, cookie, transaction, and data-access scaffolding while endpoint behavior remains disabled
-- anonymous rate-limit and profile body-validation scaffolding while endpoint behavior remains disabled
-- endpoint-level reserved anonymous route contracts and production rate-limit policy notes while endpoint behavior remains disabled
-- transactional anonymous runtime composition helpers and separate anonymous schema readiness gates while endpoint behavior remains disabled
-- release-gated anonymous runtime activation controls while endpoint behavior remains disabled
-- reserved-route `429` response contracts and pure anonymous create/read/write/delete handler composition with same-origin/CSRF mutating checks and deleted-profile `410` behavior while endpoint success behavior remains disabled
+- anonymous session/profile API contract and gate-mounted runtime endpoints, including separate anonymous storage, route-specific CORS, CSRF checks, and caller-owned optimistic concurrency
+- anonymous storage migration artifact and threat-reviewed runtime sequence
+- route-specific CORS and CSRF runtime scaffolding for gate-disabled and gate-enabled anonymous endpoints
+- anonymous token hashing, cookie, transaction, and data-access scaffolding wired behind the activation gate
+- anonymous rate-limit and profile body-validation scaffolding wired behind the activation gate
+- endpoint-level reserved anonymous route contracts and production rate-limit policy notes
+- transactional anonymous runtime composition helpers and separate anonymous schema readiness gates
+- release-gated anonymous runtime activation controls
+- reserved-route `429` response contracts and anonymous create/read/write/delete server mounting with same-origin/CSRF mutating checks and deleted-profile `410` behavior
 - `docker-compose.demo.yml` for a runnable local DB-backed demo
 
 Remaining product work:
 
 - browser-local saved profile flow
 - production authentication/session design
-- full anonymous endpoint implementation behind release activation, shared/edge production rate limiting, and success/failure endpoint tests
+- production shared or edge anonymous rate limiting and deployed anonymous runtime smoke coverage
 - richer source-backed demo dataset
 - final audit after the remaining roadmap items are complete

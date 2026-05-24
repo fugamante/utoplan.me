@@ -44,7 +44,7 @@ export interface AnonymousProfileEnvelope {
 }
 
 export interface AnonymousProfileEventInput {
-  anonymousSessionId: number;
+  anonymousSessionId: number | null;
   anonymousProfileId: number | null;
   eventName: string;
   metadata: Record<string, unknown>;
@@ -83,6 +83,7 @@ export type AnonymousSessionCallback = (error: Error | null, row: AnonymousSessi
 export type AnonymousProfileCallback = (error: Error | null, row: AnonymousProfileRow | null) => void;
 export type CreatedAnonymousSessionCallback = (error: Error | null, result: CreatedAnonymousSession | null) => void;
 export type DeletedAnonymousProfileCallback = (error: Error | null, result: DeletedAnonymousProfile | null) => void;
+export type AnonymousProfileEventCallback = (error: Error | null) => void;
 
 export function insertAnonymousSessionQuery(): string {
   return [
@@ -309,6 +310,42 @@ export function findOwnedProfile(anonymousSessionId: number, callback: Anonymous
     }
 
     callback(null, result.rows[0] ? profileRow(result.rows[0]) : null);
+  });
+}
+
+export function findProfileState(anonymousSessionId: number, callback: AnonymousProfileCallback): void {
+  db.query(selectProfileStateBySessionIdQuery(), [anonymousSessionId], function(error, result) {
+    if (error) {
+      callback(error, null);
+      return;
+    }
+
+    callback(null, result.rows[0] ? profileRow(result.rows[0]) : null);
+  });
+}
+
+export function revokeAnonymousSession(input: DeleteProfileInput, callback: AnonymousSessionCallback): void {
+  db.query(revokeAnonymousSessionQuery(), [
+    input.anonymousSessionId,
+    input.revokeReason || 'session_revoked'
+  ], function(error, result) {
+    if (error) {
+      callback(error, null);
+      return;
+    }
+
+    callback(null, result.rows[0] ? sessionRow(result.rows[0]) : null);
+  });
+}
+
+export function recordAnonymousProfileEvent(input: AnonymousProfileEventInput, callback: AnonymousProfileEventCallback): void {
+  db.query(insertAnonymousProfileEventQuery(), [
+    input.anonymousSessionId,
+    input.anonymousProfileId,
+    input.eventName,
+    input.metadata
+  ], function(error) {
+    callback(error || null);
   });
 }
 

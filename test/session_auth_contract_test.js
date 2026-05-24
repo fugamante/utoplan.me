@@ -26,7 +26,7 @@ assert.strictEqual(currentModes['browser-local-profile'], true);
 assert.strictEqual(currentModes['demo-db-session'], true);
 assert.strictEqual(contract.migrationArtifacts.indexOf('db/migrations/202605241000_reserve_session_profile_tables.md') !== -1, true);
 assert.strictEqual(contract.migrationArtifacts.indexOf('db/migrations/202605241100_reserve_anonymous_session_profile_tables.md') !== -1, true);
-assert.strictEqual(contract.anonymousApiContract.contractStatus, 'draft-no-runtime');
+assert.strictEqual(contract.anonymousApiContract.contractStatus, 'draft-gate-mounted-runtime');
 assert.strictEqual(contract.anonymousApiContract.schemaStatus, 'reserved-migration-artifact-ready');
 assert.strictEqual(contract.anonymousApiContract.runtimeSequenceDocument, 'docs/anonymous-session-runtime-sequence.md');
 assert.strictEqual(contract.anonymousApiContract.ownershipModel, 'caller-owned-anonymous-session');
@@ -79,7 +79,7 @@ assert.deepStrictEqual(contract.anonymousApiContract.profileSchema.fields, [
 
 contract.anonymousApiContract.endpoints.forEach(function(endpoint) {
   anonymousEndpoints[endpoint.method + ' ' + endpoint.path] = endpoint;
-  assert.strictEqual(endpoint.status, 'reserved-not-implemented');
+  assert.strictEqual(endpoint.status, 'gate-mounted');
 });
 assert.strictEqual(anonymousEndpoints['POST /v1/anonymous-sessions'].successStatus, 201);
 assert(anonymousEndpoints['POST /v1/anonymous-sessions'].existingCookieRule.indexOf('newly generated server token') !== -1);
@@ -173,8 +173,14 @@ assert(anonymousProposedTables.anonymous_profile_events.minimumColumns.indexOf('
 
 contract.endpointPlan.forEach(function(endpoint) {
   endpointPlan[endpoint.method + ' ' + endpoint.path] = endpoint;
-  assert.strictEqual(endpoint.status, 'reserved-not-implemented');
 });
+
+assert.strictEqual(endpointPlan['POST /v1/anonymous-sessions'].status, 'gate-mounted');
+assert.strictEqual(endpointPlan['GET /v1/profile'].status, 'gate-mounted');
+assert.strictEqual(endpointPlan['PUT /v1/profile'].status, 'gate-mounted');
+assert.strictEqual(endpointPlan['DELETE /v1/profile'].status, 'gate-mounted');
+assert.strictEqual(endpointPlan['POST /v1/session/login'].status, 'reserved-not-implemented');
+assert.strictEqual(endpointPlan['POST /v1/session/logout'].status, 'reserved-not-implemented');
 
 assert.strictEqual(endpointPlan['POST /v1/anonymous-sessions'].requiresHttps, true);
 assert.strictEqual(endpointPlan['POST /v1/anonymous-sessions'].mode, 'anonymous');
@@ -246,7 +252,7 @@ assert.strictEqual(contract.retention.publicSeedsAllowed, false);
   'anonymous_planning_profiles_retention_index',
   'profile.export.rejected',
   'client IP plus normalized Origin',
-  'Runtime success behavior may begin only after'
+  'Runtime success behavior is mounted but must remain unreachable until'
 ].forEach(function(fragment) {
   assert(runtimeSequence.indexOf(fragment) !== -1, 'runtime sequence should mention ' + fragment);
 });

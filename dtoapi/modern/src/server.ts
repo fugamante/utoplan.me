@@ -3,7 +3,12 @@
 import http, {type IncomingMessage, type OutgoingHttpHeaders, type Server, type ServerResponse} from 'http';
 import {URL} from 'url';
 import zlib from 'zlib';
+import * as anonymousEndpointHandlers from './anonymous_endpoint_handlers';
+import * as anonymousProfile from './anonymous_profile';
 import * as anonymousRateLimit from './anonymous_rate_limit';
+import * as anonymousRuntime from './anonymous_runtime';
+import * as anonymousSecurity from './anonymous_security';
+import * as anonymousProfileValidation from './anonymous_profile_validation';
 import * as db from './db';
 import * as demoSession from './demo_session';
 import * as records from './records';
@@ -28,6 +33,13 @@ export const DEFAULT_ANONYMOUS_ALLOWED_ORIGINS = [
 
 export const MAX_COLLECTION_LIMIT = 1000;
 export const SUPPORTED_COLLECTION_QUERY_PARAMS = ['limit', 'offset'];
+
+export type AnonymousSchemaReadyCallback = (callback: (ready: boolean) => void) => void;
+
+export interface ServerOptions {
+  anonymousSchemaReady?: AnonymousSchemaReadyCallback;
+  anonymousDependencies?: anonymousEndpointHandlers.AnonymousEndpointDependencies;
+}
 
 export function acceptsGzip(request: IncomingMessage): boolean {
   return String(request.headers['accept-encoding'] || '').indexOf('gzip') !== -1;
@@ -204,6 +216,130 @@ export function anonymousRateLimitDecision(request: IncomingMessage, pathname: s
     origin: typeof request.headers.origin === 'string' ? request.headers.origin : null,
     limit: anonymousRateLimitNumber('UTOPLAN_ANONYMOUS_RESERVED_RATE_LIMIT'),
     windowMs: anonymousRateLimitNumber('UTOPLAN_ANONYMOUS_RESERVED_RATE_LIMIT_WINDOW_MS')
+  });
+}
+
+function anonymousRuntimeEnabled(schemaReady: boolean): boolean {
+  return anonymousRuntime.anonymousRuntimeGate(process.env, schemaReady).enabled;
+}
+
+function anonymousEdgeRateLimit(input: anonymousRateLimit.RateLimitInput): anonymousRateLimit.RateLimitDecision {
+  return {
+    allowed: true,
+    key: 'anonymous:edge:' + input.scope,
+    limit: input.limit || anonymousRateLimit.DEFAULT_LIMIT,
+    remaining: input.limit || anonymousRateLimit.DEFAULT_LIMIT,
+    resetAtMs: (input.nowMs || Date.now()) + (input.windowMs || anonymousRateLimit.DEFAULT_WINDOW_MS)
+  };
+}
+
+function anonymousRuntimeCanUseDefaultDependencies(): boolean {
+  return anonymousRuntime.anonymousRateLimitMode() === 'edge';
+}
+
+function anonymousDefaultRateLimit(input: anonymousRateLimit.RateLimitInput): anonymousRateLimit.RateLimitDecision {
+  if (anonymousRuntime.anonymousRateLimitMode() === 'edge') {
+    return anonymousEdgeRateLimit(input);
+  }
+
+  return {
+    allowed: false,
+    key: 'anonymous:unavailable:' + input.scope,
+    limit: 1,
+    remaining: 0,
+    resetAtMs: (input.nowMs || Date.now()) + anonymousRateLimit.DEFAULT_WINDOW_MS
+  };
+}
+
+function anonymousFailureRateLimitDecision(
+  request: IncomingMessage,
+  scope: 'origin_failure' | 'csrf_failure',
+  failureType: string
+): anonymousRateLimit.RateLimitDecision {
+  return anonymousRateLimit.checkAnonymousRateLimit({
+    scope: scope,
+    ip: anonymousRateLimit.clientIpForRateLimit(
+      request.headers,
+      request.socket ? request.socket.remoteAddress || undefined : undefined,
+      process.env.UTOPLAN_TRUST_PROXY === '1'
+    ),
+    origin: typeof request.headers.origin === 'string' ? request.headers.origin : null,
+    failureType: failureType
+  });
+}
+
+function defaultAnonymousSchemaReady(callback: (ready: boolean) => void): void {
+  if (!anonymousRuntime.anonymousRuntimeRequested()) {
+    callback(false);
+    return;
+  }
+
+  db.anonymousReady(function(error) {
+    if (error) {
+      callback(false);
+      return;
+    }
+
+    callback(true);
+  });
+}
+
+function defaultAnonymousDependencies(): anonymousEndpointHandlers.AnonymousEndpointDependencies {
+  return {
+    allowedOrigins: anonymousAllowedOrigins(),
+    trustedProxy: process.env.UTOPLAN_TRUST_PROXY === '1',
+    createSecret: anonymousSecurity.createAnonymousSecret,
+    createPublicId: anonymousSecurity.generateOpaqueToken,
+    checkRateLimit: anonymousDefaultRateLimit,
+    createSession: anonymousProfile.createAnonymousSession,
+    findSessionByTokenHash: anonymousProfile.findActiveSessionByTokenHash,
+    findProfile: anonymousProfile.findOwnedProfile,
+    findProfileState: anonymousProfile.findProfileState,
+    revokeSession: anonymousProfile.revokeAnonymousSession,
+    recordEvent: anonymousProfile.recordAnonymousProfileEvent,
+    updateProfile: anonymousProfile.updateOwnedProfile,
+    deleteProfileAndRevoke: anonymousProfile.deleteOwnedProfileAndRevoke
+  };
+}
+
+function readRequestBody(request: IncomingMessage, callback: (error: Error | null, body?: string) => void): void {
+  const chunks: Buffer[] = [];
+  let size = 0;
+  let done = false;
+  const oversizedBody = 'x'.repeat(anonymousProfileValidation.MAX_PROFILE_BODY_BYTES + 1);
+
+  function finish(error: Error | null, body?: string): void {
+    if (done) {
+      return;
+    }
+
+    done = true;
+    callback(error, body);
+  }
+
+  request.on('data', function(chunk: Buffer | string) {
+    const buffer = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
+    size += buffer.length;
+
+    if (done) {
+      return;
+    }
+
+    if (size > anonymousProfileValidation.MAX_PROFILE_BODY_BYTES) {
+      finish(null, oversizedBody);
+      request.resume();
+      return;
+    }
+
+    chunks.push(buffer);
+  });
+
+  request.on('end', function() {
+    finish(null, Buffer.concat(chunks).toString('utf8'));
+  });
+
+  request.on('error', function(error) {
+    finish(error);
   });
 }
 
@@ -433,6 +569,77 @@ function handleAnonymousRateLimited(request: IncomingMessage, response: ServerRe
   ), anonymousRateLimit.anonymousRateLimitHeaders(decision));
 }
 
+function handleAnonymousRuntimeResult(
+  request: IncomingMessage,
+  response: ServerResponse,
+  pathname: string,
+  error: Error | null,
+  result?: anonymousEndpointHandlers.AnonymousEndpointResult
+): void {
+  if (error) {
+    console.error(error.stack || error.message);
+
+    sendAnonymousJson(request, response, pathname, 500, responseContract.serialize(
+      responseContract.errorPayload('Internal Server Error')
+    ));
+    return;
+  }
+
+  if (!result) {
+    sendAnonymousJson(request, response, pathname, 500, responseContract.serialize(
+      responseContract.errorPayload('Internal Server Error')
+    ));
+    return;
+  }
+
+  sendAnonymousJson(request, response, pathname, result.statusCode, result.body, result.headers);
+}
+
+function handleAnonymousRuntime(
+  request: IncomingMessage,
+  response: ServerResponse,
+  pathname: string,
+  body: string,
+  deps: anonymousEndpointHandlers.AnonymousEndpointDependencies
+): void {
+  const runtimeRequest: anonymousEndpointHandlers.AnonymousEndpointRequest = {
+    headers: request.headers,
+    remoteAddress: request.socket ? request.socket.remoteAddress || undefined : undefined,
+    body: body,
+    now: new Date()
+  };
+
+  if (isAnonymousSessionPath(pathname) && request.method === 'POST') {
+    anonymousEndpointHandlers.handleCreateAnonymousSession(runtimeRequest, deps, function(error, result) {
+      handleAnonymousRuntimeResult(request, response, pathname, error, result);
+    });
+    return;
+  }
+
+  if (isAnonymousProfilePath(pathname) && request.method === 'GET') {
+    anonymousEndpointHandlers.handleReadAnonymousProfile(runtimeRequest, deps, function(error, result) {
+      handleAnonymousRuntimeResult(request, response, pathname, error, result);
+    });
+    return;
+  }
+
+  if (isAnonymousProfilePath(pathname) && request.method === 'PUT') {
+    anonymousEndpointHandlers.handleUpdateAnonymousProfile(runtimeRequest, deps, function(error, result) {
+      handleAnonymousRuntimeResult(request, response, pathname, error, result);
+    });
+    return;
+  }
+
+  if (isAnonymousProfilePath(pathname) && request.method === 'DELETE') {
+    anonymousEndpointHandlers.handleDeleteAnonymousProfile(runtimeRequest, deps, function(error, result) {
+      handleAnonymousRuntimeResult(request, response, pathname, error, result);
+    });
+    return;
+  }
+
+  handleAnonymousNotImplemented(request, response, pathname);
+}
+
 function handleMethodNotAllowed(request: IncomingMessage, response: ServerResponse): void {
   sendJson(request, response, 405, responseContract.serialize(
     responseContract.errorPayload('Method Not Allowed')
@@ -455,7 +662,12 @@ function handleNotFound(request: IncomingMessage, response: ServerResponse): voi
   ));
 }
 
-export function createServer(): Server {
+export function createServer(options?: ServerOptions): Server {
+  const serverOptions = options || {};
+  const schemaReady = serverOptions.anonymousSchemaReady || defaultAnonymousSchemaReady;
+  const anonymousDeps = serverOptions.anonymousDependencies || defaultAnonymousDependencies();
+  const hasInjectedAnonymousDependencies = Boolean(serverOptions.anonymousDependencies);
+
   return http.createServer(function(request: IncomingMessage, response: ServerResponse) {
     const requestUrl = new URL(request.url || '/', 'http://127.0.0.1');
     const pathname = requestUrl.pathname;
@@ -556,18 +768,39 @@ export function createServer(): Server {
     if (isAnonymousSessionPath(pathname)) {
       if (request.method === 'POST') {
         if (!hasSameOriginSignal(request)) {
+          const failureDecision = anonymousFailureRateLimitDecision(request, 'origin_failure', 'session_creation_origin');
+
+          if (!failureDecision.allowed) {
+            handleAnonymousRateLimited(request, response, pathname, failureDecision);
+            return;
+          }
+
           handleAnonymousForbidden(request, response, pathname);
           return;
         }
 
-        const rateLimitDecision = anonymousRateLimitDecision(request, pathname);
+        schemaReady(function(ready) {
+          if (!anonymousRuntimeEnabled(ready) || (!hasInjectedAnonymousDependencies && !anonymousRuntimeCanUseDefaultDependencies())) {
+            const rateLimitDecision = anonymousRateLimitDecision(request, pathname);
 
-        if (rateLimitDecision && !rateLimitDecision.allowed) {
-          handleAnonymousRateLimited(request, response, pathname, rateLimitDecision);
-          return;
-        }
+            if (rateLimitDecision && !rateLimitDecision.allowed) {
+              handleAnonymousRateLimited(request, response, pathname, rateLimitDecision);
+              return;
+            }
 
-        handleAnonymousNotImplemented(request, response, pathname);
+            handleAnonymousNotImplemented(request, response, pathname);
+            return;
+          }
+
+          readRequestBody(request, function(readError, body) {
+            if (readError) {
+              handleAnonymousRuntimeResult(request, response, pathname, readError);
+              return;
+            }
+
+            handleAnonymousRuntime(request, response, pathname, body || '', anonymousDeps);
+          });
+        });
         return;
       }
 
@@ -577,31 +810,83 @@ export function createServer(): Server {
 
     if (isAnonymousProfilePath(pathname)) {
       if (request.method === 'GET') {
-        const rateLimitDecision = anonymousRateLimitDecision(request, pathname);
+        if (!anonymousCorsHeaders(pathname, typeof request.headers.origin === 'string' ? request.headers.origin : undefined)) {
+          const failureDecision = anonymousFailureRateLimitDecision(request, 'origin_failure', 'profile_read_origin');
 
-        if (rateLimitDecision && !rateLimitDecision.allowed) {
-          handleAnonymousRateLimited(request, response, pathname, rateLimitDecision);
-          return;
-        }
+          if (!failureDecision.allowed) {
+            handleAnonymousRateLimited(request, response, pathname, failureDecision);
+            return;
+          }
 
-        handleAnonymousNotImplemented(request, response, pathname);
-        return;
-      }
-
-      if (request.method === 'PUT' || request.method === 'DELETE') {
-        if (!hasSameOriginSignal(request) || !hasCsrfHeader(request)) {
           handleAnonymousForbidden(request, response, pathname);
           return;
         }
 
-        const rateLimitDecision = anonymousRateLimitDecision(request, pathname);
+        schemaReady(function(ready) {
+          if (!anonymousRuntimeEnabled(ready) || (!hasInjectedAnonymousDependencies && !anonymousRuntimeCanUseDefaultDependencies())) {
+            const rateLimitDecision = anonymousRateLimitDecision(request, pathname);
 
-        if (rateLimitDecision && !rateLimitDecision.allowed) {
-          handleAnonymousRateLimited(request, response, pathname, rateLimitDecision);
+            if (rateLimitDecision && !rateLimitDecision.allowed) {
+              handleAnonymousRateLimited(request, response, pathname, rateLimitDecision);
+              return;
+            }
+
+            handleAnonymousNotImplemented(request, response, pathname);
+            return;
+          }
+
+          handleAnonymousRuntime(request, response, pathname, '', anonymousDeps);
+        });
+        return;
+      }
+
+      if (request.method === 'PUT' || request.method === 'DELETE') {
+        if (!hasSameOriginSignal(request)) {
+          const failureDecision = anonymousFailureRateLimitDecision(request, 'origin_failure', 'profile_mutation_origin');
+
+          if (!failureDecision.allowed) {
+            handleAnonymousRateLimited(request, response, pathname, failureDecision);
+            return;
+          }
+
+          handleAnonymousForbidden(request, response, pathname);
           return;
         }
 
-        handleAnonymousNotImplemented(request, response, pathname);
+        if (!hasCsrfHeader(request)) {
+          const failureDecision = anonymousFailureRateLimitDecision(request, 'csrf_failure', 'profile_mutation_missing_csrf');
+
+          if (!failureDecision.allowed) {
+            handleAnonymousRateLimited(request, response, pathname, failureDecision);
+            return;
+          }
+
+          handleAnonymousForbidden(request, response, pathname);
+          return;
+        }
+
+        schemaReady(function(ready) {
+          if (!anonymousRuntimeEnabled(ready) || (!hasInjectedAnonymousDependencies && !anonymousRuntimeCanUseDefaultDependencies())) {
+            const rateLimitDecision = anonymousRateLimitDecision(request, pathname);
+
+            if (rateLimitDecision && !rateLimitDecision.allowed) {
+              handleAnonymousRateLimited(request, response, pathname, rateLimitDecision);
+              return;
+            }
+
+            handleAnonymousNotImplemented(request, response, pathname);
+            return;
+          }
+
+          readRequestBody(request, function(readError, body) {
+            if (readError) {
+              handleAnonymousRuntimeResult(request, response, pathname, readError);
+              return;
+            }
+
+            handleAnonymousRuntime(request, response, pathname, body || '', anonymousDeps);
+          });
+        });
         return;
       }
 

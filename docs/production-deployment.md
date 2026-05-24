@@ -55,7 +55,7 @@ When anonymous session/profile runtime endpoints are enabled, rate-limit keys mu
 
 Do not enable public anonymous profile writes unless the deployed proxy/edge behavior is documented in release notes and covered by a smoke or platform check. The current process-local limiter is unit-test-only scaffolding and does not satisfy production rate limiting.
 
-Reserved anonymous runtime activation uses `UTOPLAN_ANONYMOUS_RUNTIME=1` plus `UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE=shared` or `edge`. Shared mode also requires `UTOPLAN_TRUST_PROXY=1` and a documented proxy chain. These scaffolding gates exist in the current branch, but public success behavior remains disabled because the handlers are not mounted in `server.ts`; activation still requires anonymous schema readiness, shared or edge limiting, proxy evidence, and full endpoint tests.
+Reserved anonymous runtime activation uses `UTOPLAN_ANONYMOUS_RUNTIME=1` plus `UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE=shared` or `edge`. Shared mode also requires `UTOPLAN_TRUST_PROXY=1` and a documented proxy chain. Handlers are mounted behind this fail-closed gate; public success behavior is reachable only when anonymous schema readiness, shared or edge limiting, proxy evidence, and endpoint tests are all satisfied.
 
 ## Preflight Checklist
 
