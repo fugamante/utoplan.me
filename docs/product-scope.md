@@ -35,6 +35,7 @@ The first session model has two intentionally separate layers:
 
 - browser-local profile storage for business idea, municipality, and category preferences
 - DB-backed local/demo session storage for seeded demo profile composition through `demo_sessions`
+- reserved anonymous session/profile API contract for future caller-owned server-backed profile storage
 
 Neither layer is a production account system. The current branch does not implement passwords, durable user authentication, role-based access, account recovery, or retention policy controls. Production user profiles require a separate privacy and authentication design before public use.
 
@@ -61,5 +62,6 @@ Next work should move from seeded demo session toward a deliberate user-session 
 - anonymous local session id
 - browser-local saved planning profile
 - database-backed saved session/profile
+- anonymous session/profile API contract with same-origin cookie ownership, route-specific CORS, CSRF checks, separate anonymous storage, and optimistic concurrency
 - username/password login only after privacy, retention, and authentication requirements are documented
 - migration artifacts for reserved production session tables before any auth endpoints are enabled

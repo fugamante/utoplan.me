@@ -43,6 +43,7 @@
 - The static app now includes a browser-local planning profile panel backed by `localStorage`, allowing users to save a business idea, municipality id, and category id without server mutation or authentication claims.
 - `docs/session-auth-contract.md` and `data/mappings/puerto-rico-session-auth-contract.json` reserve the production session/auth boundary while keeping production auth implementation blocked.
 - `db/migrations/202605241000_reserve_session_profile_tables.md` reserves additive production session/profile tables without enabling endpoints or changing readiness.
+- The anonymous session/profile API contract now reserves `POST /v1/anonymous-sessions`, `GET /v1/profile`, `PUT /v1/profile`, and `DELETE /v1/profile` without implementing runtime endpoints.
 - `docs/product-scope.md`, `docs/demo-manual.md`, `docs/phase-summaries.md`, and `docs/test-results-ansi-ieee-829-1983.md` capture the current product boundary, demo operation path, roadmap phase summaries, and validation evidence.
 - `scripts/data_normalization.js` provides fixture-backed normalization helpers for NAICS filtering, municipality code coercion, title cleanup, and university coordinate join review behavior.
 - `scripts/data_import_plan.js` provides an offline fixture planning harness and CLI that reports accepted, rejected, and manual-review records without fetching source data or mutating a database.
@@ -116,6 +117,7 @@ Exit criteria:
 - Add browser-local profile persistence. Status: started; the map page can save, load, and clear a local planning profile with no API writes, and browser smoke coverage verifies persistence across reloads.
 - Define production session/auth contract. Status: started; production auth endpoints remain reserved and blocked until privacy, retention, migration, rate-limit, ownership, and audit requirements are satisfied.
 - Reserve production session/profile tables. Status: started; the migration artifact defines future `user_accounts`, `user_sessions`, `planning_profiles`, and `profile_events` tables while keeping runtime behavior unchanged.
+- Define anonymous session/profile API contract. Status: started; endpoint shapes, same-origin cookie ownership, route-specific CORS, CSRF checks, optimistic concurrency with caller ownership, allowed profile fields, anonymous storage blockers, and failure modes are reserved without runtime implementation.
 - Record runtime compatibility constraints. Status: complete; the Node 8/Nodal compatibility path has been retired after seeded DB read behavior moved to the modern API.
 - Isolate externally observable endpoint behavior before replacement. Status: complete via API contract tests.
 
@@ -188,4 +190,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Decide whether to keep hardening the dry-run data writer path or shift back to frontend/API modernization work.
+Design the anonymous storage migration and threat-reviewed runtime sequence before implementing `POST /v1/anonymous-sessions` or caller-owned `/v1/profile` routes.
