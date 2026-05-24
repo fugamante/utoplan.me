@@ -17,6 +17,7 @@ This report covers the current modernization branch after adding:
 - reserved production session/profile table migration artifact
 - anonymous session/profile API contract reservation with separate anonymous storage, route-specific CORS, CSRF, and caller-owned concurrency requirements
 - anonymous session/profile migration artifact and threat-reviewed runtime sequence
+- anonymous CORS/CSRF runtime scaffolding with reserved endpoints still returning `501`
 - Docker Postgres demo seed and demo Compose topology
 - readiness coverage for the required demo session table
 - release smoke support for demo-session validation
@@ -70,6 +71,12 @@ Current anonymous migration/runtime sequence slice rerun:
 - `npm run docker:test:proxy`: Pass
 - `node test/browser_smoke_test.js`: Pass
 - `docker compose -f docker-compose.demo.yml config`: Pass
+
+Current anonymous CORS/CSRF scaffolding slice rerun:
+
+- `npm --prefix dtoapi/modern test`: Pass
+- `npm test`: Pass
+- `npm run docker:test:proxy`: Pass
 
 ## Evaluation
 

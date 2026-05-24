@@ -31,6 +31,7 @@
 - `/v1/demo/session` is the DB-backed local demo session endpoint. It accepts only `session=<known demo session id>`, returns the saved neutral demo profile plus the live planning context for its selected municipality/category, returns `404 Not Found` when the session is absent, and returns `400 Bad Request` for invalid or unsupported query parameters. It is not an authentication or account-management API. Production-mode deployments must set `UTOPLAN_DEMO_SESSIONS=1` before the route is exposed.
 - Production session/profile endpoints are reserved but not implemented. `docs/session-auth-contract.md` and `data/mappings/puerto-rico-session-auth-contract.json` define the required privacy, retention, authentication, migration, and audit gates before routes such as `/v1/session/login` or `/v1/profile` can be added.
 - Anonymous session/profile endpoints are contract-reserved but not implemented. The reserved shape is `POST /v1/anonymous-sessions`, `GET /v1/profile`, `PUT /v1/profile`, and `DELETE /v1/profile`; it requires same-origin cookie ownership, hash-only token storage, route-specific non-wildcard CORS, CSRF protection for writes, row-version optimistic concurrency with caller ownership in the same update, the anonymous-compatible storage migration artifact `db/migrations/202605241100_reserve_anonymous_session_profile_tables.md`, the runtime sequence in `docs/anonymous-session-runtime-sequence.md`, and explicit non-use of `demo_sessions` or password-account rows for anonymous profile storage.
+- Anonymous CORS/CSRF scaffolding is implemented without enabling the reserved endpoints. Reserved anonymous route methods still return `501 Not Implemented`, while route-specific preflight handling rejects disallowed Origins, avoids wildcard CORS, allows only configured Origins, requires strict same-origin signals for session bootstrap, and gates `PUT`/`DELETE` on `X-CSRF-Token` header presence.
 - `/readyz` remains operational readiness only; source metadata is intentionally kept out of readiness so provenance visibility does not depend on database health.
 - `dtoapi/modern/test/response_contract_test.js` pins the typed response envelope.
 - `dtoapi/modern/test/resource_contract_test.js` pins the typed resource/data-access boundary.
@@ -38,6 +39,7 @@
 - `dtoapi/modern/test/source_metadata_test.js` pins the source metadata transformation without requiring a database.
 - `dtoapi/modern/test/planning_context_test.js` pins the demo planning context transformation without requiring a database.
 - `dtoapi/modern/test/demo_session_test.js` pins the demo session query validation and row serialization without requiring a database.
+- `dtoapi/modern/test/anonymous_security_test.js` pins anonymous route CORS and CSRF scaffolding without requiring a database or enabling endpoint runtime behavior.
 - `dtoapi/modern/test/root_contract_test.js` pins the typed root response contract without requiring a server.
 - `dtoapi/modern/test/server_contract_test.js` pins server route matching and gzip detection helpers without requiring a database.
 - `dtoapi/modern/tsconfig.json` compiles TypeScript contract sources to ignored CommonJS output under `dtoapi/modern/lib/` before tests or runtime entrypoints execute.
@@ -58,4 +60,4 @@ The modern API must pass preserved endpoint contracts before additional endpoint
 
 ## Next Slice
 
-Add runtime scaffolding for route-specific CORS, CSRF token handling, and anonymous session/profile endpoint tests before implementing anonymous profile routes under `dtoapi/modern/src/`. Test migration to TypeScript is optional and lower priority than product behavior or CI hardening.
+Add anonymous session/profile data-access and token-hashing scaffolding before implementing anonymous profile routes under `dtoapi/modern/src/`. Test migration to TypeScript is optional and lower priority than product behavior or CI hardening.
