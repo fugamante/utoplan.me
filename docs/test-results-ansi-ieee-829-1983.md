@@ -16,6 +16,7 @@ This report covers the current modernization branch after adding:
 - production session/auth contract reservation
 - reserved production session/profile table migration artifact
 - anonymous session/profile API contract reservation with separate anonymous storage, route-specific CORS, CSRF, and caller-owned concurrency requirements
+- anonymous session/profile migration artifact and threat-reviewed runtime sequence
 - Docker Postgres demo seed and demo Compose topology
 - readiness coverage for the required demo session table
 - release smoke support for demo-session validation
@@ -59,6 +60,16 @@ This report covers the current modernization branch after adding:
 | Migration artifact contracts | `npm run test:migration-artifacts` | Pass |
 | Demo Compose configuration | `docker compose -f docker-compose.demo.yml config` | Pass |
 | Demo Compose runtime smoke | `docker compose -f docker-compose.demo.yml up --build -d` plus `npm run verify:release-smoke` with `UTOPLAN_DEMO_SESSION_ID=demo-session-1` | Pass |
+
+Current anonymous migration/runtime sequence slice rerun:
+
+- `npm run test:session-auth-contract`: Pass
+- `npm run test:migration-artifacts`: Pass
+- `npm test`: Pass
+- `npm run docker:test:modern-db`: Pass
+- `npm run docker:test:proxy`: Pass
+- `node test/browser_smoke_test.js`: Pass
+- `docker compose -f docker-compose.demo.yml config`: Pass
 
 ## Evaluation
 

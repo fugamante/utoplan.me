@@ -26,6 +26,9 @@ var naturalKeyIndexes = migrations.filter(function(migration) {
 var sessionProfileTables = migrations.filter(function(migration) {
   return migration.fileName === '202605241000_reserve_session_profile_tables.md';
 })[0].body;
+var anonymousSessionProfileTables = migrations.filter(function(migration) {
+  return migration.fileName === '202605241100_reserve_anonymous_session_profile_tables.md';
+})[0].body;
 var docs = fs.readFileSync(path.join(root, 'docs', 'database-migrations.md'), 'utf8');
 
 [
@@ -72,3 +75,29 @@ assert(sessionProfileTables.indexOf('Do not seed these tables with real or sampl
 assert(sessionProfileTables.indexOf('Production auth endpoints enabled: no') !== -1);
 assert(sessionProfileTables.indexOf('Expected API readiness remains versioned as `baseline-read-v1`') !== -1);
 assert(sessionProfileTables.indexOf('DROP TABLE IF EXISTS profile_events') !== -1);
+
+assert(docs.indexOf('202605241100_reserve_anonymous_session_profile_tables.md') !== -1);
+assert(anonymousSessionProfileTables.indexOf('CREATE TABLE IF NOT EXISTS anonymous_sessions') !== -1);
+assert(anonymousSessionProfileTables.indexOf('CREATE TABLE IF NOT EXISTS anonymous_planning_profiles') !== -1);
+assert(anonymousSessionProfileTables.indexOf('CREATE TABLE IF NOT EXISTS anonymous_profile_events') !== -1);
+assert(anonymousSessionProfileTables.indexOf('token_hash bytea NOT NULL') !== -1);
+assert(anonymousSessionProfileTables.indexOf('csrf_token_hash bytea NOT NULL') !== -1);
+assert(anonymousSessionProfileTables.indexOf('public_id varchar(64) NOT NULL') !== -1);
+assert(anonymousSessionProfileTables.indexOf('expires_at timestamptz NOT NULL') !== -1);
+assert(anonymousSessionProfileTables.indexOf('revoked_at timestamptz') !== -1);
+assert(anonymousSessionProfileTables.indexOf('revoke_reason varchar(64)') !== -1);
+assert(anonymousSessionProfileTables.indexOf('CHECK (expires_at > created_at)') !== -1);
+assert(anonymousSessionProfileTables.indexOf('anonymous_session_id bigint NOT NULL REFERENCES anonymous_sessions(id)') !== -1);
+assert(anonymousSessionProfileTables.indexOf('export_requested_at timestamptz') !== -1);
+assert(anonymousSessionProfileTables.indexOf('anonymous_sessions_public_id_unique') !== -1);
+assert(anonymousSessionProfileTables.indexOf('anonymous_sessions_token_hash_unique') !== -1);
+assert(anonymousSessionProfileTables.indexOf('anonymous_sessions_active_expiry_index') !== -1);
+assert(anonymousSessionProfileTables.indexOf('anonymous_planning_profiles_session_active_unique') !== -1);
+assert(anonymousSessionProfileTables.indexOf('anonymous_planning_profiles_retention_index') !== -1);
+assert(anonymousSessionProfileTables.indexOf('anonymous_profile_events_session_created_index') !== -1);
+assert(anonymousSessionProfileTables.indexOf('anonymous_profile_events_profile_created_index') !== -1);
+assert(anonymousSessionProfileTables.indexOf('Do not backfill them from `demo_sessions`, `user_accounts`, or source-backed planning tables.') !== -1);
+assert(anonymousSessionProfileTables.indexOf('Anonymous session/profile endpoints enabled: no') !== -1);
+assert(anonymousSessionProfileTables.indexOf('Expected API readiness remains versioned as `baseline-read-v1`') !== -1);
+assert(anonymousSessionProfileTables.indexOf('DROP TABLE IF EXISTS anonymous_profile_events') < anonymousSessionProfileTables.indexOf('DROP TABLE IF EXISTS anonymous_planning_profiles'));
+assert(anonymousSessionProfileTables.indexOf('DROP TABLE IF EXISTS anonymous_planning_profiles') < anonymousSessionProfileTables.indexOf('DROP TABLE IF EXISTS anonymous_sessions'));

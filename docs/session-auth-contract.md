@@ -43,6 +43,8 @@ The anonymous profile model must use a separate migration and separate tables:
 
 The reservation artifact is `db/migrations/202605241000_reserve_session_profile_tables.md`. It is additive and must not enable endpoints by itself.
 
+The anonymous reservation artifact is `db/migrations/202605241100_reserve_anonymous_session_profile_tables.md`. It is additive and must not enable endpoints by itself. The required runtime sequence is reserved in `docs/anonymous-session-runtime-sequence.md`.
+
 These tables are not active in the current API yet. `demo_sessions` must remain local/demo-only. In plain terms: demo_sessions must remain local/demo-only. It must not be promoted into production account storage.
 
 ## Reserved Endpoints
@@ -75,6 +77,7 @@ The API contract reserves these response and failure rules:
 
 - `POST /v1/anonymous-sessions` returns `201` on success.
 - `POST /v1/anonymous-sessions` must issue a newly generated server token and must not trust attacker-supplied, expired, or revoked cookies.
+- `POST /v1/anonymous-sessions` is protected by strict same-origin `Origin` or `Referer` validation and rate limits before a session exists. It returns a response-body `csrfToken` for later mutating requests; the server stores only its hash.
 - `GET /v1/profile` and `PUT /v1/profile` return `200` on success.
 - `DELETE /v1/profile` returns `204` on success.
 - Missing, invalid, expired, or revoked session cookies return `401`.
@@ -87,11 +90,11 @@ The API contract reserves these response and failure rules:
 
 Allowed profile fields remain `businessIdea`, `selectedMunicipalityId`, and `selectedCategoryId`. The `businessIdea` field remains capped at 160 characters. Unknown profile fields are rejected, and request bodies are capped before parsing. `demo_sessions` and password-backed `user_accounts` must not be used for anonymous profile storage.
 
-Cookie-backed profile routes must not inherit wildcard CORS behavior. Runtime implementation must use route-specific CORS handling for anonymous profile routes: no wildcard `Access-Control-Allow-Origin`, explicit Origin validation, `Vary: Origin` when an Origin is allowed, and denied preflights for disallowed Origins. Mutating methods require same-origin `Origin` or `Referer` validation plus an `X-CSRF-Token` header bound to the anonymous session or bootstrap page state.
+Cookie-backed profile routes must not inherit wildcard CORS behavior. Runtime implementation must use route-specific CORS handling for anonymous profile routes: no wildcard `Access-Control-Allow-Origin`, explicit Origin validation, `Vary: Origin` when an Origin is allowed, and denied preflights for disallowed Origins. Profile-mutating methods after bootstrap require same-origin `Origin` or `Referer` validation plus an `X-CSRF-Token` header bound to the resolved anonymous session.
 
 Profile writes must enforce caller ownership in the same atomic update as optimistic concurrency, using the anonymous session owner, expected `rowVersion`, and non-deleted profile predicate in one write statement.
 
-This anonymous contract is blocked until a separate anonymous storage migration exists. The existing `user_accounts` and `planning_profiles.account_id` reservation is for password-account work and must not be filled with dummy account rows for anonymous users.
+This anonymous contract now has a separate anonymous storage migration artifact and runtime sequence document. Runtime endpoints remain blocked until the artifact is reviewed/applied as part of a release, route-specific CORS/CSRF helpers are implemented, and endpoint tests cover ownership, stale writes, deletion, audit, retention, and rate limits. The existing `user_accounts` and `planning_profiles.account_id` reservation is for password-account work and must not be filled with dummy account rows for anonymous users.
 
 ## Privacy Rules
 
@@ -117,4 +120,4 @@ Production implementation must provide deletion and export behavior. Public seed
 
 ## Next Implementation Gate
 
-The next safe implementation step is a new anonymous storage migration design, threat review, CSRF/rate-limit plan, and runtime sequencing for anonymous session bootstrap and caller-owned profile reads/writes. Any endpoint implementation should come after that anonymous migration artifact passes review and should keep password auth disabled until the contract requirements are satisfied.
+The next safe implementation step is runtime scaffolding for route-specific CORS, CSRF token handling, and anonymous session/profile endpoint tests. Any endpoint implementation should come after the anonymous migration artifact passes release review and should keep password auth disabled until the contract requirements are satisfied.

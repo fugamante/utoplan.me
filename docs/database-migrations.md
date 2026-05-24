@@ -18,6 +18,8 @@ The demo session artifact for local DB-backed sessions is `db/migrations/2026052
 
 The reserved production session/profile table artifact is `db/migrations/202605241000_reserve_session_profile_tables.md`. It is additive and must not enable production auth endpoints by itself.
 
+The reserved anonymous session/profile table artifact is `db/migrations/202605241100_reserve_anonymous_session_profile_tables.md`. It is additive, separate from account-backed tables, and must not enable anonymous profile endpoints by itself.
+
 ## Artifact Location
 
 Store migration artifacts in `db/migrations/`.

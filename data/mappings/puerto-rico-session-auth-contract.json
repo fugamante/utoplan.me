@@ -8,14 +8,18 @@
     "demo-db-session"
   ],
   "migrationArtifacts": [
-    "db/migrations/202605241000_reserve_session_profile_tables.md"
+    "db/migrations/202605241000_reserve_session_profile_tables.md",
+    "db/migrations/202605241100_reserve_anonymous_session_profile_tables.md"
   ],
   "anonymousApiContract": {
     "contractStatus": "draft-no-runtime",
-    "schemaStatus": "blocked-requires-anonymous-storage-migration",
+    "schemaStatus": "reserved-migration-artifact-ready",
+    "runtimeSequenceDocument": "docs/anonymous-session-runtime-sequence.md",
     "ownershipModel": "caller-owned-anonymous-session",
     "storageModel": {
       "reservedMigrationRequired": true,
+      "migrationArtifact": "db/migrations/202605241100_reserve_anonymous_session_profile_tables.md",
+      "migrationArtifactStatus": "review-ready-not-applied",
       "doNotUseTables": [
         "demo_sessions",
         "user_accounts"
@@ -29,6 +33,17 @@
     },
     "tokenPolicy": {
       "transport": "HttpOnly Secure SameSite=Lax cookie",
+      "cookie": {
+        "name": "utoplan_anon_session",
+        "path": "/",
+        "domain": "omit",
+        "maxAgeHours": 24,
+        "attributes": [
+          "HttpOnly",
+          "Secure",
+          "SameSite=Lax"
+        ]
+      },
       "storage": "hash-only",
       "minimumEntropyBits": 128,
       "expirationHours": 24,
@@ -41,16 +56,35 @@
         "denyInvalidOriginPreflight": true
       },
       "csrfPolicy": {
-        "requiredMethods": [
-          "POST",
+        "sessionCreationProtection": "same-origin Origin or Referer validation; no CSRF header is required before the anonymous session exists",
+        "responseDelivery": "return csrfToken once in POST /v1/anonymous-sessions response body; client stores it outside cookies and sends it in X-CSRF-Token for subsequent mutating requests",
+        "requiredAfterBootstrapMethods": [
           "PUT",
           "DELETE"
         ],
         "requiredChecks": [
           "same-origin Origin or Referer validation",
-          "X-CSRF-Token header bound to the anonymous session or bootstrap page state"
+          "X-CSRF-Token header presence before parsing",
+          "X-CSRF-Token hash matches the resolved anonymous session before mutation"
         ],
-        "failureStatus": 403
+        "failureStatus": 403,
+        "rotation": "rotate on anonymous session creation and invalidate on session revoke"
+      },
+      "rateLimitPolicy": {
+        "preAuthKey": "client ip plus normalized origin",
+        "sessionKey": "anonymous session public id after authentication",
+        "failureKey": "client ip plus normalized origin plus failure type",
+        "applyBeforeMutation": true,
+        "failureStatus": 429,
+        "scope": [
+          "anonymous session creation",
+          "profile reads",
+          "profile writes",
+          "profile deletion",
+          "repeated Origin failures",
+          "repeated CSRF failures",
+          "repeated token failures"
+        ]
       },
       "rotation": "required-on-session-renewal",
       "rawTokenLogging": "forbidden"
@@ -83,6 +117,7 @@
           "mode",
           "session.publicId",
           "session.expiresAt",
+          "csrfToken",
           "profile.schemaVersion",
           "profile.rowVersion",
           "profile.updatedAt",
@@ -159,7 +194,8 @@
         "status": "reserved-not-implemented",
         "purpose": "Soft-delete the caller-owned profile and revoke the anonymous session.",
         "requiresAuthenticatedSession": true,
-        "ownershipInvariant": "token hash matches active anonymous session; session is not expired or revoked; profile belongs to session",
+        "ownershipInvariant": "token hash matches active anonymous session; session is not expired or revoked; profile belongs to session; profile is not deleted",
+        "deleteRule": "server soft-deletes atomically with UPDATE ... WHERE anonymous_session_id = caller_session_id AND deleted_at IS NULL RETURNING; already-deleted profiles return 410",
         "successStatus": 204,
         "failureStatuses": [
           401,
@@ -273,10 +309,13 @@
         "id",
         "public_id",
         "token_hash",
+        "csrf_token_hash",
         "created_at",
+        "last_seen_at",
         "expires_at",
         "rotated_at",
-        "revoked_at"
+        "revoked_at",
+        "revoke_reason"
       ]
     },
     {
@@ -290,7 +329,9 @@
         "profile",
         "created_at",
         "updated_at",
-        "deleted_at"
+        "deleted_at",
+        "deletion_requested_at",
+        "export_requested_at"
       ]
     },
     {
@@ -371,7 +412,10 @@
     "profile.write.rejected",
     "profile.delete.succeeded",
     "profile.delete.rejected",
+    "profile.export.requested",
     "profile.export.succeeded",
+    "profile.export.rejected",
+    "profile.delete.requested",
     "profile.delete.retention_applied"
   ],
   "retention": {

@@ -7,6 +7,7 @@ var path = require('path');
 var root = path.join(__dirname, '..');
 var contract = JSON.parse(fs.readFileSync(path.join(root, 'data', 'mappings', 'puerto-rico-session-auth-contract.json'), 'utf8'));
 var docs = fs.readFileSync(path.join(root, 'docs', 'session-auth-contract.md'), 'utf8');
+var runtimeSequence = fs.readFileSync(path.join(root, 'docs', 'anonymous-session-runtime-sequence.md'), 'utf8');
 var currentModes = {};
 var proposedTables = {};
 var anonymousProposedTables = {};
@@ -24,16 +25,23 @@ contract.currentAllowedModes.forEach(function(mode) {
 assert.strictEqual(currentModes['browser-local-profile'], true);
 assert.strictEqual(currentModes['demo-db-session'], true);
 assert.strictEqual(contract.migrationArtifacts.indexOf('db/migrations/202605241000_reserve_session_profile_tables.md') !== -1, true);
+assert.strictEqual(contract.migrationArtifacts.indexOf('db/migrations/202605241100_reserve_anonymous_session_profile_tables.md') !== -1, true);
 assert.strictEqual(contract.anonymousApiContract.contractStatus, 'draft-no-runtime');
-assert.strictEqual(contract.anonymousApiContract.schemaStatus, 'blocked-requires-anonymous-storage-migration');
+assert.strictEqual(contract.anonymousApiContract.schemaStatus, 'reserved-migration-artifact-ready');
+assert.strictEqual(contract.anonymousApiContract.runtimeSequenceDocument, 'docs/anonymous-session-runtime-sequence.md');
 assert.strictEqual(contract.anonymousApiContract.ownershipModel, 'caller-owned-anonymous-session');
 assert.strictEqual(contract.anonymousApiContract.storageModel.reservedMigrationRequired, true);
+assert.strictEqual(contract.anonymousApiContract.storageModel.migrationArtifact, 'db/migrations/202605241100_reserve_anonymous_session_profile_tables.md');
+assert.strictEqual(contract.anonymousApiContract.storageModel.migrationArtifactStatus, 'review-ready-not-applied');
 assert(contract.anonymousApiContract.storageModel.doNotUseTables.indexOf('demo_sessions') !== -1);
 assert(contract.anonymousApiContract.storageModel.doNotUseTables.indexOf('user_accounts') !== -1);
 assert(contract.anonymousApiContract.storageModel.requiredFutureTables.indexOf('anonymous_sessions') !== -1);
 assert(contract.anonymousApiContract.storageModel.requiredFutureTables.indexOf('anonymous_planning_profiles') !== -1);
 assert(contract.anonymousApiContract.storageModel.requiredFutureTables.indexOf('anonymous_profile_events') !== -1);
 assert.strictEqual(contract.anonymousApiContract.tokenPolicy.transport, 'HttpOnly Secure SameSite=Lax cookie');
+assert.strictEqual(contract.anonymousApiContract.tokenPolicy.cookie.name, 'utoplan_anon_session');
+assert.strictEqual(contract.anonymousApiContract.tokenPolicy.cookie.domain, 'omit');
+assert.strictEqual(contract.anonymousApiContract.tokenPolicy.cookie.maxAgeHours, 24);
 assert.strictEqual(contract.anonymousApiContract.tokenPolicy.storage, 'hash-only');
 assert.strictEqual(contract.anonymousApiContract.tokenPolicy.csrfProtection, 'required-for-mutating-methods');
 assert.strictEqual(contract.anonymousApiContract.tokenPolicy.cors, 'same-origin-only-for-profile-routes');
@@ -41,8 +49,20 @@ assert.strictEqual(contract.anonymousApiContract.tokenPolicy.corsPolicy.profileR
 assert.strictEqual(contract.anonymousApiContract.tokenPolicy.corsPolicy.requireExplicitOriginAllowlist, true);
 assert.strictEqual(contract.anonymousApiContract.tokenPolicy.corsPolicy.setVaryOriginWhenAllowed, true);
 assert.strictEqual(contract.anonymousApiContract.tokenPolicy.corsPolicy.denyInvalidOriginPreflight, true);
+assert(contract.anonymousApiContract.tokenPolicy.csrfPolicy.sessionCreationProtection.indexOf('no CSRF header is required') !== -1);
+assert(contract.anonymousApiContract.tokenPolicy.csrfPolicy.responseDelivery.indexOf('return csrfToken once') !== -1);
+assert.deepStrictEqual(contract.anonymousApiContract.tokenPolicy.csrfPolicy.requiredAfterBootstrapMethods, [
+  'PUT',
+  'DELETE'
+]);
 assert(contract.anonymousApiContract.tokenPolicy.csrfPolicy.requiredChecks.indexOf('same-origin Origin or Referer validation') !== -1);
+assert(contract.anonymousApiContract.tokenPolicy.csrfPolicy.requiredChecks.indexOf('X-CSRF-Token header presence before parsing') !== -1);
+assert(contract.anonymousApiContract.tokenPolicy.csrfPolicy.requiredChecks.indexOf('X-CSRF-Token hash matches the resolved anonymous session before mutation') !== -1);
 assert.strictEqual(contract.anonymousApiContract.tokenPolicy.csrfPolicy.failureStatus, 403);
+assert.strictEqual(contract.anonymousApiContract.tokenPolicy.csrfPolicy.rotation, 'rotate on anonymous session creation and invalidate on session revoke');
+assert.strictEqual(contract.anonymousApiContract.tokenPolicy.rateLimitPolicy.preAuthKey, 'client ip plus normalized origin');
+assert.strictEqual(contract.anonymousApiContract.tokenPolicy.rateLimitPolicy.sessionKey, 'anonymous session public id after authentication');
+assert.strictEqual(contract.anonymousApiContract.tokenPolicy.rateLimitPolicy.failureStatus, 429);
 assert.strictEqual(contract.anonymousApiContract.profileSchema.maxBodyBytes, 2048);
 assert.strictEqual(contract.anonymousApiContract.profileSchema.unknownFields, 'reject');
 assert.deepStrictEqual(contract.anonymousApiContract.profileSchema.fields, [
@@ -58,6 +78,7 @@ contract.anonymousApiContract.endpoints.forEach(function(endpoint) {
 assert.strictEqual(anonymousEndpoints['POST /v1/anonymous-sessions'].successStatus, 201);
 assert(anonymousEndpoints['POST /v1/anonymous-sessions'].existingCookieRule.indexOf('newly generated server token') !== -1);
 assert(anonymousEndpoints['POST /v1/anonymous-sessions'].responseFields.indexOf('session.publicId') !== -1);
+assert(anonymousEndpoints['POST /v1/anonymous-sessions'].responseFields.indexOf('csrfToken') !== -1);
 assert.strictEqual(anonymousEndpoints['POST /v1/anonymous-sessions'].responseFields.indexOf('session.token'), -1);
 assert(anonymousEndpoints['POST /v1/anonymous-sessions'].failureStatuses.indexOf(403) !== -1);
 assert(anonymousEndpoints['POST /v1/anonymous-sessions'].failureStatuses.indexOf(413) !== -1);
@@ -71,6 +92,8 @@ assert(anonymousEndpoints['PUT /v1/profile'].failureStatuses.indexOf(409) !== -1
 assert(anonymousEndpoints['PUT /v1/profile'].failureStatuses.indexOf(403) !== -1);
 assert.strictEqual(anonymousEndpoints['DELETE /v1/profile'].successStatus, 204);
 assert(anonymousEndpoints['DELETE /v1/profile'].failureStatuses.indexOf(403) !== -1);
+assert(anonymousEndpoints['DELETE /v1/profile'].ownershipInvariant.indexOf('profile is not deleted') !== -1);
+assert(anonymousEndpoints['DELETE /v1/profile'].deleteRule.indexOf('deleted_at IS NULL') !== -1);
 assert.strictEqual(contract.anonymousApiContract.errorContract['403'], 'csrf_or_origin_rejected');
 assert.strictEqual(contract.anonymousApiContract.errorContract['409'], 'version_conflict');
 assert.strictEqual(contract.anonymousApiContract.errorContract['422'], 'invalid_profile');
@@ -133,9 +156,13 @@ contract.anonymousProposedTables.forEach(function(table) {
   assert(anonymousProposedTables[name], name + ' should be reserved');
 });
 assert(anonymousProposedTables.anonymous_sessions.minimumColumns.indexOf('token_hash') !== -1);
+assert(anonymousProposedTables.anonymous_sessions.minimumColumns.indexOf('csrf_token_hash') !== -1);
+assert(anonymousProposedTables.anonymous_sessions.minimumColumns.indexOf('revoke_reason') !== -1);
 assert(anonymousProposedTables.anonymous_planning_profiles.minimumColumns.indexOf('anonymous_session_id') !== -1);
 assert(anonymousProposedTables.anonymous_planning_profiles.minimumColumns.indexOf('row_version') !== -1);
 assert(anonymousProposedTables.anonymous_planning_profiles.minimumColumns.indexOf('deleted_at') !== -1);
+assert(anonymousProposedTables.anonymous_planning_profiles.minimumColumns.indexOf('deletion_requested_at') !== -1);
+assert(anonymousProposedTables.anonymous_planning_profiles.minimumColumns.indexOf('export_requested_at') !== -1);
 assert(anonymousProposedTables.anonymous_profile_events.minimumColumns.indexOf('anonymous_profile_id') !== -1);
 
 contract.endpointPlan.forEach(function(endpoint) {
@@ -164,14 +191,19 @@ assert.strictEqual(endpointPlan['DELETE /v1/profile'].requiresAuthenticatedSessi
 });
 
 [
-  'session.login.succeeded',
-  'session.login.failed',
   'session.anonymous.created',
+  'session.anonymous.rejected',
   'session.anonymous.revoked',
+  'profile.read.succeeded',
   'profile.read.rejected',
+  'profile.write.succeeded',
   'profile.write.rejected',
+  'profile.delete.succeeded',
   'profile.delete.rejected',
+  'profile.export.requested',
   'profile.export.succeeded',
+  'profile.export.rejected',
+  'profile.delete.requested',
   'profile.delete.retention_applied'
 ].forEach(function(eventName) {
   assert(contract.auditEvents.indexOf(eventName) !== -1, eventName + ' audit event should be reserved');
@@ -187,7 +219,28 @@ assert.strictEqual(contract.retention.publicSeedsAllowed, false);
   'Do not store plaintext passwords',
   'POST /v1/anonymous-sessions',
   'POST /v1/session/login',
-  'GET /v1/profile'
+  'GET /v1/profile',
+  '202605241100_reserve_anonymous_session_profile_tables.md',
+  'docs/anonymous-session-runtime-sequence.md',
+  'response-body `csrfToken`'
 ].forEach(function(fragment) {
   assert(docs.indexOf(fragment) !== -1, 'docs should mention ' + fragment);
+});
+
+[
+  'session fixation',
+  'route-specific CORS',
+  'X-CSRF-Token',
+  'response-body `csrfToken`',
+  'POST /v1/anonymous-sessions',
+  'GET /v1/profile',
+  'PUT /v1/profile',
+  'DELETE /v1/profile',
+  'caller ownership and `row_version`',
+  'anonymous_planning_profiles_retention_index',
+  'profile.export.rejected',
+  'client IP plus normalized Origin',
+  'Runtime route work may begin only after'
+].forEach(function(fragment) {
+  assert(runtimeSequence.indexOf(fragment) !== -1, 'runtime sequence should mention ' + fragment);
 });
