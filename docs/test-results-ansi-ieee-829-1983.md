@@ -12,6 +12,7 @@ This report covers the current modernization branch after adding:
 
 - live planning context with DB-backed CBP facts
 - DB-backed seeded demo session/profile read model
+- browser-local planning profile persistence
 - Docker Postgres demo seed and demo Compose topology
 - readiness coverage for the required demo session table
 - release smoke support for demo-session validation
@@ -49,6 +50,8 @@ This report covers the current modernization branch after adding:
 | Root validation stack | `npm test` | Pass |
 | Docker DB-backed API contract | `npm run docker:test:modern-db` | Pass |
 | Docker app/API proxy contract | `npm run docker:test:proxy` | Pass |
+| Static app profile contracts | `npm --prefix app test` | Pass |
+| Browser profile persistence smoke | `node test/browser_smoke_test.js` | Pass |
 | Demo Compose configuration | `docker compose -f docker-compose.demo.yml config` | Pass |
 | Demo Compose runtime smoke | `docker compose -f docker-compose.demo.yml up --build -d` plus `npm run verify:release-smoke` with `UTOPLAN_DEMO_SESSION_ID=demo-session-1` | Pass |
 

@@ -56,6 +56,7 @@ password: postgres
 - `/readyz` on the API reports database and schema `ok`.
 - `/v1/planning/context?municipality=1&category=professional_services` returns live DB context with CBP facts and no signals or scores.
 - `/v1/demo/session?session=demo-session-1` returns a seeded local demo profile composed with live planning context.
+- The browser planning profile panel saves municipality/category/business idea preferences locally in the browser and does not write to the API.
 
 ## Release Smoke For Demo Environments
 
@@ -78,6 +79,12 @@ docker compose -f docker-compose.demo.yml down -v
 
 The `-v` flag removes the seeded demo database volume.
 
+## Browser-Local Profile
+
+The map page includes a planning profile panel. Use it to save a business idea, municipality id, and category id in browser storage. The `Context` link opens the live planning context endpoint for the saved municipality/category.
+
+The browser-local profile is not synced to the database. Clearing browser storage removes it.
+
 ## Current Session Limits
 
-The current session path is a seeded local/demo read model. It is not production authentication, password login, account recovery, or long-term user storage. Treat `demo-session-1` as non-production evidence that DB-backed session composition works.
+The current session paths are a browser-local profile and a seeded local/demo DB read model. They are not production authentication, password login, account recovery, or long-term user storage. Treat `demo-session-1` as non-production evidence that DB-backed session composition works.
