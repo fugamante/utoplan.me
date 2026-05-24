@@ -1,11 +1,11 @@
 # Anonymous Session Runtime Sequence
 
-This document defines the implementation sequence and threat controls required before `POST /v1/anonymous-sessions` or caller-owned `/v1/profile` routes are implemented.
+This document defines the implementation sequence and threat controls for gate-mounted `POST /v1/anonymous-sessions` and caller-owned `/v1/profile` routes.
 
 ## Status
 
 - Contract status: reserved
-- Runtime endpoint status: not implemented
+- Runtime endpoint status: mounted behind release activation gate
 - Required storage artifact: `db/migrations/202605241100_reserve_anonymous_session_profile_tables.md`
 - Password account dependency: none
 
@@ -147,7 +147,7 @@ Allowed profile data is object-only and may contain only:
 
 ## Implementation Gate
 
-Runtime success behavior may begin only after:
+Runtime success behavior is mounted but must remain unreachable until:
 
 - the anonymous migration artifact is reviewed and applied
 - route-specific CORS, CSRF, token, body-validation, rate-limit response, and handler-composition scaffolding remain green
@@ -155,3 +155,5 @@ Runtime success behavior may begin only after:
 - trusted client-IP boundary behavior is configured and tested
 - release-gated runtime activation fails closed unless shared/edge rate limiting and anonymous schema readiness are configured
 - focused endpoint tests cover success, ownership failure, CSRF failure, CORS failure, stale writes, delete/revoke, retention, and audit events
+
+When the gate fails, the server must keep the reserved response contract and must not execute anonymous handler data access. Current gate checks require `UTOPLAN_ANONYMOUS_RUNTIME=1`, anonymous schema readiness, and `UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE=shared` or `edge`; shared mode also requires `UTOPLAN_TRUST_PROXY=1`.

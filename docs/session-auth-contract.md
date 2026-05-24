@@ -45,20 +45,23 @@ The reservation artifact is `db/migrations/202605241000_reserve_session_profile_
 
 The anonymous reservation artifact is `db/migrations/202605241100_reserve_anonymous_session_profile_tables.md`. It is additive and must not enable endpoints by itself. The required runtime sequence is reserved in `docs/anonymous-session-runtime-sequence.md`.
 
-These tables are not active in the current API yet. `demo_sessions` must remain local/demo-only. In plain terms: demo_sessions must remain local/demo-only. It must not be promoted into production account storage.
+Password account tables are not active in the current API yet. Anonymous tables are used only by the gate-mounted anonymous runtime when activation passes. `demo_sessions` must remain local/demo-only. In plain terms: demo_sessions must remain local/demo-only. It must not be promoted into production account storage.
 
 ## Reserved Endpoints
 
-Reserved, not implemented:
+Gate-mounted anonymous endpoints:
 
 - `POST /v1/anonymous-sessions`
-- `POST /v1/session/login`
-- `POST /v1/session/logout`
 - `GET /v1/profile`
 - `PUT /v1/profile`
 - `DELETE /v1/profile`
 
-All reserved production session/profile endpoints require HTTPS in deployment and an authenticated session design before they are exposed.
+Reserved, not implemented:
+
+- `POST /v1/session/login`
+- `POST /v1/session/logout`
+
+All production session/profile endpoints require HTTPS in deployment and an authenticated session design before they are exposed. Anonymous endpoints are mounted only behind the fail-closed release activation gate described in `docs/anonymous-session-runtime-sequence.md`.
 
 ## Anonymous Session/Profile API Contract
 
@@ -96,7 +99,7 @@ Anonymous rate-limit rejections must return `429` without revealing whether a se
 
 Profile writes must enforce caller ownership in the same atomic update as optimistic concurrency, using the anonymous session owner, expected `rowVersion`, and non-deleted profile predicate in one write statement.
 
-This anonymous contract now has a separate anonymous storage migration artifact, runtime sequence document, route-specific CORS/CSRF scaffolding, token-hashing helpers, anonymous data-access scaffolding, process-local rate-limit scaffolding, profile body-validation helpers, endpoint-level reserved-route tests, transactional create/delete composition helpers, a separate enabled-runtime schema readiness gate, release-gated activation scaffolding, reserved-route `429` response coverage, and pure handler-composition scaffolding. Runtime endpoints remain blocked until the artifact is reviewed/applied as part of a release and endpoint tests cover ownership, stale writes, deletion, audit, retention, and shared production rate limits. The existing `user_accounts` and `planning_profiles.account_id` reservation is for password-account work and must not be filled with dummy account rows for anonymous users.
+This anonymous contract now has a separate anonymous storage migration artifact, runtime sequence document, route-specific CORS/CSRF scaffolding, token-hashing helpers, anonymous data-access scaffolding, process-local rate-limit scaffolding, profile body-validation helpers, endpoint-level reserved-route tests, transactional create/delete composition helpers, a separate enabled-runtime schema readiness gate, release-gated activation scaffolding, reserved-route `429` response coverage, pure handler-composition scaffolding, and gated server mounting for anonymous create/read/write/delete. Runtime endpoints remain fail-closed until the artifact is reviewed/applied as part of a release and shared or edge production rate limits are configured. The existing `user_accounts` and `planning_profiles.account_id` reservation is for password-account work and must not be filled with dummy account rows for anonymous users.
 
 ## Privacy Rules
 
@@ -122,4 +125,4 @@ Production implementation must provide deletion and export behavior. Public seed
 
 ## Next Implementation Gate
 
-The next safe implementation step is anonymous route implementation behind the release activation gate. Endpoint implementation should come after the anonymous migration artifact passes release review, anonymous schema readiness is green, shared or edge production rate limiting is selected, and password auth remains disabled until the contract requirements are satisfied.
+The next safe implementation step is replacing the current local anonymous limiter with a shared or edge-backed production limiter contract, then adding release smoke coverage for a deployed anonymous runtime. Password auth remains disabled until the contract requirements are satisfied.

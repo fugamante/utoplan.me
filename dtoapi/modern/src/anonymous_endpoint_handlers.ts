@@ -29,6 +29,9 @@ export interface AnonymousEndpointDependencies {
   createSession(input: anonymousProfile.CreateAnonymousSessionInput, callback: anonymousProfile.AnonymousProfileCallback): void;
   findSessionByTokenHash(tokenHash: Buffer, callback: anonymousProfile.AnonymousSessionCallback): void;
   findProfile(anonymousSessionId: number, callback: anonymousProfile.AnonymousProfileCallback): void;
+  findProfileState(anonymousSessionId: number, callback: anonymousProfile.AnonymousProfileCallback): void;
+  revokeSession(input: anonymousProfile.DeleteProfileInput, callback: anonymousProfile.AnonymousSessionCallback): void;
+  recordEvent(input: anonymousProfile.AnonymousProfileEventInput, callback: anonymousProfile.AnonymousProfileEventCallback): void;
   updateProfile(input: anonymousProfile.UpdateProfileInput, callback: anonymousProfile.AnonymousProfileCallback): void;
   deleteProfileAndRevoke(input: anonymousProfile.DeleteProfileInput, callback: anonymousProfile.DeletedAnonymousProfileCallback): void;
 }
@@ -78,6 +81,22 @@ function validationErrorResult(validation: profileValidation.ProfileValidationRe
   return errorResult(validation.statusCode, error);
 }
 
+function eventInput(
+  eventName: string,
+  anonymousSessionId: number | null,
+  anonymousProfileId: number | null,
+  status: string
+): anonymousProfile.AnonymousProfileEventInput {
+  return {
+    anonymousSessionId: anonymousSessionId,
+    anonymousProfileId: anonymousProfileId,
+    eventName: eventName,
+    metadata: {
+      status: status
+    }
+  };
+}
+
 function rateLimitInput(request: AnonymousEndpointRequest, deps: AnonymousEndpointDependencies, scope: anonymousRateLimit.RateLimitScope, sessionPublicId?: string): anonymousRateLimit.RateLimitInput {
   return {
     scope: scope,
@@ -85,6 +104,18 @@ function rateLimitInput(request: AnonymousEndpointRequest, deps: AnonymousEndpoi
     origin: typeof request.headers.origin === 'string' ? request.headers.origin : null,
     sessionPublicId: sessionPublicId || null
   };
+}
+
+function failureRateLimitInput(
+  request: AnonymousEndpointRequest,
+  deps: AnonymousEndpointDependencies,
+  scope: 'origin_failure' | 'csrf_failure' | 'token_failure',
+  failureType: string,
+  sessionPublicId?: string
+): anonymousRateLimit.RateLimitInput {
+  return Object.assign(rateLimitInput(request, deps, scope, sessionPublicId), {
+    failureType: failureType
+  });
 }
 
 function rateLimitedResult(decision: anonymousRateLimit.RateLimitDecision, nowMs: number): AnonymousEndpointResult | null {
@@ -115,8 +146,15 @@ function hasSameOriginSignal(request: AnonymousEndpointRequest, deps: AnonymousE
   return false;
 }
 
-function verifyCsrf(request: AnonymousEndpointRequest, session: anonymousProfile.AnonymousSessionRow): AnonymousEndpointResult | null {
+function verifyCsrf(request: AnonymousEndpointRequest, deps: AnonymousEndpointDependencies, session: anonymousProfile.AnonymousSessionRow): AnonymousEndpointResult | null {
   if (!anonymousSecurity.verifyCsrfToken(request.headers['x-csrf-token'], session.csrfTokenHash)) {
+    const decision = deps.checkRateLimit(failureRateLimitInput(request, deps, 'csrf_failure', 'invalid_csrf', session.publicId));
+    const limited = rateLimitedResult(decision, request.now.getTime());
+
+    if (limited) {
+      return limited;
+    }
+
     return errorResult(403, 'Forbidden');
   }
 
@@ -165,57 +203,123 @@ export function handleCreateAnonymousSession(request: AnonymousEndpointRequest, 
   const limited = rateLimitedResult(decision, request.now.getTime());
 
   if (limited) {
-    callback(null, limited);
+    deps.recordEvent(eventInput('session.anonymous.rejected', null, null, 'rate_limited'), function(eventError) {
+      callback(eventError, eventError ? undefined : limited);
+    });
     return;
   }
 
   const validation = profileValidation.validateAnonymousSessionCreateBody(request.body);
 
   if (!validation.ok || !validation.profile) {
-    callback(null, validationErrorResult(validation));
+    const validationResult = validationErrorResult(validation);
+
+    deps.recordEvent(eventInput('session.anonymous.rejected', null, null, String(validationResult.statusCode)), function(eventError) {
+      callback(eventError, eventError ? undefined : validationResult);
+    });
     return;
   }
 
-  const sessionSecret = deps.createSecret();
-  const csrfSecret = deps.createSecret();
-  const publicId = deps.createPublicId();
-  const expiresAt = new Date(request.now.getTime() + anonymousSecurity.SESSION_TTL_HOURS * 60 * 60 * 1000);
+  function createSession(): void {
+    const sessionSecret = deps.createSecret();
+    const csrfSecret = deps.createSecret();
+    const publicId = deps.createPublicId();
+    const expiresAt = new Date(request.now.getTime() + anonymousSecurity.SESSION_TTL_HOURS * 60 * 60 * 1000);
 
-  deps.createSession({
-    publicId: publicId,
-    tokenHash: sessionSecret.hash,
-    csrfTokenHash: csrfSecret.hash,
-    expiresAt: expiresAt,
-    profile: validation.profile
-  }, function(error, profile) {
+    deps.createSession({
+      publicId: publicId,
+      tokenHash: sessionSecret.hash,
+      csrfTokenHash: csrfSecret.hash,
+      expiresAt: expiresAt,
+      profile: validation.profile as anonymousProfile.AnonymousProfileData
+    }, function(error, profile) {
+      if (error) {
+        callback(error);
+        return;
+      }
+
+      if (!profile) {
+        callback(null, errorResult(500, 'Internal Server Error'));
+        return;
+      }
+
+      deps.recordEvent(eventInput('session.anonymous.created', profile.anonymousSessionId, profile.id, 'created'), function(eventError) {
+        if (eventError) {
+          callback(eventError);
+          return;
+        }
+
+        callback(null, response(201, {
+          meta: responseContract.meta(1),
+          data: [{
+            session: {
+              publicId: publicId
+            },
+            profile: anonymousProfile.profileEnvelope(profile),
+            csrfToken: csrfSecret.raw
+          }]
+        }, {
+          'Set-Cookie': anonymousSecurity.sessionCookie(sessionSecret.raw, {
+            now: request.now
+          })
+        }));
+      });
+    });
+  }
+
+  const existingToken = anonymousSecurity.readAnonymousSessionCookie(request.headers.cookie);
+
+  if (!existingToken) {
+    createSession();
+    return;
+  }
+
+  deps.findSessionByTokenHash(anonymousSecurity.hashToken(existingToken), function(error, existingSession) {
     if (error) {
       callback(error);
       return;
     }
 
-    if (!profile) {
-      callback(null, errorResult(500, 'Internal Server Error'));
+    if (!existingSession) {
+      createSession();
       return;
     }
 
-    callback(null, response(201, {
-      meta: responseContract.meta(1),
-      data: [{
-        session: {
-          publicId: publicId
-        },
-        profile: anonymousProfile.profileEnvelope(profile),
-        csrfToken: csrfSecret.raw
-      }]
-    }, {
-      'Set-Cookie': anonymousSecurity.sessionCookie(sessionSecret.raw, {
-        now: request.now
-      })
-    }));
+    deps.revokeSession({
+      anonymousSessionId: existingSession.id,
+      revokeReason: 'session_rotated'
+    }, function(revokeError, revokedSession) {
+      if (revokeError) {
+        callback(revokeError);
+        return;
+      }
+
+      if (!revokedSession) {
+        createSession();
+        return;
+      }
+
+      deps.recordEvent(eventInput('session.anonymous.revoked', revokedSession.id, null, 'session_rotated'), function(eventError) {
+        if (eventError) {
+          callback(eventError);
+          return;
+        }
+
+        createSession();
+      });
+    });
   });
 }
 
 export function handleReadAnonymousProfile(request: AnonymousEndpointRequest, deps: AnonymousEndpointDependencies, callback: AnonymousEndpointCallback): void {
+  const preAuthDecision = deps.checkRateLimit(rateLimitInput(request, deps, 'profile_read'));
+  const preAuthLimited = rateLimitedResult(preAuthDecision, request.now.getTime());
+
+  if (preAuthLimited) {
+    callback(null, preAuthLimited);
+    return;
+  }
+
   authenticateAnonymousSession(request, deps, function(error, authResult) {
     if (error) {
       callback(error);
@@ -240,7 +344,7 @@ export function handleReadAnonymousProfile(request: AnonymousEndpointRequest, de
       return;
     }
 
-    deps.findProfile(authResult.auth.session.id, function(profileError, profile) {
+    deps.findProfileState(authResult.auth.session.id, function(profileError, profile) {
       if (profileError) {
         callback(profileError);
         return;
@@ -248,6 +352,11 @@ export function handleReadAnonymousProfile(request: AnonymousEndpointRequest, de
 
       if (!profile) {
         callback(null, errorResult(404, 'Not Found'));
+        return;
+      }
+
+      if (profile.deletedAt) {
+        callback(null, errorResult(410, 'Gone'));
         return;
       }
 
@@ -273,7 +382,7 @@ export function handleUpdateAnonymousProfile(request: AnonymousEndpointRequest, 
       return;
     }
 
-    const csrfResult = verifyCsrf(request, authResult.auth.session);
+    const csrfResult = verifyCsrf(request, deps, authResult.auth.session);
 
     if (csrfResult) {
       callback(null, csrfResult);
@@ -341,7 +450,7 @@ export function handleDeleteAnonymousProfile(request: AnonymousEndpointRequest, 
       return;
     }
 
-    const csrfResult = verifyCsrf(request, authResult.auth.session);
+    const csrfResult = verifyCsrf(request, deps, authResult.auth.session);
 
     if (csrfResult) {
       callback(null, csrfResult);

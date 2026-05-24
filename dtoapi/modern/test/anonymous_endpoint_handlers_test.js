@@ -71,6 +71,22 @@ function baseDeps(overrides) {
       assert.strictEqual(anonymousSessionId, 11);
       callback(null, profileRow);
     },
+    findProfileState: function(anonymousSessionId, callback) {
+      assert.strictEqual(anonymousSessionId, 11);
+      callback(null, profileRow);
+    },
+    revokeSession: function(input, callback) {
+      assert.strictEqual(input.anonymousSessionId, 11);
+      assert.strictEqual(input.revokeReason, 'session_rotated');
+      callback(null, Object.assign({}, sessionRow, {
+        revokedAt: '2026-05-24T12:05:00.000Z',
+        revokeReason: 'session_rotated'
+      }));
+    },
+    recordEvent: function(input, callback) {
+      assert(input.eventName);
+      callback(null);
+    },
     updateProfile: function(input, callback) {
       assert.strictEqual(input.anonymousSessionId, 11);
       assert.strictEqual(input.expectedRowVersion, 1);
@@ -123,6 +139,8 @@ handlers.handleCreateAnonymousSession(request(JSON.stringify({
   assert.strictEqual(JSON.parse(result.body).meta.error, 'invalid_profile');
 });
 
+const rotatedCreateEvents = [];
+
 handlers.handleCreateAnonymousSession(request(JSON.stringify({
   profile: {
     businessIdea: 'Kiosk'
@@ -150,7 +168,9 @@ handlers.handleCreateAnonymousSession(request(JSON.stringify({
   profile: {
     businessIdea: 'Kiosk'
   }
-})), baseDeps(), function(error, result) {
+}), {
+  cookie: ''
+}), baseDeps(), function(error, result) {
   assert.ifError(error);
   const parsed = JSON.parse(result.body);
 
@@ -159,6 +179,36 @@ handlers.handleCreateAnonymousSession(request(JSON.stringify({
   assert.strictEqual(parsed.data[0].session.publicId, 'anon_public_11');
   assert.strictEqual(parsed.data[0].csrfToken, 'safeTokenValue');
   assert.deepStrictEqual(parsed.data[0].profile, anonymousProfile.profileEnvelope(profileRow));
+});
+
+handlers.handleCreateAnonymousSession(request(JSON.stringify({
+  profile: {
+    businessIdea: 'Kiosk'
+  }
+}), {
+  cookie: 'utoplan_anon_session=safeTokenValue'
+}), baseDeps({
+  revokeSession: function(input, callback) {
+    assert.strictEqual(input.anonymousSessionId, 11);
+    assert.strictEqual(input.revokeReason, 'session_rotated');
+    callback(null, Object.assign({}, sessionRow, {
+      revokedAt: '2026-05-24T12:05:00.000Z',
+      revokeReason: 'session_rotated'
+    }));
+  },
+  recordEvent: function(input, callback) {
+    rotatedCreateEvents.push(input);
+    callback(null);
+  }
+}), function(error, result) {
+  assert.ifError(error);
+  assert.strictEqual(result.statusCode, 201);
+  assert.deepStrictEqual(rotatedCreateEvents.map(function(event) {
+    return event.eventName;
+  }), [
+    'session.anonymous.revoked',
+    'session.anonymous.created'
+  ]);
 });
 
 handlers.authenticateAnonymousSession(request('', {}), baseDeps(), function(error, authResult) {
@@ -181,8 +231,14 @@ handlers.authenticateAnonymousSession(request('', {
 handlers.handleReadAnonymousProfile(request('', {
   cookie: 'utoplan_anon_session=safeTokenValue'
 }), baseDeps({
+  readRateLimitCalls: 0,
   checkRateLimit: function(input) {
-    assert.strictEqual(input.sessionPublicId, 'anon_public_11');
+    this.readRateLimitCalls += 1;
+    if (this.readRateLimitCalls === 1) {
+      assert.strictEqual(input.sessionPublicId, null);
+    } else {
+      assert.strictEqual(input.sessionPublicId, 'anon_public_11');
+    }
     return {
       allowed: true,
       key: 'session-read',
@@ -200,13 +256,27 @@ handlers.handleReadAnonymousProfile(request('', {
 handlers.handleReadAnonymousProfile(request('', {
   cookie: 'utoplan_anon_session=safeTokenValue'
 }), baseDeps({
-  findProfile: function(anonymousSessionId, callback) {
+  findProfileState: function(anonymousSessionId, callback) {
     callback(null, null);
   }
 }), function(error, result) {
   assert.ifError(error);
   assert.strictEqual(result.statusCode, 404);
   assert.strictEqual(JSON.parse(result.body).meta.error, 'Not Found');
+});
+
+handlers.handleReadAnonymousProfile(request('', {
+  cookie: 'utoplan_anon_session=safeTokenValue'
+}), baseDeps({
+  findProfileState: function(anonymousSessionId, callback) {
+    callback(null, Object.assign({}, profileRow, {
+      deletedAt: '2026-05-24T12:30:00.000Z'
+    }));
+  }
+}), function(error, result) {
+  assert.ifError(error);
+  assert.strictEqual(result.statusCode, 410);
+  assert.strictEqual(JSON.parse(result.body).meta.error, 'Gone');
 });
 
 handlers.handleUpdateAnonymousProfile(request(JSON.stringify({
@@ -268,6 +338,43 @@ handlers.handleUpdateAnonymousProfile(request(JSON.stringify({
   assert.ifError(error);
   assert.strictEqual(result.statusCode, 403);
   assert.strictEqual(JSON.parse(result.body).meta.error, 'Forbidden');
+});
+
+handlers.handleUpdateAnonymousProfile(request(JSON.stringify({
+  rowVersion: 1,
+  profile: {
+    businessIdea: 'Updated kiosk'
+  }
+}), {
+  cookie: 'utoplan_anon_session=safeTokenValue',
+  'x-csrf-token': 'badTokenValue'
+}), baseDeps({
+  checkRateLimit: function(input) {
+    if (input.scope === 'csrf_failure') {
+      assert.strictEqual(input.failureType, 'invalid_csrf');
+      assert.strictEqual(input.sessionPublicId, 'anon_public_11');
+      return {
+        allowed: false,
+        key: 'csrf-failure',
+        limit: 1,
+        remaining: 0,
+        resetAtMs: now.getTime() + 5000
+      };
+    }
+
+    return {
+      allowed: true,
+      key: 'test:' + input.scope,
+      limit: 10,
+      remaining: 9,
+      resetAtMs: now.getTime() + 5000
+    };
+  }
+}), function(error, result) {
+  assert.ifError(error);
+  assert.strictEqual(result.statusCode, 429);
+  assert.strictEqual(result.headers['Retry-After'], '5');
+  assert.strictEqual(JSON.parse(result.body).meta.error, 'Too Many Requests');
 });
 
 handlers.handleUpdateAnonymousProfile(request('{bad}', {

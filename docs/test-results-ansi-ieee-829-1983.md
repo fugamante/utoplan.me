@@ -17,13 +17,13 @@ This report covers the current modernization branch after adding:
 - reserved production session/profile table migration artifact
 - anonymous session/profile API contract reservation with separate anonymous storage, route-specific CORS, CSRF, and caller-owned concurrency requirements
 - anonymous session/profile migration artifact and threat-reviewed runtime sequence
-- anonymous CORS/CSRF runtime scaffolding with reserved endpoints still returning `501`
-- anonymous token hashing, secure-cookie, transaction, and data-access scaffolding with reserved endpoints still returning `501`
-- anonymous rate-limit and profile body-validation scaffolding with reserved endpoints still returning `501`
-- endpoint-level reserved anonymous route contracts and production rate-limit policy helpers with reserved endpoints still returning `501`
-- transactional anonymous runtime composition helpers and separate anonymous schema readiness gates with reserved endpoints still returning `501`
-- release-gated anonymous runtime activation controls with reserved endpoints still returning `501`
-- reserved-route `429` response contracts and pure anonymous create/read/write/delete handler composition with same-origin/CSRF mutating checks and endpoint success behavior still disabled
+- anonymous CORS/CSRF runtime scaffolding with gate-disabled endpoints still returning `501`
+- anonymous token hashing, secure-cookie, transaction, and data-access scaffolding wired behind the activation gate
+- anonymous rate-limit and profile body-validation scaffolding wired behind the activation gate
+- endpoint-level reserved anonymous route contracts and production rate-limit policy helpers with gate-disabled endpoints still returning `501`
+- transactional anonymous runtime composition helpers and separate anonymous schema readiness gates
+- release-gated anonymous runtime activation controls
+- reserved-route `429` response contracts and anonymous create/read/write/delete server mounting with same-origin/CSRF mutating checks and deleted-profile `410`
 - Docker Postgres demo seed and demo Compose topology
 - readiness coverage for the required demo session table
 - release smoke support for demo-session validation
@@ -129,6 +129,14 @@ Current anonymous write/delete handler-composition slice rerun:
 - `npm run docker:test:proxy`: Pass
 - `git diff --check`: Pass
 
+Current anonymous gated server-runtime slice rerun:
+
+- `npm --prefix dtoapi/modern test`: Pass
+- `npm run test:session-auth-contract`: Pass
+- `npm test`: Pass
+- `npm run docker:test:proxy`: Pass
+- `git diff --check`: Pass
+
 ## Evaluation
 
 The tested branch satisfies the current modernization acceptance criteria for:
@@ -147,7 +155,7 @@ None observed in the validation commands listed above.
 ## Residual Risks
 
 - Production-grade user accounts, passwords, and privacy controls are not implemented.
-- Anonymous session/profile runtime endpoints remain disabled pending full anonymous endpoint implementation, shared/edge production rate limiting, release-reviewed anonymous schema readiness, and success/failure endpoint tests.
+- Anonymous session/profile runtime endpoints are mounted behind a fail-closed activation gate, but production exposure still depends on shared/edge production rate limiting, release-reviewed anonymous schema readiness, proxy evidence, and deployed smoke coverage.
 - Demo seed data is intentionally non-production and should not be confused with a complete source-backed product dataset.
 - CBP field semantics still carry low transform confidence.
 - Planning signals remain intentionally absent until more source-backed data and product rules are defined.

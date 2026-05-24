@@ -35,7 +35,7 @@ The first session model has three intentionally separate layers:
 
 - browser-local profile storage for business idea, municipality, and category preferences
 - DB-backed local/demo session storage for seeded demo profile composition through `demo_sessions`
-- reserved anonymous session/profile API contract for future caller-owned server-backed profile storage
+- gate-mounted anonymous session/profile API for caller-owned server-backed profile storage
 
 Neither layer is a production account system. The current branch does not implement passwords, durable user authentication, role-based access, account recovery, or retention policy controls. Production user profiles require a separate privacy and authentication design before public use.
 
