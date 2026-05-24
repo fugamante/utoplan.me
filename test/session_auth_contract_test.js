@@ -21,6 +21,7 @@ contract.currentAllowedModes.forEach(function(mode) {
 });
 assert.strictEqual(currentModes['browser-local-profile'], true);
 assert.strictEqual(currentModes['demo-db-session'], true);
+assert.strictEqual(contract.migrationArtifacts.indexOf('db/migrations/202605241000_reserve_session_profile_tables.md') !== -1, true);
 
 [
   'password storage requirements',

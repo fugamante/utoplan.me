@@ -7,6 +7,9 @@
     "browser-local-profile",
     "demo-db-session"
   ],
+  "migrationArtifacts": [
+    "db/migrations/202605241000_reserve_session_profile_tables.md"
+  ],
   "requiredBeforeProductionAuth": [
     "Document account identifier policy and avoid public personal identifiers in repository artifacts.",
     "Document password storage requirements using a memory-hard password hashing algorithm and per-password salts.",
