@@ -1,6 +1,7 @@
 'use strict';
 
 import {type IncomingHttpHeaders, type OutgoingHttpHeaders} from 'http';
+import * as db from './db';
 
 export const DEFAULT_LIMIT = 60;
 export const DEFAULT_WINDOW_MS = 60 * 1000;
@@ -25,6 +26,8 @@ export interface RateLimitDecision {
   remaining: number;
   resetAtMs: number;
 }
+
+export type RateLimitCallback = (error: Error | null, decision?: RateLimitDecision) => void;
 
 interface RateLimitBucket {
   count: number;
@@ -183,5 +186,86 @@ export function checkRateLimit(input: RateLimitInput): RateLimitDecision {
 export function resetRateLimits(): void {
   Object.keys(buckets).forEach(function(key) {
     delete buckets[key];
+  });
+}
+
+export function sharedRateLimitQuery(): string {
+  return [
+    'WITH input_values AS (',
+    'SELECT',
+    '$1::text AS rate_limit_key,',
+    '$2::text AS scope,',
+    '$3::integer AS limit_value,',
+    'NOW() + ($4::integer * INTERVAL \'1 millisecond\') AS reset_at',
+    '),',
+    'upserted AS (',
+    'INSERT INTO anonymous_rate_limit_buckets (rate_limit_key, scope, request_count, reset_at, updated_at)',
+    'SELECT rate_limit_key, scope, 1, reset_at, NOW()',
+    'FROM input_values',
+    'ON CONFLICT (rate_limit_key) DO UPDATE SET',
+    'scope = EXCLUDED.scope,',
+    'request_count = CASE',
+    'WHEN anonymous_rate_limit_buckets.reset_at <= NOW() THEN 1',
+    'ELSE anonymous_rate_limit_buckets.request_count + 1',
+    'END,',
+    'reset_at = CASE',
+    'WHEN anonymous_rate_limit_buckets.reset_at <= NOW() THEN EXCLUDED.reset_at',
+    'ELSE anonymous_rate_limit_buckets.reset_at',
+    'END,',
+    'updated_at = NOW()',
+    'RETURNING rate_limit_key, request_count, reset_at',
+    ')',
+    'SELECT',
+    'rate_limit_key,',
+    'request_count,',
+    'EXTRACT(EPOCH FROM reset_at) * 1000 AS reset_at_ms,',
+    'request_count <= (SELECT limit_value FROM input_values) AS allowed',
+    'FROM upserted'
+  ].join(' ');
+}
+
+export function sharedRateLimitParams(input: RateLimitInput): [string, string, number, number] {
+  const key = rateLimitKey(input);
+  const limit = input.limit || DEFAULT_LIMIT;
+  const windowMs = input.windowMs || DEFAULT_WINDOW_MS;
+
+  return [
+    key,
+    input.scope,
+    limit,
+    windowMs
+  ];
+}
+
+export function mapSharedRateLimitDecision(input: RateLimitInput, row: db.QueryResult['rows'][number]): RateLimitDecision {
+  const key = String(row.rate_limit_key || rateLimitKey(input));
+  const limit = input.limit || DEFAULT_LIMIT;
+  const requestCount = Number(row.request_count || 0);
+  const resetAtMs = Math.round(Number(row.reset_at_ms || 0));
+
+  return {
+    allowed: row.allowed === true || row.allowed === 'true',
+    key: key,
+    limit: limit,
+    remaining: Math.max(0, limit - requestCount),
+    resetAtMs: resetAtMs
+  };
+}
+
+export function checkSharedRateLimit(input: RateLimitInput, callback: RateLimitCallback, executor?: db.QueryExecutor): void {
+  const queryExecutor = executor || db;
+
+  queryExecutor.query(sharedRateLimitQuery(), sharedRateLimitParams(input), function(error, result) {
+    if (error) {
+      callback(error);
+      return;
+    }
+
+    if (!result.rows[0]) {
+      callback(new Error('shared anonymous rate limit did not return a decision'));
+      return;
+    }
+
+    callback(null, mapSharedRateLimitDecision(input, result.rows[0]));
   });
 }

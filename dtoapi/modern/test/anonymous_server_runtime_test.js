@@ -81,14 +81,14 @@ function runtimeDeps(overrides) {
     createPublicId: function() {
       return 'anon_public_11';
     },
-    checkRateLimit: function(input) {
-      return {
+    checkRateLimit: function(input, callback) {
+      callback(null, {
         allowed: true,
         key: 'runtime:' + input.scope,
         limit: 10,
         remaining: 9,
         resetAtMs: Date.now() + 5000
-      };
+      });
     },
     createSession: function(input, callback) {
       assert.strictEqual(input.publicId, 'anon_public_11');

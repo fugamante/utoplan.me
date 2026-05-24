@@ -79,6 +79,13 @@ function expectedAnonymousColumns(): Record<string, string[]> {
       'event_name',
       'created_at',
       'metadata'
+    ],
+    anonymous_rate_limit_buckets: [
+      'rate_limit_key',
+      'scope',
+      'request_count',
+      'reset_at',
+      'updated_at'
     ]
   };
 }
@@ -174,6 +181,17 @@ export function expectedAnonymousIndexes(): ExpectedLoadIndex[] {
       table: 'anonymous_profile_events',
       name: 'anonymous_profile_events_profile_created_index',
       columns: ['anonymous_profile_id', 'created_at'],
+      unique: false
+    },
+    {
+      table: 'anonymous_rate_limit_buckets',
+      name: 'anonymous_rate_limit_buckets_pkey',
+      columns: ['rate_limit_key']
+    },
+    {
+      table: 'anonymous_rate_limit_buckets',
+      name: 'anonymous_rate_limit_buckets_reset_index',
+      columns: ['reset_at'],
       unique: false
     }
   ];

@@ -154,6 +154,16 @@ Current anonymous release-smoke coverage slice rerun:
 - `npm run docker:test:proxy`: Pass
 - `git diff --check`: Pass
 
+Current anonymous shared-limiter provider slice rerun:
+
+- `npm --prefix dtoapi/modern test`: Pass
+- `npm run test:migration-artifacts`: Pass
+- `npm run test:session-auth-contract`: Pass
+- `npm test`: Pass
+- `npm run docker:test:proxy`: Pass
+- `npm run docker:test:modern-db`: Pass
+- `git diff --check`: Pass
+
 ## Evaluation
 
 The tested branch satisfies the current modernization acceptance criteria for:
@@ -165,6 +175,7 @@ The tested branch satisfies the current modernization acceptance criteria for:
 - operational readiness protection for the required demo session table
 - demo release smoke coverage when `UTOPLAN_DEMO_SESSION_ID` is supplied
 - opt-in anonymous release smoke coverage when `UTOPLAN_ANONYMOUS_SMOKE=1` is supplied
+- Postgres-backed shared anonymous limiter storage contract and async mounted-runtime limiter decisions
 
 ## Anomalies
 
@@ -173,7 +184,7 @@ None observed in the validation commands listed above.
 ## Residual Risks
 
 - Production-grade user accounts, passwords, and privacy controls are not implemented.
-- Anonymous session/profile runtime endpoints are mounted behind a fail-closed activation gate, but production exposure still depends on release-reviewed anonymous schema readiness, proxy evidence, explicit edge/shared limiter attestation, and running the opt-in smoke against the candidate environment.
+- Anonymous session/profile runtime endpoints are mounted behind a fail-closed activation gate, but production exposure still depends on applying the anonymous migration artifacts in the target database, proxy evidence, explicit edge/shared limiter attestation, and running the opt-in smoke against the candidate environment.
 - Demo seed data is intentionally non-production and should not be confused with a complete source-backed product dataset.
 - CBP field semantics still carry low transform confidence.
 - Planning signals remain intentionally absent until more source-backed data and product rules are defined.

@@ -117,3 +117,57 @@ assert.strictEqual(rateLimit.checkRateLimit({
   sessionPublicId: 'anon_session_1',
   limit: 1
 }).allowed, true);
+
+const sharedInput = {
+  scope: 'profile_write',
+  ip: '203.0.113.10',
+  origin: 'https://app.example',
+  sessionPublicId: 'anon_session_1',
+  limit: 3,
+  windowMs: 2000,
+  nowMs: 1000
+};
+
+assert(rateLimit.sharedRateLimitQuery().indexOf('ON CONFLICT (rate_limit_key) DO UPDATE') !== -1);
+assert.deepStrictEqual(rateLimit.sharedRateLimitParams(sharedInput), [
+  'anonymous:session:profile_write:session=anon_session_1',
+  'profile_write',
+  3,
+  2000
+]);
+assert.deepStrictEqual(rateLimit.mapSharedRateLimitDecision(sharedInput, {
+  rate_limit_key: 'anonymous:session:profile_write:session=anon_session_1',
+  request_count: 2,
+  reset_at_ms: 3000,
+  allowed: true
+}), {
+  allowed: true,
+  key: 'anonymous:session:profile_write:session=anon_session_1',
+  limit: 3,
+  remaining: 1,
+  resetAtMs: 3000
+});
+
+rateLimit.checkSharedRateLimit(sharedInput, function(error, decision) {
+  assert.ifError(error);
+  assert.deepStrictEqual(decision, {
+    allowed: false,
+    key: 'anonymous:session:profile_write:session=anon_session_1',
+    limit: 3,
+    remaining: 0,
+    resetAtMs: 3000
+  });
+}, {
+  query: function(text, params, callback) {
+    assert.strictEqual(text, rateLimit.sharedRateLimitQuery());
+    assert.deepStrictEqual(params, rateLimit.sharedRateLimitParams(sharedInput));
+    callback(null, {
+      rows: [{
+        rate_limit_key: 'anonymous:session:profile_write:session=anon_session_1',
+        request_count: 4,
+        reset_at_ms: 3000,
+        allowed: false
+      }]
+    });
+  }
+});

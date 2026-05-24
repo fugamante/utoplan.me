@@ -202,4 +202,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Implement a concrete shared limiter provider if the deployment target cannot enforce the approved anonymous scopes at the edge, then run the opt-in anonymous release smoke against the candidate environment.
+Apply the anonymous storage and shared-limiter migration artifacts in a disposable environment, enable shared anonymous runtime config, and run the opt-in anonymous release smoke against that candidate.
