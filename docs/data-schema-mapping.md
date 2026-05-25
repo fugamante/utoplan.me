@@ -7,7 +7,7 @@ The machine-readable contract lives in `data/mappings/puerto-rico-schema-map.jso
 ## Mapping Status
 
 - `cbps`: partial. The Datos.PR 2014 municipality County Business Patterns CSV maps `ap`, `est`, `naics`, and municipality FIPS fields to most legacy columns. Census 2014 CBP metadata confirms `NAICS2012_TTL` as the NAICS title field, but row queries require an API key in this environment. `total_indus` still needs confirmation before import.
-- `unis`: partial. The Datos.PR higher education directory maps institution name and address fields. NCES EDGE postsecondary locations, filtered to Puerto Rico with `STATE='PR'`, can supply `LAT` and `LON` after a deterministic name/address join is defined.
+- `unis`: partial. The Datos.PR higher education directory maps institution name and address fields. NCES EDGE postsecondary locations, filtered to Puerto Rico with `STATE='PR'`, can supply `LAT` and `LON` after a deterministic name/address join is defined. The legacy `desc` summary is limited to non-personal institutional fields.
 - `muns`: partial. The official municipality boundary ZIP is the preferred source; DBF inspection confirmed `municipio`, `countyfp`, `cntyidfp`, and `statefp` fields.
 - `cdepts`, `businesses`, and `grade_cs`: blocked. No confirmed Puerto Rico-only source or transform path has been identified.
 
@@ -19,7 +19,7 @@ Before writing import scripts:
 - Provide a Census API key or cached NAICS title reference for `cbps.cnaic_name` enrichment.
 - Filter current-schema imports to numeric NAICS values, or define a schema migration before preserving aggregate NAICS placeholders such as `------` and `23----`.
 - Define the municipality code normalization from `countyfp` / `cntyidfp` / `fipscty` / `cencty` into the legacy integer `muns.county` and `cbps.county` fields.
-- Define the deterministic join from Datos.PR higher education directory rows to NCES EDGE coordinate rows.
+- Keep the deterministic join from Datos.PR higher education directory rows to NCES EDGE coordinate rows under manual-review rules for ambiguous or unmatched rows.
 
 Before promoting source-backed rows to API/UI planning use:
 

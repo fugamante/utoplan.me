@@ -51,6 +51,7 @@
 - `docs/product-scope.md`, `docs/demo-manual.md`, `docs/phase-summaries.md`, and `docs/test-results-ansi-ieee-829-1983.md` capture the current product boundary, demo operation path, roadmap phase summaries, and validation evidence.
 - `scripts/data_normalization.js` provides fixture-backed normalization helpers for NAICS filtering, municipality code coercion, title cleanup, and university coordinate join review behavior.
 - `scripts/data_import_plan.js` provides an offline fixture planning harness and CLI that reports accepted, rejected, and manual-review records without fetching source data or mutating a database.
+- University dry-run planning keeps ambiguous or unmatched coordinate joins in manual review and limits `unis.desc` to non-personal institutional display fields.
 - `scripts/data_source_cache.js` downloads only registered HTTPS Puerto Rico sources into an ignored local cache with metadata sidecars, and the offline planner can consume supported cached CSV/JSON sources by source ID while reporting unsupported cached sources explicitly.
 - The offline planner can consume the raw official municipality boundary ZIP or an extracted CSV/JSON attribute table for `muns`, while keeping geometry ignored and malformed archives explicit.
 - `scripts/data_load_plan.js` converts accepted planner records into dry-run DB-ready row groups while preserving skipped rejected/manual-review records.
@@ -208,4 +209,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Continue richer source-backed demo data work by moving to the next source-backed table slice with the same dry-run and provenance boundaries, or by adding optional network-gated smoke coverage for live source downloads.
+Continue richer source-backed demo data work by adding optional network-gated smoke coverage for live source downloads or by identifying the next Puerto Rico-only source for currently blocked legacy tables.

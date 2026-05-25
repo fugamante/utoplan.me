@@ -76,9 +76,9 @@
       "requiredBeforeApiPromotion": [
         "Keep unmatched or ambiguous NCES coordinate joins in manual review.",
         "Document that the Datos.PR directory is a replacement-source candidate, not confirmed original hackathon input.",
-        "Decide whether legacy unis.desc should remain a display summary or move to a richer future schema."
+        "Keep legacy unis.desc limited to non-personal institutional display fields until a richer future schema is designed."
       ],
-      "notes": "Institution rows can be source-backed, but coordinate enrichment depends on a cautious deterministic join."
+      "notes": "Institution rows can be source-backed, but coordinate enrichment depends on a cautious deterministic join and contact/person fields are excluded from the display summary."
     }
   ],
   "blockedTables": [

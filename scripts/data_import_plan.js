@@ -209,10 +209,7 @@ function buildUniversityAddress(row) {
 function buildUniversityDescription(row) {
   return [
     row['Unidad Académica'],
-    row['Principal Ejecutivo'],
-    row.Telefono,
-    row['Dirección Pág Web'],
-    row['Correo Electrónico']
+    row['Dirección Pág Web']
   ].filter(function(value) {
     return value !== null && value !== undefined && String(value).trim() !== '';
   }).join(' | ');

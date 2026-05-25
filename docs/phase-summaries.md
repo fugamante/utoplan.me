@@ -85,12 +85,13 @@ The branch now has a DB-backed demo path:
 - anonymous runtime production-decision contract, validator, and operator package guide
 - non-secret blocked anonymous runtime decision example fixture for artifact-shape validation
 - raw ZIP/DBF and extracted attribute cache-planner support for richer source-backed `muns` demo rows without importing geometry
+- privacy-narrowed university planning summaries that exclude person names, phone numbers, and email addresses from `unis.desc`
 - `docker-compose.demo.yml` for a runnable local DB-backed demo
 
 Remaining product work:
 
 - browser-local saved profile flow
 - production authentication/session design
-- richer source-backed demo dataset beyond the current municipality/CBP/university slice
+- source identification for currently blocked legacy tables
 - optional network-gated source download smoke coverage
 - final audit after the remaining roadmap items are complete

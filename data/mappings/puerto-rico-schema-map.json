@@ -161,12 +161,9 @@
           "strategy": "derived",
           "sourceColumns": [
             "Unidad Académica",
-            "Principal Ejecutivo",
-            "Telefono",
-            "Dirección Pág Web",
-            "Correo Electrónico"
+            "Dirección Pág Web"
           ],
-          "notes": "Legacy desc is underspecified; keep this as a display summary only if the UI still needs it."
+          "notes": "Legacy desc is underspecified; keep this limited to non-personal institutional display fields."
         },
         {
           "target": "lat",

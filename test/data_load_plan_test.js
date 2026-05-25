@@ -65,7 +65,7 @@ assert.deepStrictEqual(loadPlan.rows.muns[0].record, {
 assert.deepStrictEqual(loadPlan.rows.unis[0].record, {
   title: 'American University of Puerto Rico',
   address: 'Carr # 2 KM 14.0, Barrio Hato Tejas, BAYAMON',
-  desc: 'Juan Nazario Torres | (787) 620-2040 | www.aupr.edu | jcnazario@aupr.edu',
+  desc: 'www.aupr.edu',
   lat: 18.407058,
   long: -66.186631,
   created_at: timestamp,
