@@ -83,16 +83,28 @@ function sendHealth(response) {
   });
 }
 
+function proxyHeaders(request, target, clientIp) {
+  var headers = Object.assign({}, request.headers);
+
+  delete headers.forwarded;
+  delete headers['x-forwarded-for'];
+  delete headers['x-forwarded-host'];
+  delete headers['x-forwarded-proto'];
+  delete headers['x-real-ip'];
+
+  headers.host = target.host;
+  headers['x-forwarded-for'] = clientIp;
+  headers['x-real-ip'] = clientIp;
+
+  return headers;
+}
+
 function proxyApi(request, response) {
   var target = new URL(request.url, apiOrigin);
   var clientIp = request.socket && request.socket.remoteAddress ? request.socket.remoteAddress : '';
   var proxyRequest = http.request(target, {
     method: request.method,
-    headers: Object.assign({}, request.headers, {
-      host: target.host,
-      'x-forwarded-for': clientIp,
-      'x-real-ip': clientIp
-    })
+    headers: proxyHeaders(request, target, clientIp)
   }, function(proxyResponse) {
     response.writeHead(proxyResponse.statusCode || 502, proxyResponse.headers);
     proxyResponse.pipe(response);

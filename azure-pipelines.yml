@@ -34,7 +34,23 @@ steps:
 - script: |
     npm run docker:test:db
   displayName: 'Docker DB contract tests'
+  env:
+    COMPOSE_PROJECT_NAME: 'utoplan_db_$(Build.BuildId)'
+
+- script: |
+    npm run docker:test:proxy
+  displayName: 'Docker app/API proxy contract tests'
+  env:
+    COMPOSE_PROJECT_NAME: 'utoplan_proxy_$(Build.BuildId)'
 
 - script: |
     npm run docker:test:start-local-browser
   displayName: 'Docker start:local browser smoke test'
+  env:
+    COMPOSE_PROJECT_NAME: 'utoplan_start_$(Build.BuildId)'
+
+- script: |
+    npm run docker:test:anonymous-runtime
+  displayName: 'Docker anonymous runtime smoke test'
+  env:
+    COMPOSE_PROJECT_NAME: 'utoplan_anon_$(Build.BuildId)'

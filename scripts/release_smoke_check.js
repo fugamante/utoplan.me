@@ -198,6 +198,10 @@ function checkAnonymousDelete(result) {
   checkStatus(result, 204, 'app /v1/profile delete');
 }
 
+function checkAnonymousRejected(result, expectedStatus, label) {
+  checkStatus(result, expectedStatus, label);
+}
+
 function callRequester(requester, url, options, callback) {
   if (options) {
     requester(url, options, callback);
@@ -262,6 +266,85 @@ function runChecks(env, requester, callback) {
         businessIdea: 'Release smoke kiosk'
       }
     });
+    var anonymousLabels;
+
+    anonymousLabels = labels.concat([
+      'app /v1/anonymous-sessions rejects disallowed preflight',
+      'app /v1/anonymous-sessions rejects disallowed origin',
+      'app /v1/anonymous-sessions rejects missing origin',
+      'app /v1/profile rejects missing csrf'
+    ]);
+
+    callRequester(requester, joinUrl(appUrl, '/v1/anonymous-sessions'), {
+      method: 'OPTIONS',
+      headers: {
+        Origin: 'https://disallowed.example',
+        'Access-Control-Request-Method': 'POST'
+      }
+    }, function(disallowedPreflightError, disallowedPreflightResult) {
+      if (disallowedPreflightError) {
+        callback(disallowedPreflightError);
+        return;
+      }
+
+      try {
+        checkAnonymousRejected(disallowedPreflightResult, 403, 'app /v1/anonymous-sessions disallowed preflight');
+      } catch (disallowedPreflightValidationError) {
+        callback(disallowedPreflightValidationError);
+        return;
+      }
+
+      callRequester(requester, joinUrl(appUrl, '/v1/anonymous-sessions'), {
+        method: 'POST',
+        headers: {
+          Origin: 'https://disallowed.example',
+          'Content-Type': 'application/json'
+        },
+        body: createBody
+      }, function(disallowedOriginError, disallowedOriginResult) {
+        if (disallowedOriginError) {
+          callback(disallowedOriginError);
+          return;
+        }
+
+        try {
+          checkAnonymousRejected(disallowedOriginResult, 403, 'app /v1/anonymous-sessions disallowed origin');
+        } catch (disallowedOriginValidationError) {
+          callback(disallowedOriginValidationError);
+          return;
+        }
+
+        callRequester(requester, joinUrl(appUrl, '/v1/anonymous-sessions'), {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: createBody
+        }, function(missingOriginError, missingOriginResult) {
+          if (missingOriginError) {
+            callback(missingOriginError);
+            return;
+          }
+
+          try {
+            checkAnonymousRejected(missingOriginResult, 403, 'app /v1/anonymous-sessions missing origin');
+          } catch (missingOriginValidationError) {
+            callback(missingOriginValidationError);
+            return;
+          }
+
+          anonymousPositiveSmoke(anonymousLabels);
+        });
+      });
+    });
+  }
+
+  function anonymousPositiveSmoke(labels) {
+    var createBody = JSON.stringify({
+      profile: {
+        businessIdea: 'Release smoke kiosk'
+      }
+    });
 
     callRequester(requester, joinUrl(appUrl, '/v1/anonymous-sessions'), {
       method: 'POST',
@@ -311,54 +394,81 @@ function runChecks(env, requester, callback) {
           headers: {
             Origin: appOrigin,
             Cookie: cookie,
-            'X-CSRF-Token': csrfToken,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
             rowVersion: 1,
             profile: {
-              businessIdea: 'Release smoke kiosk updated'
+              businessIdea: 'Release smoke kiosk rejected'
             }
           })
-        }, function(updateError, updateResult) {
-          if (updateError) {
-            callback(updateError);
+        }, function(missingCsrfError, missingCsrfResult) {
+          if (missingCsrfError) {
+            callback(missingCsrfError);
             return;
           }
 
           try {
-            checkAnonymousUpdate(updateResult);
-          } catch (updateValidationError) {
-            callback(updateValidationError);
+            checkAnonymousRejected(missingCsrfResult, 403, 'app /v1/profile missing csrf');
+          } catch (missingCsrfValidationError) {
+            callback(missingCsrfValidationError);
             return;
           }
 
           callRequester(requester, joinUrl(appUrl, '/v1/profile'), {
-            method: 'DELETE',
+            method: 'PUT',
             headers: {
               Origin: appOrigin,
               Cookie: cookie,
-              'X-CSRF-Token': csrfToken
-            }
-          }, function(deleteError, deleteResult) {
-            if (deleteError) {
-              callback(deleteError);
+              'X-CSRF-Token': csrfToken,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              rowVersion: 1,
+              profile: {
+                businessIdea: 'Release smoke kiosk updated'
+              }
+            })
+          }, function(updateError, updateResult) {
+            if (updateError) {
+              callback(updateError);
               return;
             }
 
             try {
-              checkAnonymousDelete(deleteResult);
-            } catch (deleteValidationError) {
-              callback(deleteValidationError);
+              checkAnonymousUpdate(updateResult);
+            } catch (updateValidationError) {
+              callback(updateValidationError);
               return;
             }
 
-            callback(null, labels.concat([
-              'app /v1/anonymous-sessions',
-              'app /v1/profile anonymous read',
-              'app /v1/profile anonymous update',
-              'app /v1/profile anonymous delete'
-            ]));
+            callRequester(requester, joinUrl(appUrl, '/v1/profile'), {
+              method: 'DELETE',
+              headers: {
+                Origin: appOrigin,
+                Cookie: cookie,
+                'X-CSRF-Token': csrfToken
+              }
+            }, function(deleteError, deleteResult) {
+              if (deleteError) {
+                callback(deleteError);
+                return;
+              }
+
+              try {
+                checkAnonymousDelete(deleteResult);
+              } catch (deleteValidationError) {
+                callback(deleteValidationError);
+                return;
+              }
+
+              callback(null, labels.concat([
+                'app /v1/anonymous-sessions',
+                'app /v1/profile anonymous read',
+                'app /v1/profile anonymous update',
+                'app /v1/profile anonymous delete'
+              ]));
+            });
           });
         });
       });
@@ -420,6 +530,7 @@ module.exports = {
   checkAnonymousCreate: checkAnonymousCreate,
   checkAnonymousDelete: checkAnonymousDelete,
   checkAnonymousRead: checkAnonymousRead,
+  checkAnonymousRejected: checkAnonymousRejected,
   checkAnonymousUpdate: checkAnonymousUpdate,
   checkApiReady: checkApiReady,
   checkAppHealth: checkAppHealth,

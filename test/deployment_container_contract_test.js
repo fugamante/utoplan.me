@@ -11,6 +11,7 @@ var compose = fs.readFileSync(path.join(root, 'docker-compose.integrated.yml'), 
 var demoCompose = fs.readFileSync(path.join(root, 'docker-compose.demo.yml'), 'utf8');
 var anonymousCompose = fs.readFileSync(path.join(root, 'docker-compose.anonymous.yml'), 'utf8');
 var packageJson = fs.readFileSync(path.join(root, 'package.json'), 'utf8');
+var azurePipeline = fs.readFileSync(path.join(root, 'azure-pipelines.yml'), 'utf8');
 
 assert(apiDockerfile.indexOf('scripts/verify_deployment_config.js') !== -1);
 assert(apiDockerfile.indexOf('--service=api') !== -1);
@@ -27,8 +28,17 @@ assert(anonymousCompose.indexOf('UTOPLAN_ANONYMOUS_RUNTIME: "1"') !== -1);
 assert(anonymousCompose.indexOf('UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE: shared') !== -1);
 assert(anonymousCompose.indexOf('UTOPLAN_ANONYMOUS_SHARED_RATE_LIMIT: "1"') !== -1);
 assert(anonymousCompose.indexOf('UTOPLAN_TRUST_PROXY: "1"') !== -1);
-assert(anonymousCompose.indexOf('http://127.0.0.1:18084') !== -1);
-assert(anonymousCompose.indexOf('"18084:8080"') !== -1);
-assert(anonymousCompose.indexOf('"13001:3001"') !== -1);
+assert(anonymousCompose.indexOf('http://127.0.0.1:${UTOPLAN_ANON_APP_PORT:-18084}') !== -1);
+assert(anonymousCompose.indexOf('"127.0.0.1:${UTOPLAN_ANON_APP_PORT:-18084}:8080"') !== -1);
+assert(anonymousCompose.indexOf('"13001:3001"') === -1);
+assert(anonymousCompose.indexOf('"15433:5432"') === -1);
 assert(packageJson.indexOf('docker:test:anonymous-runtime') !== -1);
 assert(packageJson.indexOf('UTOPLAN_ANONYMOUS_SMOKE=1 npm run verify:release-smoke') !== -1);
+assert(packageJson.indexOf('COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME:-utoplan-anonymous-runtime}') !== -1);
+assert(packageJson.indexOf('UTOPLAN_API_URL=http://127.0.0.1:13001') === -1);
+assert(azurePipeline.indexOf("displayName: 'Docker app/API proxy contract tests'") !== -1);
+assert(azurePipeline.indexOf("displayName: 'Docker anonymous runtime smoke test'") !== -1);
+assert(azurePipeline.indexOf("COMPOSE_PROJECT_NAME: 'utoplan_db_$(Build.BuildId)'") !== -1);
+assert(azurePipeline.indexOf("COMPOSE_PROJECT_NAME: 'utoplan_proxy_$(Build.BuildId)'") !== -1);
+assert(azurePipeline.indexOf("COMPOSE_PROJECT_NAME: 'utoplan_start_$(Build.BuildId)'") !== -1);
+assert(azurePipeline.indexOf("COMPOSE_PROJECT_NAME: 'utoplan_anon_$(Build.BuildId)'") !== -1);
