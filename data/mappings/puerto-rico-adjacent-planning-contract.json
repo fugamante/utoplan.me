@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "scope": "puerto-rico-adjacent-planning",
+  "createdAt": "2026-05-25",
+  "blockedSourceReview": "data/mappings/puerto-rico-blocked-source-review.json",
+  "purpose": "Define how adjacent education, business, and crosswalk datasets may be evaluated without unblocking preserved legacy tables or producing inferred recommendations.",
+  "status": "contract-only",
+  "legacyImportAllowed": false,
+  "scoringAllowed": false,
+  "recommendationsAllowed": false,
+  "productionUseAllowed": false,
+  "allowedUses": [
+    "source research",
+    "operator-reviewed planning context notes",
+    "future planning-specific schema design",
+    "manual evidence comparison against source-backed cbps, muns, and unis facts"
+  ],
+  "forbiddenUses": [
+    "populate cdepts, businesses, or grade_cs",
+    "synthesize missing legacy joins",
+    "rank municipalities, schools, businesses, or categories",
+    "infer demand, profitability, employment outcomes, or graduation-to-industry rates",
+    "import person-level contact fields"
+  ],
+  "candidateFamilies": [
+    {
+      "id": "education-program-context",
+      "sourceTypes": [
+        "IPEDS completions",
+        "College Scorecard field-of-study data",
+        "CIP/SOC/NAICS crosswalks"
+      ],
+      "allowedPlanningFields": [
+        "institution identifier",
+        "institution name",
+        "program or field-of-study code",
+        "program title",
+        "credential level",
+        "year",
+        "aggregate count or published metric",
+        "source confidence note"
+      ],
+      "requiredBoundaries": [
+        "Must remain CIP/program context unless a source-backed NAICS relationship is found.",
+        "Must not populate grade_cs.rate.",
+        "Must not imply occupational outcomes from crosswalk-only evidence."
+      ]
+    },
+    {
+      "id": "business-registry-context",
+      "sourceTypes": [
+        "official Puerto Rico entity registry",
+        "federal registrant APIs",
+        "open point-of-interest datasets"
+      ],
+      "allowedPlanningFields": [
+        "entity or place name",
+        "public business category or tag",
+        "municipality or address locality",
+        "source confidence note",
+        "license and reuse constraint"
+      ],
+      "requiredBoundaries": [
+        "Must not import officer, director, owner, point-of-contact, phone, email, or personal address fields.",
+        "Must not populate businesses without physical address, point coordinate, and cdepts join evidence.",
+        "Must document geocoding and license obligations before any point display."
+      ]
+    },
+    {
+      "id": "industry-crosswalk-context",
+      "sourceTypes": [
+        "NAICS references",
+        "SOC references",
+        "career-cluster or CIP crosswalks"
+      ],
+      "allowedPlanningFields": [
+        "source code",
+        "target code",
+        "source label",
+        "target label",
+        "crosswalk publisher",
+        "crosswalk limitation note"
+      ],
+      "requiredBoundaries": [
+        "Must be labeled as crosswalk context, not observed Puerto Rico outcome data.",
+        "Must not create cdepts ids used by preserved businesses or grade_cs joins.",
+        "Must not be used as a scoring model."
+      ]
+    }
+  ],
+  "candidateSourceFields": [
+    "candidateId",
+    "title",
+    "domain",
+    "sourceUrl",
+    "sourceOwner",
+    "sourceKind",
+    "fit",
+    "puertoRicoScope",
+    "rowGrain",
+    "classificationSystems",
+    "availableFields",
+    "missingForLegacyUse",
+    "privacyNotes",
+    "licenseNotes",
+    "accessNotes",
+    "planningUse",
+    "mustNotInfer",
+    "reviewStatus",
+    "reviewedAt"
+  ],
+  "requiredValidationRules": [
+    "candidate sources must not set importEnabled true",
+    "candidate sources must not set sourceBackedLegacyTable true",
+    "candidate sources must document Puerto Rico scope or keep scope unresolved",
+    "education sources using CIP must state that they do not produce source-backed NAICS or cdepts rates",
+    "business and POI sources must state coordinate, NAICS, license, and cdepts join limitations",
+    "crosswalk sources must be context-only and must not synthesize rows",
+    "sources with person or contact fields must define minimization before demo or API exposure"
+  ],
+  "promotionRequirements": [
+    "Add a planning-specific schema that does not reuse blocked legacy table names.",
+    "Record source URL, license, scope filter, publication date, and row-level provenance.",
+    "Define privacy minimization rules before any business or education contact fields are read.",
+    "Keep output copy explicitly descriptive and non-recommendation.",
+    "Add dry-run fixtures and tests before any API or UI exposure."
+  ]
+}

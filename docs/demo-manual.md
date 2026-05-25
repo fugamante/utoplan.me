@@ -59,6 +59,13 @@ password: postgres
 - `/v1/demo/session?session=demo-session-1` returns a seeded local demo profile composed with live planning context.
 - The browser planning profile panel saves municipality/category/business idea preferences locally in the browser and does not write to the API.
 
+## Demo Boundaries
+
+- The demo uses source-backed candidate data for `cbps`, `muns`, and `unis` only.
+- `cdepts`, `businesses`, and `grade_cs` remain blocked legacy tables and are not used for planning output.
+- Adjacent education, business registry, point-of-interest, or crosswalk datasets are research-only unless a future planning-specific contract promotes them.
+- The demo must not present scores, ranks, demand forecasts, profitability estimates, graduation-to-industry rates, or business recommendations.
+
 ## Release Smoke For Demo Environments
 
 For a deployed demo environment that intentionally exposes seeded demo sessions:
@@ -98,6 +105,17 @@ The `-v` flag removes the seeded demo database volume.
 ## Browser-Local Profile
 
 The map page includes a planning profile panel. Use it to save a business idea, municipality id, and category id in browser storage. The `Context` link opens the live planning context endpoint for the saved municipality/category.
+
+Operator steps:
+
+1. Open `http://127.0.0.1:8080`.
+2. Enter a business idea in the planning profile panel.
+3. Set municipality to `1`.
+4. Set category to `professional_services`.
+5. Save the profile.
+6. Reload the page and confirm the values persist.
+7. Open the `Context` link and confirm it points to `/v1/planning/context?municipality=1&category=professional_services`.
+8. Clear the profile and confirm browser-local values are removed.
 
 The browser-local profile is not synced to the database. Clearing browser storage removes it.
 

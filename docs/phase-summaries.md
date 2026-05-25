@@ -88,11 +88,10 @@ The branch now has a DB-backed demo path:
 - privacy-narrowed university planning summaries that exclude person names, phone numbers, and email addresses from `unis.desc`
 - optional network-gated source download smoke coverage with mocked default tests
 - blocked-source review matrix for `cdepts`, `businesses`, and `grade_cs`
+- adjacent planning contract that keeps education/business/crosswalk research out of preserved legacy imports and scoring
 - `docker-compose.demo.yml` for a runnable local DB-backed demo
 
 Remaining product work:
 
-- browser-local saved profile flow
-- production authentication/session design
-- decide whether adjacent education/business datasets belong in new planning-specific contracts
-- final audit after the remaining roadmap items are complete
+- final roadmap audit after documentation hardening
+- production authentication/session design remains a future product line, not a demo requirement

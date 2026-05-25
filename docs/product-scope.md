@@ -48,6 +48,7 @@ Allowed in the current product slice:
 - `cbps`, `muns`, and `unis` as source-backed candidate data with visible confidence limits
 - `demo_sessions` as seeded non-production demo state
 - Category mappings as product assumptions, not authoritative classifications
+- Adjacent education/business/crosswalk source research only under `data/mappings/puerto-rico-adjacent-planning-contract.json`
 
 Blocked for planning use until source-backed:
 
@@ -57,11 +58,9 @@ Blocked for planning use until source-backed:
 
 ## Next Product Direction
 
-Next work should move from seeded demo session toward a deliberate user-session design:
+Next work should harden the demo and audit surface before new product claims:
 
-- anonymous local session id
-- browser-local saved planning profile
-- database-backed saved session/profile
-- anonymous session/profile API contract with same-origin cookie ownership, route-specific CORS, CSRF checks, separate anonymous storage, and optimistic concurrency
+- run the final roadmap audit against code, docs, and validation evidence
+- keep adjacent datasets in planning-specific contracts instead of legacy imports
+- decide whether any adjacent context deserves a new read model after privacy and provenance review
 - username/password login only after privacy, retention, and authentication requirements are documented
-- migration artifacts for reserved account-backed and anonymous session tables before any auth endpoints are enabled
