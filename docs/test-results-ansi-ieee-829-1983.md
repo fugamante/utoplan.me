@@ -30,6 +30,7 @@ This report covers the current modernization branch after adding:
 - release smoke support for demo-session validation
 - non-secret blocked anonymous runtime decision example fixture
 - raw ZIP/DBF and extracted official municipality boundary cached planner support
+- privacy-narrowed university dry-run display summaries
 
 ## Test Items
 
@@ -224,6 +225,15 @@ Current raw municipality ZIP/DBF planner slice rerun:
 - `npm --prefix dtoapi audit --audit-level=moderate`: Pass, 0 vulnerabilities
 - `npm --prefix dtoapi/modern audit --audit-level=moderate`: Pass, 0 vulnerabilities
 
+Current university privacy-narrowing slice rerun:
+
+- `npm run test:data-plan`: Pass
+- `npm run test:data-load`: Pass
+- `npm run test:data-sql-preview`: Pass
+- `npm run test:data-mapping && npm run test:data-provenance-confidence`: Pass
+- `npm test`: Pass
+- `npm run docker:test:data-sql-preview`: Pass
+
 ## Evaluation
 
 The tested branch satisfies the current modernization acceptance criteria for:
@@ -241,6 +251,7 @@ The tested branch satisfies the current modernization acceptance criteria for:
 - anonymous runtime production-decision contract and validator for topology, limiter, migration, proxy, smoke, backup/restore, rollback, and neutral operator approval evidence
 - non-secret anonymous runtime decision example validation without approving activation
 - raw ZIP/DBF and extracted official municipality boundary attribute input for dry-run `muns` planning while geometry remains ignored
+- university dry-run `desc` output excludes person names, phone numbers, and email addresses while preserving institution website context
 
 ## Anomalies
 

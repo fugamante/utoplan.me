@@ -16,6 +16,8 @@ The `unis` coordinate join is specified but not ready for unattended import. It 
 
 Ambiguous or unmatched university rows must be written to a manual review artifact instead of receiving guessed coordinates.
 
+The `unis.desc` dry-run summary is limited to non-personal institutional fields from the higher education directory. Person names, phone numbers, and email addresses are excluded from the planned legacy display summary.
+
 ## Validation
 
 Run:

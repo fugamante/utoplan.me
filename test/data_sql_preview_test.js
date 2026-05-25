@@ -103,7 +103,7 @@ assert.strictEqual(
 assert.deepStrictEqual(uniStatement.params, [
   'American University of Puerto Rico',
   'Carr # 2 KM 14.0, Barrio Hato Tejas, BAYAMON',
-  'Juan Nazario Torres | (787) 620-2040 | www.aupr.edu | jcnazario@aupr.edu',
+  'www.aupr.edu',
   18.407058,
   -66.186631,
   timestamp,

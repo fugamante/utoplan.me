@@ -276,10 +276,20 @@ assert.deepStrictEqual(plan.accepted.filter(function(item) {
 })[0].record, {
   title: 'American University of Puerto Rico',
   address: 'Carr # 2 KM 14.0, Barrio Hato Tejas, BAYAMON',
-  desc: 'Juan Nazario Torres | (787) 620-2040 | www.aupr.edu | jcnazario@aupr.edu',
+  desc: 'www.aupr.edu',
   lat: 18.407058,
   long: -66.186631
 });
+
+assert.strictEqual(plan.accepted.filter(function(item) {
+  return item.table === 'unis';
+})[0].record.desc.indexOf('@'), -1);
+assert.strictEqual(plan.accepted.filter(function(item) {
+  return item.table === 'unis';
+})[0].record.desc.indexOf('(787)'), -1);
+assert.strictEqual(plan.accepted.filter(function(item) {
+  return item.table === 'unis';
+})[0].record.desc.indexOf('Juan Nazario Torres'), -1);
 
 assert(plan.rejected.some(function(item) {
   return item.table === 'cbps' && item.reason.indexOf('NAICS code must be numeric') !== -1;
