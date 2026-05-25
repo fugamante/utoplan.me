@@ -78,9 +78,9 @@ npm --prefix dtoapi audit
 npm --prefix dtoapi/modern audit
 ```
 
-Run Docker compatibility checks when Docker is available, because the production topology depends on container networking and seeded Postgres validation.
+Run Docker compatibility checks when Docker is available, because the production topology depends on container networking and seeded Postgres validation. CI runs the Docker checks sequentially with distinct Compose project names so container/network names do not collide.
 
-`npm run docker:test:anonymous-runtime` uses a disposable Compose stack on ports `18084` for the app, `13001` for the API, and `15433` for Postgres. It applies the anonymous storage plus shared limiter schema to a throwaway database and runs the opt-in anonymous create/read/update/delete release smoke through the app origin.
+`npm run docker:test:anonymous-runtime` uses a disposable Compose stack that exposes only the app on `127.0.0.1:18084`; the trusted-proxy API and Postgres stay private inside the Compose network. It applies the anonymous storage plus shared limiter schema to a throwaway database and runs opt-in anonymous rejection plus create/read/update/delete release smoke checks through the app origin.
 
 `npm run verify:deployment` validates the production app/API environment in the current shell. Use `node scripts/verify_deployment_config.js --service=app` or `--service=api` when checking one container at a time.
 

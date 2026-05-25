@@ -24,7 +24,7 @@ This report covers the current modernization branch after adding:
 - transactional anonymous runtime composition helpers and separate anonymous schema readiness gates
 - release-gated anonymous runtime activation controls
 - reserved-route `429` response contracts and anonymous create/read/write/delete server mounting with same-origin/CSRF mutating checks and deleted-profile `410`
-- disposable Docker anonymous runtime smoke with shared limiter storage and app-origin proxying
+- disposable Docker anonymous runtime smoke with shared limiter storage, private API/DB services, app-origin proxying, and negative anonymous boundary checks
 - Docker Postgres demo seed and demo Compose topology
 - readiness coverage for the required demo session table
 - release smoke support for demo-session validation
@@ -175,6 +175,14 @@ Current disposable anonymous-runtime smoke slice rerun:
 - `npm test`: Pass
 - `git diff --check`: Pass
 
+Current anonymous runtime smoke hardening slice rerun:
+
+- `node --check scripts/release_smoke_check.js && node test/release_smoke_check_test.js`: Pass
+- `npm --prefix app test`: Pass
+- `npm run test:deployment-containers`: Pass
+- `docker compose -f docker-compose.anonymous.yml config`: Pass
+- `npm run docker:test:anonymous-runtime`: Pass
+
 ## Evaluation
 
 The tested branch satisfies the current modernization acceptance criteria for:
@@ -187,7 +195,7 @@ The tested branch satisfies the current modernization acceptance criteria for:
 - demo release smoke coverage when `UTOPLAN_DEMO_SESSION_ID` is supplied
 - opt-in anonymous release smoke coverage when `UTOPLAN_ANONYMOUS_SMOKE=1` is supplied
 - Postgres-backed shared anonymous limiter storage contract and async mounted-runtime limiter decisions
-- disposable anonymous runtime validation with shared Postgres limiter storage and app-origin proxy trust-header injection
+- disposable anonymous runtime validation with shared Postgres limiter storage, private trusted-proxy API/DB services, app-origin proxy trust-header injection, and negative CORS/CSRF smoke checks
 
 ## Anomalies
 

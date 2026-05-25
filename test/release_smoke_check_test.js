@@ -102,6 +102,11 @@ smoke.checkAnonymousDelete({
   body: null
 });
 
+smoke.checkAnonymousRejected({
+  statusCode: 403,
+  body: null
+}, 403, 'anonymous rejection');
+
 function requester(url, options, callback) {
   var requestOptions = options;
   var responses = {
@@ -168,8 +173,45 @@ function requester(url, options, callback) {
     requestOptions = {};
   }
 
+  if (url === 'https://app.example.com/v1/anonymous-sessions' && requestOptions.method === 'OPTIONS') {
+    assert.strictEqual(requestOptions.headers.Origin, 'https://disallowed.example');
+    callback(null, {
+      statusCode: 403,
+      headers: {},
+      body: null
+    });
+    return;
+  }
+
   if (url === 'https://app.example.com/v1/anonymous-sessions') {
     assert.strictEqual(requestOptions.method, 'POST');
+    if (requestOptions.headers.Origin === 'https://disallowed.example') {
+      callback(null, {
+        statusCode: 403,
+        headers: {},
+        body: {
+          meta: {
+            error: 'Forbidden'
+          },
+          data: []
+        }
+      });
+      return;
+    }
+    if (!requestOptions.headers.Origin) {
+      callback(null, {
+        statusCode: 403,
+        headers: {},
+        body: {
+          meta: {
+            error: 'Forbidden'
+          },
+          data: []
+        }
+      });
+      return;
+    }
+
     assert.strictEqual(requestOptions.headers.Origin, 'https://app.example.com');
     assert.strictEqual(JSON.parse(requestOptions.body).profile.businessIdea, 'Release smoke kiosk');
     callback(null, {
@@ -188,6 +230,20 @@ function requester(url, options, callback) {
 
   if (url === 'https://app.example.com/v1/profile' && requestOptions.method === 'PUT') {
     assert.strictEqual(requestOptions.headers.Cookie, 'utoplan_anon_session=safe-token');
+    if (!requestOptions.headers['X-CSRF-Token']) {
+      callback(null, {
+        statusCode: 403,
+        headers: {},
+        body: {
+          meta: {
+            error: 'Forbidden'
+          },
+          data: []
+        }
+      });
+      return;
+    }
+
     assert.strictEqual(requestOptions.headers['X-CSRF-Token'], 'safe-csrf');
     assert.strictEqual(JSON.parse(requestOptions.body).profile.businessIdea, 'Release smoke kiosk updated');
     callback(null, {
@@ -258,6 +314,10 @@ smoke.runChecks({
     'app /healthz',
     'app /v1/unis',
     'app /v1/planning/context-demo',
+    'app /v1/anonymous-sessions rejects disallowed preflight',
+    'app /v1/anonymous-sessions rejects disallowed origin',
+    'app /v1/anonymous-sessions rejects missing origin',
+    'app /v1/profile rejects missing csrf',
     'app /v1/anonymous-sessions',
     'app /v1/profile anonymous read',
     'app /v1/profile anonymous update',

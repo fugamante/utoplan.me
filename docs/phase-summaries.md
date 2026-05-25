@@ -79,13 +79,14 @@ The branch now has a DB-backed demo path:
 - reserved-route `429` response contracts and anonymous create/read/write/delete server mounting with same-origin/CSRF mutating checks and deleted-profile `410` behavior
 - opt-in release smoke coverage for gate-mounted anonymous create/read/update/delete through the app origin
 - Postgres-backed shared anonymous limiter storage and async mounted-runtime limiter decisions
-- disposable anonymous runtime Compose validation with anonymous storage, shared limiter storage, app-origin proxying, and opt-in release smoke on ports `18084`, `13001`, and `15433`
+- disposable anonymous runtime Compose validation with anonymous storage, shared limiter storage, private API/DB services, app-origin proxying, and opt-in release smoke through app port `18084`
+- CI release hardening for Docker proxy and anonymous runtime smoke checks with distinct Compose project names
 - `docker-compose.demo.yml` for a runnable local DB-backed demo
 
 Remaining product work:
 
 - browser-local saved profile flow
 - production authentication/session design
-- final anonymous-runtime promotion decision for CI/release validation after proxy/header trust review
+- anonymous runtime migration rollback/operator notes before production deployment choices
 - richer source-backed demo dataset
 - final audit after the remaining roadmap items are complete

@@ -77,6 +77,9 @@ function createApiServer() {
       assert.ok(request.headers['x-forwarded-for'], 'proxy should inject x-forwarded-for');
       assert.ok(request.headers['x-real-ip'], 'proxy should inject x-real-ip');
       assert.notStrictEqual(request.headers['x-forwarded-for'], '198.51.100.200');
+      assert.strictEqual(request.headers.forwarded, undefined);
+      assert.strictEqual(request.headers['x-forwarded-host'], undefined);
+      assert.strictEqual(request.headers['x-forwarded-proto'], undefined);
 
       response.writeHead(201, {
         'Content-Type': 'application/json; charset=utf-8',
@@ -163,7 +166,11 @@ async function main() {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-Forwarded-For': '198.51.100.200'
+      'Forwarded': 'for=198.51.100.200',
+      'X-Forwarded-For': '198.51.100.200',
+      'X-Forwarded-Host': 'attacker.example',
+      'X-Forwarded-Proto': 'https',
+      'X-Real-IP': '198.51.100.201'
     },
     body: '{}'
   });

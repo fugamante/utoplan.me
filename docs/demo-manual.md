@@ -80,13 +80,11 @@ The anonymous runtime smoke is a disposable validation stack, not the normal dem
 npm run docker:test:anonymous-runtime
 ```
 
-It starts Docker Postgres with the anonymous storage and shared limiter tables, the modern API with shared anonymous runtime config, and the static app proxy. The exposed local ports are:
+It starts Docker Postgres with the anonymous storage and shared limiter tables, the modern API with shared anonymous runtime config, and the static app proxy. Only the app is exposed to the host:
 
 - App: `http://127.0.0.1:18084`
-- API: `http://127.0.0.1:13001`
-- Postgres: `127.0.0.1:15433`
 
-The script runs `npm run verify:release-smoke` with `UTOPLAN_ANONYMOUS_SMOKE=1`, then tears the stack down with volumes removed.
+The API and Postgres stay inside the Compose network so trusted-proxy mode cannot be bypassed from the host. The script runs `npm run verify:release-smoke` with `UTOPLAN_ANONYMOUS_SMOKE=1`, then tears the stack down with volumes removed.
 
 ## Stop And Clean Up
 

@@ -119,7 +119,7 @@ The production limiter must provide:
 
 The API may compute rate-limit keys only when it receives a trusted client IP signal from the private app proxy or deployment edge. Public boundaries must strip inbound forwarding headers and inject a single trusted client IP signal. Until that deployment behavior is configured and tested, anonymous runtime endpoints remain blocked.
 
-The local disposable smoke stack validates this boundary through the static app proxy: `npm run docker:test:anonymous-runtime` starts the app on `18084`, the API on `13001`, and Postgres on `15433`, strips attacker-supplied forwarding headers at the app layer, injects the socket-derived client IP for the private API hop, and runs anonymous create/read/update/delete through the app origin.
+The local disposable smoke stack validates this boundary through the static app proxy: `npm run docker:test:anonymous-runtime` exposes only the app on `18084`, keeps the trusted-proxy API and Postgres private inside the Compose network, strips attacker-supplied forwarding headers at the app layer, injects the socket-derived client IP for the private API hop, and runs anonymous rejection plus create/read/update/delete checks through the app origin.
 
 Every `429` response must include `Retry-After` as delta seconds using `ceil((resetAtMs - nowMs) / 1000)` with a minimum value of `1`. The first public runtime slice will not expose `RateLimit-Limit`, `RateLimit-Remaining`, or `RateLimit-Reset`; add those headers only after a separate client-facing contract is accepted.
 
