@@ -54,6 +54,8 @@ Summary:
 
 Adjacent sources should be modeled in new planning-specific contracts if they become useful. They should not be forced into these preserved legacy tables without source-backed join evidence.
 
+The adjacent planning boundary is now documented in `docs/adjacent-planning-data-contract.md` and recorded in `data/mappings/puerto-rico-adjacent-planning-contract.json`. It allows future source research and planning-specific schema design, but forbids legacy-table imports, scoring, recommendations, inferred joins, and person-level contact-field ingestion.
+
 The `api.utoplan.me` host no longer resolves, and this pass did not recover archived API responses. Treat all row-level data from the original API as unrecovered.
 
 ## Provenance Gap

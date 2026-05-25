@@ -29,6 +29,7 @@
 - `docs/data-intake.md` and `data/sources/puerto-rico.json` define the Puerto Rico-only source intake contract for future data replacement work.
 - `npm run test:data-sources` validates that registered import candidates are Puerto Rico-only or explicitly filtered to Puerto Rico.
 - `data/mappings/puerto-rico-blocked-source-review.json` records reviewed adjacent sources for blocked legacy tables and keeps `cdepts`, `businesses`, and `grade_cs` blocked until end-to-end Puerto Rico source evidence exists.
+- `docs/adjacent-planning-data-contract.md` and `data/mappings/puerto-rico-adjacent-planning-contract.json` define how adjacent education, business, point-of-interest, and crosswalk datasets may be evaluated without unblocking legacy tables, scoring, or recommendations.
 - `docs/data-schema-mapping.md` and `data/mappings/puerto-rico-schema-map.json` map Puerto Rico source candidates to the preserved legacy schema before import work.
 - `npm run test:data-mapping` validates that source mappings reference registered sources and preserve legacy table columns.
 - `docs/data-normalization.md` and `data/mappings/puerto-rico-normalization.json` define deterministic import normalization rules for Puerto Rico source data.
@@ -211,4 +212,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Continue by deciding whether to model adjacent education/business datasets in new planning-specific contracts, or shift to final roadmap audit and demo documentation hardening.
+Continue with final roadmap audit and demo documentation hardening, then decide whether the branch is ready for a consolidated audit pass.

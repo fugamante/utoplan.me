@@ -4,7 +4,7 @@ ANSI/IEEE 829-1983-style summary for the modernization branch validation pass.
 
 ## Test Summary Identifier
 
-`utoplan-modernization-20260525-anonymous-decision-demo-data`
+`utoplan-modernization-20260525-source-review-demo-hardening`
 
 ## Scope
 
@@ -33,6 +33,7 @@ This report covers the current modernization branch after adding:
 - privacy-narrowed university dry-run display summaries
 - optional network-gated source download smoke coverage
 - blocked-source review for cdepts, businesses, and grade_cs
+- adjacent planning contract for non-legacy education/business/crosswalk research
 
 ## Test Items
 
@@ -251,6 +252,13 @@ Current blocked-source review slice rerun:
 - `npm run test:data-provenance-confidence`: Pass
 - `npm test`: Pass
 
+Current adjacent planning and demo hardening slice rerun:
+
+- `npm run test:adjacent-planning-contract`: Pass
+- `npm run test:blocked-source-review`: Pass
+- Adjacent planning and blocked-source JSON syntax check: Pass
+- `npm test`: Pass
+
 ## Evaluation
 
 The tested branch satisfies the current modernization acceptance criteria for:
@@ -271,6 +279,7 @@ The tested branch satisfies the current modernization acceptance criteria for:
 - university dry-run `desc` output excludes person names, phone numbers, and email addresses while preserving institution website context
 - optional live source smoke checks that require explicit `UTOPLAN_SOURCE_SMOKE=1` activation and otherwise skip deterministically
 - cdepts, businesses, and grade_cs remain blocked with reviewed adjacent-source evidence instead of inferred legacy rows
+- adjacent datasets may be researched only through planning-specific contracts that forbid legacy imports, scoring, recommendations, and person-level contact-field ingestion
 
 ## Anomalies
 
