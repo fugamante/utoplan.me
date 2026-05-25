@@ -17,6 +17,7 @@ assert(apiDockerfile.indexOf('scripts/verify_deployment_config.js') !== -1);
 assert(apiDockerfile.indexOf('--service=api') !== -1);
 assert(compose.indexOf('node scripts/verify_deployment_config.js --service=app') !== -1);
 assert(compose.indexOf('node scripts/verify_deployment_config.js --service=api') !== -1);
+assert(compose.indexOf('"127.0.0.1:8080:8080"') !== -1);
 assert(demoCompose.indexOf('Dockerfile.postgres-test') !== -1);
 assert(demoCompose.indexOf('UTOPLAN_DEMO_SESSIONS: "1"') !== -1);
 assert(demoCompose.indexOf('"8080:8080"') !== -1);

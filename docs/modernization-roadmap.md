@@ -69,6 +69,7 @@
 - `npm run docker:test:anonymous-runtime` now validates the gate-mounted anonymous rejection and create/read/update/delete flow in a disposable shared-limiter Compose stack that exposes only the app on `127.0.0.1:18084`.
 - Azure now runs the Docker DB contract, app/API proxy contract, start:local browser smoke, and anonymous runtime smoke sequentially with distinct Compose project names.
 - Anonymous runtime migration artifacts and operator docs now define rollback order, gate disablement, shared/edge limiter fallback, and the no-drop-after-production-writes rule.
+- `data/mappings/anonymous-runtime-production-decision-contract.json`, `docs/anonymous-runtime-production-decision.md`, and `npm run validate:anonymous-runtime-decision` define the evidence package required before anonymous runtime activation.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
 
 ## Target Outcomes
@@ -205,4 +206,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Prepare the anonymous runtime production-decision package: target hosting topology, shared versus edge limiter choice, backup/restore evidence, and operator approval for activation.
+Run the production-decision validation checks, then decide whether to build an example non-secret evidence bundle or continue toward richer source-backed demo data.

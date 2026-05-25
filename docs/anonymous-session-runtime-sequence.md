@@ -108,6 +108,8 @@ Origin normalization lowercases valid URL origins, maps missing Origin to `none`
 
 Endpoint activation requires a shared or edge limiter selected in release configuration. Shared mode uses the Postgres-backed `anonymous_rate_limit_buckets` table; edge mode requires deployment-edge enforcement before requests reach the API. The process-local helper is unit-test-only and reserved-route scaffolding and must not protect public anonymous endpoints because it resets on restart, is per Node process, and cannot coordinate across containers or regions.
 
+Choose `shared` when traffic reaches the private API only through the trusted app proxy or private deployment edge and all API instances coordinate through the same Postgres limiter table. Choose `edge` only when the deployment edge enforces the approved anonymous limiter scopes before requests can reach the API. Do not choose edge mode based only on `UTOPLAN_ANONYMOUS_EDGE_RATE_LIMIT=1`; the production-decision package must include platform policy evidence.
+
 The production limiter must provide:
 
 - atomic increment plus expiry for each fixed-window key
