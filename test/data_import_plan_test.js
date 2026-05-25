@@ -168,9 +168,12 @@ var sampleOutPath = path.join(tmpDir, 'sample-report.json');
 var sampleCsvOutPath = path.join(tmpDir, 'sample-csv-report.json');
 var cacheDir = path.join(tmpDir, 'cache');
 var cachedOutPath = path.join(tmpDir, 'cached-report.json');
+var extractedCacheDir = path.join(tmpDir, 'extracted-cache');
+var extractedCachedOutPath = path.join(tmpDir, 'extracted-cached-report.json');
 var sampleResult;
 var sampleCsvResult;
 var cachedResult;
+var extractedCachedResult;
 
 fs.writeFileSync(fixturePath, JSON.stringify(fixtures, null, 2));
 
@@ -287,6 +290,55 @@ assert.strictEqual(cachedPlan.tables.unis.manualReview, 2);
 assert.deepStrictEqual(cachedPlan.unsupportedCacheSources, [
   'datospr-official-municipality-boundaries'
 ]);
+assert.strictEqual(cachedPlan.unsupportedCacheSourceErrors[0].reason, 'official municipality boundaries must be an extracted CSV or JSON attribute table');
+
+fs.mkdirSync(extractedCacheDir);
+fs.copyFileSync(path.join(__dirname, '..', 'data', 'fixtures', 'non-production', 'cbps.csv'), path.join(extractedCacheDir, 'datospr-cbp-2014-municipios.csv'));
+fs.copyFileSync(path.join(__dirname, '..', 'data', 'fixtures', 'non-production', 'unis.csv'), path.join(extractedCacheDir, 'datospr-higher-ed-directory-2017-18.csv'));
+fs.copyFileSync(path.join(__dirname, '..', 'data', 'fixtures', 'non-production', 'official-municipality-boundaries-extract.csv'), path.join(extractedCacheDir, 'datospr-official-municipality-boundaries.csv'));
+fs.writeFileSync(path.join(extractedCacheDir, 'nces-edge-postsecondary-locations-2021-pr.json'), JSON.stringify({
+  features: fixtures.unisCoordinates.map(function(row) {
+    return {
+      attributes: row
+    };
+  })
+}));
+
+[
+  ['datospr-cbp-2014-municipios', 'datospr-cbp-2014-municipios.csv'],
+  ['datospr-higher-ed-directory-2017-18', 'datospr-higher-ed-directory-2017-18.csv'],
+  ['nces-edge-postsecondary-locations-2021-pr', 'nces-edge-postsecondary-locations-2021-pr.json'],
+  ['datospr-official-municipality-boundaries', 'datospr-official-municipality-boundaries.csv']
+].forEach(function(entry) {
+  fs.writeFileSync(path.join(extractedCacheDir, entry[0] + '.metadata.json'), JSON.stringify({
+    id: entry[0],
+    dataPath: entry[1]
+  }));
+});
+
+extractedCachedResult = childProcess.spawnSync(process.execPath, [
+  'scripts/data_import_plan.js',
+  '--cache-dir=' + extractedCacheDir,
+  '--out=' + extractedCachedOutPath
+], {
+  cwd: path.join(__dirname, '..'),
+  encoding: 'utf8'
+});
+
+assert.strictEqual(extractedCachedResult.status, 0);
+var extractedCachedPlan = JSON.parse(fs.readFileSync(extractedCachedOutPath, 'utf8'));
+assert.strictEqual(extractedCachedPlan.tables.muns.accepted, 3);
+assert.strictEqual(extractedCachedPlan.tables.muns.rejected, 0);
+assert.strictEqual(extractedCachedPlan.accepted.filter(function(item) {
+  return item.table === 'muns';
+}).length, 3);
+assert.deepStrictEqual(extractedCachedPlan.accepted.filter(function(item) {
+  return item.table === 'muns' && item.record.title === 'Bayamon';
+})[0].record, {
+  title: 'Bayamon',
+  county: 21
+});
+assert.deepStrictEqual(extractedCachedPlan.unsupportedCacheSources || [], []);
 
 fs.rmSync(tmpDir, {
   recursive: true,

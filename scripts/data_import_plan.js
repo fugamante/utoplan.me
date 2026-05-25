@@ -6,6 +6,7 @@ var normalization = require('./data_normalization');
 
 var CACHE_SOURCE_KEYS = {
   'datospr-cbp-2014-municipios': 'cbps',
+  'datospr-official-municipality-boundaries': 'muns',
   'datospr-higher-ed-directory-2017-18': 'unis',
   'nces-edge-postsecondary-locations-2021-pr': 'unisCoordinates'
 };
@@ -286,6 +287,10 @@ function planFixtureRows(fixtures) {
     plan.unsupportedCacheSources = fixtures.unsupportedCacheSources.slice();
   }
 
+  if (fixtures.unsupportedCacheSourceErrors && fixtures.unsupportedCacheSourceErrors.length > 0) {
+    plan.unsupportedCacheSourceErrors = fixtures.unsupportedCacheSourceErrors.slice();
+  }
+
   return plan;
 }
 
@@ -295,6 +300,29 @@ function readJsonFile(filePath) {
 
 function readCsvFile(filePath) {
   return rowsFromCsv(fs.readFileSync(filePath, 'utf8'));
+}
+
+function readMunicipalityCacheRows(filePath) {
+  var extension = path.extname(filePath).toLowerCase();
+  var parsed;
+
+  if (extension === '.csv') {
+    return readCsvFile(filePath);
+  }
+
+  if (extension === '.json') {
+    parsed = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    if (Array.isArray(parsed)) {
+      return parsed;
+    }
+    if (Array.isArray(parsed.features)) {
+      return parsed.features.map(function(row) {
+        return row.attributes || row.properties || row;
+      });
+    }
+  }
+
+  throw new Error('official municipality boundaries must be an extracted CSV or JSON attribute table');
 }
 
 function readCoordinateJsonFile(filePath) {
@@ -362,6 +390,7 @@ function absoluteCacheDataPath(cacheDir, metadata) {
 function readCacheFixtures(cacheDir) {
   var fixtures = emptyFixtures();
   var unsupported = [];
+  var errors = [];
 
   metadataFiles(cacheDir).forEach(function(metadataFile) {
     var metadata = readJsonFile(metadataFile);
@@ -373,14 +402,25 @@ function readCacheFixtures(cacheDir) {
       return;
     }
 
-    if (key === 'unisCoordinates') {
-      fixtures[key] = readCoordinateJsonFile(dataPath);
-    } else {
-      fixtures[key] = readCsvFile(dataPath);
+    try {
+      if (key === 'unisCoordinates') {
+        fixtures[key] = readCoordinateJsonFile(dataPath);
+      } else if (metadata.id === 'datospr-official-municipality-boundaries') {
+        fixtures[key] = readMunicipalityCacheRows(dataPath);
+      } else {
+        fixtures[key] = readCsvFile(dataPath);
+      }
+    } catch (error) {
+      unsupported.push(metadata.id);
+      errors.push({
+        sourceId: metadata.id,
+        reason: error.message
+      });
     }
   });
 
   fixtures.unsupportedCacheSources = unsupported;
+  fixtures.unsupportedCacheSourceErrors = errors;
   return fixtures;
 }
 
@@ -435,6 +475,7 @@ module.exports = {
   CACHE_SOURCE_KEYS: CACHE_SOURCE_KEYS,
   readCacheFixtures: readCacheFixtures,
   readCoordinateJsonFile: readCoordinateJsonFile,
+  readMunicipalityCacheRows: readMunicipalityCacheRows,
   parseCsv: parseCsv,
   planCbpRows: planCbpRows,
   planMunicipalityRows: planMunicipalityRows,

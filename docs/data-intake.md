@@ -53,3 +53,9 @@ Run:
 ```sh
 npm run test:data-provenance-confidence
 ```
+
+## Municipality Boundary Planning
+
+The official municipality boundary source is still registered as the ZIP published by Datos.PR. Dry-run planning consumes only an extracted CSV or JSON attribute table from that source and ignores geometry. The checked-in non-production example is `data/fixtures/non-production/official-municipality-boundaries-extract.csv`.
+
+Raw ZIP/DBF ingestion remains a production hardening item; until then, cached raw ZIPs are reported as unsupported instead of being guessed or partially parsed.

@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "scope": "anonymous-runtime-production",
+  "decisionStatus": "blocked",
+  "decisionBy": "Example Release Operations",
+  "decidedAt": "2026-05-25T12:30:00.000Z",
+  "targetEnvironment": "example-non-production",
+  "targetOrigin": "https://app.example.com",
+  "hostingTopology": {
+    "publicEntry": "public-app-or-edge",
+    "apiPrivate": true,
+    "postgresPrivate": true,
+    "apiDirectPublicAccess": false,
+    "sameOriginAppProxy": true
+  },
+  "runtimeGate": {
+    "UTOPLAN_ANONYMOUS_RUNTIME": "1",
+    "UTOPLAN_ANONYMOUS_ALLOWED_ORIGINS": [
+      "https://app.example.com"
+    ],
+    "UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE": "shared"
+  },
+  "migrationEvidence": {
+    "anonymousStorageMigrationApplied": true,
+    "sharedLimiterMigrationApplied": true,
+    "anonymousSchemaReady": true,
+    "baselineReadyzUnchanged": true
+  },
+  "limiterEvidence": {
+    "mode": "shared",
+    "attested": true,
+    "scopeEvidence": "Example shared limiter evidence covers anonymous session, profile, and rejection scopes.",
+    "failClosedBehaviorReviewed": true
+  },
+  "proxyEvidence": {
+    "trustedClientIpVerified": true,
+    "forwardingHeadersStripped": true,
+    "attackerSuppliedHeaderSmokePassed": true
+  },
+  "smokeEvidence": {
+    "releaseSmokePassed": true,
+    "anonymousSmokePassed": true,
+    "negativeCorsCsrfChecksPassed": true
+  },
+  "backupRestoreEvidence": {
+    "backupIdentifier": "example-backup-identifier",
+    "backupTimestamp": "2026-05-25T12:00:00.000Z",
+    "restoreProcedureLocation": "example release evidence location",
+    "reviewed": true
+  },
+  "rollbackEvidence": {
+    "activationGateDisablement": true,
+    "sharedOrEdgeLimiterFallback": true,
+    "noDropAfterProductionWrites": true,
+    "dataPreservingRollbackReviewed": true
+  },
+  "acknowledgements": [
+    "Anonymous runtime activation may create production anonymous session/profile rows.",
+    "Anonymous session/profile tables must not be dropped after production writes exist.",
+    "The activation gate is the first rollback control.",
+    "Shared or edge rate limiting is active before public traffic reaches anonymous routes.",
+    "Trusted client IP handling was verified at the public app boundary.",
+    "The opt-in anonymous release smoke passed against the candidate public app origin.",
+    "This approval does not approve password accounts or production user authentication."
+  ]
+}

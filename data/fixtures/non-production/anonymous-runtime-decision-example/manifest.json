@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "scope": "anonymous-runtime-production",
+  "generatedAt": "2026-05-25T12:30:00.000Z",
+  "exampleOnly": true,
+  "productionApproval": false,
+  "activationAllowed": false,
+  "artifacts": [
+    "README.md",
+    "runtime-decision.json",
+    "decision-validation.json"
+  ],
+  "notes": [
+    "This fixture is non-production evidence shape only.",
+    "It must not be used as operator approval for anonymous runtime activation."
+  ]
+}

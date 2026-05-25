@@ -23,6 +23,12 @@ The package must include:
 - `operator-approval.json`: neutral role/team approval with required acknowledgements and no secrets or personal identifiers.
 - `operator-approval-validation.json`: output from the validator.
 
+## Non-Production Example
+
+A non-secret example fixture lives at `data/fixtures/non-production/anonymous-runtime-decision-example/`. It is intentionally `blocked`, has `activationAllowed: false`, and is not production approval.
+
+Validator success for the example means only that the artifact shape is valid. Real production decision artifacts must remain outside the public repository with release evidence.
+
 ## Hosting Topology
 
 The required production shape is:
