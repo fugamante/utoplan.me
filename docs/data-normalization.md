@@ -75,6 +75,15 @@ npm run cache:data -- --all
 
 The cache command only downloads sources listed in `data/sources/puerto-rico.json`, requires HTTPS URLs, writes under `.cache/utoplan-data/`, and writes a sidecar metadata JSON file for each cached source. Downloaded source data is intentionally ignored by git.
 
+Optional live source smoke checks are disabled by default:
+
+```sh
+npm run smoke:data-sources
+UTOPLAN_SOURCE_SMOKE=1 npm run smoke:data-sources -- --sources=datospr-official-municipality-boundaries --out=source-smoke.json
+```
+
+The root `npm run test` path validates this command with mocked downloads and records `skipped` when live network checks are not explicitly enabled.
+
 The planner can read supported cached sources directly:
 
 ```sh

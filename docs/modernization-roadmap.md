@@ -53,6 +53,7 @@
 - `scripts/data_import_plan.js` provides an offline fixture planning harness and CLI that reports accepted, rejected, and manual-review records without fetching source data or mutating a database.
 - University dry-run planning keeps ambiguous or unmatched coordinate joins in manual review and limits `unis.desc` to non-personal institutional display fields.
 - `scripts/data_source_cache.js` downloads only registered HTTPS Puerto Rico sources into an ignored local cache with metadata sidecars, and the offline planner can consume supported cached CSV/JSON sources by source ID while reporting unsupported cached sources explicitly.
+- `scripts/data_source_smoke.js` provides optional network-gated source download smoke coverage; default runs skip, while `UTOPLAN_SOURCE_SMOKE=1` downloads selected registered sources and runs the dry-run planner.
 - The offline planner can consume the raw official municipality boundary ZIP or an extracted CSV/JSON attribute table for `muns`, while keeping geometry ignored and malformed archives explicit.
 - `scripts/data_load_plan.js` converts accepted planner records into dry-run DB-ready row groups while preserving skipped rejected/manual-review records.
 - `data/mappings/puerto-rico-load-policy.json` defines the transaction, idempotency, and write-guard policy required before any future database loader can mutate data.
@@ -209,4 +210,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Continue richer source-backed demo data work by adding optional network-gated smoke coverage for live source downloads or by identifying the next Puerto Rico-only source for currently blocked legacy tables.
+Continue richer source-backed demo data work by identifying the next Puerto Rico-only source for currently blocked legacy tables, starting with `cdepts`, `businesses`, or `grade_cs`.

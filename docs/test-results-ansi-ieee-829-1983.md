@@ -31,6 +31,7 @@ This report covers the current modernization branch after adding:
 - non-secret blocked anonymous runtime decision example fixture
 - raw ZIP/DBF and extracted official municipality boundary cached planner support
 - privacy-narrowed university dry-run display summaries
+- optional network-gated source download smoke coverage
 
 ## Test Items
 
@@ -234,6 +235,13 @@ Current university privacy-narrowing slice rerun:
 - `npm test`: Pass
 - `npm run docker:test:data-sql-preview`: Pass
 
+Current source download smoke slice rerun:
+
+- `npm run test:data-source-smoke`: Pass
+- `npm run smoke:data-sources`: Pass, skipped by default without network access
+- `npm run smoke:data-sources -- --sources=datospr-official-municipality-boundaries --out=/tmp/utoplan-source-smoke-skip.json`: Pass, skipped by default without network access
+- `npm test`: Pass
+
 ## Evaluation
 
 The tested branch satisfies the current modernization acceptance criteria for:
@@ -252,6 +260,7 @@ The tested branch satisfies the current modernization acceptance criteria for:
 - non-secret anonymous runtime decision example validation without approving activation
 - raw ZIP/DBF and extracted official municipality boundary attribute input for dry-run `muns` planning while geometry remains ignored
 - university dry-run `desc` output excludes person names, phone numbers, and email addresses while preserving institution website context
+- optional live source smoke checks that require explicit `UTOPLAN_SOURCE_SMOKE=1` activation and otherwise skip deterministically
 
 ## Anomalies
 
