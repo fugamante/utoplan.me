@@ -186,7 +186,21 @@ Expected API readiness remains versioned as `baseline-read-v1`.
 
 ## Rollback
 
-Only run this rollback before any anonymous session/profile endpoint has written data.
+### Pre-Activation Rollback
+
+Only run this rollback before any anonymous session/profile endpoint has written data. First disable `UTOPLAN_ANONYMOUS_RUNTIME` or route traffic to an app/API release pair where anonymous runtime remains fail-closed.
+
+Immediately before rollback, verify that all anonymous storage tables are empty:
+
+```sql
+SELECT 'anonymous_sessions' AS table_name, COUNT(*) FROM anonymous_sessions
+UNION ALL
+SELECT 'anonymous_planning_profiles' AS table_name, COUNT(*) FROM anonymous_planning_profiles
+UNION ALL
+SELECT 'anonymous_profile_events' AS table_name, COUNT(*) FROM anonymous_profile_events;
+```
+
+All counts must be zero. If they are zero, drop in foreign-key order:
 
 ```sql
 DROP TABLE IF EXISTS anonymous_profile_events;
@@ -194,7 +208,19 @@ DROP TABLE IF EXISTS anonymous_planning_profiles;
 DROP TABLE IF EXISTS anonymous_sessions;
 ```
 
-If any of these tables contain production user data, do not drop them directly. Restore from backup or create a reviewed data-preserving rollback plan.
+### Post-Activation Rollback
+
+If any of these tables contain production endpoint data, do not drop them directly. These rows may contain anonymous profile data, token hashes, CSRF token hashes, audit events, delete/export request markers, and retention-sensitive state.
+
+Post-activation rollback must:
+
+- disable `UTOPLAN_ANONYMOUS_RUNTIME` or route traffic to a compatible previous app/API release with anonymous runtime disabled
+- preserve `anonymous_sessions`, `anonymous_planning_profiles`, and `anonymous_profile_events`
+- keep retention, deletion, and future export obligations intact
+- revoke or expire sessions only through a reviewed data-preserving fix
+- create a reviewed follow-up migration if table shape must change
+
+Backup restore can roll back unrelated production data and must not be the default fix once anonymous rows exist. Use restore only as part of an incident-reviewed database recovery plan with explicit data-loss acceptance.
 
 Fallback application action:
 
@@ -208,3 +234,5 @@ Keep the current browser-local profile and local/demo session release live. Do n
 - Dashboard or logs checked: API `/readyz` must continue returning `200`
 - Migration artifact linked from PR: required
 - Anonymous session/profile endpoints enabled: no
+- If applied as part of an anonymous-runtime candidate: verify the anonymous schema gate, shared/edge limiter attestation, trusted proxy evidence, and opt-in anonymous smoke before public activation
+- Reservation-only release behavior: anonymous routes remain fail-closed unless the separate runtime activation gate is explicitly enabled

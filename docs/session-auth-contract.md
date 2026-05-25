@@ -101,6 +101,8 @@ Profile writes must enforce caller ownership in the same atomic update as optimi
 
 This anonymous contract now has a separate anonymous storage migration artifact, runtime sequence document, route-specific CORS/CSRF scaffolding, token-hashing helpers, anonymous data-access scaffolding, process-local rate-limit scaffolding, profile body-validation helpers, endpoint-level reserved-route tests, transactional create/delete composition helpers, a separate enabled-runtime schema readiness gate, release-gated activation scaffolding with explicit edge/shared limiter attestations, reserved-route `429` response coverage, pure handler-composition scaffolding, and gated server mounting for anonymous create/read/write/delete. Runtime endpoints remain fail-closed until the artifact is reviewed/applied as part of a release and shared or edge production rate limits are configured. The existing `user_accounts` and `planning_profiles.account_id` reservation is for password-account work and must not be filled with dummy account rows for anonymous users.
 
+Anonymous runtime releases must carry operator rollback notes covering gate disablement, shared/edge limiter rollback, and the no-drop-after-production-writes rule. `docs/anonymous-session-runtime-sequence.md` is the runtime control reference; the migration artifacts define the exact storage rollback safety conditions.
+
 ## Privacy Rules
 
 Allowed profile fields are intentionally small:
@@ -125,4 +127,4 @@ Production implementation must provide deletion and export behavior. Public seed
 
 ## Next Implementation Gate
 
-The next safe implementation step is applying the anonymous storage and shared-limiter migration artifacts in a disposable environment, enabling shared anonymous runtime config, and running the opt-in anonymous release smoke against that candidate. Password auth remains disabled until the contract requirements are satisfied.
+The next safe implementation step is a production-deployment decision package for anonymous runtime rollout: target hosting topology, shared versus edge limiter selection, backup/restore evidence, and operator approval for activation. Password auth remains disabled until the contract requirements are satisfied.

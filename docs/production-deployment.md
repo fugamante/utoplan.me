@@ -169,6 +169,8 @@ Rollback immediately when:
 - The app health response shows fixture mode enabled.
 - `/v1/unis` or `/v1/planning/context-demo` fails through the public app origin.
 - A demo release has `UTOPLAN_DEMO_SESSIONS=1` but `/v1/demo/session?session=demo-session-1` fails through the public app origin.
+- An anonymous-runtime release fails `UTOPLAN_ANONYMOUS_SMOKE=1 npm run verify:release-smoke`.
+- Anonymous CORS/CSRF rejection behavior, `429` `Retry-After` behavior, trusted client-IP evidence, or anonymous schema readiness is wrong after activation.
 - The API logs database connection or query failures after rollout.
 - Browser smoke checks show missing map data or uncaught page errors.
 
@@ -180,5 +182,18 @@ Rollback order:
 4. Verify app `/healthz`.
 5. Verify `/v1/unis` and `/v1/planning/context-demo` from the public app origin.
 6. For demo releases, verify `/v1/demo/session?session=demo-session-1` or disable `UTOPLAN_DEMO_SESSIONS`.
+7. For anonymous-runtime releases, disable `UTOPLAN_ANONYMOUS_RUNTIME` before restoring traffic unless rolling forward to a reviewed fixed release.
 
 If a release included a production database change, follow the release-specific database rollback note before restoring app traffic. If no safe database rollback exists, keep the previous compatible application version in service and escalate the data fix separately.
+
+### Anonymous Runtime Rollback
+
+The first rollback lever is the activation gate. Disable `UTOPLAN_ANONYMOUS_RUNTIME` or route traffic to the previous app/API release pair before changing anonymous storage.
+
+For shared limiter incidents, disable anonymous runtime first, then remove `UTOPLAN_ANONYMOUS_SHARED_RATE_LIMIT=1` and `UTOPLAN_TRUST_PROXY=1` or route to a release that does not use shared mode. For edge limiter incidents, disable anonymous runtime first, then remove `UTOPLAN_ANONYMOUS_EDGE_RATE_LIMIT=1` or route to a release with the corrected edge policy.
+
+Database rollback depends on whether anonymous endpoint data exists:
+
+- Schema applied with zero anonymous rows: follow the migration rollback SQL in `db/migrations/202605241100_reserve_anonymous_session_profile_tables.md` and `db/migrations/202605241200_add_anonymous_rate_limit_buckets.md`.
+- Anonymous production rows exist: do not drop `anonymous_sessions`, `anonymous_planning_profiles`, or `anonymous_profile_events`; preserve retention/deletion/export obligations and create a reviewed data-preserving rollback or fix-forward migration.
+- Shared limiter counters exist: drop `anonymous_rate_limit_buckets` only after shared mode is disabled or an approved edge-limited release is active, and only after accepting limiter counter reset and short-window observability loss.

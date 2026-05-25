@@ -22,6 +22,18 @@ The reserved anonymous session/profile table artifact is `db/migrations/20260524
 
 The anonymous shared rate-limit artifact is `db/migrations/202605241200_add_anonymous_rate_limit_buckets.md`. It is additive runtime counter storage for shared anonymous rate limiting and must not enable anonymous profile endpoints by itself.
 
+## Anonymous Runtime Migrations
+
+For an anonymous runtime candidate, apply `202605241100_reserve_anonymous_session_profile_tables.md` before `202605241200_add_anonymous_rate_limit_buckets.md`. Runtime activation still requires the fail-closed anonymous gate, explicit shared/edge limiter attestation, trusted proxy/client-IP evidence, and opt-in anonymous smoke checks.
+
+Rollback order is operationally significant:
+
+1. Disable `UTOPLAN_ANONYMOUS_RUNTIME` or route traffic to a compatible release where anonymous routes are fail-closed.
+2. If shared limiter mode is no longer in use, remove `anonymous_rate_limit_buckets` only after accepting counter reset and observability loss.
+3. Remove anonymous session/profile tables only when `anonymous_sessions`, `anonymous_planning_profiles`, and `anonymous_profile_events` contain zero production rows.
+
+Once anonymous production rows exist, preserve the anonymous tables and use a reviewed data-preserving migration or retention fix. Baseline `/readyz` remains `baseline-read-v1`; anonymous schema readiness is a separate runtime activation gate.
+
 ## Artifact Location
 
 Store migration artifacts in `db/migrations/`.

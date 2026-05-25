@@ -234,7 +234,9 @@ assert.strictEqual(contract.retention.publicSeedsAllowed, false);
   'GET /v1/profile',
   '202605241100_reserve_anonymous_session_profile_tables.md',
   'docs/anonymous-session-runtime-sequence.md',
-  'response-body `csrfToken`'
+  'response-body `csrfToken`',
+  'operator rollback notes',
+  'no-drop-after-production-writes rule'
 ].forEach(function(fragment) {
   assert(docs.indexOf(fragment) !== -1, 'docs should mention ' + fragment);
 });
@@ -252,7 +254,11 @@ assert.strictEqual(contract.retention.publicSeedsAllowed, false);
   'anonymous_planning_profiles_retention_index',
   'profile.export.rejected',
   'client IP plus normalized Origin',
-  'Runtime success behavior is mounted but must remain unreachable until'
+  'Runtime success behavior is mounted but must remain unreachable until',
+  'Operator Rollback Notes',
+  'Disabling `UTOPLAN_ANONYMOUS_RUNTIME`',
+  'do not drop anonymous tables',
+  'Dropping limiter buckets resets short-window counters'
 ].forEach(function(fragment) {
   assert(runtimeSequence.indexOf(fragment) !== -1, 'runtime sequence should mention ' + fragment);
 });

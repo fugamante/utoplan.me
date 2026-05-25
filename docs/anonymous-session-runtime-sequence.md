@@ -159,3 +159,18 @@ Runtime success behavior is mounted but must remain unreachable until:
 - focused endpoint tests cover success, ownership failure, CSRF failure, CORS failure, stale writes, delete/revoke, retention, and audit events
 
 When the gate fails, the server must keep the reserved response contract and must not execute anonymous handler data access. Current gate checks require `UTOPLAN_ANONYMOUS_RUNTIME=1`, anonymous schema readiness, and `UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE=shared` or `edge`. Edge mode also requires `UTOPLAN_ANONYMOUS_EDGE_RATE_LIMIT=1`. Shared mode requires `UTOPLAN_TRUST_PROXY=1`, `UTOPLAN_ANONYMOUS_SHARED_RATE_LIMIT=1`, and the `anonymous_rate_limit_buckets` schema to be visible to the anonymous readiness check.
+
+## Operator Rollback Notes
+
+The activation gate is the primary rollback control. Disabling `UTOPLAN_ANONYMOUS_RUNTIME` must return anonymous routes to reserved/fail-closed behavior without executing handler data access.
+
+Anonymous storage rollback for `db/migrations/202605241100_reserve_anonymous_session_profile_tables.md` is allowed only before `anonymous_sessions`, `anonymous_planning_profiles`, and `anonymous_profile_events` contain production endpoint data. Once public writes exist, do not drop anonymous tables; preserve the rows, revoke or expire sessions only through a reviewed data-preserving fix, and keep retention/deletion/export obligations intact.
+
+Shared limiter rollback for `db/migrations/202605241200_add_anonymous_rate_limit_buckets.md` is allowed only when shared limiter mode is disabled or traffic has moved to an approved edge-limited release. Dropping limiter buckets resets short-window counters and removes related observability.
+
+Operational rollback order is:
+
+1. Disable `UTOPLAN_ANONYMOUS_RUNTIME` or route traffic away from the affected app/API release pair.
+2. Remove shared or edge limiter attestations only after runtime is disabled or a fixed release is active.
+3. Run release smoke against the public app origin to confirm anonymous routes are disabled or protected by the fixed limiter mode.
+4. Apply database rollback only when the migration artifact safety conditions are satisfied.

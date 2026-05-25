@@ -68,6 +68,7 @@
 - `npm run verify:release-smoke` checks deployed app `/healthz`, public `/v1/unis`, public `/v1/planning/context-demo`, and optional API `/readyz` from configured release URLs. With `UTOPLAN_ANONYMOUS_SMOKE=1`, it also verifies the gate-mounted anonymous create/read/update/delete flow through the app origin.
 - `npm run docker:test:anonymous-runtime` now validates the gate-mounted anonymous rejection and create/read/update/delete flow in a disposable shared-limiter Compose stack that exposes only the app on `127.0.0.1:18084`.
 - Azure now runs the Docker DB contract, app/API proxy contract, start:local browser smoke, and anonymous runtime smoke sequentially with distinct Compose project names.
+- Anonymous runtime migration artifacts and operator docs now define rollback order, gate disablement, shared/edge limiter fallback, and the no-drop-after-production-writes rule.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
 
 ## Target Outcomes
@@ -204,4 +205,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Run the full validation stack after CI hardening, then continue into migration rollback/operator notes for the anonymous runtime before production deployment choices are made.
+Prepare the anonymous runtime production-decision package: target hosting topology, shared versus edge limiter choice, backup/restore evidence, and operator approval for activation.

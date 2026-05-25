@@ -183,6 +183,13 @@ Current anonymous runtime smoke hardening slice rerun:
 - `docker compose -f docker-compose.anonymous.yml config`: Pass
 - `npm run docker:test:anonymous-runtime`: Pass
 
+Current anonymous migration rollback/operator notes slice rerun:
+
+- `npm run test:migration-artifacts`: Pass
+- `npm run test:session-auth-contract`: Pass
+- `npm test`: Pass
+- `git diff --check`: Pass
+
 ## Evaluation
 
 The tested branch satisfies the current modernization acceptance criteria for:
@@ -196,6 +203,7 @@ The tested branch satisfies the current modernization acceptance criteria for:
 - opt-in anonymous release smoke coverage when `UTOPLAN_ANONYMOUS_SMOKE=1` is supplied
 - Postgres-backed shared anonymous limiter storage contract and async mounted-runtime limiter decisions
 - disposable anonymous runtime validation with shared Postgres limiter storage, private trusted-proxy API/DB services, app-origin proxy trust-header injection, and negative CORS/CSRF smoke checks
+- anonymous runtime rollback/operator controls for gate disablement, shared/edge limiter fallback, counter reset, and no destructive storage rollback after production writes
 
 ## Anomalies
 

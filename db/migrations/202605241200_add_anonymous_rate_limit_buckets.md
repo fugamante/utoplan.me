@@ -96,6 +96,17 @@ The count should be zero before anonymous runtime traffic uses the shared limite
 
 ## Rollback
 
+Only drop `anonymous_rate_limit_buckets` after anonymous shared-limiter traffic is disabled or routed away. Dropping it during active shared limiter use can fail anonymous runtime requests or reset abuse counters.
+
+Pre-rollback steps:
+
+1. Disable `UTOPLAN_ANONYMOUS_RUNTIME` or deploy an approved release pair using edge limiter mode.
+2. Verify no API instance is running with `UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE=shared`.
+3. Confirm operators accept loss of current limiter counters and related short-window observability.
+4. Confirm public anonymous routes are fail-closed or protected by the approved edge limiter release pair.
+
+The bucket rows are runtime counter state, not profile data. They may be discarded only after accepting the rate-limit reset and observability loss.
+
 ```sql
 DROP TABLE IF EXISTS anonymous_rate_limit_buckets;
 ```
@@ -106,8 +117,19 @@ Fallback application action:
 Disable `UTOPLAN_ANONYMOUS_RUNTIME` or use an edge-enforced limiter release pair.
 ```
 
+Post-rollback checks:
+
+```sh
+UTOPLAN_APP_URL=https://app.example.com \
+UTOPLAN_ANONYMOUS_SMOKE=1 \
+npm run verify:release-smoke
+```
+
+Expected result depends on the selected fallback: anonymous routes should either be disabled/fail-closed or pass only through the approved edge-limited release pair.
+
 ## Post-Deploy
 
-- Release notes updated:
-- Dashboard or logs checked:
-- Migration artifact linked from PR:
+- Release notes updated: include selected limiter mode, trusted proxy/client-IP evidence, and whether anonymous runtime remains disabled or is activated in the same release
+- Dashboard or logs checked: limiter allowed/rejected/unavailable outcomes are visible; no unexpected anonymous schema failures are present; `429` responses include `Retry-After`; public `RateLimit-*` headers remain absent unless separately approved
+- Migration artifact linked from PR: required
+- Readiness expectation: baseline `/readyz` remains `baseline-read-v1`; anonymous schema readiness is checked only by the anonymous runtime activation gate
