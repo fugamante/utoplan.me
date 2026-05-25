@@ -40,6 +40,22 @@ npm run test:data-sources
 
 The root `npm run test` command also runs this check.
 
+## Source Download Smoke
+
+Live source downloads are optional and network-gated. The default command records a skipped result and does not touch the network:
+
+```sh
+npm run smoke:data-sources
+```
+
+Run live checks only when source availability should be verified:
+
+```sh
+UTOPLAN_SOURCE_SMOKE=1 npm run smoke:data-sources -- --out=source-smoke.json
+```
+
+The smoke downloads selected registered sources into an ignored cache, runs the dry-run planner, and reports table counts plus unsupported cache errors. Use `--sources=<comma-separated-source-ids>` to narrow the check. The root test stack covers the smoke script with mocked downloads through `npm run test:data-source-smoke`.
+
 ## Schema Mapping
 
 The current source-to-schema mapping is documented in `docs/data-schema-mapping.md` and enforced by `npm run test:data-mapping`.
