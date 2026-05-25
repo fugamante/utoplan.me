@@ -88,7 +88,7 @@
       "transformConfidence": "blocked",
       "productionReadiness": "blocked",
       "sourceBacked": false,
-      "reason": "No confirmed Puerto Rico-only source or transform path."
+      "reason": "No confirmed Puerto Rico-only source defines career-department semantics or preserved joins beyond adjacent NAICS values."
     },
     {
       "table": "businesses",
@@ -96,7 +96,7 @@
       "transformConfidence": "blocked",
       "productionReadiness": "blocked",
       "sourceBacked": false,
-      "reason": "No confirmed Puerto Rico-only point business source or cdepts join source."
+      "reason": "No confirmed Puerto Rico-only public source supplies business title, physical address, point coordinates, and a defensible cdepts/NAICS join."
     },
     {
       "table": "grade_cs",
@@ -104,7 +104,7 @@
       "transformConfidence": "blocked",
       "productionReadiness": "blocked",
       "sourceBacked": false,
-      "reason": "No confirmed Puerto Rico-only graduation/career relationship source."
+      "reason": "No confirmed Puerto Rico-only source provides university-to-NAICS or career-department rate by year."
     }
   ],
   "promotionRule": "Rows may be displayed as source-backed planning data only when their sourceId is registered, their table has a table assessment, sourceBacked is true, and productionReadiness is not blocked. Rows must not be described as production-grade until requiredBeforeApiPromotion is empty or explicitly waived in release evidence."

@@ -9,7 +9,9 @@ The machine-readable contract lives in `data/mappings/puerto-rico-schema-map.jso
 - `cbps`: partial. The Datos.PR 2014 municipality County Business Patterns CSV maps `ap`, `est`, `naics`, and municipality FIPS fields to most legacy columns. Census 2014 CBP metadata confirms `NAICS2012_TTL` as the NAICS title field, but row queries require an API key in this environment. `total_indus` still needs confirmation before import.
 - `unis`: partial. The Datos.PR higher education directory maps institution name and address fields. NCES EDGE postsecondary locations, filtered to Puerto Rico with `STATE='PR'`, can supply `LAT` and `LON` after a deterministic name/address join is defined. The legacy `desc` summary is limited to non-personal institutional fields.
 - `muns`: partial. The official municipality boundary ZIP is the preferred source; DBF inspection confirmed `municipio`, `countyfp`, `cntyidfp`, and `statefp` fields.
-- `cdepts`, `businesses`, and `grade_cs`: blocked. No confirmed Puerto Rico-only source or transform path has been identified.
+- `cdepts`, `businesses`, and `grade_cs`: blocked. Reviewed adjacent sources do not provide the preserved legacy joins end to end. `cdepts` needs career-department semantics beyond distinct NAICS values, `businesses` needs point business rows plus a defensible `cdepts` join, and `grade_cs` needs university-to-career-department rate by year.
+
+The blocked-source review is recorded in `data/mappings/puerto-rico-blocked-source-review.json` and enforced by `npm run test:blocked-source-review`.
 
 ## Import Preconditions
 

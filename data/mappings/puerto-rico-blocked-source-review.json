@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "scope": "puerto-rico-only",
+  "reviewedAt": "2026-05-25",
+  "sourceRegistry": "data/sources/puerto-rico.json",
+  "schemaMapping": "data/mappings/puerto-rico-schema-map.json",
+  "provenanceConfidence": "data/mappings/puerto-rico-provenance-confidence.json",
+  "decision": "keep-blocked",
+  "reviewedTables": [
+    {
+      "table": "cdepts",
+      "legacyNeed": "NAICS-coded career department rows that also preserve defensible joins for businesses.cdepts_id and grade_cs.cdepts_id.",
+      "decision": "keep-blocked",
+      "reason": "Puerto Rico CBP sources can provide observed NAICS values, but they do not define career departments or preserve the legacy joins to businesses and grade_cs.",
+      "candidateFindings": [
+        {
+          "candidateId": "datospr-cbp-2014-municipios",
+          "url": "https://datos.estadisticas.pr/dataset/b0e448f9-d41a-4064-8536-a1b8b2b9f04b/resource/4828e082-6c0d-4d3f-be12-ab6aeb34eb59/download/cbp14pr_mun.csv",
+          "fit": "adjacent",
+          "finding": "Useful for distinct Puerto Rico NAICS values, but not a source for career-department semantics."
+        },
+        {
+          "candidateId": "advance-cte-cip-soc-naics-crosswalk",
+          "url": "https://careertech.org/resource/framework-crosswalk/",
+          "fit": "adjacent",
+          "finding": "Provides CIP, SOC, NAICS, and career-cluster crosswalk context, but it is not Puerto Rico-specific row evidence and does not recover legacy cdepts joins."
+        }
+      ]
+    },
+    {
+      "table": "businesses",
+      "legacyNeed": "Business title, physical address, point coordinates, and a defensible join to cdepts.",
+      "decision": "keep-blocked",
+      "reason": "No confirmed Puerto Rico-only public source supplies business title, physical address, point coordinates, and a defensible cdepts/NAICS join for the preserved legacy table.",
+      "candidateFindings": [
+        {
+          "candidateId": "pr-state-corporations-registry",
+          "url": "https://www.estado.pr.gov/corporaciones",
+          "fit": "insufficient",
+          "finding": "Official registry context exists, but no documented bulk open-data feed, stable API, point coordinates, or NAICS/cdepts join was confirmed."
+        },
+        {
+          "candidateId": "sam-gov-entity-management-api-pr-filtered",
+          "url": "https://open.gsa.gov/api/entity-api/",
+          "fit": "insufficient",
+          "finding": "Federal registrant data can include addresses and NAICS, but it requires an API key, is not Puerto Rico business-location coverage, lacks point coordinates, and includes contact fields that require minimization."
+        },
+        {
+          "candidateId": "osm-poi-puerto-rico-filtered",
+          "url": "https://www.openstreetmap.org/copyright/gb",
+          "fit": "insufficient",
+          "finding": "Puerto Rico-filtered POIs can provide coordinates, but coverage is crowdsourced, tag-based, non-NAICS, and carries ODbL obligations for redistributed derived databases."
+        }
+      ]
+    },
+    {
+      "table": "grade_cs",
+      "legacyNeed": "University-to-career-department rate by year, joined through unis.id and cdepts.id.",
+      "decision": "keep-blocked",
+      "reason": "No confirmed Puerto Rico-only source provides university-to-NAICS or career-department rate by year; education datasets are CIP-based adjacent sources and would require non-source-backed crosswalk assumptions.",
+      "candidateFindings": [
+        {
+          "candidateId": "nces-ipeds-completions-pr-filtered",
+          "url": "https://nces.ed.gov/ipeds/use-the-data",
+          "fit": "adjacent",
+          "finding": "IPEDS provides postsecondary data and completions analysis, but not a NAICS/cdepts graduation or career rate for the preserved legacy table."
+        },
+        {
+          "candidateId": "ed-college-scorecard-field-of-study-pr-filtered",
+          "url": "https://collegescorecard.ed.gov/data/api/",
+          "fit": "adjacent",
+          "finding": "Field-of-study data is CIP-based and useful context, but does not provide a source-backed NAICS/cdepts rate."
+        },
+        {
+          "candidateId": "advance-cte-cip-soc-naics-crosswalk",
+          "url": "https://careertech.org/resource/framework-crosswalk/",
+          "fit": "adjacent",
+          "finding": "Crosswalk context can support future research, but using it to synthesize grade_cs rows would blur source facts with inferred modeling."
+        }
+      ]
+    }
+  ],
+  "nextSteps": [
+    "Keep cdepts, businesses, and grade_cs blocked in the registry, schema map, and provenance confidence contracts.",
+    "Search for an original organizer-provided dataset or documented Puerto Rico-only bulk source before implementing imports for these tables.",
+    "If adjacent education or business sources are used later, model them in new planning-specific contracts instead of forcing them into the preserved legacy tables."
+  ]
+}

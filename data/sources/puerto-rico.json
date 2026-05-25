@@ -109,7 +109,7 @@
         "grade_cs"
       ],
       "status": "blocked",
-      "reason": "No Puerto Rico-only public source has been confirmed for the legacy transformed career, department, business, or grade relationship tables."
+      "reason": "Reviewed adjacent public sources do not provide the preserved legacy joins end to end: cdepts requires career-department semantics beyond NAICS values, businesses requires point business rows plus cdepts/NAICS joins, and grade_cs requires university-to-career-department rate by year."
     }
   ]
 }
