@@ -32,6 +32,7 @@ This report covers the current modernization branch after adding:
 - raw ZIP/DBF and extracted official municipality boundary cached planner support
 - privacy-narrowed university dry-run display summaries
 - optional network-gated source download smoke coverage
+- blocked-source review for cdepts, businesses, and grade_cs
 
 ## Test Items
 
@@ -242,6 +243,14 @@ Current source download smoke slice rerun:
 - `npm run smoke:data-sources -- --sources=datospr-official-municipality-boundaries --out=/tmp/utoplan-source-smoke-skip.json`: Pass, skipped by default without network access
 - `npm test`: Pass
 
+Current blocked-source review slice rerun:
+
+- `npm run test:blocked-source-review`: Pass
+- `npm run test:data-sources`: Pass
+- `npm run test:data-mapping`: Pass
+- `npm run test:data-provenance-confidence`: Pass
+- `npm test`: Pass
+
 ## Evaluation
 
 The tested branch satisfies the current modernization acceptance criteria for:
@@ -261,6 +270,7 @@ The tested branch satisfies the current modernization acceptance criteria for:
 - raw ZIP/DBF and extracted official municipality boundary attribute input for dry-run `muns` planning while geometry remains ignored
 - university dry-run `desc` output excludes person names, phone numbers, and email addresses while preserving institution website context
 - optional live source smoke checks that require explicit `UTOPLAN_SOURCE_SMOKE=1` activation and otherwise skip deterministically
+- cdepts, businesses, and grade_cs remain blocked with reviewed adjacent-source evidence instead of inferred legacy rows
 
 ## Anomalies
 

@@ -42,6 +42,18 @@ The strongest source matches found so far are:
 - `muns`: likely Puerto Rico municipality/county-equivalent reference data from Census or Instituto de Estadisticas sources.
 - `cdepts`, `businesses`, and `grade_cs`: likely transformed or manually joined planning data that connected NAICS/career areas, business locations, universities, and graduation rates. No public source file has been confirmed for these tables.
 
+## Blocked Source Review
+
+The modernization branch now records a reviewed blocker matrix at `data/mappings/puerto-rico-blocked-source-review.json`.
+
+Summary:
+
+- `cdepts` remains blocked because CBP can provide Puerto Rico NAICS values but not the career-department semantics or preserved joins required by the legacy schema.
+- `businesses` remains blocked because reviewed public candidates do not supply business title, physical address, point coordinates, and a defensible `cdepts`/NAICS join together.
+- `grade_cs` remains blocked because IPEDS and College Scorecard-style sources are CIP-based adjacent sources, while the preserved table needs university-to-career-department rate by year.
+
+Adjacent sources should be modeled in new planning-specific contracts if they become useful. They should not be forced into these preserved legacy tables without source-backed join evidence.
+
 The `api.utoplan.me` host no longer resolves, and this pass did not recover archived API responses. Treat all row-level data from the original API as unrecovered.
 
 ## Provenance Gap

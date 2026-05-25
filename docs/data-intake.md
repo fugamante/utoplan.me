@@ -28,7 +28,7 @@ Source-backed planning data must also have a provenance/confidence assessment be
 
 ## Unresolved Legacy Tables
 
-The legacy `cdepts`, `businesses`, and `grade_cs` tables still need source identification. They should remain blocked for production-style import until a Puerto Rico-only source, license, and transform path are recorded.
+The legacy `cdepts`, `businesses`, and `grade_cs` tables still need source identification. A blocked-source review is recorded in `data/mappings/puerto-rico-blocked-source-review.json`; they should remain blocked for production-style import until a Puerto Rico-only source, license, and end-to-end transform path are recorded.
 
 ## Source Registry Validation
 

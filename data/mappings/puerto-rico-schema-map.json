@@ -198,7 +198,7 @@
       "status": "blocked",
       "sourceIds": [],
       "preferredSourceId": null,
-      "notes": "No confirmed Puerto Rico-only source or transform path yet for career department NAICS relationships.",
+      "notes": "Blocked after source review. CBP can provide observed NAICS values, but no confirmed Puerto Rico-only source defines the career-department semantics or preserved joins required by businesses.cdepts_id and grade_cs.cdepts_id.",
       "columns": [
         {
           "target": "id",
@@ -227,7 +227,7 @@
       "status": "blocked",
       "sourceIds": [],
       "preferredSourceId": null,
-      "notes": "No confirmed Puerto Rico-only point business source or cdepts join source yet.",
+      "notes": "Blocked after source review. No confirmed Puerto Rico-only public source supplies business title, physical address, point coordinates, and a defensible cdepts/NAICS join for the preserved legacy table.",
       "columns": [
         {
           "target": "id",
@@ -276,7 +276,7 @@
       "status": "blocked",
       "sourceIds": [],
       "preferredSourceId": null,
-      "notes": "No confirmed Puerto Rico-only graduation/career relationship source yet.",
+      "notes": "Blocked after source review. IPEDS and Scorecard-style education sources are CIP-based adjacent sources, but no confirmed source provides university-to-NAICS or career-department rate by year.",
       "columns": [
         {
           "target": "id",
