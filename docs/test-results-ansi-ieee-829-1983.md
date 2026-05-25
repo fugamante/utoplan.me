@@ -190,6 +190,14 @@ Current anonymous migration rollback/operator notes slice rerun:
 - `npm test`: Pass
 - `git diff --check`: Pass
 
+Current anonymous runtime production-decision package slice rerun:
+
+- `npm run test:anonymous-runtime-decision-contract`: Pass
+- `npm run test:anonymous-runtime-decision-validate`: Pass
+- `npm run test:deployment-containers`: Pass
+- `npm test`: Pass
+- `git diff --check`: Pass
+
 ## Evaluation
 
 The tested branch satisfies the current modernization acceptance criteria for:
@@ -204,6 +212,7 @@ The tested branch satisfies the current modernization acceptance criteria for:
 - Postgres-backed shared anonymous limiter storage contract and async mounted-runtime limiter decisions
 - disposable anonymous runtime validation with shared Postgres limiter storage, private trusted-proxy API/DB services, app-origin proxy trust-header injection, and negative CORS/CSRF smoke checks
 - anonymous runtime rollback/operator controls for gate disablement, shared/edge limiter fallback, counter reset, and no destructive storage rollback after production writes
+- anonymous runtime production-decision contract and validator for topology, limiter, migration, proxy, smoke, backup/restore, rollback, and neutral operator approval evidence
 
 ## Anomalies
 
@@ -212,7 +221,7 @@ None observed in the validation commands listed above.
 ## Residual Risks
 
 - Production-grade user accounts, passwords, and privacy controls are not implemented.
-- Anonymous session/profile runtime endpoints are mounted behind a fail-closed activation gate, but production exposure still depends on applying the anonymous migration artifacts in the target database, proxy evidence, explicit edge/shared limiter attestation, and running the opt-in smoke against the candidate environment.
+- Anonymous session/profile runtime endpoints are mounted behind a fail-closed activation gate, but production exposure still depends on real deployment evidence satisfying the anonymous runtime production-decision contract.
 - Demo seed data is intentionally non-production and should not be confused with a complete source-backed product dataset.
 - CBP field semantics still carry low transform confidence.
 - Planning signals remain intentionally absent until more source-backed data and product rules are defined.

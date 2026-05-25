@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 1,
+  "scope": "anonymous-runtime-production",
+  "contractStatus": "draft-activation-decision",
+  "purpose": "Define the production-decision evidence required before anonymous session/profile runtime activation.",
+  "artifactName": "anonymousRuntimeProductionDecision",
+  "requiredFields": [
+    "schemaVersion",
+    "scope",
+    "decisionStatus",
+    "decisionBy",
+    "decidedAt",
+    "targetEnvironment",
+    "targetOrigin",
+    "hostingTopology",
+    "runtimeGate",
+    "migrationEvidence",
+    "limiterEvidence",
+    "proxyEvidence",
+    "smokeEvidence",
+    "backupRestoreEvidence",
+    "rollbackEvidence",
+    "acknowledgements"
+  ],
+  "fieldRules": {
+    "schemaVersion": {
+      "equals": 1
+    },
+    "scope": {
+      "equals": "anonymous-runtime-production"
+    },
+    "decisionStatus": {
+      "allowedValues": [
+        "approved-for-activation",
+        "blocked"
+      ]
+    },
+    "decisionBy": {
+      "type": "string",
+      "description": "Neutral operator role or team name; avoid personal identifiers in public artifacts."
+    },
+    "decidedAt": {
+      "type": "iso-8601-timestamp"
+    },
+    "targetEnvironment": {
+      "type": "string",
+      "description": "Deployment environment label such as production or staging."
+    },
+    "targetOrigin": {
+      "type": "http-origin"
+    },
+    "hostingTopology": {
+      "requiredFields": [
+        "publicEntry",
+        "apiPrivate",
+        "postgresPrivate",
+        "apiDirectPublicAccess",
+        "sameOriginAppProxy"
+      ]
+    },
+    "runtimeGate": {
+      "requiredFields": [
+        "UTOPLAN_ANONYMOUS_RUNTIME",
+        "UTOPLAN_ANONYMOUS_ALLOWED_ORIGINS",
+        "UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE"
+      ]
+    },
+    "migrationEvidence": {
+      "requiredFields": [
+        "anonymousStorageMigrationApplied",
+        "sharedLimiterMigrationApplied",
+        "anonymousSchemaReady",
+        "baselineReadyzUnchanged"
+      ]
+    },
+    "limiterEvidence": {
+      "requiredFields": [
+        "mode",
+        "attested",
+        "scopeEvidence",
+        "failClosedBehaviorReviewed"
+      ]
+    },
+    "proxyEvidence": {
+      "requiredFields": [
+        "trustedClientIpVerified",
+        "forwardingHeadersStripped",
+        "attackerSuppliedHeaderSmokePassed"
+      ]
+    },
+    "smokeEvidence": {
+      "requiredFields": [
+        "releaseSmokePassed",
+        "anonymousSmokePassed",
+        "negativeCorsCsrfChecksPassed"
+      ]
+    },
+    "backupRestoreEvidence": {
+      "requiredFields": [
+        "backupIdentifier",
+        "backupTimestamp",
+        "restoreProcedureLocation",
+        "reviewed"
+      ]
+    },
+    "rollbackEvidence": {
+      "requiredFields": [
+        "activationGateDisablement",
+        "sharedOrEdgeLimiterFallback",
+        "noDropAfterProductionWrites",
+        "dataPreservingRollbackReviewed"
+      ]
+    },
+    "acknowledgements": {
+      "type": "array",
+      "valueSource": "requiredAcknowledgements"
+    }
+  },
+  "requiredAcknowledgements": [
+    "Anonymous runtime activation may create production anonymous session/profile rows.",
+    "Anonymous session/profile tables must not be dropped after production writes exist.",
+    "The activation gate is the first rollback control.",
+    "Shared or edge rate limiting is active before public traffic reaches anonymous routes.",
+    "Trusted client IP handling was verified at the public app boundary.",
+    "The opt-in anonymous release smoke passed against the candidate public app origin.",
+    "This approval does not approve password accounts or production user authentication."
+  ],
+  "forbiddenFields": [
+    "password",
+    "token",
+    "secret",
+    "privateKey",
+    "personalEmail",
+    "DATABASE_URL",
+    "cookie",
+    "csrfToken",
+    "sessionToken",
+    "authorization",
+    "setCookie",
+    "clientIp",
+    "rawEnv"
+  ],
+  "retention": {
+    "storeWithReleaseArtifact": true,
+    "includeInPublicRepo": false,
+    "notes": "Real production decision artifacts can contain operational metadata and must be stored with release evidence, not committed as real approvals."
+  },
+  "exclusions": [
+    "This decision package does not approve password accounts.",
+    "This decision package does not approve production user authentication.",
+    "This decision package does not approve source-data writer mutation."
+  ]
+}

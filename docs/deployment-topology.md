@@ -38,6 +38,8 @@ The API container fails fast in production when neither `DATABASE_URL` nor `DATA
 
 Use `docs/production-deployment.md` for the production operator runbook, including secret configuration, release checks, migration expectations, and rollback triggers.
 
+Anonymous runtime production activation also requires the decision package in `docs/anonymous-runtime-production-decision.md`. The integrated Compose file proves the private API shape, but the production package must still include platform evidence for public boundary behavior, client-IP forwarding, limiter enforcement, migrations, smoke checks, backup/restore, and rollback.
+
 ## Fixture Policy
 
 Fixture mode is not part of the integrated deployment path. `UTOPLAN_DEMO_FIXTURE=1` is reserved for explicit offline demos and tests.

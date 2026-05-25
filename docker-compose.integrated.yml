@@ -9,7 +9,7 @@ services:
       UTOPLAN_API_ORIGIN: http://api:3001
     command: ["sh", "-c", "node scripts/verify_deployment_config.js --service=app && npm run start:app"]
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
     depends_on:
       api:
         condition: service_healthy

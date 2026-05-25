@@ -57,6 +57,21 @@ Do not enable public anonymous profile writes unless the deployed proxy/edge beh
 
 Reserved anonymous runtime activation uses `UTOPLAN_ANONYMOUS_RUNTIME=1`, `UTOPLAN_ANONYMOUS_ALLOWED_ORIGINS`, and `UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE=shared` or `edge`. Edge mode also requires `UTOPLAN_ANONYMOUS_EDGE_RATE_LIMIT=1`, which is an operator attestation that the deployment edge enforces the approved anonymous rate-limit scopes before requests reach the API. Shared mode requires `UTOPLAN_TRUST_PROXY=1` plus `UTOPLAN_ANONYMOUS_SHARED_RATE_LIMIT=1`, the anonymous session/profile migration, and the shared limiter migration `db/migrations/202605241200_add_anonymous_rate_limit_buckets.md`. Handlers are mounted behind this fail-closed gate; public success behavior is reachable only when anonymous schema readiness, explicit limiter attestation, proxy evidence, and endpoint tests are all satisfied.
 
+## Anonymous Runtime Production Decision
+
+Before enabling `UTOPLAN_ANONYMOUS_RUNTIME=1` for public traffic, prepare and validate the production-decision package described in `docs/anonymous-runtime-production-decision.md`. The package must prove:
+
+- topology: `Browser -> public app or deployment edge -> private API -> private PostgreSQL`
+- the API is not directly public
+- untrusted forwarding headers are stripped and one trusted client IP signal is injected
+- shared or edge limiter mode is selected with supporting evidence
+- anonymous storage and shared limiter migration status is known
+- backup/restore evidence is reviewed
+- opt-in anonymous release smoke and negative CORS/CSRF checks passed
+- rollback uses gate disablement first and preserves anonymous tables after production writes
+
+`npm run verify:deployment` checks environment shape only; it does not prove topology, proxy behavior, edge policy, migration application, or smoke evidence.
+
 ## Preflight Checklist
 
 Run these checks before promoting a release candidate:

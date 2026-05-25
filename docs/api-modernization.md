@@ -78,4 +78,4 @@ The modern API must pass preserved endpoint contracts before additional endpoint
 
 ## Next Slice
 
-Next, prepare the anonymous runtime production-decision package: target hosting topology, shared versus edge limiter choice, backup/restore evidence, and operator approval for activation. Test migration to TypeScript is optional and lower priority than product behavior or CI hardening.
+Next, decide whether to add an example non-secret anonymous runtime decision evidence bundle or continue toward richer source-backed demo data. Test migration to TypeScript is optional and lower priority than product behavior or CI hardening.
