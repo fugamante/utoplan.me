@@ -4,7 +4,7 @@ ANSI/IEEE 829-1983-style summary for the modernization branch validation pass.
 
 ## Test Summary Identifier
 
-`utoplan-modernization-20260524-demo-session`
+`utoplan-modernization-20260525-anonymous-decision-demo-data`
 
 ## Scope
 
@@ -28,6 +28,8 @@ This report covers the current modernization branch after adding:
 - Docker Postgres demo seed and demo Compose topology
 - readiness coverage for the required demo session table
 - release smoke support for demo-session validation
+- non-secret blocked anonymous runtime decision example fixture
+- extracted official municipality boundary attribute fixture and cached planner support
 
 ## Test Items
 
@@ -39,11 +41,12 @@ This report covers the current modernization branch after adding:
 - Disposable anonymous runtime Docker/Postgres smoke
 - Migration artifact format checks
 - Data source, mapping, normalization, provenance, planning, load, writer-gate, and release-evidence checks
+- Anonymous runtime decision contract, validation, and example-fixture checks
 - Release preflight and release smoke scripts
 
 ## Environment
 
-- Date: 2026-05-24
+- Date: 2026-05-25
 - Branch: `modernization/sandbox`
 - Runtime: Node.js/npm through project scripts
 - Container validation: Docker Compose with seeded Postgres
@@ -198,6 +201,16 @@ Current anonymous runtime production-decision package slice rerun:
 - `npm test`: Pass
 - `git diff --check`: Pass
 
+Current anonymous decision example and municipality demo-data slice rerun:
+
+- `npm run test:anonymous-runtime-decision-example`: Pass
+- `npm run test:data-plan`: Pass
+- `npm run test:data-normalization`: Pass
+- `npm run test:anonymous-runtime-decision-validate`: Pass
+- `npm test`: Pass
+- `npm run docker:test:data-sql-preview`: Pass
+- `git diff --check`: Pass
+
 ## Evaluation
 
 The tested branch satisfies the current modernization acceptance criteria for:
@@ -213,6 +226,8 @@ The tested branch satisfies the current modernization acceptance criteria for:
 - disposable anonymous runtime validation with shared Postgres limiter storage, private trusted-proxy API/DB services, app-origin proxy trust-header injection, and negative CORS/CSRF smoke checks
 - anonymous runtime rollback/operator controls for gate disablement, shared/edge limiter fallback, counter reset, and no destructive storage rollback after production writes
 - anonymous runtime production-decision contract and validator for topology, limiter, migration, proxy, smoke, backup/restore, rollback, and neutral operator approval evidence
+- non-secret anonymous runtime decision example validation without approving activation
+- extracted official municipality boundary attribute input for dry-run `muns` planning while raw ZIP parsing remains blocked
 
 ## Anomalies
 

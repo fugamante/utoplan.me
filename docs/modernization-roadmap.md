@@ -52,6 +52,7 @@
 - `scripts/data_normalization.js` provides fixture-backed normalization helpers for NAICS filtering, municipality code coercion, title cleanup, and university coordinate join review behavior.
 - `scripts/data_import_plan.js` provides an offline fixture planning harness and CLI that reports accepted, rejected, and manual-review records without fetching source data or mutating a database.
 - `scripts/data_source_cache.js` downloads only registered HTTPS Puerto Rico sources into an ignored local cache with metadata sidecars, and the offline planner can consume supported cached CSV/JSON sources by source ID while reporting unsupported cached sources explicitly.
+- The offline planner can consume an extracted official municipality boundary CSV/JSON attribute table for `muns` while keeping raw boundary ZIP parsing blocked.
 - `scripts/data_load_plan.js` converts accepted planner records into dry-run DB-ready row groups while preserving skipped rejected/manual-review records.
 - `data/mappings/puerto-rico-load-policy.json` defines the transaction, idempotency, and write-guard policy required before any future database loader can mutate data.
 - `scripts/data_sql_preview.js` converts a dry-run load plan plus the load policy into parameterized PostgreSQL upsert previews without connecting to a database or enabling writes.
@@ -70,6 +71,7 @@
 - Azure now runs the Docker DB contract, app/API proxy contract, start:local browser smoke, and anonymous runtime smoke sequentially with distinct Compose project names.
 - Anonymous runtime migration artifacts and operator docs now define rollback order, gate disablement, shared/edge limiter fallback, and the no-drop-after-production-writes rule.
 - `data/mappings/anonymous-runtime-production-decision-contract.json`, `docs/anonymous-runtime-production-decision.md`, and `npm run validate:anonymous-runtime-decision` define the evidence package required before anonymous runtime activation.
+- `data/fixtures/non-production/anonymous-runtime-decision-example/` provides a non-secret blocked example of the anonymous runtime decision package shape.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
 
 ## Target Outcomes
@@ -206,4 +208,4 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Run the production-decision validation checks, then decide whether to build an example non-secret evidence bundle or continue toward richer source-backed demo data.
+Continue richer source-backed demo data work by either adding production-grade raw ZIP/DBF extraction for the official municipality boundary source or moving to the next source-backed table slice with the same dry-run and provenance boundaries.

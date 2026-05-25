@@ -82,10 +82,11 @@ npm run plan:data -- --cache-dir=.cache/utoplan-data --out=report.json
 Supported cached planner inputs:
 
 - `datospr-cbp-2014-municipios`
+- `datospr-official-municipality-boundaries` when cache metadata points to an extracted CSV or JSON attribute table with `municipio`, `countyfp`, and/or `cntyidfp`
 - `datospr-higher-ed-directory-2017-18`
 - `nces-edge-postsecondary-locations-2021-pr`
 
-The official municipality boundary ZIP is intentionally not consumed by the planner yet; it needs DBF extraction support first.
+The raw official municipality boundary ZIP is intentionally not consumed by the planner yet. Operators must extract the non-geometry attribute table before dry-run planning, and the planner still imports only `muns.title` and `muns.county`.
 
 When a cached source is present but unsupported, the planner includes `unsupportedCacheSources` in the report instead of guessing how to handle it.
 
