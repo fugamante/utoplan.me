@@ -2,6 +2,7 @@
 
 var fs = require('fs');
 var path = require('path');
+var zlib = require('zlib');
 var normalization = require('./data_normalization');
 
 var CACHE_SOURCE_KEYS = {
@@ -168,6 +169,12 @@ function planMunicipalityRows(rows, options) {
   rows.forEach(function(row, index) {
     var title = normalization.normalizeMunTitle(row.municipio);
     var county = normalization.normalizeMunCounty(row);
+    var state = row.statefp === null || row.statefp === undefined ? '' : String(row.statefp).trim();
+
+    if (state && state !== '72') {
+      plan.rejected.push(issue('muns', sourceId, index, 'municipality row must be Puerto Rico statefp 72', row));
+      return;
+    }
 
     if (!title.ok || !county.ok) {
       plan.rejected.push(issue('muns', sourceId, index, [
@@ -302,6 +309,170 @@ function readCsvFile(filePath) {
   return rowsFromCsv(fs.readFileSync(filePath, 'utf8'));
 }
 
+function trimBinaryText(value) {
+  return String(value || '').replace(/\0/g, '').trim();
+}
+
+function readZipEntries(buffer) {
+  var eocdOffset = -1;
+  var maxSearch = Math.max(0, buffer.length - 65557);
+  var offset;
+  var entryCount;
+  var centralOffset;
+  var entries = {};
+  var index;
+
+  for (offset = buffer.length - 22; offset >= maxSearch; offset -= 1) {
+    if (buffer.readUInt32LE(offset) === 0x06054b50) {
+      eocdOffset = offset;
+      break;
+    }
+  }
+
+  if (eocdOffset === -1) {
+    throw new Error('ZIP end-of-central-directory record was not found');
+  }
+
+  entryCount = buffer.readUInt16LE(eocdOffset + 10);
+  centralOffset = buffer.readUInt32LE(eocdOffset + 16);
+  offset = centralOffset;
+
+  for (index = 0; index < entryCount; index += 1) {
+    var compressionMethod;
+    var compressedSize;
+    var fileNameLength;
+    var extraLength;
+    var commentLength;
+    var localHeaderOffset;
+    var fileName;
+    var localNameLength;
+    var localExtraLength;
+    var dataOffset;
+    var compressed;
+    var content;
+
+    if (buffer.readUInt32LE(offset) !== 0x02014b50) {
+      throw new Error('ZIP central-directory entry is invalid');
+    }
+
+    compressionMethod = buffer.readUInt16LE(offset + 10);
+    compressedSize = buffer.readUInt32LE(offset + 20);
+    fileNameLength = buffer.readUInt16LE(offset + 28);
+    extraLength = buffer.readUInt16LE(offset + 30);
+    commentLength = buffer.readUInt16LE(offset + 32);
+    localHeaderOffset = buffer.readUInt32LE(offset + 42);
+    fileName = buffer.slice(offset + 46, offset + 46 + fileNameLength).toString('utf8');
+
+    if (buffer.readUInt32LE(localHeaderOffset) !== 0x04034b50) {
+      throw new Error('ZIP local file header is invalid for ' + fileName);
+    }
+
+    localNameLength = buffer.readUInt16LE(localHeaderOffset + 26);
+    localExtraLength = buffer.readUInt16LE(localHeaderOffset + 28);
+    dataOffset = localHeaderOffset + 30 + localNameLength + localExtraLength;
+    compressed = buffer.slice(dataOffset, dataOffset + compressedSize);
+
+    if (compressionMethod === 0) {
+      content = compressed;
+    } else if (compressionMethod === 8) {
+      content = zlib.inflateRawSync(compressed);
+    } else {
+      throw new Error('ZIP entry ' + fileName + ' uses unsupported compression method ' + compressionMethod);
+    }
+
+    entries[fileName] = content;
+    offset += 46 + fileNameLength + extraLength + commentLength;
+  }
+
+  return entries;
+}
+
+function readDbfRows(buffer) {
+  var rowCount;
+  var headerLength;
+  var rowLength;
+  var fields = [];
+  var offset = 32;
+  var rows = [];
+  var rowIndex;
+
+  if (buffer.length < 33) {
+    throw new Error('DBF file is too small');
+  }
+
+  rowCount = buffer.readUInt32LE(4);
+  headerLength = buffer.readUInt16LE(8);
+  rowLength = buffer.readUInt16LE(10);
+
+  while (offset < headerLength && buffer[offset] !== 0x0d) {
+    var name = trimBinaryText(buffer.slice(offset, offset + 11).toString('latin1'));
+    var type = String.fromCharCode(buffer[offset + 11]);
+    var length = buffer[offset + 16];
+
+    if (name) {
+      fields.push({
+        name: name.toLowerCase(),
+        type: type,
+        length: length
+      });
+    }
+
+    offset += 32;
+  }
+
+  if (fields.length === 0) {
+    throw new Error('DBF file has no field descriptors');
+  }
+
+  for (rowIndex = 0; rowIndex < rowCount; rowIndex += 1) {
+    var rowOffset = headerLength + (rowIndex * rowLength);
+    var fieldOffset = rowOffset + 1;
+    var record = {};
+
+    if (rowOffset + rowLength > buffer.length) {
+      throw new Error('DBF record extends beyond file length');
+    }
+
+    if (buffer[rowOffset] === 0x2a) {
+      continue;
+    }
+
+    fields.forEach(function(field) {
+      var raw = trimBinaryText(buffer.slice(fieldOffset, fieldOffset + field.length).toString('latin1'));
+      record[field.name] = raw;
+      fieldOffset += field.length;
+    });
+
+    rows.push(record);
+  }
+
+  return rows;
+}
+
+function readMunicipalityBoundaryZip(filePath) {
+  var entries = readZipEntries(fs.readFileSync(filePath));
+  var dbfNames = Object.keys(entries).filter(function(fileName) {
+    return /\.dbf$/i.test(fileName);
+  });
+  var selected = dbfNames.filter(function(fileName) {
+    return path.basename(fileName).toLowerCase() === 'municipios.dbf';
+  });
+
+  if (selected.length === 0 && dbfNames.length === 1) {
+    selected = dbfNames;
+  }
+
+  if (dbfNames.length === 0) {
+    throw new Error('official municipality boundary ZIP does not include a DBF attribute table');
+  }
+
+  if (selected.length !== 1) {
+    throw new Error('official municipality boundary ZIP must include one municipios.dbf attribute table');
+  }
+
+  return readDbfRows(entries[selected[0]]);
+}
+
 function readMunicipalityCacheRows(filePath) {
   var extension = path.extname(filePath).toLowerCase();
   var parsed;
@@ -322,7 +493,11 @@ function readMunicipalityCacheRows(filePath) {
     }
   }
 
-  throw new Error('official municipality boundaries must be an extracted CSV or JSON attribute table');
+  if (extension === '.zip') {
+    return readMunicipalityBoundaryZip(filePath);
+  }
+
+  throw new Error('official municipality boundaries must be a ZIP, extracted CSV, or extracted JSON attribute table');
 }
 
 function readCoordinateJsonFile(filePath) {
@@ -475,7 +650,10 @@ module.exports = {
   CACHE_SOURCE_KEYS: CACHE_SOURCE_KEYS,
   readCacheFixtures: readCacheFixtures,
   readCoordinateJsonFile: readCoordinateJsonFile,
+  readDbfRows: readDbfRows,
   readMunicipalityCacheRows: readMunicipalityCacheRows,
+  readMunicipalityBoundaryZip: readMunicipalityBoundaryZip,
+  readZipEntries: readZipEntries,
   parseCsv: parseCsv,
   planCbpRows: planCbpRows,
   planMunicipalityRows: planMunicipalityRows,

@@ -29,7 +29,7 @@ This report covers the current modernization branch after adding:
 - readiness coverage for the required demo session table
 - release smoke support for demo-session validation
 - non-secret blocked anonymous runtime decision example fixture
-- extracted official municipality boundary attribute fixture and cached planner support
+- raw ZIP/DBF and extracted official municipality boundary cached planner support
 
 ## Test Items
 
@@ -211,6 +211,19 @@ Current anonymous decision example and municipality demo-data slice rerun:
 - `npm run docker:test:data-sql-preview`: Pass
 - `git diff --check`: Pass
 
+Current raw municipality ZIP/DBF planner slice rerun:
+
+- `npm run test:data-plan`: Pass
+- `npm run test:data-normalization`: Pass
+- `node --check scripts/data_import_plan.js && node --check test/data_import_plan_test.js`: Pass
+- Official boundary ZIP smoke via temporary cache and `npm run plan:data`: Pass; accepted 78 `muns` rows with no unsupported sources.
+- `npm test`: Pass
+- `npm run docker:test:data-sql-preview`: Pass
+- `npm audit --audit-level=moderate`: Pass, 0 vulnerabilities
+- `npm --prefix app audit --audit-level=moderate`: Pass, 0 vulnerabilities
+- `npm --prefix dtoapi audit --audit-level=moderate`: Pass, 0 vulnerabilities
+- `npm --prefix dtoapi/modern audit --audit-level=moderate`: Pass, 0 vulnerabilities
+
 ## Evaluation
 
 The tested branch satisfies the current modernization acceptance criteria for:
@@ -227,7 +240,7 @@ The tested branch satisfies the current modernization acceptance criteria for:
 - anonymous runtime rollback/operator controls for gate disablement, shared/edge limiter fallback, counter reset, and no destructive storage rollback after production writes
 - anonymous runtime production-decision contract and validator for topology, limiter, migration, proxy, smoke, backup/restore, rollback, and neutral operator approval evidence
 - non-secret anonymous runtime decision example validation without approving activation
-- extracted official municipality boundary attribute input for dry-run `muns` planning while raw ZIP parsing remains blocked
+- raw ZIP/DBF and extracted official municipality boundary attribute input for dry-run `muns` planning while geometry remains ignored
 
 ## Anomalies
 
