@@ -84,13 +84,13 @@ The branch now has a DB-backed demo path:
 - anonymous runtime migration rollback/operator notes covering gate disablement, limiter fallback, counter reset, and the no-drop-after-production-writes rule
 - anonymous runtime production-decision contract, validator, and operator package guide
 - non-secret blocked anonymous runtime decision example fixture for artifact-shape validation
-- extracted official municipality boundary attribute fixture and cache-planner support for richer source-backed `muns` demo rows without importing geometry
+- raw ZIP/DBF and extracted attribute cache-planner support for richer source-backed `muns` demo rows without importing geometry
 - `docker-compose.demo.yml` for a runnable local DB-backed demo
 
 Remaining product work:
 
 - browser-local saved profile flow
 - production authentication/session design
-- production-grade raw ZIP/DBF extraction for the official municipality boundary source
 - richer source-backed demo dataset beyond the current municipality/CBP/university slice
+- optional network-gated source download smoke coverage
 - final audit after the remaining roadmap items are complete

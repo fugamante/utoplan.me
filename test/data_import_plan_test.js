@@ -5,7 +5,148 @@ var childProcess = require('child_process');
 var fs = require('fs');
 var os = require('os');
 var path = require('path');
+var zlib = require('zlib');
 var planner = require('../scripts/data_import_plan');
+
+function fixedWidth(value, length) {
+  var text = String(value || '');
+
+  if (text.length > length) {
+    return text.slice(0, length);
+  }
+
+  return text + new Array(length - text.length + 1).join(' ');
+}
+
+function buildDbf(rows, fields) {
+  var headerLength = 32 + (fields.length * 32) + 1;
+  var rowLength = 1 + fields.reduce(function(total, field) {
+    return total + field.length;
+  }, 0);
+  var buffer = Buffer.alloc(headerLength + (rows.length * rowLength) + 1, 0);
+  var offset = 32;
+  var rowOffset;
+
+  buffer[0] = 0x03;
+  buffer[1] = 126;
+  buffer[2] = 4;
+  buffer[3] = 25;
+  buffer.writeUInt32LE(rows.length, 4);
+  buffer.writeUInt16LE(headerLength, 8);
+  buffer.writeUInt16LE(rowLength, 10);
+
+  fields.forEach(function(field) {
+    Buffer.from(field.name, 'ascii').copy(buffer, offset, 0, Math.min(field.name.length, 10));
+    buffer[offset + 11] = field.type.charCodeAt(0);
+    buffer[offset + 16] = field.length;
+    offset += 32;
+  });
+  buffer[offset] = 0x0d;
+
+  rows.forEach(function(row, index) {
+    var fieldOffset;
+
+    rowOffset = headerLength + (index * rowLength);
+    buffer[rowOffset] = 0x20;
+    fieldOffset = rowOffset + 1;
+    fields.forEach(function(field) {
+      Buffer.from(fixedWidth(row[field.name], field.length), 'latin1').copy(buffer, fieldOffset);
+      fieldOffset += field.length;
+    });
+  });
+  buffer[buffer.length - 1] = 0x1a;
+
+  return buffer;
+}
+
+function buildZipEntry(fileName, content, options) {
+  var compressed = options && options.deflate ? zlib.deflateRawSync(content) : content;
+  var method = options && options.deflate ? 8 : 0;
+
+  return {
+    fileName: fileName,
+    content: content,
+    compressed: compressed,
+    method: method
+  };
+}
+
+function buildZip(entries) {
+  var localParts = [];
+  var centralParts = [];
+  var localOffset = 0;
+
+  entries.forEach(function(entry) {
+    var name = Buffer.from(entry.fileName, 'utf8');
+    var local = Buffer.alloc(30 + name.length);
+    var central = Buffer.alloc(46 + name.length);
+
+    local.writeUInt32LE(0x04034b50, 0);
+    local.writeUInt16LE(20, 4);
+    local.writeUInt16LE(entry.method, 8);
+    local.writeUInt32LE(0, 14);
+    local.writeUInt32LE(entry.compressed.length, 18);
+    local.writeUInt32LE(entry.content.length, 22);
+    local.writeUInt16LE(name.length, 26);
+    name.copy(local, 30);
+    localParts.push(local, entry.compressed);
+
+    central.writeUInt32LE(0x02014b50, 0);
+    central.writeUInt16LE(20, 4);
+    central.writeUInt16LE(20, 6);
+    central.writeUInt16LE(entry.method, 10);
+    central.writeUInt32LE(0, 16);
+    central.writeUInt32LE(entry.compressed.length, 20);
+    central.writeUInt32LE(entry.content.length, 24);
+    central.writeUInt16LE(name.length, 28);
+    central.writeUInt32LE(localOffset, 42);
+    name.copy(central, 46);
+    centralParts.push(central);
+
+    localOffset += local.length + entry.compressed.length;
+  });
+
+  var localBuffer = Buffer.concat(localParts);
+  var centralBuffer = Buffer.concat(centralParts);
+  var eocd = Buffer.alloc(22);
+
+  eocd.writeUInt32LE(0x06054b50, 0);
+  eocd.writeUInt16LE(entries.length, 8);
+  eocd.writeUInt16LE(entries.length, 10);
+  eocd.writeUInt32LE(centralBuffer.length, 12);
+  eocd.writeUInt32LE(localBuffer.length, 16);
+
+  return Buffer.concat([localBuffer, centralBuffer, eocd]);
+}
+
+function municipalityZip(rows) {
+  return buildZip([
+    buildZipEntry('mapa-oficial-municipios/municipios.dbf', buildDbf(rows, [
+      {
+        name: 'municipio',
+        type: 'C',
+        length: 32
+      },
+      {
+        name: 'countyfp',
+        type: 'C',
+        length: 3
+      },
+      {
+        name: 'cntyidfp',
+        type: 'C',
+        length: 5
+      },
+      {
+        name: 'statefp',
+        type: 'C',
+        length: 2
+      }
+    ]), {
+      deflate: true
+    })
+  ]);
+}
 
 var fixtures = {
   cbps: [
@@ -148,6 +289,28 @@ assert(plan.rejected.some(function(item) {
   return item.table === 'muns' && item.reason.indexOf('municipality title is required') !== -1;
 }));
 
+assert(planner.planMunicipalityRows([
+  {
+    municipio: 'Miami',
+    countyfp: '086',
+    cntyidfp: '12086',
+    statefp: '12'
+  }
+]).rejected.some(function(item) {
+  return item.reason === 'municipality row must be Puerto Rico statefp 72';
+}));
+
+assert(planner.planMunicipalityRows([
+  {
+    municipio: 'Adjuntas',
+    countyfp: '',
+    cntyidfp: '',
+    statefp: '72'
+  }
+]).rejected.some(function(item) {
+  return item.reason.indexOf('municipality county code must be numeric') !== -1;
+}));
+
 assert(plan.manualReview.some(function(item) {
   return item.table === 'unis' && item.reason.indexOf('multiple coordinate rows') !== -1;
 }));
@@ -170,10 +333,22 @@ var cacheDir = path.join(tmpDir, 'cache');
 var cachedOutPath = path.join(tmpDir, 'cached-report.json');
 var extractedCacheDir = path.join(tmpDir, 'extracted-cache');
 var extractedCachedOutPath = path.join(tmpDir, 'extracted-cached-report.json');
+var zipCacheDir = path.join(tmpDir, 'zip-cache');
+var zipCachedOutPath = path.join(tmpDir, 'zip-cached-report.json');
+var corruptZipCacheDir = path.join(tmpDir, 'corrupt-zip-cache');
+var corruptZipCachedOutPath = path.join(tmpDir, 'corrupt-zip-cached-report.json');
+var missingDbfCacheDir = path.join(tmpDir, 'missing-dbf-cache');
+var missingDbfCachedOutPath = path.join(tmpDir, 'missing-dbf-cached-report.json');
+var ambiguousDbfCacheDir = path.join(tmpDir, 'ambiguous-dbf-cache');
+var ambiguousDbfCachedOutPath = path.join(tmpDir, 'ambiguous-dbf-cached-report.json');
 var sampleResult;
 var sampleCsvResult;
 var cachedResult;
 var extractedCachedResult;
+var zipCachedResult;
+var corruptZipCachedResult;
+var missingDbfCachedResult;
+var ambiguousDbfCachedResult;
 
 fs.writeFileSync(fixturePath, JSON.stringify(fixtures, null, 2));
 
@@ -290,7 +465,7 @@ assert.strictEqual(cachedPlan.tables.unis.manualReview, 2);
 assert.deepStrictEqual(cachedPlan.unsupportedCacheSources, [
   'datospr-official-municipality-boundaries'
 ]);
-assert.strictEqual(cachedPlan.unsupportedCacheSourceErrors[0].reason, 'official municipality boundaries must be an extracted CSV or JSON attribute table');
+assert.strictEqual(cachedPlan.unsupportedCacheSourceErrors[0].reason, 'ZIP end-of-central-directory record was not found');
 
 fs.mkdirSync(extractedCacheDir);
 fs.copyFileSync(path.join(__dirname, '..', 'data', 'fixtures', 'non-production', 'cbps.csv'), path.join(extractedCacheDir, 'datospr-cbp-2014-municipios.csv'));
@@ -339,6 +514,156 @@ assert.deepStrictEqual(extractedCachedPlan.accepted.filter(function(item) {
   county: 21
 });
 assert.deepStrictEqual(extractedCachedPlan.unsupportedCacheSources || [], []);
+
+fs.mkdirSync(zipCacheDir);
+fs.copyFileSync(path.join(__dirname, '..', 'data', 'fixtures', 'non-production', 'cbps.csv'), path.join(zipCacheDir, 'datospr-cbp-2014-municipios.csv'));
+fs.copyFileSync(path.join(__dirname, '..', 'data', 'fixtures', 'non-production', 'unis.csv'), path.join(zipCacheDir, 'datospr-higher-ed-directory-2017-18.csv'));
+fs.writeFileSync(path.join(zipCacheDir, 'nces-edge-postsecondary-locations-2021-pr.json'), JSON.stringify({
+  features: fixtures.unisCoordinates.map(function(row) {
+    return {
+      attributes: row
+    };
+  })
+}));
+fs.writeFileSync(path.join(zipCacheDir, 'datospr-official-municipality-boundaries.zip'), municipalityZip([
+  {
+    municipio: 'Adjuntas',
+    countyfp: '001',
+    cntyidfp: '72001',
+    statefp: '72'
+  },
+  {
+    municipio: 'Bayamon',
+    countyfp: '021',
+    cntyidfp: '72021',
+    statefp: '72'
+  },
+  {
+    municipio: 'San Juan',
+    countyfp: '127',
+    cntyidfp: '72127',
+    statefp: '72'
+  }
+]));
+
+[
+  ['datospr-cbp-2014-municipios', 'datospr-cbp-2014-municipios.csv'],
+  ['datospr-higher-ed-directory-2017-18', 'datospr-higher-ed-directory-2017-18.csv'],
+  ['nces-edge-postsecondary-locations-2021-pr', 'nces-edge-postsecondary-locations-2021-pr.json'],
+  ['datospr-official-municipality-boundaries', 'datospr-official-municipality-boundaries.zip']
+].forEach(function(entry) {
+  fs.writeFileSync(path.join(zipCacheDir, entry[0] + '.metadata.json'), JSON.stringify({
+    id: entry[0],
+    dataPath: entry[1]
+  }));
+});
+
+zipCachedResult = childProcess.spawnSync(process.execPath, [
+  'scripts/data_import_plan.js',
+  '--cache-dir=' + zipCacheDir,
+  '--out=' + zipCachedOutPath
+], {
+  cwd: path.join(__dirname, '..'),
+  encoding: 'utf8'
+});
+
+assert.strictEqual(zipCachedResult.status, 0);
+var zipCachedPlan = JSON.parse(fs.readFileSync(zipCachedOutPath, 'utf8'));
+assert.strictEqual(zipCachedPlan.tables.muns.accepted, 3);
+assert.strictEqual(zipCachedPlan.tables.muns.rejected, 0);
+assert.deepStrictEqual(zipCachedPlan.accepted.filter(function(item) {
+  return item.table === 'muns' && item.record.title === 'Bayamon';
+})[0].record, {
+  title: 'Bayamon',
+  county: 21
+});
+assert.deepStrictEqual(zipCachedPlan.unsupportedCacheSources || [], []);
+
+fs.mkdirSync(corruptZipCacheDir);
+fs.writeFileSync(path.join(corruptZipCacheDir, 'datospr-official-municipality-boundaries.zip'), 'not-a-real-zip');
+fs.writeFileSync(path.join(corruptZipCacheDir, 'datospr-official-municipality-boundaries.metadata.json'), JSON.stringify({
+  id: 'datospr-official-municipality-boundaries',
+  dataPath: 'datospr-official-municipality-boundaries.zip'
+}));
+
+corruptZipCachedResult = childProcess.spawnSync(process.execPath, [
+  'scripts/data_import_plan.js',
+  '--cache-dir=' + corruptZipCacheDir,
+  '--out=' + corruptZipCachedOutPath
+], {
+  cwd: path.join(__dirname, '..'),
+  encoding: 'utf8'
+});
+
+assert.strictEqual(corruptZipCachedResult.status, 0);
+var corruptZipCachedPlan = JSON.parse(fs.readFileSync(corruptZipCachedOutPath, 'utf8'));
+assert.deepStrictEqual(corruptZipCachedPlan.unsupportedCacheSources, [
+  'datospr-official-municipality-boundaries'
+]);
+assert.strictEqual(corruptZipCachedPlan.unsupportedCacheSourceErrors[0].reason, 'ZIP end-of-central-directory record was not found');
+
+fs.mkdirSync(missingDbfCacheDir);
+fs.writeFileSync(path.join(missingDbfCacheDir, 'datospr-official-municipality-boundaries.zip'), buildZip([
+  buildZipEntry('readme.txt', Buffer.from('no attribute table', 'utf8'), {})
+]));
+fs.writeFileSync(path.join(missingDbfCacheDir, 'datospr-official-municipality-boundaries.metadata.json'), JSON.stringify({
+  id: 'datospr-official-municipality-boundaries',
+  dataPath: 'datospr-official-municipality-boundaries.zip'
+}));
+
+missingDbfCachedResult = childProcess.spawnSync(process.execPath, [
+  'scripts/data_import_plan.js',
+  '--cache-dir=' + missingDbfCacheDir,
+  '--out=' + missingDbfCachedOutPath
+], {
+  cwd: path.join(__dirname, '..'),
+  encoding: 'utf8'
+});
+
+assert.strictEqual(missingDbfCachedResult.status, 0);
+var missingDbfCachedPlan = JSON.parse(fs.readFileSync(missingDbfCachedOutPath, 'utf8'));
+assert.deepStrictEqual(missingDbfCachedPlan.unsupportedCacheSources, [
+  'datospr-official-municipality-boundaries'
+]);
+assert.strictEqual(missingDbfCachedPlan.unsupportedCacheSourceErrors[0].reason, 'official municipality boundary ZIP does not include a DBF attribute table');
+
+fs.mkdirSync(ambiguousDbfCacheDir);
+fs.writeFileSync(path.join(ambiguousDbfCacheDir, 'datospr-official-municipality-boundaries.zip'), buildZip([
+  buildZipEntry('left.dbf', buildDbf([], [
+    {
+      name: 'municipio',
+      type: 'C',
+      length: 32
+    }
+  ]), {}),
+  buildZipEntry('right.dbf', buildDbf([], [
+    {
+      name: 'municipio',
+      type: 'C',
+      length: 32
+    }
+  ]), {})
+]));
+fs.writeFileSync(path.join(ambiguousDbfCacheDir, 'datospr-official-municipality-boundaries.metadata.json'), JSON.stringify({
+  id: 'datospr-official-municipality-boundaries',
+  dataPath: 'datospr-official-municipality-boundaries.zip'
+}));
+
+ambiguousDbfCachedResult = childProcess.spawnSync(process.execPath, [
+  'scripts/data_import_plan.js',
+  '--cache-dir=' + ambiguousDbfCacheDir,
+  '--out=' + ambiguousDbfCachedOutPath
+], {
+  cwd: path.join(__dirname, '..'),
+  encoding: 'utf8'
+});
+
+assert.strictEqual(ambiguousDbfCachedResult.status, 0);
+var ambiguousDbfCachedPlan = JSON.parse(fs.readFileSync(ambiguousDbfCachedOutPath, 'utf8'));
+assert.deepStrictEqual(ambiguousDbfCachedPlan.unsupportedCacheSources, [
+  'datospr-official-municipality-boundaries'
+]);
+assert.strictEqual(ambiguousDbfCachedPlan.unsupportedCacheSourceErrors[0].reason, 'official municipality boundary ZIP must include one municipios.dbf attribute table');
 
 fs.rmSync(tmpDir, {
   recursive: true,
