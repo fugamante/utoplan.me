@@ -78,4 +78,4 @@ The modern API must pass preserved endpoint contracts before additional endpoint
 
 ## Next Slice
 
-Next, add anonymous runtime migration rollback/operator notes before production deployment choices are made. Test migration to TypeScript is optional and lower priority than product behavior or CI hardening.
+Next, prepare the anonymous runtime production-decision package: target hosting topology, shared versus edge limiter choice, backup/restore evidence, and operator approval for activation. Test migration to TypeScript is optional and lower priority than product behavior or CI hardening.

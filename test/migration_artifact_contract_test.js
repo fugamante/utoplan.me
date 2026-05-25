@@ -102,6 +102,11 @@ assert(anonymousSessionProfileTables.indexOf('anonymous_profile_events_profile_c
 assert(anonymousSessionProfileTables.indexOf('Do not backfill them from `demo_sessions`, `user_accounts`, or source-backed planning tables.') !== -1);
 assert(anonymousSessionProfileTables.indexOf('Anonymous session/profile endpoints enabled: no') !== -1);
 assert(anonymousSessionProfileTables.indexOf('Expected API readiness remains versioned as `baseline-read-v1`') !== -1);
+assert(anonymousSessionProfileTables.indexOf('Pre-Activation Rollback') !== -1);
+assert(anonymousSessionProfileTables.indexOf('Post-Activation Rollback') !== -1);
+assert(anonymousSessionProfileTables.indexOf('All counts must be zero') !== -1);
+assert(anonymousSessionProfileTables.indexOf('Backup restore can roll back unrelated production data') !== -1);
+assert(anonymousSessionProfileTables.indexOf('do not drop them directly') !== -1);
 assert(anonymousSessionProfileTables.indexOf('DROP TABLE IF EXISTS anonymous_profile_events') < anonymousSessionProfileTables.indexOf('DROP TABLE IF EXISTS anonymous_planning_profiles'));
 assert(anonymousSessionProfileTables.indexOf('DROP TABLE IF EXISTS anonymous_planning_profiles') < anonymousSessionProfileTables.indexOf('DROP TABLE IF EXISTS anonymous_sessions'));
 
@@ -112,4 +117,13 @@ assert(anonymousRateLimitBuckets.indexOf('request_count integer NOT NULL DEFAULT
 assert(anonymousRateLimitBuckets.indexOf('reset_at timestamptz NOT NULL') !== -1);
 assert(anonymousRateLimitBuckets.indexOf('anonymous_rate_limit_buckets_reset_index') !== -1);
 assert(anonymousRateLimitBuckets.indexOf('Do not seed this table. It is runtime-owned counter state.') !== -1);
+assert(anonymousRateLimitBuckets.indexOf('Only drop `anonymous_rate_limit_buckets` after anonymous shared-limiter traffic is disabled or routed away.') !== -1);
+assert(anonymousRateLimitBuckets.indexOf('Verify no API instance is running with `UTOPLAN_ANONYMOUS_RATE_LIMIT_MODE=shared`.') !== -1);
+assert(anonymousRateLimitBuckets.indexOf('accepting the rate-limit reset and observability loss') !== -1);
+assert(anonymousRateLimitBuckets.indexOf('`429` responses include `Retry-After`') !== -1);
 assert(anonymousRateLimitBuckets.indexOf('DROP TABLE IF EXISTS anonymous_rate_limit_buckets') !== -1);
+
+assert(docs.indexOf('Anonymous Runtime Migrations') !== -1);
+assert(docs.indexOf('apply `202605241100_reserve_anonymous_session_profile_tables.md` before `202605241200_add_anonymous_rate_limit_buckets.md`') !== -1);
+assert(docs.indexOf('Once anonymous production rows exist, preserve the anonymous tables') !== -1);
+assert(docs.indexOf('anonymous schema readiness is a separate runtime activation gate') !== -1);
