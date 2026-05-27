@@ -27,7 +27,10 @@
 - `db/migrations/202605211200_baseline_read_v1.md` records the existing read schema as the initial production reference.
 - `docs/data-provenance.md` records the current evidence for original hackathon data sources and tracks the unresolved organizer-provided dataset provenance gap.
 - `docs/data-intake.md` and `data/sources/puerto-rico.json` define the Puerto Rico-only source intake contract for future data replacement work.
+- `docs/product-scope.md` defines the current product boundary: descriptive Puerto Rico planning context before recommendations, rankings, or automated decisions.
+- `data/mappings/puerto-rico-business-categories.json` defines the first candidate business-category to NAICS crosswalk for source-backed planning context.
 - `npm run test:data-sources` validates that registered import candidates are Puerto Rico-only or explicitly filtered to Puerto Rico.
+- `npm run test:business-categories` validates the candidate category crosswalk and rejects scoring-oriented contract drift.
 - `npm run verify:release` wraps app/API deployment verification for release jobs, and Azure validates the wrapper in sample mode without production secrets.
 - `npm run verify:release-smoke` checks deployed app `/healthz`, public `/v1/unis`, and optional API `/readyz` from configured release URLs.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
@@ -146,4 +149,8 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Map the registered Puerto Rico source candidates to the preserved legacy API schemas, starting with `cbps` and `unis`, before writing import scripts. Keep the standards corpus updated in the same bundle as any resulting requirement, design, data, test, configuration, V&V, or project-management control changes.
+Build a small planning-context fixture that combines one municipality, one
+business category, matching CBP facts selected by NAICS and municipality code,
+source metadata, confidence labels, and unresolved questions. Keep the fixture
+descriptive; do not add a score, ranking, recommendation, demand conclusion, or
+profitability conclusion.

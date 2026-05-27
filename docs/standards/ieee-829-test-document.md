@@ -27,6 +27,8 @@ data provenance controls, release validation, and ongoing audit duties.
   and browser smoke paths.
 - Puerto Rico-only source registry validation and separation of demo fixture,
   test seed, replacement candidate, and production data.
+- Candidate business-category mapping validation before category-specific
+  planning context uses CBP facts.
 - Production deployment preflight, smoke checks, rollback triggers, and release
   summary reporting.
 
@@ -51,6 +53,7 @@ data provenance controls, release validation, and ongoing audit duties.
 | API database boundary | `dtoapi/modern/src/db.ts` | Bad environment parsing, leaked connection lifecycle |
 | Seeded read endpoints | `dtoapi/modern/src/records.ts` | Wrong payloads, missing-record behavior, schema drift |
 | Data source registry | `data/sources/puerto-rico.json` | Non-Puerto Rico or unlicensed source intake |
+| Business category mapping | `data/mappings/puerto-rico-business-categories.json` | Category-specific planning context turns descriptive CBP facts into unsupported scores or recommendations |
 | Migration artifacts | `db/migrations/` | Missing rollback, unsafe schema change, readiness drift |
 | Deployment verification | `scripts/verify_*.js` | Production starts with missing config or wrong mode |
 | Release smoke checks | `scripts/release_smoke_check.js` | Public app cannot serve API-backed map data |
@@ -114,6 +117,8 @@ A change is test-acceptable when:
   release smoke checks.
 - Data source changes pass `npm run test:data-sources` and preserve
   Puerto Rico-only scope or deterministic Puerto Rico filtering.
+- Business category mapping changes pass `npm run test:business-categories`
+  and remain descriptive rather than scoring-oriented.
 - Migration changes include an artifact under `db/migrations/` with preflight,
   apply, verification, rollback, and post-deploy checks.
 
@@ -200,6 +205,10 @@ Data validation protects provenance and scope:
   enforce a deterministic Puerto Rico filter.
 - Unresolved legacy tables remain blocked for production-style import until
   source, license, and transform path are recorded.
+- Business categories must include explicit NAICS mappings, assumptions,
+  confidence, and status before they are used to select CBP facts.
+- Category mappings must not encode scores, rankings, recommendations,
+  profitability claims, or municipality suitability conclusions.
 
 ### 5.5 Release Design
 
@@ -236,8 +245,9 @@ Release validation checks that the intended commit can be operated safely:
 | TC-017 | API readiness | `curl -fsS <api-origin>/readyz` | API reports ready only with DB and schema available |
 | TC-018 | App health | `curl -fsS <app-origin>/healthz` | App reports expected service, proxy state, and no fixture leakage |
 | TC-019 | Source registry | `npm run test:data-sources` | Registered sources are Puerto Rico-only or explicitly filtered, and `cbps`/`unis` entries include `legacySchemaMap` coverage evidence |
-| TC-020 | Migration artifacts | `npm run test:migration-artifacts` | Migration documents include required release and rollback fields |
-| TC-021 | Security audit | Run all documented `npm audit` commands | Current lockfile-backed audit reports no blocking vulnerabilities |
+| TC-020 | Business category mapping | `npm run test:business-categories` | Candidate categories include NAICS mappings, assumptions, confidence, and status without scoring or recommendation language |
+| TC-021 | Migration artifacts | `npm run test:migration-artifacts` | Migration documents include required release and rollback fields |
+| TC-022 | Security audit | Run all documented `npm audit` commands | Current lockfile-backed audit reports no blocking vulnerabilities |
 
 ## 7. Test Procedure Specification
 
@@ -303,7 +313,19 @@ Release validation checks that the intended commit can be operated safely:
 4. Add or update import tests before treating transformed source data as
    releaseable.
 
-### 7.4 Database Change Procedure
+### 7.4 Product Mapping Change Procedure
+
+1. Update `data/mappings/puerto-rico-business-categories.json`.
+2. Run:
+
+   ```sh
+   npm run test:business-categories
+   ```
+
+3. Keep category mappings descriptive. Do not add scoring, rankings, or
+   recommendation claims to the mapping contract.
+
+### 7.5 Database Change Procedure
 
 1. Create or update a migration artifact under `db/migrations/`.
 2. Include preflight SQL, apply SQL, read-only verification SQL, rollback, and

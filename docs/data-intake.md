@@ -31,6 +31,22 @@ candidates.
 Keep unresolved columns explicit (for example, `missing` or `derived`) and do
 not promote a source to production import on demo fixtures or seed rows.
 
+## Business Category Mapping Gate
+
+Before building category-specific planning context, map user-facing business
+categories to NAICS codes in
+`data/mappings/puerto-rico-business-categories.json`.
+
+The mapping is a selection aid only. It may filter CBP facts by relevant NAICS
+codes, but it must not produce scores, rankings, recommendations, demand
+claims, profitability claims, or municipality suitability conclusions.
+
+Validate the category contract with:
+
+```sh
+npm run test:business-categories
+```
+
 ## Current Candidate Sources
 
 - `cbps`: Datos.PR County Business Patterns 2014 Puerto Rico CSV and municipality CSV.

@@ -44,6 +44,18 @@ The strongest source matches found so far are:
 
 The `api.utoplan.me` host no longer resolves, and this pass did not recover archived API responses. Treat all row-level data from the original API as unrecovered.
 
+## Product Mapping Snapshot (2026-05-26)
+
+The first product-facing category contract now lives in
+`data/mappings/puerto-rico-business-categories.json`. It maps candidate
+business categories to 2012 NAICS codes so future planning context can select
+source-backed CBP facts by municipality and industry.
+
+This crosswalk is not original hackathon provenance and is not production
+decision logic. It is a candidate product artifact that requires human review
+before production use and must remain descriptive until source-backed facts,
+confidence labels, and limitations are visible.
+
 ## Legacy Schema Mapping Snapshot (2026-05-24)
 
 Field-level mapping evidence for registered Puerto Rico candidates now exists
