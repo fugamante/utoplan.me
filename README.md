@@ -101,6 +101,8 @@ The current modernization work is centered on:
 - `docs/frontend-inventory.md`: static app source and asset inventory.
 - `docs/modernization-roadmap.md`: modernization plan and phase gates.
 - `docs/production-deployment.md`: production deployment checklist and rollback runbook.
+- `data/planning-context/`: descriptive planning-context fixtures that combine
+  municipality and category selections with source-backed candidate facts.
 - `docs/standards/`: active IEEE 730, 828, 829, 830, 1016, 1012, and 1058
   standards corpus plus audit guides for ongoing modernization governance.
 
@@ -116,6 +118,7 @@ npm run install:all
 npm run test
 npm run test:browser
 npm run test:data-sources
+npm run test:planning-context
 npm run test:db
 npm run test:browser:start-local
 npm run start:app

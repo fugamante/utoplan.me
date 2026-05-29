@@ -47,6 +47,27 @@ Validate the category contract with:
 npm run test:business-categories
 ```
 
+## Planning Context Fixture Gate
+
+The first planning-context fixture lives at
+`data/planning-context/mun001_construction.json`.
+
+The fixture must stay descriptive and include:
+
+- one municipality reference;
+- one business category from the crosswalk;
+- matching CBP facts selected by NAICS code and municipality code;
+- source metadata, confidence labels, limitations, and unresolved questions.
+
+The fixture must not include scoring, ranking, recommendation, demand, or
+profitability conclusions.
+
+Validate the fixture contract with:
+
+```sh
+npm run test:planning-context
+```
+
 ## Current Candidate Sources
 
 - `cbps`: Datos.PR County Business Patterns 2014 Puerto Rico CSV and municipality CSV.

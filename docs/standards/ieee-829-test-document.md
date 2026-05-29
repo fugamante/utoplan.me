@@ -29,6 +29,8 @@ data provenance controls, release validation, and ongoing audit duties.
   test seed, replacement candidate, and production data.
 - Candidate business-category mapping validation before category-specific
   planning context uses CBP facts.
+- Planning-context fixture validation for municipality/category fact selection,
+  confidence labels, and unresolved-question visibility.
 - Production deployment preflight, smoke checks, rollback triggers, and release
   summary reporting.
 
@@ -54,6 +56,7 @@ data provenance controls, release validation, and ongoing audit duties.
 | Seeded read endpoints | `dtoapi/modern/src/records.ts` | Wrong payloads, missing-record behavior, schema drift |
 | Data source registry | `data/sources/puerto-rico.json` | Non-Puerto Rico or unlicensed source intake |
 | Business category mapping | `data/mappings/puerto-rico-business-categories.json` | Category-specific planning context turns descriptive CBP facts into unsupported scores or recommendations |
+| Planning-context fixture | `data/planning-context/*.json` | Category context hides uncertainty or drifts into recommendation language |
 | Migration artifacts | `db/migrations/` | Missing rollback, unsafe schema change, readiness drift |
 | Deployment verification | `scripts/verify_*.js` | Production starts with missing config or wrong mode |
 | Release smoke checks | `scripts/release_smoke_check.js` | Public app cannot serve API-backed map data |
@@ -119,6 +122,9 @@ A change is test-acceptable when:
   Puerto Rico-only scope or deterministic Puerto Rico filtering.
 - Business category mapping changes pass `npm run test:business-categories`
   and remain descriptive rather than scoring-oriented.
+- Planning-context fixture changes pass `npm run test:planning-context` and
+  preserve one municipality/category slice with matching CBP facts, visible
+  confidence labels, and unresolved questions.
 - Migration changes include an artifact under `db/migrations/` with preflight,
   apply, verification, rollback, and post-deploy checks.
 
@@ -209,6 +215,11 @@ Data validation protects provenance and scope:
   confidence, and status before they are used to select CBP facts.
 - Category mappings must not encode scores, rankings, recommendations,
   profitability claims, or municipality suitability conclusions.
+- Planning-context fixtures must keep municipality/category/fact matching
+  explicit and include visible source metadata, confidence labels, limitations,
+  and unresolved questions.
+- Planning-context fixtures must stay descriptive and avoid scoring, ranking,
+  recommendation, demand, or profitability conclusions.
 
 ### 5.5 Release Design
 
@@ -248,6 +259,7 @@ Release validation checks that the intended commit can be operated safely:
 | TC-020 | Business category mapping | `npm run test:business-categories` | Candidate categories include NAICS mappings, assumptions, confidence, and status without scoring or recommendation language |
 | TC-021 | Migration artifacts | `npm run test:migration-artifacts` | Migration documents include required release and rollback fields |
 | TC-022 | Security audit | Run all documented `npm audit` commands | Current lockfile-backed audit reports no blocking vulnerabilities |
+| TC-023 | Planning-context fixture | `npm run test:planning-context` | Fixture keeps municipality/category/CBP matching explicit with source metadata, confidence labels, limitations, and unresolved questions while remaining descriptive |
 
 ## 7. Test Procedure Specification
 
@@ -339,6 +351,17 @@ Release validation checks that the intended commit can be operated safely:
 
 4. Update `/readyz` schema expectations only when the modern API requires a new
    read table or column.
+
+### 7.6 Planning Context Fixture Procedure
+
+1. Update or add files under `data/planning-context/`.
+2. Keep fixture language descriptive and preserve visible confidence,
+   limitation, and unresolved-question notes.
+3. Run:
+
+   ```sh
+   npm run test:planning-context
+   ```
 
 ## 8. Test Log
 

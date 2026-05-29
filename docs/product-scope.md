@@ -31,6 +31,8 @@ Rico-only sources. It must not present:
 - Source-to-legacy mapping: `docs/data-source-schema-mapping.md`.
 - Business category crosswalk:
   `data/mappings/puerto-rico-business-categories.json`.
+- Planning-context fixture:
+  `data/planning-context/mun001_construction.json`.
 - Preserved API read schema: `dtoapi/modern/src/resource_contract.ts`.
 - Database baseline: `db/migrations/202605211200_baseline_read_v1.md`.
 
@@ -40,14 +42,10 @@ select relevant CBP facts without turning those facts into opaque scores.
 
 ## Next Product Work
 
-Build a small planning-context fixture that combines:
+Expand planning-context fixtures beyond the first municipality/category slice
+so users can compare descriptive context across multiple municipalities and
+categories while preserving visible confidence and limitation notes.
 
-- one municipality reference;
-- one business category from the crosswalk;
-- matching CBP facts selected by NAICS code and municipality code;
-- relevant source metadata and confidence labels;
-- unresolved questions.
-
-Keep the fixture descriptive. Do not add a score, rank, or recommendation until
+Keep fixtures descriptive. Do not add a score, rank, or recommendation until
 the underlying facts, confidence labels, and limitations are visible and
 reviewed.

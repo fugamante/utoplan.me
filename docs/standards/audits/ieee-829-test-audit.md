@@ -51,6 +51,7 @@ evidence and must record restoration of the formal baseline as an action item.
 | `docs/production-deployment.md` | Procedure, summary, release gate | Are deployment checks runnable and release blocking? |
 | `docs/data-intake.md` | Test design, quality gate | Are Puerto Rico-only source controls validated before import? |
 | `data/sources/puerto-rico.json` | Test item, test data | Are source records scoped, licensed, dated, and mapped to active legacy columns where evidence exists? |
+| `data/planning-context/*.json` | Test item, test data | Do planning-context fixtures keep fact matching, uncertainty, and unresolved questions visible without recommendation drift? |
 | `db/migrations/*.md` | Test item, transmittal | Are database baselines and changes tied to readiness behavior? |
 | `dtoapi/test/*.js` | API test cases | Do preserved compatibility tests cover public behavior? |
 | `dtoapi/modern/test/*.js` | API test cases | Do typed contracts, errors, records, and readiness stay covered? |
@@ -81,6 +82,9 @@ release branch, production deployment, or merge that changes app/API behavior.
   check before import scripts or production-style data claims are accepted.
 - Confirm `cbps` and `unis` registry entries include `legacySchemaMap` coverage
   for preserved legacy columns, with unresolved-field notes where needed.
+- Confirm planning-context fixtures pass the contract test and remain
+  descriptive with explicit confidence labels, source metadata, and unresolved
+  questions.
 - Confirm test data, seed data, and production data are identified separately in
   test procedures and release summaries.
 - Confirm release smoke procedures identify the commit, image/artifact, app URL,
@@ -112,6 +116,7 @@ scope, exploitability, and remediation owner.
 
 - `npm run test`
 - `npm run test:data-sources`
+- `npm run test:planning-context`
 - API contract tests under `dtoapi/test/` and `dtoapi/modern/test/`
 - App contract tests under `app/test/`
 

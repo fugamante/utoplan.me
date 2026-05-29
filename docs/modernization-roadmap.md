@@ -31,6 +31,8 @@
 - `data/mappings/puerto-rico-business-categories.json` defines the first candidate business-category to NAICS crosswalk for source-backed planning context.
 - `npm run test:data-sources` validates that registered import candidates are Puerto Rico-only or explicitly filtered to Puerto Rico.
 - `npm run test:business-categories` validates the candidate category crosswalk and rejects scoring-oriented contract drift.
+- `data/planning-context/mun001_construction.json` defines the first descriptive planning-context fixture for one municipality/category selection with matching CBP facts, confidence labels, and unresolved questions.
+- `npm run test:planning-context` validates the planning-context fixture contract and blocks scoring-oriented drift.
 - `npm run verify:release` wraps app/API deployment verification for release jobs, and Azure validates the wrapper in sample mode without production secrets.
 - `npm run verify:release-smoke` checks deployed app `/healthz`, public `/v1/unis`, and optional API `/readyz` from configured release URLs.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
@@ -149,8 +151,6 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Build a small planning-context fixture that combines one municipality, one
-business category, matching CBP facts selected by NAICS and municipality code,
-source metadata, confidence labels, and unresolved questions. Keep the fixture
-descriptive; do not add a score, ranking, recommendation, demand conclusion, or
-profitability conclusion.
+Add a second planning-context fixture for a different municipality and category
+using the same descriptive contract. Compare confidence and unresolved-question
+patterns across both fixtures before any API/UI exposure work.
