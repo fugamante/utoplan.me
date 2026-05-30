@@ -79,8 +79,18 @@ function validateApp(env, errors) {
 }
 
 function validateApi(env, errors) {
+  var exposure = env.UTOPLAN_API_EXPOSURE || 'private';
+
   if (env.NODE_ENV !== 'production') {
     errors.push('NODE_ENV must be production');
+  }
+
+  if (exposure !== 'private' && exposure !== 'public') {
+    errors.push('UTOPLAN_API_EXPOSURE must be private or public');
+  }
+
+  if (exposure === 'public') {
+    parseHttpUrl(env.UTOPLAN_PUBLIC_API_URL, 'UTOPLAN_PUBLIC_API_URL', errors);
   }
 
   validateDatabase(env, errors);

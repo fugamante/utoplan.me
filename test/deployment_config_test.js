@@ -35,6 +35,16 @@ assert.deepStrictEqual(verifier.validateConfig({
   service: 'api'
 }), []);
 
+assert.deepStrictEqual(verifier.validateConfig({
+  NODE_ENV: 'production',
+  PORT: '3001',
+  DATABASE_URL: 'postgres://utoplan:secret@postgres.example.internal:5432/utoplan',
+  UTOPLAN_API_EXPOSURE: 'public',
+  UTOPLAN_PUBLIC_API_URL: 'https://api.example.com'
+}, {
+  service: 'api'
+}), []);
+
 var invalid = verifier.validateConfig({
   NODE_ENV: 'development',
   PORT: '70000',
@@ -49,6 +59,26 @@ assert(invalid.indexOf('UTOPLAN_DEMO_FIXTURE must be unset in production') !== -
 assert(invalid.indexOf('NODE_ENV must be production') !== -1);
 assert(invalid.indexOf('DATABASE_URL or DATABASE_HOST, DATABASE_USER, and DATABASE_DB are required') !== -1);
 assert(invalid.indexOf('PORT must be an integer from 1 to 65535') !== -1);
+
+var invalidPublic = verifier.validateConfig({
+  NODE_ENV: 'production',
+  DATABASE_URL: 'postgres://utoplan:secret@postgres.example.internal:5432/utoplan',
+  UTOPLAN_API_EXPOSURE: 'public'
+}, {
+  service: 'api'
+});
+
+assert(invalidPublic.indexOf('UTOPLAN_PUBLIC_API_URL is required') !== -1);
+
+var invalidExposure = verifier.validateConfig({
+  NODE_ENV: 'production',
+  DATABASE_URL: 'postgres://utoplan:secret@postgres.example.internal:5432/utoplan',
+  UTOPLAN_API_EXPOSURE: 'internet'
+}, {
+  service: 'api'
+});
+
+assert(invalidExposure.indexOf('UTOPLAN_API_EXPOSURE must be private or public') !== -1);
 
 var result = childProcess.spawnSync(process.execPath, ['scripts/verify_deployment_config.js'], {
   cwd: __dirname + '/..',

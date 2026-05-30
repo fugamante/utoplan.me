@@ -121,6 +121,7 @@ Release candidates must satisfy:
 - App `/healthz` confirms proxy mode and does not indicate fixture mode.
 - Public `/v1/unis` is served through the app origin.
 - Database migration and rollback notes are present when data shape changes.
+- When API exposure is public, external API smoke checks and edge controls are verified.
 
 ## 7. Branch And Fork Practice
 
@@ -202,6 +203,11 @@ Production runs two Node services:
 - `api`: modern TypeScript API connected to PostgreSQL.
 
 The API remains private to the service network. Browser traffic should reach only the app origin. Production must not enable `UTOPLAN_DEMO_FIXTURE`.
+
+If external consumers require direct API access, API exposure must be explicit
+through `UTOPLAN_API_EXPOSURE=public` and a valid `UTOPLAN_PUBLIC_API_URL`.
+Public exposure requires documented edge controls (auth policy, rate limiting,
+WAF, and request logging) in release evidence.
 
 Production secrets must come from the deployment platform secret store and must not be committed. API startup intentionally fails when production database configuration is missing.
 
