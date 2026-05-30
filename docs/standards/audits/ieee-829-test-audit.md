@@ -71,6 +71,8 @@ release branch, production deployment, or merge that changes app/API behavior.
   evidence.
 - Confirm new or changed `/v1/*`, `/healthz`, or `/readyz` behavior has API
   contract tests and release-smoke coverage where user-visible.
+- Confirm planning-context API routes remain read-only and include explicit
+  descriptive guardrails in contract tests.
 - Confirm database schema changes include a migration artifact, read-only
   verification SQL, rollback notes, and readiness-contract impact analysis.
 - Confirm frontend map, layer, sidebar, data URL, and fixture/proxy behavior has

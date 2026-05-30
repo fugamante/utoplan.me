@@ -34,6 +34,7 @@
 - `data/planning-context/mun001_construction.json` defines the first descriptive planning-context fixture for one municipality/category selection with matching CBP facts, confidence labels, and unresolved questions.
 - `data/planning-context/mun003_restaurant.json` adds a second descriptive planning-context fixture for a different municipality/category slice so confidence and unresolved-question patterns can be compared.
 - `npm run test:planning-context` validates the planning-context fixture contract and blocks scoring-oriented drift.
+- The modern API now serves read-only planning-context summaries at `GET /v1/planning-context` and fixture detail at `GET /v1/planning-context/:id`, with explicit descriptive-only guardrails in each response.
 - `npm run verify:release` wraps app/API deployment verification for release jobs, and Azure validates the wrapper in sample mode without production secrets.
 - `npm run verify:release-smoke` checks deployed app `/healthz`, public `/v1/unis`, and optional API `/readyz` from configured release URLs.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
@@ -152,6 +153,6 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Define the first API/UI exposure contract for planning-context fixtures while
-preserving descriptive-only behavior, visible confidence/limitations, and
-explicit unresolved-question notes.
+Add a minimal UI read path that fetches planning-context summaries from
+`/v1/planning-context` and renders descriptive municipality/category choices
+without introducing rankings, recommendations, or score-like language.

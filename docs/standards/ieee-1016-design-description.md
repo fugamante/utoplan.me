@@ -105,6 +105,7 @@ PostgreSQL
 | Browser compiled assets | `app/public/js/` | Committed JavaScript produced from first-party TypeScript for static serving. |
 | Vendored browser assets | `app/public/vendor/`, `app/public/Untitled/` | Preserve Leaflet, RequireJS, XML tools, Unity artifacts, and other external/static assets. |
 | Modern API runtime | `dtoapi/modern/src/server.ts` | Own HTTP routing, CORS, gzip handling, method handling, health, readiness, and response dispatch. |
+| Planning-context API module | `dtoapi/modern/src/planning_context.ts` | Own planning-context fixture discovery, descriptive guardrail checks, and read-only summary/detail shaping. |
 | API response contracts | `dtoapi/modern/src/response_contract.ts`, `root_contract.ts`, `records.ts` | Own typed public response shapes and compatibility wrapping. |
 | API resource contract | `dtoapi/modern/src/resource_contract.ts` | Own public column order, resource definitions, row serialization, and parameterized read query construction. |
 | API database boundary | `dtoapi/modern/src/db.ts` | Own PostgreSQL configuration, pool lifecycle, and query callback contract. |
@@ -203,6 +204,7 @@ Node HTTP runtime keeps the operational surface small.
 | --- | --- |
 | Root | Preserve captured root response behavior, CORS headers, and gzip behavior. |
 | Read resources | Serve seeded DB-backed compatibility responses through typed resource contracts. |
+| Planning-context resources | Serve read-only descriptive fixture summaries/details from `data/planning-context/*.json` with explicit guardrail flags. |
 | Health | `/healthz` reports shallow process liveness. |
 | Readiness | `/readyz` verifies database reachability and `baseline-read-v1`. |
 | Unsupported methods | Known record routes return explicit `405 Method Not Allowed`. |

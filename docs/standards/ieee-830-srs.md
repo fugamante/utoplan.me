@@ -193,6 +193,7 @@ contracts working while rebuilding the data and technical foundation.
 | FR-011 | New production-style data sources shall be registered before import. | `npm run test:data-sources` passes and registry entries include required source metadata plus legacy mapping evidence for active mapped tables. |
 | FR-012 | Unresolved legacy tables shall remain blocked for production import. | `cdepts`, `businesses`, and `grade_cs` imports are blocked until source, license, and transform path are recorded. |
 | FR-013 | Public behavior changes shall update related requirements, design, test, and release docs. | Relevant IEEE and project docs change in the same bundle as the behavior change. |
+| FR-014 | The API shall expose read-only planning-context summary/detail routes with explicit descriptive-only guardrails. | `GET /v1/planning-context` and `GET /v1/planning-context/:id` return descriptive fixture payloads with guardrail flags and reject unsupported methods with `405`. |
 
 ## 9. Nonfunctional Requirements
 
@@ -301,6 +302,7 @@ an explicit accepted risk:
 | FR-011 | Source-backed data intake | `npm run test:data-sources` |
 | FR-012 | Provenance risk control | `docs/data-provenance.md`, source registry review |
 | FR-013 | Documentation consistency | Standards and project-doc review |
+| FR-014 | Read-only planning-context API contract | `npm run test:api`, `dtoapi/modern/test/planning_context_test.js` |
 | DR-001 - DR-006, DR-002A | Trustworthy Puerto Rico data product | Registry tests, provenance docs, source-schema mapping docs, import review, future recommendation tests |
 
 ## 13. Open Requirements And Risks

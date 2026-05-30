@@ -31,8 +31,10 @@ Rico-only sources. It must not present:
 - Source-to-legacy mapping: `docs/data-source-schema-mapping.md`.
 - Business category crosswalk:
   `data/mappings/puerto-rico-business-categories.json`.
-- Planning-context fixture:
-  `data/planning-context/mun001_construction.json`.
+- Planning-context fixtures:
+  `data/planning-context/*.json`.
+- Planning-context read API:
+  `GET /v1/planning-context` and `GET /v1/planning-context/:id`.
 - Preserved API read schema: `dtoapi/modern/src/resource_contract.ts`.
 - Database baseline: `db/migrations/202605211200_baseline_read_v1.md`.
 
@@ -42,9 +44,9 @@ select relevant CBP facts without turning those facts into opaque scores.
 
 ## Next Product Work
 
-Define the first API/UI exposure contract for planning-context fixtures so the
-descriptive municipality/category slices can be viewed without adding scores,
-rankings, or recommendation claims.
+Add a minimal UI read path for the planning-context API so descriptive
+municipality/category slices can be viewed without adding scores, rankings, or
+recommendation claims.
 
 Keep fixtures descriptive. Do not add a score, rank, or recommendation until
 the underlying facts, confidence labels, and limitations are visible and

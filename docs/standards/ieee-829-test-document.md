@@ -21,7 +21,8 @@ data provenance controls, release validation, and ongoing audit duties.
   health reporting, explicit fixture mode, and browser map smoke coverage.
 - Modern API behavior under `dtoapi/modern`, including root contract,
   response envelope, resource contracts, seeded read endpoints, CORS, gzip,
-  unsupported methods, database error handling, `/healthz`, and `/readyz`.
+  unsupported methods, database error handling, `/healthz`, `/readyz`,
+  and read-only planning-context routes.
 - PostgreSQL compatibility for the `baseline-read-v1` read schema.
 - Docker image builds and Compose validation for app, API, proxy, seeded DB,
   and browser smoke paths.
@@ -54,6 +55,7 @@ data provenance controls, release validation, and ongoing audit duties.
 | API response contracts | `dtoapi/modern/src/*_contract.ts` | Breaking preserved endpoint shape |
 | API database boundary | `dtoapi/modern/src/db.ts` | Bad environment parsing, leaked connection lifecycle |
 | Seeded read endpoints | `dtoapi/modern/src/records.ts` | Wrong payloads, missing-record behavior, schema drift |
+| Planning-context API runtime | `dtoapi/modern/src/planning_context.ts` | Descriptive fixture data drifts into score/recommendation semantics or serves incomplete fixture contracts |
 | Data source registry | `data/sources/puerto-rico.json` | Non-Puerto Rico or unlicensed source intake |
 | Business category mapping | `data/mappings/puerto-rico-business-categories.json` | Category-specific planning context turns descriptive CBP facts into unsupported scores or recommendations |
 | Planning-context fixture | `data/planning-context/*.json` | Category context hides uncertainty or drifts into recommendation language |
@@ -118,6 +120,8 @@ A change is test-acceptable when:
   fixture mode.
 - `/v1/unis` is served through the same-origin app path in integrated and
   release smoke checks.
+- `/v1/planning-context` and `/v1/planning-context/:id` remain read-only and
+  include explicit descriptive guardrails in API contracts.
 - Data source changes pass `npm run test:data-sources` and preserve
   Puerto Rico-only scope or deterministic Puerto Rico filtering.
 - Business category mapping changes pass `npm run test:business-categories`
@@ -161,6 +165,8 @@ Expected coverage includes:
 - Resource column order, row serialization, and parameterized query
   construction.
 - Missing-record and unsupported-method behavior.
+- Planning-context collection/detail behavior, fixture-id routing, and
+  descriptive-only guardrail responses.
 - Static server health, proxy, fixture gate, and static asset behavior.
 - Typed browser map config normalization and endpoint selection.
 - Deployment verifier behavior for app and API environments.
@@ -260,6 +266,7 @@ Release validation checks that the intended commit can be operated safely:
 | TC-021 | Migration artifacts | `npm run test:migration-artifacts` | Migration documents include required release and rollback fields |
 | TC-022 | Security audit | Run all documented `npm audit` commands | Current lockfile-backed audit reports no blocking vulnerabilities |
 | TC-023 | Planning-context fixture | `npm run test:planning-context` | Fixtures keep municipality/category/CBP matching explicit with source metadata, confidence labels, limitations, and unresolved questions, and include at least two municipality/category slices while remaining descriptive |
+| TC-024 | Planning-context API contract | `npm run test:api` | `GET /v1/planning-context` and `GET /v1/planning-context/:id` return read-only descriptive payloads with guardrails and reject unsupported methods with `405` |
 
 ## 7. Test Procedure Specification
 
