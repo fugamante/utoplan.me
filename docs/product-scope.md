@@ -42,9 +42,9 @@ select relevant CBP facts without turning those facts into opaque scores.
 
 ## Next Product Work
 
-Expand planning-context fixtures beyond the first municipality/category slice
-so users can compare descriptive context across multiple municipalities and
-categories while preserving visible confidence and limitation notes.
+Define the first API/UI exposure contract for planning-context fixtures so the
+descriptive municipality/category slices can be viewed without adding scores,
+rankings, or recommendation claims.
 
 Keep fixtures descriptive. Do not add a score, rank, or recommendation until
 the underlying facts, confidence labels, and limitations are visible and

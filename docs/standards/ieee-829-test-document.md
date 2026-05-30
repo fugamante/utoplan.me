@@ -123,8 +123,8 @@ A change is test-acceptable when:
 - Business category mapping changes pass `npm run test:business-categories`
   and remain descriptive rather than scoring-oriented.
 - Planning-context fixture changes pass `npm run test:planning-context` and
-  preserve one municipality/category slice with matching CBP facts, visible
-  confidence labels, and unresolved questions.
+  preserve descriptive multi-slice municipality/category coverage with matching
+  CBP facts, visible confidence labels, and unresolved questions.
 - Migration changes include an artifact under `db/migrations/` with preflight,
   apply, verification, rollback, and post-deploy checks.
 
@@ -259,7 +259,7 @@ Release validation checks that the intended commit can be operated safely:
 | TC-020 | Business category mapping | `npm run test:business-categories` | Candidate categories include NAICS mappings, assumptions, confidence, and status without scoring or recommendation language |
 | TC-021 | Migration artifacts | `npm run test:migration-artifacts` | Migration documents include required release and rollback fields |
 | TC-022 | Security audit | Run all documented `npm audit` commands | Current lockfile-backed audit reports no blocking vulnerabilities |
-| TC-023 | Planning-context fixture | `npm run test:planning-context` | Fixture keeps municipality/category/CBP matching explicit with source metadata, confidence labels, limitations, and unresolved questions while remaining descriptive |
+| TC-023 | Planning-context fixture | `npm run test:planning-context` | Fixtures keep municipality/category/CBP matching explicit with source metadata, confidence labels, limitations, and unresolved questions, and include at least two municipality/category slices while remaining descriptive |
 
 ## 7. Test Procedure Specification
 
