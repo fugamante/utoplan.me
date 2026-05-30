@@ -129,6 +129,8 @@ A change is test-acceptable when:
 - Planning-context fixture changes pass `npm run test:planning-context` and
   preserve descriptive multi-slice municipality/category coverage with matching
   CBP facts, visible confidence labels, and unresolved questions.
+- Browser-facing planning-context UI changes pass `npm run test:browser` and
+  keep summary language descriptive with no score/ranking/recommendation claims.
 - Migration changes include an artifact under `db/migrations/` with preflight,
   apply, verification, rollback, and post-deploy checks.
 
@@ -199,6 +201,8 @@ assertions:
 - Base tile layer renders.
 - Layer menu and sidebar toggles respond.
 - University markers render from the expected data path.
+- Planning-context summaries render from `/v1/planning-context` with explicit
+  descriptive-only guardrail messaging.
 - Integrated browser smoke checks use the seeded modern API path rather than
   the offline fixture.
 
@@ -267,6 +271,7 @@ Release validation checks that the intended commit can be operated safely:
 | TC-022 | Security audit | Run all documented `npm audit` commands | Current lockfile-backed audit reports no blocking vulnerabilities |
 | TC-023 | Planning-context fixture | `npm run test:planning-context` | Fixtures keep municipality/category/CBP matching explicit with source metadata, confidence labels, limitations, and unresolved questions, and include at least two municipality/category slices while remaining descriptive |
 | TC-024 | Planning-context API contract | `npm run test:api` | `GET /v1/planning-context` and `GET /v1/planning-context/:id` return read-only descriptive payloads with guardrails and reject unsupported methods with `405` |
+| TC-025 | Planning-context summary UI | `npm run test:browser` | First page requests `/v1/planning-context` and renders descriptive municipality/category options without score/ranking/recommendation language |
 
 ## 7. Test Procedure Specification
 

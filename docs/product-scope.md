@@ -48,6 +48,10 @@ Add a minimal UI read path for the planning-context API so descriptive
 municipality/category slices can be viewed without adding scores, rankings, or
 recommendation claims.
 
+Next, add a detail-read interaction for selected summaries using
+`GET /v1/planning-context/:id` so confidence, limitations, and unresolved
+questions are visible before any decision-oriented behavior is considered.
+
 Keep fixtures descriptive. Do not add a score, rank, or recommendation until
 the underlying facts, confidence labels, and limitations are visible and
 reviewed.

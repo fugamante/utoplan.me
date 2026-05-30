@@ -1,3 +1,4 @@
+import * as planningContext from "./planning_context.js";
 function findUi(name) {
     const element = document.querySelector('[data-ui="' + name + '"]');
     if (!element) {
@@ -47,6 +48,7 @@ export function bindPanelToggles() {
 export function init() {
     bindLayerToggles();
     bindPanelToggles();
+    planningContext.init(window, document);
 }
 if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);

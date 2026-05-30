@@ -19,6 +19,7 @@
 - `GET /v1/planning-context` returns read-only planning-context summaries from `data/planning-context/*.json`.
 - `GET /v1/planning-context/:id` returns one planning-context fixture by id, or `404` when missing.
 - Planning-context responses include explicit descriptive-only guardrails (`descriptiveOnly`, `noScores`, `noRankings`, `noRecommendations`).
+- The first-page frontend now consumes `GET /v1/planning-context` to render descriptive municipality/category planning-context options.
 - `dtoapi/modern/test/db_contract_test.js` verifies the seeded read endpoint set and missing-record behavior against the Docker database.
 - Known record routes reject unsupported methods with `405 Method Not Allowed` and avoid exposing raw database errors to clients.
 - Planning-context collection and record routes reject unsupported methods with `405 Method Not Allowed`.

@@ -194,6 +194,7 @@ contracts working while rebuilding the data and technical foundation.
 | FR-012 | Unresolved legacy tables shall remain blocked for production import. | `cdepts`, `businesses`, and `grade_cs` imports are blocked until source, license, and transform path are recorded. |
 | FR-013 | Public behavior changes shall update related requirements, design, test, and release docs. | Relevant IEEE and project docs change in the same bundle as the behavior change. |
 | FR-014 | The API shall expose read-only planning-context summary/detail routes with explicit descriptive-only guardrails. | `GET /v1/planning-context` and `GET /v1/planning-context/:id` return descriptive fixture payloads with guardrail flags and reject unsupported methods with `405`. |
+| FR-015 | The first page shall render planning-context summary options from same-origin `/v1/planning-context` without score/ranking/recommendation language. | Browser smoke verifies the request path and rendered descriptive summary options. |
 
 ## 9. Nonfunctional Requirements
 
@@ -303,6 +304,7 @@ an explicit accepted risk:
 | FR-012 | Provenance risk control | `docs/data-provenance.md`, source registry review |
 | FR-013 | Documentation consistency | Standards and project-doc review |
 | FR-014 | Read-only planning-context API contract | `npm run test:api`, `dtoapi/modern/test/planning_context_test.js` |
+| FR-015 | Planning-context summary UI contract | `npm run test:browser`, `app/test/static_smoke_test.js` |
 | DR-001 - DR-006, DR-002A | Trustworthy Puerto Rico data product | Registry tests, provenance docs, source-schema mapping docs, import review, future recommendation tests |
 
 ## 13. Open Requirements And Risks

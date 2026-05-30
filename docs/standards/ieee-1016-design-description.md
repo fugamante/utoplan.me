@@ -257,6 +257,10 @@ on spatial business planning rather than a marketing landing page. The map,
 layer controls, sidebar behavior, and data-backed markers are the core
 experience.
 
+The first page now includes a planning-context panel that reads same-origin
+summary data from `GET /v1/planning-context` and renders descriptive
+municipality/category options only.
+
 The browser should request same-origin data paths such as `/v1/unis`. It should
 not need to know the private API service origin in integrated deployments.
 
@@ -272,6 +276,8 @@ Current boundaries:
 - `map.ts`: map creation, university loading, marker rendering, and DOM
   startup.
 - `main.ts`: layer visibility, sidebar, and layer-menu toggle behavior.
+- `planning_context.ts`: planning-context summary loading and descriptive
+  list rendering with explicit guardrail filtering.
 
 Compiled JavaScript remains committed because `app/public/index.html` serves
 static browser files directly.
@@ -295,7 +301,8 @@ version/license implications, and browser smoke impact.
 - Keep browser requests same-origin for API paths.
 - Keep fixture fallback explicit and test/demo-only.
 - Preserve map load, layer menu toggle, sidebar toggle, marker rendering, and
-  clean console behavior with browser smoke tests.
+  planning-context summary rendering from same-origin API paths with clean
+  console behavior in browser smoke tests.
 - Introduce a frontend framework only when product complexity justifies it and
   after current static behavior is covered.
 
