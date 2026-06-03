@@ -119,7 +119,9 @@ async function main() {
   [
     'vendor/jquery/jquery.min.js',
     '$(document).ready',
-    'PLUGIN REF'
+    'PLUGIN REF',
+    'vendor/require/require.js',
+    'vendor/xml2json/xml2json.js'
   ].forEach(function(fragment) {
     assert(
       html.indexOf(fragment) === -1,
@@ -135,11 +137,8 @@ async function main() {
     '/js/planning_context.js',
     '/js/map_config.js',
     '/js/map.js',
-    '/vendor/jquery/jquery.min.js',
     '/vendor/leaflet/leaflet.css',
     '/vendor/leaflet/leaflet.js',
-    '/vendor/require/require.js',
-    '/vendor/xml2json/xml2json.js',
     '/img/imaginary-logo.png'
   ];
 
@@ -161,6 +160,17 @@ async function main() {
 
   var missing = await request('/missing-file.css');
   assert.strictEqual(missing.statusCode, 404, 'missing assets should return HTTP 404');
+
+  var removedAssets = [
+    '/vendor/jquery/jquery.min.js',
+    '/vendor/require/require.js',
+    '/vendor/xml2json/xml2json.js'
+  ];
+
+  for (var j = 0; j < removedAssets.length; j++) {
+    var removedAsset = await request(removedAssets[j]);
+    assert.strictEqual(removedAsset.statusCode, 404, removedAssets[j] + ' should return HTTP 404');
+  }
 
   var traversal = await request('/../package.json');
   assert.strictEqual(traversal.statusCode, 400, 'path traversal should be rejected');
