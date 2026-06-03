@@ -10,13 +10,14 @@
   },
   "scripts": {
     "verify:node": "node ../scripts/verify_node_runtime.js",
+    "sync:leaflet:vendor": "node ../scripts/sync_leaflet_vendor.js",
     "build": "tsc -p tsconfig.json",
     "prebuild": "npm run verify:node",
     "preinstall": "npm run verify:node",
     "prestart": "npm run verify:node",
     "pretest": "npm run verify:node",
     "start": "npm run build && node app.js",
-    "test": "npm run build && node test/map_config_contract_test.js && node test/planning_context_contract_test.js && node test/static_smoke_test.js && node test/static_api_gate_test.js && node test/static_proxy_test.js && node test/static_config_test.js"
+    "test": "npm run build && node test/map_config_contract_test.js && node test/planning_context_contract_test.js && node test/leaflet_vendor_contract_test.js && node test/static_smoke_test.js && node test/static_api_gate_test.js && node test/static_proxy_test.js && node test/static_config_test.js"
   },
   "devDependencies": {
     "typescript": "^6.0.3"
