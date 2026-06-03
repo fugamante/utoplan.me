@@ -42,7 +42,10 @@ Out of scope unless explicitly revived:
 - `docs/deployment-topology.md`
 - `docs/frontend-inventory.md`
 - `docs/modernization-roadmap.md`
+- `docs/product-scope.md`
 - `docs/production-deployment.md`
+- `data/mappings/puerto-rico-business-categories.json`
+- `data/planning-context/`
 - `db/migrations/202605211200_baseline_read_v1.md`
 - IEEE 1016, Software Design Description structure.
 
@@ -112,6 +115,8 @@ PostgreSQL
 | Readiness schema contract | `dtoapi/modern/src/schema_contract.ts` | Verify `baseline-read-v1` before the API is considered ready. |
 | Database artifacts | `db/migrations/` | Record explicit production schema/data changes, verification, and rollback. |
 | Data source registry | `data/sources/puerto-rico.json` | Record approved Puerto Rico-scoped source candidates before imports. |
+| Business category mapping | `data/mappings/puerto-rico-business-categories.json` | Record candidate category-to-NAICS mappings that planning-context fixtures may reference without turning them into scores or recommendations. |
+| Planning-context fixtures | `data/planning-context/` | Record descriptive municipality/category slices with confidence, limitations, and unresolved questions. |
 | Release scripts | `scripts/`, `test/` | Verify deployment configuration, release smoke behavior, and integration contracts. |
 
 ### 5.3 Runtime Modes
@@ -258,8 +263,10 @@ layer controls, sidebar behavior, and data-backed markers are the core
 experience.
 
 The first page now includes a planning-context panel that reads same-origin
-summary data from `GET /v1/planning-context` and renders descriptive
-municipality/category options only.
+summary data from `GET /v1/planning-context`, requests same-origin detail from
+`GET /v1/planning-context/:id` for the selected option, and renders
+descriptive municipality/category options plus visible confidence,
+limitations, and unresolved questions.
 
 The browser should request same-origin data paths such as `/v1/unis`. It should
 not need to know the private API service origin in integrated deployments.
@@ -276,8 +283,8 @@ Current boundaries:
 - `map.ts`: map creation, university loading, marker rendering, and DOM
   startup.
 - `main.ts`: layer visibility, sidebar, and layer-menu toggle behavior.
-- `planning_context.ts`: planning-context summary loading and descriptive
-  list rendering with explicit guardrail filtering.
+- `planning_context.ts`: planning-context summary loading, selected-detail
+  loading, and descriptive panel rendering with explicit guardrail filtering.
 
 Compiled JavaScript remains committed because `app/public/index.html` serves
 static browser files directly.
@@ -301,8 +308,8 @@ version/license implications, and browser smoke impact.
 - Keep browser requests same-origin for API paths.
 - Keep fixture fallback explicit and test/demo-only.
 - Preserve map load, layer menu toggle, sidebar toggle, marker rendering, and
-  planning-context summary rendering from same-origin API paths with clean
-  console behavior in browser smoke tests.
+  planning-context summary/detail rendering from same-origin API paths with
+  clean console behavior in browser smoke tests.
 - Introduce a frontend framework only when product complexity justifies it and
   after current static behavior is covered.
 

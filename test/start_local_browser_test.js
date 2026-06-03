@@ -134,7 +134,14 @@ async function main() {
   assert.strictEqual(await page.locator('[data-map="main"]').count(), 1, 'map container should render');
   assert.strictEqual(await page.locator('.leaflet-marker-icon').count(), 1, 'API-backed university marker should render');
   assert.strictEqual(await page.locator('.leaflet-popup-content').textContent(), 'Contract University18.42,-66.06');
+  await page.waitForSelector('[data-ui="planning-context-detail"] .planningContextSection');
+  assert(
+    (await page.locator('[data-ui="planning-context-detail"]').innerText()).indexOf('Unresolved questions') !== -1,
+    'page should render planning-context detail from the real same-origin API path'
+  );
   assert(requestedPaths.includes('/v1/unis'), 'browser should request the same-origin modern API collection');
+  assert(requestedPaths.includes('/v1/planning-context'), 'browser should request planning-context summaries');
+  assert(requestedPaths.includes('/v1/planning-context/mun001_construction'), 'browser should request planning-context detail');
   assert(!requestedPaths.includes('/data/unis.json'), 'browser should not fetch the offline fixture');
   assert.deepStrictEqual(pageErrors, [], 'page should not throw runtime errors');
   assert.deepStrictEqual(consoleMessages, [], 'page should not log browser console errors or warnings');

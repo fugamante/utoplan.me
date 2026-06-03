@@ -63,10 +63,50 @@ async function main() {
 
   assert.deepStrictEqual(planningContext.normalizePlanningContext({}), []);
   assert.deepStrictEqual(planningContext.normalizePlanningContext({ data: null }), []);
+  assert.strictEqual(planningContext.normalizePlanningContextDetail({}), null);
+
+  var detail = planningContext.normalizePlanningContextDetail({
+    data: [{
+      id: 'mun001_construction',
+      municipality: {
+        code: '001',
+        label: 'Municipality code 001'
+      },
+      businessCategory: {
+        id: 'construction-service',
+        displayName: 'Construction service'
+      },
+      confidence: {
+        overall: 'low',
+        rationale: [
+          'Category mapping is candidate-grade.',
+          'Disclosure-limited values reduce confidence.'
+        ]
+      },
+      limitations: [
+        'Descriptive planning context only.'
+      ],
+      unresolvedQuestions: [
+        'What canonical display-name source should be used?'
+      ],
+      guardrails: {
+        descriptiveOnly: true,
+        noScores: true,
+        noRankings: true,
+        noRecommendations: true
+      }
+    }]
+  });
+
+  assert(detail, 'detail payload should normalize');
+  assert.strictEqual(detail.id, 'mun001_construction');
+  assert.strictEqual(detail.confidence.rationale.length, 2);
 
   var rendered = {
     status: '',
-    listCount: 0
+    listCount: 0,
+    detailStatus: '',
+    detailListCount: 0
   };
 
   var documentStub = {
@@ -85,8 +125,31 @@ async function main() {
       if (selector === '[data-ui="planning-context-list"]') {
         return {
           innerHTML: '',
+          className: '',
           appendChild: function() {
             rendered.listCount += 1;
+          }
+        };
+      }
+
+      if (selector === '[data-ui="planning-context-detail-status"]') {
+        return {
+          set textContent(value) {
+            rendered.detailStatus = value;
+          },
+          get textContent() {
+            return rendered.detailStatus;
+          }
+        };
+      }
+
+      if (selector === '[data-ui="planning-context-detail"]') {
+        return {
+          innerHTML: '',
+          appendChild: function(node) {
+            if (node && node.className === 'planningContextSection') {
+              rendered.detailListCount += 1;
+            }
           }
         };
       }
@@ -97,6 +160,10 @@ async function main() {
       return {
         className: '',
         textContent: '',
+        setAttribute: function() {},
+        classList: {
+          add: function() {}
+        },
         appendChild: function() {}
       };
     }
@@ -109,6 +176,14 @@ async function main() {
 
   assert.strictEqual(rendered.status, 'Descriptive planning-context options (no scores, rankings, or recommendations).');
   assert.strictEqual(rendered.listCount, 1);
+
+  planningContext.renderPlanningContextDetail(documentStub, {
+    available: true,
+    detail: detail
+  });
+
+  assert.strictEqual(rendered.detailStatus, 'Descriptive detail only (confidence, limitations, unresolved questions).');
+  assert.strictEqual(rendered.detailListCount, 3);
 }
 
 main().catch(function(error) {

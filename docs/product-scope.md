@@ -44,13 +44,15 @@ select relevant CBP facts without turning those facts into opaque scores.
 
 ## Next Product Work
 
-Add a minimal UI read path for the planning-context API so descriptive
-municipality/category slices can be viewed without adding scores, rankings, or
-recommendation claims.
+The first page now reads planning-context summaries and detail through
+`GET /v1/planning-context` and `GET /v1/planning-context/:id` so descriptive
+municipality/category slices can surface confidence, limitations, and
+unresolved questions without adding scores, rankings, or recommendation
+claims.
 
-Next, add a detail-read interaction for selected summaries using
-`GET /v1/planning-context/:id` so confidence, limitations, and unresolved
-questions are visible before any decision-oriented behavior is considered.
+Next, replace placeholder municipality labels with a documented canonical
+public source so planning-context detail stops relying on code-based labels in
+the user-facing panel and fixtures.
 
 Keep fixtures descriptive. Do not add a score, rank, or recommendation until
 the underlying facts, confidence labels, and limitations are visible and

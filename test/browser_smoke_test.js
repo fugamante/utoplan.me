@@ -146,6 +146,112 @@ async function main() {
       status: 200
     });
   });
+  await page.route(`${baseUrl}/v1/planning-context/**`, route => {
+    const detailId = route.request().url().split('/').pop();
+    const detailPayloads = {
+      mun001_construction: {
+        meta: {
+          total: 1,
+          count: 1,
+          offset: 0,
+          error: null
+        },
+        data: [{
+          id: 'mun001_construction',
+          municipality: {
+            code: '001',
+            label: 'Municipality code 001'
+          },
+          businessCategory: {
+            id: 'construction-service',
+            displayName: 'Construction service'
+          },
+          confidence: {
+            overall: 'low',
+            rationale: [
+              'Category mapping is candidate-grade and requires human review before production use.',
+              'Disclosure-limited values reduce confidence for planning interpretation.'
+            ]
+          },
+          limitations: [
+            'This fixture is descriptive planning context only and is not a site recommendation.'
+          ],
+          unresolvedQuestions: [
+            'What canonical public source should provide stable municipality display names?'
+          ],
+          guardrails: {
+            descriptiveOnly: true,
+            noScores: true,
+            noRankings: true,
+            noRecommendations: true
+          }
+        }]
+      },
+      mun003_restaurant: {
+        meta: {
+          total: 1,
+          count: 1,
+          offset: 0,
+          error: null
+        },
+        data: [{
+          id: 'mun003_restaurant',
+          municipality: {
+            code: '003',
+            label: 'Municipality code 003'
+          },
+          businessCategory: {
+            id: 'restaurant-cafe',
+            displayName: 'Restaurant or cafe'
+          },
+          confidence: {
+            overall: 'medium',
+            rationale: [
+              'Category mapping is candidate-grade and requires human review before production use.',
+              'Rounded noise-flagged values should remain descriptive.'
+            ]
+          },
+          limitations: [
+            'A single row does not support demand, viability, profitability, or permit conclusions.'
+          ],
+          unresolvedQuestions: [
+            'How should rounded-noise values be rendered so users can distinguish approximate counts?'
+          ],
+          guardrails: {
+            descriptiveOnly: true,
+            noScores: true,
+            noRankings: true,
+            noRecommendations: true
+          }
+        }]
+      }
+    };
+
+    const body = detailPayloads[detailId];
+
+    if (!body) {
+      route.fulfill({
+        body: JSON.stringify({
+          meta: {
+            total: 0,
+            count: 0,
+            offset: 0,
+            error: 'Not Found'
+          },
+          data: []
+        }),
+        contentType: 'application/json',
+        status: 404
+      });
+      return;
+    }
+
+    route.fulfill({
+      body: JSON.stringify(body),
+      contentType: 'application/json',
+      status: 200
+    });
+  });
 
   page.on('console', message => {
     if (['error', 'warning'].includes(message.type())) {
@@ -169,10 +275,20 @@ async function main() {
     (await page.locator('[data-ui="planning-context-status"]').innerText()).indexOf('Descriptive planning-context options') !== -1,
     'planning-context status should describe guardrails'
   );
+  await page.waitForSelector('[data-ui="planning-context-detail"] .planningContextSection');
+  assert(
+    (await page.locator('[data-ui="planning-context-detail-status"]').innerText()).indexOf('Descriptive detail only') !== -1,
+    'planning-context detail status should describe guardrails'
+  );
+  assert(
+    (await page.locator('[data-ui="planning-context-detail"]').innerText()).indexOf('Confidence rationale') !== -1,
+    'planning-context detail should render rationale section'
+  );
   assert.strictEqual(await page.locator('.leaflet-tile-pane img.leaflet-tile').count() > 0, true, 'base map tiles should render');
   assert.strictEqual(await page.locator('.leaflet-marker-icon').count(), 1, 'university marker should render');
   assert(requestedPaths.includes('/v1/unis'), 'map should try the modern API endpoint first');
   assert(requestedPaths.includes('/v1/planning-context'), 'page should load planning-context summaries from the modern API path');
+  assert(requestedPaths.includes('/v1/planning-context/mun001_construction'), 'page should load planning-context detail for the selected summary');
   assert(!requestedPaths.includes('/data/unis.json'), 'map should not fetch fixture data when the modern API responds');
   await assertVisible(page, '#layersMenu', 'layer menu should be visible');
   await waitForDisplay(page, '[data-ui="sidebar"]', 'none');
@@ -197,6 +313,13 @@ async function main() {
     await page.locator('[data-ui="layer-visibility"].eyeOpened').count() >= 2,
     'layer eye click should open an additional layer icon'
   );
+
+  await page.locator('[data-planning-context-id="mun003_restaurant"]').click();
+  await page.waitForFunction(() => {
+    const detail = document.querySelector('[data-ui="planning-context-detail"]');
+    return !!detail && detail.textContent.indexOf('Restaurant or cafe') !== -1;
+  }, {}, { timeout: 3000 });
+  assert(requestedPaths.includes('/v1/planning-context/mun003_restaurant'), 'page should request detail for a newly selected summary');
 
   assert.deepStrictEqual(pageErrors, [], 'page should not throw runtime errors');
   assert.deepStrictEqual(consoleMessages, [], 'page should not log browser console errors or warnings');

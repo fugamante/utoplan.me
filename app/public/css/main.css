@@ -73,11 +73,26 @@ body {
   max-height: 28vh;
   overflow-y: auto;
 }
+#planningContextPanel .planningContextList{
+  margin-bottom: 10px;
+}
 #planningContextPanel .planningContextItem{
   list-style-type: none;
   background: rgba(255, 255, 255, 0.75);
   margin-bottom: 6px;
   padding: 8px;
+}
+#planningContextPanel .planningContextButton{
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+#planningContextPanel .planningContextButtonSelected{
+  border-left: 3px solid #111;
+  padding-left: 6px;
 }
 #planningContextPanel .planningContextTitle{
   font-size: 13px;
@@ -86,6 +101,28 @@ body {
 #planningContextPanel .planningContextMeta{
   font-size: 11px;
   margin-bottom: 2px;
+}
+#planningContextPanel .planningContextDetailPanel{
+  border-top: 1px solid rgba(17, 17, 17, 0.15);
+  padding-top: 8px;
+}
+#planningContextPanel .planningContextSection{
+  margin-top: 8px;
+}
+#planningContextPanel .planningContextSectionTitle{
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+#planningContextPanel .planningContextListBody{
+  max-height: none;
+  overflow: visible;
+  margin-bottom: 0;
+}
+#planningContextPanel .planningContextListBody li{
+  list-style-type: disc;
+  margin-left: 16px;
+  font-size: 11px;
+  margin-bottom: 4px;
 }
 a:active{
   color: #555;
