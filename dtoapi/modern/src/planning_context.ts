@@ -5,6 +5,15 @@ import path from 'path';
 
 const FIXTURE_EXTENSION = '.json';
 const FIXTURE_DIR = path.resolve(__dirname, '..', '..', '..', 'data', 'planning-context');
+const MUNICIPALITY_REGISTRY_PATH = path.resolve(
+  __dirname,
+  '..',
+  '..',
+  '..',
+  'data',
+  'municipalities',
+  'planning-context-municipalities.json'
+);
 const FIXTURE_ID_PATTERN = /^[a-z0-9]+(?:[_-][a-z0-9]+)*$/;
 const FORBIDDEN_DECISION_PATTERN = /\b(score|rank|ranking|recommend|best|should choose|profitable|suitability)\b/i;
 
@@ -88,6 +97,22 @@ interface FixtureEntry {
   fixture: PlanningContextFixture;
 }
 
+interface MunicipalityRegistryEntry {
+  code: string;
+  name: string;
+}
+
+interface MunicipalityRegistry {
+  schemaVersion: number;
+  scope: string;
+  codeSystem: string;
+  sourceId: string;
+  sourceFieldCode: string;
+  sourceFieldName: string;
+  retrievedAt: string;
+  entries: MunicipalityRegistryEntry[];
+}
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
@@ -132,6 +157,77 @@ function assertStringArray(values: unknown, label: string): string[] {
   });
 
   return output;
+}
+
+function readMunicipalityRegistry(): MunicipalityRegistry {
+  const raw = JSON.parse(fs.readFileSync(MUNICIPALITY_REGISTRY_PATH, 'utf8')) as unknown;
+
+  if (!isRecord(raw)) {
+    throw new Error('municipality registry must be an object');
+  }
+
+  if (raw.schemaVersion !== 1) {
+    throw new Error('municipality registry schemaVersion must be 1');
+  }
+
+  if (
+    !isNonEmptyString(raw.scope) ||
+    !isNonEmptyString(raw.codeSystem) ||
+    !isNonEmptyString(raw.sourceId) ||
+    !isNonEmptyString(raw.sourceFieldCode) ||
+    !isNonEmptyString(raw.sourceFieldName) ||
+    !isNonEmptyString(raw.retrievedAt)
+  ) {
+    throw new Error('municipality registry metadata is incomplete');
+  }
+
+  if (!Array.isArray(raw.entries) || raw.entries.length === 0) {
+    throw new Error('municipality registry entries must be a non-empty array');
+  }
+
+  const entries = raw.entries.map(function(entry: unknown, index: number): MunicipalityRegistryEntry {
+    if (!isRecord(entry) || !isNonEmptyString(entry.code) || !isNonEmptyString(entry.name)) {
+      throw new Error('municipality registry entry is invalid at index ' + index);
+    }
+
+    if (!/^[0-9]{3}$/.test(entry.code)) {
+      throw new Error('municipality registry code must be three digits at index ' + index);
+    }
+
+    return {
+      code: entry.code,
+      name: entry.name
+    };
+  });
+
+  return {
+    schemaVersion: 1,
+    scope: raw.scope,
+    codeSystem: raw.codeSystem,
+    sourceId: raw.sourceId,
+    sourceFieldCode: raw.sourceFieldCode,
+    sourceFieldName: raw.sourceFieldName,
+    retrievedAt: raw.retrievedAt,
+    entries
+  };
+}
+
+function resolveMunicipalityLabel(code: string, codeSystem: string): string {
+  const registry = readMunicipalityRegistry();
+
+  if (registry.codeSystem !== codeSystem) {
+    throw new Error('municipality registry codeSystem mismatch for ' + code);
+  }
+
+  const entry = registry.entries.find(function(candidate: MunicipalityRegistryEntry): boolean {
+    return candidate.code === code;
+  });
+
+  if (!entry) {
+    throw new Error('missing municipality registry entry for ' + code);
+  }
+
+  return entry.name;
 }
 
 function validateFixtureShape(value: unknown, id: string): PlanningContextFixture {
@@ -191,6 +287,8 @@ function validateFixtureShape(value: unknown, id: string): PlanningContextFixtur
     throw new Error(id + ' municipality fields are incomplete');
   }
 
+  const canonicalMunicipalityLabel = resolveMunicipalityLabel(municipality.code, municipality.codeSystem);
+
   if (!isNonEmptyString(businessCategory.id) || !isNonEmptyString(businessCategory.displayName) || !isNonEmptyString(businessCategory.confidence) || !isNonEmptyString(businessCategory.status) || !Array.isArray(businessCategory.naicsCodes) || businessCategory.naicsCodes.length === 0 || typeof businessCategory.naicsYear !== 'number') {
     throw new Error(id + ' businessCategory fields are incomplete');
   }
@@ -209,7 +307,10 @@ function validateFixtureShape(value: unknown, id: string): PlanningContextFixtur
     scope,
     status,
     updatedAt,
-    municipality: municipality as PlanningContextFixture['municipality'],
+    municipality: {
+      ...(municipality as PlanningContextFixture['municipality']),
+      label: canonicalMunicipalityLabel
+    },
     businessCategory: businessCategory as PlanningContextFixture['businessCategory'],
     selection: selection as PlanningContextFixture['selection'],
     cbpFacts: cbpFacts as Array<Record<string, unknown>>,

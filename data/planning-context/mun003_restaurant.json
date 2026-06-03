@@ -6,9 +6,9 @@
   "municipality": {
     "code": "003",
     "codeSystem": "fipscty",
-    "label": "Municipality code 003",
-    "confidence": "medium",
-    "notes": "Code aligns with the municipality-level CBP source, but canonical public display-name mapping is still unresolved."
+    "label": "Aguada",
+    "confidence": "high",
+    "notes": "Display name is mapped from the official Puerto Rico municipality boundary dataset in Datos.PR using countyfp to municipio."
   },
   "businessCategory": {
     "id": "restaurant-cafe",
@@ -98,7 +98,7 @@
     "Category naming currently comes from the crosswalk, not NAICS title text in this source row."
   ],
   "unresolvedQuestions": [
-    "What canonical public source should map each fipscty municipality code to a stable display name?",
+    "Should the planning-context municipality registry expand to every Puerto Rico fipscty code before additional fixtures are added?",
     "How should rounded-noise CBP values be rendered so users can distinguish approximate from exact counts?",
     "Should the planning-context contract include NAICS title enrichment before API/UI exposure?"
   ]

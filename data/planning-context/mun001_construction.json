@@ -6,9 +6,9 @@
   "municipality": {
     "code": "001",
     "codeSystem": "fipscty",
-    "label": "Municipality code 001",
-    "confidence": "medium",
-    "notes": "Code aligns with the municipality-level CBP source, but the canonical public display name still needs a documented join source."
+    "label": "Adjuntas",
+    "confidence": "high",
+    "notes": "Display name is mapped from the official Puerto Rico municipality boundary dataset in Datos.PR using countyfp to municipio."
   },
   "businessCategory": {
     "id": "construction-service",
@@ -99,7 +99,7 @@
     "A single row is not enough for demand, viability, profitability, or permitting conclusions."
   ],
   "unresolvedQuestions": [
-    "What canonical public source should provide stable municipality display names for each fipscty code?",
+    "Should the planning-context municipality registry expand to every Puerto Rico fipscty code before additional fixtures are added?",
     "Should disclosure-limited payroll and employment values be shown as masked rather than numeric zeros?",
     "What deterministic policy should map missing CBP NAICS title text into user-facing labels?"
   ]

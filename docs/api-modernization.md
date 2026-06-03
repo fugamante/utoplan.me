@@ -10,6 +10,7 @@
 
 - `dtoapi/modern/src/server.ts` implements the typed HTTP runtime for the DB-free `/` endpoint and the seeded DB-backed read routes.
 - `dtoapi/modern/src/planning_context.ts` owns read-only planning-context fixture discovery, descriptive guardrail checks, summary/detail shaping, and fixture-id routing boundaries.
+- `dtoapi/modern/src/planning_context.ts` now also validates fixture municipality labels against the source-backed planning-context municipality registry under `data/municipalities/`.
 - `dtoapi/modern/src/response_contract.ts` owns the typed shared response envelope, error envelope, and JSON serialization boundary.
 - `dtoapi/modern/src/root_contract.ts` owns the typed shared response shape for the root endpoint.
 - `dtoapi/test/modern_root_contract_test.js` verifies status, JSON body, CORS headers, and gzip behavior.
@@ -49,6 +50,7 @@ The modern API must pass preserved endpoint contracts before additional endpoint
 
 Keep new API behavior in typed sources under `dtoapi/modern/src/` and
 compatibility tests under `dtoapi/modern/test/`. The next planning-context
-data improvement should focus on canonical municipality display-name mapping
-and other documented fixture-quality gaps before adding decision-oriented
-product behavior.
+data improvement should focus on deterministic rendering for
+disclosure-limited and rounded CBP values, then NAICS title enrichment and
+other documented fixture-quality gaps before adding decision-oriented product
+behavior.

@@ -33,10 +33,12 @@
 - `npm run test:business-categories` validates the candidate category crosswalk and rejects scoring-oriented contract drift.
 - `data/planning-context/mun001_construction.json` defines the first descriptive planning-context fixture for one municipality/category selection with matching CBP facts, confidence labels, and unresolved questions.
 - `data/planning-context/mun003_restaurant.json` adds a second descriptive planning-context fixture for a different municipality/category slice so confidence and unresolved-question patterns can be compared.
+- `data/municipalities/planning-context-municipalities.json` now records source-backed municipality display names for the active planning-context fixture set using the official Puerto Rico municipality boundary dataset from Datos.PR.
 - `npm run test:planning-context` validates the planning-context fixture contract and blocks scoring-oriented drift.
 - The modern API now serves read-only planning-context summaries at `GET /v1/planning-context` and fixture detail at `GET /v1/planning-context/:id`, with explicit descriptive-only guardrails in each response.
 - The first page now reads `GET /v1/planning-context` and renders descriptive municipality/category planning-context options without score/ranking/recommendation language.
 - The first page now requests `GET /v1/planning-context/:id` for the selected planning-context option and surfaces descriptive confidence, limitation, and unresolved-question detail in the same panel.
+- Planning-context summary/detail labels for the active fixture set now resolve against the source-backed municipality registry instead of placeholder `Municipality code ###` strings.
 - `npm run verify:release` wraps app/API deployment verification for release jobs, and Azure validates the wrapper in sample mode without production secrets.
 - `npm run verify:release-smoke` checks deployed app `/healthz`, public `/v1/unis`, and optional API `/readyz` from configured release URLs.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
@@ -155,6 +157,6 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Replace placeholder municipality labels in planning-context fixtures and the
-first-page detail panel with a documented canonical public source so the
-descriptive UI no longer relies on code-based labels.
+Define a deterministic rendering policy for disclosure-limited and rounded CBP
+values so the descriptive planning-context panel stops implying false precision
+when source rows use `D`/`H` suppression or noise flags.

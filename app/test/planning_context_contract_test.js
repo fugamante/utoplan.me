@@ -18,7 +18,7 @@ async function main() {
         id: 'mun001_construction',
         municipality: {
           code: '001',
-          label: 'Municipality code 001'
+          label: 'Adjuntas'
         },
         businessCategory: {
           id: 'construction-service',
@@ -38,7 +38,7 @@ async function main() {
         id: 'invalid_guardrails',
         municipality: {
           code: '002',
-          label: 'Municipality code 002'
+          label: 'Unknown municipality'
         },
         businessCategory: {
           id: 'restaurant-cafe',
@@ -59,7 +59,7 @@ async function main() {
 
   assert.strictEqual(normalized.length, 1, 'only descriptive guardrail-complete summaries should be accepted');
   assert.strictEqual(normalized[0].id, 'mun001_construction');
-  assert.strictEqual(planningContext.describeSummary(normalized[0]), 'Municipality code 001 - Construction service');
+  assert.strictEqual(planningContext.describeSummary(normalized[0]), 'Adjuntas - Construction service');
 
   assert.deepStrictEqual(planningContext.normalizePlanningContext({}), []);
   assert.deepStrictEqual(planningContext.normalizePlanningContext({ data: null }), []);
@@ -70,7 +70,7 @@ async function main() {
       id: 'mun001_construction',
       municipality: {
         code: '001',
-        label: 'Municipality code 001'
+        label: 'Adjuntas'
       },
       businessCategory: {
         id: 'construction-service',

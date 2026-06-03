@@ -54,6 +54,7 @@ Planning-context fixtures live under `data/planning-context/`.
 The fixture must stay descriptive and include:
 
 - one municipality reference;
+- a municipality display name that matches `data/municipalities/planning-context-municipalities.json` when the fixture is exposed through the planning-context API/UI;
 - one business category from the crosswalk;
 - matching CBP facts selected by NAICS code and municipality code;
 - source metadata, confidence labels, limitations, and unresolved questions.

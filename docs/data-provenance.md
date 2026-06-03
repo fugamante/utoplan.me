@@ -56,6 +56,14 @@ decision logic. It is a candidate product artifact that requires human review
 before production use and must remain descriptive until source-backed facts,
 confidence labels, and limitations are visible.
 
+## Municipality Label Snapshot (2026-06-03)
+
+`data/municipalities/planning-context-municipalities.json` now records the
+active planning-context fixture municipality display names from the official
+Puerto Rico municipality boundary dataset published through Datos.PR. The
+current registry only covers the municipality codes used by the fixture set and
+does not yet establish a full import-ready municipality table.
+
 ## Legacy Schema Mapping Snapshot (2026-05-24)
 
 Field-level mapping evidence for registered Puerto Rico candidates now exists

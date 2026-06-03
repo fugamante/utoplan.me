@@ -6,9 +6,11 @@ var path = require('path');
 
 var fixturesDir = path.join(__dirname, '..', 'data', 'planning-context');
 var mappingPath = path.join(__dirname, '..', 'data', 'mappings', 'puerto-rico-business-categories.json');
+var municipalityRegistryPath = path.join(__dirname, '..', 'data', 'municipalities', 'planning-context-municipalities.json');
 var registryPath = path.join(__dirname, '..', 'data', 'sources', 'puerto-rico.json');
 
 var mapping = JSON.parse(fs.readFileSync(mappingPath, 'utf8'));
+var municipalityRegistry = JSON.parse(fs.readFileSync(municipalityRegistryPath, 'utf8'));
 var registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
 
 var fixtureFiles = fs.readdirSync(fixturesDir).filter(function(file) {
@@ -53,6 +55,13 @@ function toSourceIdSet(sources) {
   }, {});
 }
 
+function toMunicipalityNameMap(entries) {
+  return entries.reduce(function(result, entry) {
+    result[entry.code] = entry.name;
+    return result;
+  }, {});
+}
+
 function assertCoverage(source, label) {
   assert(source.legacySchemaCoverage && typeof source.legacySchemaCoverage === 'object', 'legacySchemaCoverage is required for ' + label);
   ['cnaic', 'total_anual', 'num_est', 'county', 'total_indus', 'cnaic_name'].forEach(function(column) {
@@ -60,7 +69,7 @@ function assertCoverage(source, label) {
   });
 }
 
-function assertFixture(fixture, file, sourceIds) {
+function assertFixture(fixture, file, sourceIds, municipalityNames) {
   var label = file + ': ';
 
   assert.strictEqual(fixture.schemaVersion, 1, label + 'schemaVersion must be 1');
@@ -72,6 +81,7 @@ function assertFixture(fixture, file, sourceIds) {
   assert(/^[0-9]{3}$/.test(fixture.municipality.code), label + 'municipality.code must be a zero-padded three-digit code');
   assert.strictEqual(fixture.municipality.codeSystem, 'fipscty', label + 'municipality codeSystem mismatch');
   assert(isNonEmptyString(fixture.municipality.label), label + 'municipality label is required');
+  assert.strictEqual(fixture.municipality.label, municipalityNames[fixture.municipality.code], label + 'municipality label must match the planning-context municipality registry');
   assert(CONFIDENCE_LABELS[fixture.municipality.confidence], label + 'municipality confidence must be low, medium, or high');
   assert(isNonEmptyString(fixture.municipality.notes), label + 'municipality notes are required');
   assertNoForbiddenDecisionLanguage(fixture.municipality.notes, label + 'municipality notes');
@@ -166,12 +176,13 @@ function assertFixture(fixture, file, sourceIds) {
 assert(fixtures.length >= 2, 'planning-context should include at least two fixtures for cross-slice comparison');
 
 var sourceIds = toSourceIdSet(registry.sources);
+var municipalityNames = toMunicipalityNameMap(municipalityRegistry.entries);
 var municipalityCodes = {};
 var categoryIds = {};
 var pairKeys = {};
 
 fixtures.forEach(function(entry) {
-  assertFixture(entry.data, entry.file, sourceIds);
+  assertFixture(entry.data, entry.file, sourceIds, municipalityNames);
 
   var municipalityCode = entry.data.municipality.code;
   var categoryId = entry.data.businessCategory.id;

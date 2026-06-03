@@ -50,9 +50,8 @@ municipality/category slices can surface confidence, limitations, and
 unresolved questions without adding scores, rankings, or recommendation
 claims.
 
-Next, replace placeholder municipality labels with a documented canonical
-public source so planning-context detail stops relying on code-based labels in
-the user-facing panel and fixtures.
+Next, define how disclosure-limited and rounded CBP values should render in the
+planning-context panel so descriptive context does not imply false precision.
 
 Keep fixtures descriptive. Do not add a score, rank, or recommendation until
 the underlying facts, confidence labels, and limitations are visible and

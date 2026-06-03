@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "scope": "planning-context-fixtures",
+  "codeSystem": "fipscty",
+  "sourceId": "datospr-official-municipality-boundaries",
+  "sourceFieldCode": "countyfp",
+  "sourceFieldName": "municipio",
+  "retrievedAt": "2026-06-03",
+  "entries": [
+    {
+      "code": "001",
+      "name": "Adjuntas"
+    },
+    {
+      "code": "003",
+      "name": "Aguada"
+    }
+  ]
+}

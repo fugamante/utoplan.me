@@ -21,9 +21,16 @@ summaries.forEach(function(summary) {
   assert.strictEqual(summary.guardrails.noRankings, true);
   assert.strictEqual(summary.guardrails.noRecommendations, true);
   assert(summary.municipality.code);
+  assert(summary.municipality.label);
   assert(summary.businessCategory.id);
   assert(summary.confidence.overall);
 });
+
+const adjuntasSummary = summaries.find(function(summary) {
+  return summary.id === 'mun001_construction';
+});
+assert(adjuntasSummary, 'summary should exist for mun001_construction');
+assert.strictEqual(adjuntasSummary.municipality.label, 'Adjuntas');
 
 const detail = planningContext.findDetail('mun003_restaurant');
 assert(detail, 'detail should exist for known fixture id');
@@ -31,6 +38,7 @@ assert.strictEqual(detail.id, 'mun003_restaurant');
 assert.strictEqual(detail.guardrails.descriptiveOnly, true);
 assert.strictEqual(detail.businessCategory.id, 'restaurant-cafe');
 assert.strictEqual(detail.selection.municipalityCode, '003');
+assert.strictEqual(detail.municipality.label, 'Aguada');
 assert(Array.isArray(detail.cbpFacts));
 assert(detail.cbpFacts.length >= 1);
 
