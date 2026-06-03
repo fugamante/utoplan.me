@@ -5,6 +5,9 @@
   "license": "MIT",
   "contributors": "Victor Ortiz, Javier Cordero, Moises Marcon, Pablo Pinna, Rafael Sierra",
   "main": "app.js",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "start": "npm run build && node app.js",
