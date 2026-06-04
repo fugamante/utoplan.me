@@ -45,7 +45,7 @@ Legacy columns: `id`, `total_indus`, `total_anual`, `cnaic`, `cnaic_name`,
 | `cnaic` | `naics` | exact | NAICS code is present in source header. |
 | `total_anual` | `ap` | exact | Annual payroll field is present. |
 | `num_est` | `est` | exact | Establishment count field is present. |
-| `total_indus` | `emp` | derived | Candidate mapping to employment count; requires import decision because legacy name is ambiguous. |
+| `total_indus` | `emp` | derived | Approved transform: preserve legacy `total_indus` as the CBP employee count. This is an inference from the preserved schema plus the Census `EMP` definition, "Total Number of Employees." |
 | `county` | none | missing | Puerto Rico aggregate file does not include county/municipality code. |
 | `cnaic_name` | none | missing | Source header does not include NAICS title text. |
 | `created_at` | `generated` | derived | Generated at import time. |
@@ -60,7 +60,7 @@ Legacy columns: `id`, `total_indus`, `total_anual`, `cnaic`, `cnaic_name`,
 | `total_anual` | `ap` | exact | Annual payroll field is present. |
 | `num_est` | `est` | exact | Establishment count field is present. |
 | `county` | `fipscty` | exact | Municipality/county-equivalent code is present. |
-| `total_indus` | `emp` | derived | Candidate mapping to employment count; requires import decision because legacy name is ambiguous. |
+| `total_indus` | `emp` | derived | Approved transform: preserve legacy `total_indus` as the CBP employee count. This is an inference from the preserved schema plus the Census `EMP` definition, "Total Number of Employees." |
 | `cnaic_name` | none | missing | Source header does not include NAICS title text. |
 | `created_at` | `generated` | derived | Generated at import time. |
 | `updated_at` | `generated` | derived | Generated at import time. |
@@ -89,18 +89,18 @@ Legacy columns: `id`, `title`, `address`, `desc`, `lat`, `long`, `created_at`,
 | `id` | `generated` | derived | Generated at import time. |
 | `title` | `Nombre de la Institución` | exact | Institution name field is present. |
 | `address` | `Dirección Física`, `Dirección Física 2`, `Pueblo` | derived | Deterministic concatenation is possible. |
-| `desc` | `Unidad Académica`, `Principal Ejecutivo` | derived | Requires deterministic format decision. |
+| `desc` | `Unidad Académica`, `Principal Ejecutivo` | derived | Approved transform: join present fields as labeled text in source order, e.g. `Academic unit: <value>; Principal executive: <value>`. |
 | `lat`, `long` | none | missing | No coordinate fields in source header; geocoding policy needed. |
 | `created_at` | `generated` | derived | Generated at import time. |
 | `updated_at` | `generated` | derived | Generated at import time. |
 
 ## Blocking Notes
 
-- `cbps`: promoting a source to import-ready still requires an explicit
-  transform decision for `total_indus` and a strategy for `cnaic_name` where
-  absent.
+- `cbps`: promoting a source to import-ready still requires a strategy for
+  `cnaic_name` where absent. The `total_indus -> emp` transform is now
+  accepted for the Datos.PR CBP CSV candidates.
 - `unis`: import readiness is blocked on a reproducible geocoding policy for
-  `lat`/`long` and a deterministic `desc` transform.
+  `lat`/`long`. The `desc` formatting rule is now accepted.
 - `cbps` fallback API: operator use is blocked until a Census API key source,
   storage path, and rotation policy are recorded.
 - `cdepts`, `businesses`, and `grade_cs` remain blocked in the source registry

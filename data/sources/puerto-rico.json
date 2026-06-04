@@ -23,15 +23,6 @@
         "reviewedAt": "2026-06-04",
         "blockers": [
           {
-            "id": "cbps-total-indus-definition",
-            "kind": "transform-decision",
-            "legacyColumns": [
-              "total_indus"
-            ],
-            "summary": "Confirm whether legacy total_indus should represent employment count from emp or a different measure.",
-            "resolutionEvidence": "Document the approved transform in docs/data-source-schema-mapping.md before import."
-          },
-          {
             "id": "cbps-aggregate-county-gap",
             "kind": "source-gap",
             "legacyColumns": [
@@ -91,7 +82,7 @@
               "emp"
             ],
             "coverage": "derived",
-            "notes": "Candidate employment-count mapping; legacy field meaning remains ambiguous."
+            "notes": "Approved transform: preserve legacy total_indus as the CBP employee count from emp. This is an evidence-backed inference from the preserved schema plus Census EMP semantics."
           },
           {
             "legacyColumn": "county",
@@ -144,15 +135,6 @@
         "status": "blocked",
         "reviewedAt": "2026-06-04",
         "blockers": [
-          {
-            "id": "cbps-municipal-total-indus-definition",
-            "kind": "transform-decision",
-            "legacyColumns": [
-              "total_indus"
-            ],
-            "summary": "Confirm whether legacy total_indus should represent employment count from emp or a different measure.",
-            "resolutionEvidence": "Document the approved transform in docs/data-source-schema-mapping.md before import."
-          },
           {
             "id": "cbps-municipal-naics-title-gap",
             "kind": "source-gap",
@@ -211,7 +193,7 @@
               "emp"
             ],
             "coverage": "derived",
-            "notes": "Candidate employment-count mapping; legacy field meaning remains ambiguous."
+            "notes": "Approved transform: preserve legacy total_indus as the CBP employee count from emp. This is an evidence-backed inference from the preserved schema plus Census EMP semantics."
           },
           {
             "legacyColumn": "cnaic_name",
@@ -257,15 +239,6 @@
         "status": "blocked",
         "reviewedAt": "2026-06-04",
         "blockers": [
-          {
-            "id": "unis-desc-format-policy",
-            "kind": "transform-decision",
-            "legacyColumns": [
-              "desc"
-            ],
-            "summary": "The legacy desc field needs a deterministic formatting rule for academic-unit and executive text.",
-            "resolutionEvidence": "Document the desc transform template in docs/data-source-schema-mapping.md before import."
-          },
           {
             "id": "unis-geocode-policy",
             "kind": "operator-dependency",
@@ -315,7 +288,7 @@
               "Principal Ejecutivo"
             ],
             "coverage": "derived",
-            "notes": "Needs deterministic formatting policy."
+            "notes": "Approved transform: join present fields as labeled text in source order, e.g. \"Academic unit: <Unidad Académica>; Principal executive: <Principal Ejecutivo>\"."
           },
           {
             "legacyColumn": "lat",
