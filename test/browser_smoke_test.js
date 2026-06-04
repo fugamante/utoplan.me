@@ -106,7 +106,7 @@ async function main() {
           id: 'mun001_construction',
           municipality: {
             code: '001',
-            label: 'Municipality code 001'
+            label: 'Adjuntas'
           },
           businessCategory: {
             id: 'construction-service',
@@ -125,7 +125,7 @@ async function main() {
           id: 'mun003_restaurant',
           municipality: {
             code: '003',
-            label: 'Municipality code 003'
+            label: 'Aguada'
           },
           businessCategory: {
             id: 'restaurant-cafe',
@@ -160,7 +160,7 @@ async function main() {
           id: 'mun001_construction',
           municipality: {
             code: '001',
-            label: 'Municipality code 001'
+            label: 'Adjuntas'
           },
           businessCategory: {
             id: 'construction-service',
@@ -173,11 +173,22 @@ async function main() {
               'Disclosure-limited values reduce confidence for planning interpretation.'
             ]
           },
+          cbpFacts: [{
+            sourceRow: {
+              ap_nf: 'D',
+              emp_nf: 'D'
+            },
+            naics: '236118',
+            establishments: 2,
+            annualPayroll: 0,
+            employment: 0,
+            notes: 'Payroll and employment values are disclosure-limited in this row and should be interpreted as constrained context.'
+          }],
           limitations: [
             'This fixture is descriptive planning context only and is not a site recommendation.'
           ],
           unresolvedQuestions: [
-            'What canonical public source should provide stable municipality display names?'
+            'Should the planning-context municipality registry expand to every Puerto Rico fipscty code before additional fixtures are added?'
           ],
           guardrails: {
             descriptiveOnly: true,
@@ -198,7 +209,7 @@ async function main() {
           id: 'mun003_restaurant',
           municipality: {
             code: '003',
-            label: 'Municipality code 003'
+            label: 'Aguada'
           },
           businessCategory: {
             id: 'restaurant-cafe',
@@ -211,11 +222,22 @@ async function main() {
               'Rounded noise-flagged values should remain descriptive.'
             ]
           },
+          cbpFacts: [{
+            sourceRow: {
+              ap_nf: 'H',
+              emp_nf: 'H'
+            },
+            naics: '722511',
+            establishments: 18,
+            annualPayroll: 667,
+            employment: 85,
+            notes: 'Fact row matches municipality and NAICS exactly, but noise flags indicate rounded values and should remain descriptive context.'
+          }],
           limitations: [
             'A single row does not support demand, viability, profitability, or permit conclusions.'
           ],
           unresolvedQuestions: [
-            'How should rounded-noise values be rendered so users can distinguish approximate counts?'
+            'Should the planning-context contract include NAICS title enrichment before API/UI exposure?'
           ],
           guardrails: {
             descriptiveOnly: true,
@@ -284,6 +306,10 @@ async function main() {
     (await page.locator('[data-ui="planning-context-detail"]').innerText()).indexOf('Confidence rationale') !== -1,
     'planning-context detail should render rationale section'
   );
+  assert(
+    (await page.locator('[data-ui="planning-context-detail"]').innerText()).indexOf('Annual payroll: masked (disclosure-limited)') !== -1,
+    'planning-context detail should mask disclosure-limited payroll values'
+  );
   assert.strictEqual(await page.locator('.leaflet-tile-pane img.leaflet-tile').count() > 0, true, 'base map tiles should render');
   assert.strictEqual(await page.locator('.leaflet-marker-icon').count(), 1, 'university marker should render');
   assert(requestedPaths.includes('/v1/unis'), 'map should try the modern API endpoint first');
@@ -317,9 +343,13 @@ async function main() {
   await page.locator('[data-planning-context-id="mun003_restaurant"]').click();
   await page.waitForFunction(() => {
     const detail = document.querySelector('[data-ui="planning-context-detail"]');
-    return !!detail && detail.textContent.indexOf('Restaurant or cafe') !== -1;
+    return !!detail && detail.textContent.indexOf('approx. 667') !== -1;
   }, {}, { timeout: 3000 });
   assert(requestedPaths.includes('/v1/planning-context/mun003_restaurant'), 'page should request detail for a newly selected summary');
+  assert(
+    (await page.locator('[data-ui="planning-context-detail"]').innerText()).indexOf('Employment: approx. 85') !== -1,
+    'planning-context detail should mark rounded values as approximate'
+  );
 
   assert.deepStrictEqual(pageErrors, [], 'page should not throw runtime errors');
   assert.deepStrictEqual(consoleMessages, [], 'page should not log browser console errors or warnings');

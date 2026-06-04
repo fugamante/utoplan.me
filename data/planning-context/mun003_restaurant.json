@@ -99,7 +99,7 @@
   ],
   "unresolvedQuestions": [
     "Should the planning-context municipality registry expand to every Puerto Rico fipscty code before additional fixtures are added?",
-    "How should rounded-noise CBP values be rendered so users can distinguish approximate from exact counts?",
+    "Should rounded-noise values expose the raw Census `H` flag text alongside approximate numeric labels?",
     "Should the planning-context contract include NAICS title enrichment before API/UI exposure?"
   ]
 }

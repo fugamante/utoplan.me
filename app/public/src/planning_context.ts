@@ -42,6 +42,7 @@ export interface PlanningContextDetail {
     overall: string;
     rationale: string[];
   };
+  cbpFacts: PlanningContextFact[];
   limitations: string[];
   unresolvedQuestions: string[];
   guardrails: {
@@ -55,6 +56,16 @@ export interface PlanningContextDetail {
 export interface PlanningContextDetailResult {
   available: boolean;
   detail: PlanningContextDetail | null;
+}
+
+export interface PlanningContextFact {
+  naics: string;
+  notes: string;
+  display: {
+    establishments: string;
+    annualPayroll: string;
+    employment: string;
+  };
 }
 
 interface RequestWindow {
@@ -92,6 +103,51 @@ function asStringList(value: unknown): string[] | null {
   }
 
   return output;
+}
+
+function asNumber(value: unknown): number | null {
+  return typeof value === 'number' && Number.isFinite(value) && value >= 0 ? value : null;
+}
+
+function formatFactValue(value: number, flag: string | null, maskedLabel: string): string {
+  if (flag === 'D') {
+    return maskedLabel + ' (disclosure-limited)';
+  }
+
+  if (flag === 'H') {
+    return 'approx. ' + String(value);
+  }
+
+  return String(value);
+}
+
+function asFact(value: unknown): PlanningContextFact | null {
+  if (!isRecord(value)) {
+    return null;
+  }
+
+  const naics = asNonEmptyString(value.naics);
+  const notes = asNonEmptyString(value.notes);
+  const establishments = asNumber(value.establishments);
+  const annualPayroll = asNumber(value.annualPayroll);
+  const employment = asNumber(value.employment);
+  const sourceRow = isRecord(value.sourceRow) ? value.sourceRow : null;
+  const employmentFlag = sourceRow ? asNonEmptyString(sourceRow.emp_nf) : null;
+  const payrollFlag = sourceRow ? asNonEmptyString(sourceRow.ap_nf) : null;
+
+  if (!naics || !notes || establishments === null || annualPayroll === null || employment === null) {
+    return null;
+  }
+
+  return {
+    naics: naics,
+    notes: notes,
+    display: {
+      establishments: formatFactValue(establishments, null, 'masked'),
+      annualPayroll: formatFactValue(annualPayroll, payrollFlag, 'masked'),
+      employment: formatFactValue(employment, employmentFlag, 'masked')
+    }
+  };
 }
 
 function asSummary(value: unknown): PlanningContextSummary | null {
@@ -181,11 +237,24 @@ function asDetail(value: unknown): PlanningContextDetail | null {
 
   const confidence = isRecord(value.confidence) ? value.confidence : null;
   const confidenceRationale = confidence ? asStringList(confidence.rationale) : null;
+  const cbpFacts = Array.isArray(value.cbpFacts) ? value.cbpFacts : null;
   const limitations = asStringList(value.limitations);
   const unresolvedQuestions = asStringList(value.unresolvedQuestions);
 
-  if (!confidenceRationale || !limitations || !unresolvedQuestions) {
+  if (!confidenceRationale || !cbpFacts || !limitations || !unresolvedQuestions) {
     return null;
+  }
+
+  const normalizedFacts: PlanningContextFact[] = [];
+
+  for (let index = 0; index < cbpFacts.length; index += 1) {
+    const fact = asFact(cbpFacts[index]);
+
+    if (!fact) {
+      return null;
+    }
+
+    normalizedFacts.push(fact);
   }
 
   return {
@@ -196,6 +265,7 @@ function asDetail(value: unknown): PlanningContextDetail | null {
       overall: summary.confidence.overall,
       rationale: confidenceRationale
     },
+    cbpFacts: normalizedFacts,
     limitations: limitations,
     unresolvedQuestions: unresolvedQuestions,
     guardrails: summary.guardrails
@@ -344,6 +414,33 @@ export function renderPlanningContextDetail(
   confidence.className = 'planningContextMeta';
   confidence.textContent = 'Overall confidence: ' + detail.confidence.overall;
   container.appendChild(confidence);
+
+  detail.cbpFacts.forEach(function(fact: PlanningContextFact): void {
+    const factSection = documentRef.createElement('section');
+    factSection.className = 'planningContextSection';
+
+    const factTitle = documentRef.createElement('h4');
+    factTitle.className = 'planningContextSectionTitle';
+    factTitle.textContent = 'CBP fact (' + fact.naics + ')';
+    factSection.appendChild(factTitle);
+
+    const values = documentRef.createElement('ul');
+    values.className = 'planningContextListBody';
+
+    [
+      'Establishments: ' + fact.display.establishments,
+      'Annual payroll: ' + fact.display.annualPayroll,
+      'Employment: ' + fact.display.employment,
+      'Notes: ' + fact.notes
+    ].forEach(function(line: string): void {
+      const item = documentRef.createElement('li');
+      item.textContent = line;
+      values.appendChild(item);
+    });
+
+    factSection.appendChild(values);
+    container.appendChild(factSection);
+  });
 
   appendListSection(documentRef, container, 'Confidence rationale', detail.confidence.rationale);
   appendListSection(documentRef, container, 'Limitations', detail.limitations);

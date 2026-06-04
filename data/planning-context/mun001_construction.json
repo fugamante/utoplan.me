@@ -100,7 +100,7 @@
   ],
   "unresolvedQuestions": [
     "Should the planning-context municipality registry expand to every Puerto Rico fipscty code before additional fixtures are added?",
-    "Should disclosure-limited payroll and employment values be shown as masked rather than numeric zeros?",
+    "Should establishment counts inherit a visible qualifier when payroll and employment stay disclosure-limited in the same row?",
     "What deterministic policy should map missing CBP NAICS title text into user-facing labels?"
   ]
 }

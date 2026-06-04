@@ -39,6 +39,7 @@
 - The first page now reads `GET /v1/planning-context` and renders descriptive municipality/category planning-context options without score/ranking/recommendation language.
 - The first page now requests `GET /v1/planning-context/:id` for the selected planning-context option and surfaces descriptive confidence, limitation, and unresolved-question detail in the same panel.
 - Planning-context summary/detail labels for the active fixture set now resolve against the source-backed municipality registry instead of placeholder `Municipality code ###` strings.
+- The first-page planning-context detail panel now renders disclosure-limited CBP values as masked and rounded/noise-flagged CBP values as approximate so the UI does not imply false precision from `D`/`H` source flags.
 - `npm run verify:release` wraps app/API deployment verification for release jobs, and Azure validates the wrapper in sample mode without production secrets.
 - `npm run verify:release-smoke` checks deployed app `/healthz`, public `/v1/unis`, and optional API `/readyz` from configured release URLs.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
@@ -157,6 +158,6 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Define a deterministic rendering policy for disclosure-limited and rounded CBP
-values so the descriptive planning-context panel stops implying false precision
-when source rows use `D`/`H` suppression or noise flags.
+Enrich planning-context CBP facts with deterministic NAICS title text so the
+detail panel can show source-backed industry labels instead of code-only fact
+headers.

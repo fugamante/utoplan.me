@@ -139,6 +139,10 @@ async function main() {
     (await page.locator('[data-ui="planning-context-detail"]').innerText()).indexOf('Unresolved questions') !== -1,
     'page should render planning-context detail from the real same-origin API path'
   );
+  assert(
+    (await page.locator('[data-ui="planning-context-detail"]').innerText()).indexOf('masked (disclosure-limited)') !== -1,
+    'page should render disclosure-limited values as masked in the real same-origin API path'
+  );
   assert(requestedPaths.includes('/v1/unis'), 'browser should request the same-origin modern API collection');
   assert(requestedPaths.includes('/v1/planning-context'), 'browser should request planning-context summaries');
   assert(requestedPaths.includes('/v1/planning-context/mun001_construction'), 'browser should request planning-context detail');

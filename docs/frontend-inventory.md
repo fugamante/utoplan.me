@@ -62,7 +62,8 @@
 ## Map Data Flow
 
 - The browser map prefers the same-origin modern API collection path `/v1/unis`.
-- The first-page planning-context panel reads same-origin summaries from `/v1/planning-context`, requests same-origin detail from `/v1/planning-context/:id` for the selected option, and renders descriptive municipality/category, confidence, limitation, and unresolved-question detail only.
+- The first-page planning-context panel reads same-origin summaries from `/v1/planning-context`, requests same-origin detail from `/v1/planning-context/:id` for the selected option, and renders descriptive municipality/category, confidence, CBP fact, limitation, and unresolved-question detail only.
+- The planning-context detail panel renders disclosure-limited payroll/employment values as masked and rounded/noise-flagged payroll/employment values as approximate so browser output does not imply false precision from `D`/`H` source flags.
 - `app/app.js` proxies `/v1/*` to `UTOPLAN_API_ORIGIN` when configured.
 - `app/app.js` maps `/v1/unis` to `app/public/data/unis.json` only when `UTOPLAN_DEMO_FIXTURE=1` is set.
 - `app/public/src/map.ts` still has a client-side fallback URL from `MapConfig.fallbackDataUrl` for deployments where the preferred API request fails.

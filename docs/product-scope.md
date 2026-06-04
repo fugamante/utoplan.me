@@ -53,6 +53,16 @@ claims.
 Next, define how disclosure-limited and rounded CBP values should render in the
 planning-context panel so descriptive context does not imply false precision.
 
+That rendering policy is now:
+
+- disclosure-limited `D` payroll or employment values render as `masked (disclosure-limited)`;
+- rounded/noise-flagged `H` payroll or employment values render as `approx. <value>`;
+- unflagged values remain numeric descriptive context only.
+
+Next, enrich planning-context fact labels with source-backed NAICS title text
+so the detail panel can show industry labels more clearly without inventing new
+decision logic.
+
 Keep fixtures descriptive. Do not add a score, rank, or recommendation until
 the underlying facts, confidence labels, and limitations are visible and
 reviewed.

@@ -205,6 +205,8 @@ assertions:
   descriptive-only guardrail messaging.
 - Selecting a planning-context summary requests `/v1/planning-context/:id` and
   renders descriptive confidence, limitation, and unresolved-question detail.
+- Disclosure-limited and rounded/noise-flagged CBP values render with masked
+  or approximate labels rather than implying exact precision.
 - Integrated browser smoke checks use the seeded modern API path rather than
   the offline fixture.
 
@@ -273,7 +275,7 @@ Release validation checks that the intended commit can be operated safely:
 | TC-022 | Security audit | Run all documented `npm audit` commands | Current lockfile-backed audit reports no blocking vulnerabilities |
 | TC-023 | Planning-context fixture | `npm run test:planning-context` | Fixtures keep municipality/category/CBP matching explicit with source metadata, confidence labels, limitations, and unresolved questions, and include at least two municipality/category slices while remaining descriptive |
 | TC-024 | Planning-context API contract | `npm run test:api` | `GET /v1/planning-context` and `GET /v1/planning-context/:id` return read-only descriptive payloads with guardrails and reject unsupported methods with `405` |
-| TC-025 | Planning-context summary/detail UI | `npm run test:browser` | First page requests `/v1/planning-context`, loads selected detail from `/v1/planning-context/:id`, and renders descriptive municipality/category, confidence, limitation, and unresolved-question content without score/ranking/recommendation language |
+| TC-025 | Planning-context summary/detail UI | `npm run test:browser` | First page requests `/v1/planning-context`, loads selected detail from `/v1/planning-context/:id`, and renders descriptive municipality/category, confidence, CBP fact-value masking/approximation, limitation, and unresolved-question content without score/ranking/recommendation language |
 
 ## 7. Test Procedure Specification
 

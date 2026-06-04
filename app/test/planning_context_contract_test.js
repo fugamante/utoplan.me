@@ -83,6 +83,17 @@ async function main() {
           'Disclosure-limited values reduce confidence.'
         ]
       },
+      cbpFacts: [{
+        sourceRow: {
+          ap_nf: 'D',
+          emp_nf: 'D'
+        },
+        naics: '236118',
+        establishments: 2,
+        annualPayroll: 0,
+        employment: 0,
+        notes: 'Disclosure-limited row should not imply precision.'
+      }],
       limitations: [
         'Descriptive planning context only.'
       ],
@@ -101,6 +112,8 @@ async function main() {
   assert(detail, 'detail payload should normalize');
   assert.strictEqual(detail.id, 'mun001_construction');
   assert.strictEqual(detail.confidence.rationale.length, 2);
+  assert.strictEqual(detail.cbpFacts[0].display.annualPayroll, 'masked (disclosure-limited)');
+  assert.strictEqual(detail.cbpFacts[0].display.employment, 'masked (disclosure-limited)');
 
   var rendered = {
     status: '',
@@ -183,7 +196,7 @@ async function main() {
   });
 
   assert.strictEqual(rendered.detailStatus, 'Descriptive detail only (confidence, limitations, unresolved questions).');
-  assert.strictEqual(rendered.detailListCount, 3);
+  assert.strictEqual(rendered.detailListCount, 4);
 }
 
 main().catch(function(error) {

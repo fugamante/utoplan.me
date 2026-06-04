@@ -202,7 +202,7 @@ contracts working while rebuilding the data and technical foundation.
 | FR-012 | Unresolved legacy tables shall remain blocked for production import. | `cdepts`, `businesses`, and `grade_cs` imports are blocked until source, license, and transform path are recorded. |
 | FR-013 | Public behavior changes shall update related requirements, design, test, and release docs. | Relevant IEEE and project docs change in the same bundle as the behavior change. |
 | FR-014 | The API shall expose read-only planning-context summary/detail routes with explicit descriptive-only guardrails. | `GET /v1/planning-context` and `GET /v1/planning-context/:id` return descriptive fixture payloads with guardrail flags and reject unsupported methods with `405`. |
-| FR-015 | The first page shall render planning-context summary options from same-origin `/v1/planning-context` and load selected descriptive detail from `/v1/planning-context/:id` without score/ranking/recommendation language. | Browser smoke verifies the summary/detail request paths and rendered descriptive options, confidence, limitations, and unresolved questions. |
+| FR-015 | The first page shall render planning-context summary options from same-origin `/v1/planning-context` and load selected descriptive detail from `/v1/planning-context/:id` without score/ranking/recommendation language. | Browser smoke verifies the summary/detail request paths and rendered descriptive options, confidence, limitations, unresolved questions, and CBP fact-value masking/approximation rules. |
 
 ## 9. Nonfunctional Requirements
 

@@ -21,6 +21,7 @@
 - `GET /v1/planning-context/:id` returns one planning-context fixture by id, or `404` when missing.
 - Planning-context responses include explicit descriptive-only guardrails (`descriptiveOnly`, `noScores`, `noRankings`, `noRecommendations`).
 - The first-page frontend now consumes `GET /v1/planning-context` to render descriptive municipality/category planning-context options and requests `GET /v1/planning-context/:id` for the selected option detail.
+- The first-page detail panel now renders disclosure-limited CBP values as `masked (disclosure-limited)` and rounded/noise-flagged values as `approx. <value>` so the UI does not imply false precision.
 - `dtoapi/modern/test/db_contract_test.js` verifies the seeded read endpoint set and missing-record behavior against the Docker database.
 - Known record routes reject unsupported methods with `405 Method Not Allowed` and avoid exposing raw database errors to clients.
 - Planning-context collection and record routes reject unsupported methods with `405 Method Not Allowed`.
@@ -50,7 +51,6 @@ The modern API must pass preserved endpoint contracts before additional endpoint
 
 Keep new API behavior in typed sources under `dtoapi/modern/src/` and
 compatibility tests under `dtoapi/modern/test/`. The next planning-context
-data improvement should focus on deterministic rendering for
-disclosure-limited and rounded CBP values, then NAICS title enrichment and
-other documented fixture-quality gaps before adding decision-oriented product
-behavior.
+data improvement should focus on NAICS title enrichment, fixture coverage
+growth beyond the current municipality registry subset, and other documented
+fixture-quality gaps before adding decision-oriented product behavior.

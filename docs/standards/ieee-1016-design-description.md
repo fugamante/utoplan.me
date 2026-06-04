@@ -266,7 +266,8 @@ The first page now includes a planning-context panel that reads same-origin
 summary data from `GET /v1/planning-context`, requests same-origin detail from
 `GET /v1/planning-context/:id` for the selected option, and renders
 descriptive municipality/category options plus visible confidence,
-limitations, and unresolved questions.
+limitations, unresolved questions, and CBP fact values with explicit masking
+and approximation rules for disclosure-limited and rounded source rows.
 
 The browser should request same-origin data paths such as `/v1/unis`. It should
 not need to know the private API service origin in integrated deployments.
@@ -284,7 +285,8 @@ Current boundaries:
   startup.
 - `main.ts`: layer visibility, sidebar, and layer-menu toggle behavior.
 - `planning_context.ts`: planning-context summary loading, selected-detail
-  loading, and descriptive panel rendering with explicit guardrail filtering.
+  loading, descriptive CBP fact-value formatting, and panel rendering with
+  explicit guardrail filtering.
 
 Compiled JavaScript remains committed because `app/public/index.html` serves
 static browser files directly.
@@ -310,6 +312,8 @@ version/license implications, and browser smoke impact.
 - Preserve map load, layer menu toggle, sidebar toggle, marker rendering, and
   planning-context summary/detail rendering from same-origin API paths with
   clean console behavior in browser smoke tests.
+- Keep descriptive fact rendering deterministic: disclosure-limited `D` values
+  render as masked and rounded/noise-flagged `H` values render as approximate.
 - Introduce a frontend framework only when product complexity justifies it and
   after current static behavior is covered.
 
