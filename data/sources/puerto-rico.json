@@ -20,9 +20,17 @@
       "notes": "Candidate replacement for the legacy cbps table; confirm transform decisions before import.",
       "legacySchemaMap": {
         "table": "cbps",
-        "evidenceDate": "2026-05-24",
+        "evidenceDate": "2026-06-04",
         "evidenceType": "resource-header",
         "columnCoverage": [
+          {
+            "legacyColumn": "id",
+            "sourceFields": [
+              "generated"
+            ],
+            "coverage": "derived",
+            "notes": "Primary key must be generated at import time."
+          },
           {
             "legacyColumn": "cnaic",
             "sourceFields": [
@@ -63,6 +71,22 @@
             "sourceFields": [],
             "coverage": "missing",
             "notes": "NAICS title text is not present in this CSV header."
+          },
+          {
+            "legacyColumn": "created_at",
+            "sourceFields": [
+              "generated"
+            ],
+            "coverage": "derived",
+            "notes": "Import timestamp must be generated outside the source file."
+          },
+          {
+            "legacyColumn": "updated_at",
+            "sourceFields": [
+              "generated"
+            ],
+            "coverage": "derived",
+            "notes": "Import timestamp must be generated outside the source file."
           }
         ]
       }
@@ -85,9 +109,17 @@
       "notes": "Use as the preferred municipality-level CBP source if it preserves the legacy county/municipality join shape.",
       "legacySchemaMap": {
         "table": "cbps",
-        "evidenceDate": "2026-05-24",
+        "evidenceDate": "2026-06-04",
         "evidenceType": "resource-header",
         "columnCoverage": [
+          {
+            "legacyColumn": "id",
+            "sourceFields": [
+              "generated"
+            ],
+            "coverage": "derived",
+            "notes": "Primary key must be generated at import time."
+          },
           {
             "legacyColumn": "cnaic",
             "sourceFields": [
@@ -129,6 +161,22 @@
             "sourceFields": [],
             "coverage": "missing",
             "notes": "NAICS title text is not present in this CSV header."
+          },
+          {
+            "legacyColumn": "created_at",
+            "sourceFields": [
+              "generated"
+            ],
+            "coverage": "derived",
+            "notes": "Import timestamp must be generated outside the source file."
+          },
+          {
+            "legacyColumn": "updated_at",
+            "sourceFields": [
+              "generated"
+            ],
+            "coverage": "derived",
+            "notes": "Import timestamp must be generated outside the source file."
           }
         ]
       }
@@ -150,9 +198,17 @@
       "notes": "This resource was published after the 2016 hackathon, so it is not confirmed original input.",
       "legacySchemaMap": {
         "table": "unis",
-        "evidenceDate": "2026-05-24",
+        "evidenceDate": "2026-06-04",
         "evidenceType": "resource-header",
         "columnCoverage": [
+          {
+            "legacyColumn": "id",
+            "sourceFields": [
+              "generated"
+            ],
+            "coverage": "derived",
+            "notes": "Primary key must be generated at import time."
+          },
           {
             "legacyColumn": "title",
             "sourceFields": [
@@ -190,6 +246,22 @@
             "sourceFields": [],
             "coverage": "missing",
             "notes": "No coordinate fields in the source header."
+          },
+          {
+            "legacyColumn": "created_at",
+            "sourceFields": [
+              "generated"
+            ],
+            "coverage": "derived",
+            "notes": "Import timestamp must be generated outside the source file."
+          },
+          {
+            "legacyColumn": "updated_at",
+            "sourceFields": [
+              "generated"
+            ],
+            "coverage": "derived",
+            "notes": "Import timestamp must be generated outside the source file."
           }
         ]
       }
@@ -224,12 +296,20 @@
       "sourceUrl": "https://www.census.gov/data/developers/data-sets/cbp-zbp/cbp-api.2014.html",
       "apiUrl": "https://api.census.gov/data/2014/cbp?get=ESTAB,PAYANN,NAICS2012,NAICS2012_TTL&for=county:*&in=state:72",
       "sourceBasis": "Direct Census API fallback for 2014 CBP data, constrained to Puerto Rico by FIPS state code 72.",
-      "notes": "Use only if the Datos.PR CBP files are unavailable or insufficient.",
+      "notes": "Use only if the Datos.PR CBP files are unavailable or insufficient. Live verification on 2026-06-04 returned a Missing Key response, so this fallback is operator-blocked until a Census API key path is recorded.",
       "legacySchemaMap": {
         "table": "cbps",
-        "evidenceDate": "2026-05-24",
+        "evidenceDate": "2026-06-04",
         "evidenceType": "api-fields",
         "columnCoverage": [
+          {
+            "legacyColumn": "id",
+            "sourceFields": [
+              "generated"
+            ],
+            "coverage": "derived",
+            "notes": "Primary key must be generated at import time."
+          },
           {
             "legacyColumn": "num_est",
             "sourceFields": [
@@ -270,6 +350,22 @@
             "sourceFields": [],
             "coverage": "missing",
             "notes": "Fallback query does not include an unambiguous total_indus field."
+          },
+          {
+            "legacyColumn": "created_at",
+            "sourceFields": [
+              "generated"
+            ],
+            "coverage": "derived",
+            "notes": "Import timestamp must be generated outside the API response."
+          },
+          {
+            "legacyColumn": "updated_at",
+            "sourceFields": [
+              "generated"
+            ],
+            "coverage": "derived",
+            "notes": "Import timestamp must be generated outside the API response."
           }
         ]
       }

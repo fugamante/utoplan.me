@@ -27,6 +27,30 @@ function isCoverageValue(value) {
   return value === 'exact' || value === 'derived' || value === 'missing';
 }
 
+var expectedColumnsByTable = {
+  cbps: [
+    'id',
+    'total_indus',
+    'total_anual',
+    'cnaic',
+    'cnaic_name',
+    'county',
+    'num_est',
+    'created_at',
+    'updated_at'
+  ],
+  unis: [
+    'id',
+    'title',
+    'address',
+    'desc',
+    'lat',
+    'long',
+    'created_at',
+    'updated_at'
+  ]
+};
+
 assert.strictEqual(registry.schemaVersion, 1);
 assert.strictEqual(registry.scope, 'puerto-rico-only');
 assert(isNonEmptyString(registry.retrievedAt));
@@ -49,19 +73,43 @@ registry.sources.forEach(function(source) {
   if (hasTargetTable(source, 'cbps') || hasTargetTable(source, 'unis')) {
     assert(source.legacySchemaMap && typeof source.legacySchemaMap === 'object', source.id + ' must include legacySchemaMap');
     assert(isNonEmptyString(source.legacySchemaMap.table), source.id + ' legacySchemaMap.table is required');
+    assert(isNonEmptyString(source.legacySchemaMap.evidenceType), source.id + ' legacySchemaMap.evidenceType is required');
     assert(isNonEmptyString(source.legacySchemaMap.evidenceDate), source.id + ' legacySchemaMap.evidenceDate is required');
     assert(Array.isArray(source.legacySchemaMap.columnCoverage), source.id + ' legacySchemaMap.columnCoverage must be an array');
     assert(source.legacySchemaMap.columnCoverage.length > 0, source.id + ' legacySchemaMap.columnCoverage must not be empty');
+    assert(Object.prototype.hasOwnProperty.call(expectedColumnsByTable, source.legacySchemaMap.table), source.id + ' legacySchemaMap.table must be supported');
+    assert(hasTargetTable(source, source.legacySchemaMap.table), source.id + ' legacySchemaMap.table must match a target table');
+
+    var expectedColumns = expectedColumnsByTable[source.legacySchemaMap.table];
+    var seenColumns = Object.create(null);
 
     source.legacySchemaMap.columnCoverage.forEach(function(mapping) {
       assert(isNonEmptyString(mapping.legacyColumn), source.id + ' mapping legacyColumn is required');
       assert(Array.isArray(mapping.sourceFields), source.id + ' mapping sourceFields must be an array');
       assert(isCoverageValue(mapping.coverage), source.id + ' mapping coverage must be exact, derived, or missing');
+      assert(!seenColumns[mapping.legacyColumn], source.id + ' duplicates mapping for ' + mapping.legacyColumn);
+      seenColumns[mapping.legacyColumn] = true;
+
+      if (mapping.coverage === 'exact') {
+        assert(mapping.sourceFields.length > 0, source.id + ' exact coverage requires sourceFields');
+      }
+
+      if (mapping.coverage === 'derived') {
+        assert(mapping.sourceFields.length > 0, source.id + ' derived coverage requires sourceFields');
+        assert(isNonEmptyString(mapping.notes), source.id + ' derived coverage requires notes');
+      }
 
       if (mapping.coverage === 'missing') {
+        assert.strictEqual(mapping.sourceFields.length, 0, source.id + ' missing coverage must not list sourceFields');
         assert(isNonEmptyString(mapping.notes), source.id + ' missing coverage requires notes');
       }
     });
+
+    assert.deepStrictEqual(
+      Object.keys(seenColumns).sort(),
+      expectedColumns.slice().sort(),
+      source.id + ' must cover every preserved legacy column for ' + source.legacySchemaMap.table
+    );
   }
 });
 

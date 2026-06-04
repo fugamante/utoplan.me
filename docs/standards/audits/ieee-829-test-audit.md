@@ -51,6 +51,7 @@ evidence and must record restoration of the formal baseline as an action item.
 | `docs/production-deployment.md` | Procedure, summary, release gate | Are deployment checks runnable and release blocking? |
 | `docs/data-intake.md` | Test design, quality gate | Are Puerto Rico-only source controls validated before import? |
 | `data/sources/puerto-rico.json` | Test item, test data | Are source records scoped, licensed, dated, and mapped to active legacy columns where evidence exists? |
+| `data/mappings/puerto-rico-business-categories.json` | Test item, test data | Do candidate business-category mappings stay descriptive and traceable to NAICS evidence without score drift? |
 | `data/planning-context/*.json` | Test item, test data | Do planning-context fixtures keep fact matching, uncertainty, and unresolved questions visible without recommendation drift? |
 | `db/migrations/*.md` | Test item, transmittal | Are database baselines and changes tied to readiness behavior? |
 | `dtoapi/test/*.js` | API test cases | Do preserved compatibility tests cover public behavior? |
@@ -84,8 +85,8 @@ release branch, production deployment, or merge that changes app/API behavior.
   deployment documentation.
 - Confirm data-source registry changes pass the Puerto Rico-only source scope
   check before import scripts or production-style data claims are accepted.
-- Confirm `cbps` and `unis` registry entries include `legacySchemaMap` coverage
-  for preserved legacy columns, with unresolved-field notes where needed.
+- Confirm `cbps` and `unis` registry entries include full preserved-column
+  `legacySchemaMap` coverage, with notes for every non-exact mapping.
 - Confirm planning-context fixtures pass the contract test and remain
   descriptive with explicit confidence labels, source metadata, and unresolved
   questions.
@@ -255,4 +256,24 @@ Release decision:
 - Revisit trigger:
   - Next release-candidate bundle, or sooner if a required quality gate fails
     and incident traceability is incomplete.
+- Status: proposed
+
+### RECO-829-2026-06-01-01
+
+- Class: required hardening
+- Finding: deployed release smoke currently validates app `/healthz`,
+  `/v1/unis`, and optional API `/readyz`, but not the same-origin
+  `/v1/planning-context` path that the first page now uses for descriptive
+  planning-context summaries.
+- Acceptance evidence:
+  - `scripts/release_smoke_check.js` validates a successful
+    `GET /v1/planning-context` response from `UTOPLAN_APP_URL`.
+  - `test/release_smoke_check_test.js` covers the new planning-context release
+    smoke assertion and failure behavior.
+  - `docs/production-deployment.md`, the IEEE 829 test document, and this audit
+    corpus describe the expanded deployed smoke scope.
+- Revisit trigger:
+  - When the deployed first-page planning-context path becomes release-critical,
+    or before the next release candidate that promotes planning-context UI/API
+    behavior beyond internal modernization validation.
 - Status: proposed

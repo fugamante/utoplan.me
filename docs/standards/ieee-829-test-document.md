@@ -269,7 +269,7 @@ Release validation checks that the intended commit can be operated safely:
 | TC-016 | Live release smoke | `UTOPLAN_APP_URL=<url> npm run verify:release-smoke` | Public app health and `/v1/unis` smoke pass |
 | TC-017 | API readiness | `curl -fsS <api-origin>/readyz` | API reports ready only with DB and schema available |
 | TC-018 | App health | `curl -fsS <app-origin>/healthz` | App reports expected service, proxy state, and no fixture leakage |
-| TC-019 | Source registry | `npm run test:data-sources` | Registered sources are Puerto Rico-only or explicitly filtered, and `cbps`/`unis` entries include `legacySchemaMap` coverage evidence |
+| TC-019 | Source registry | `npm run test:data-sources` | Registered sources are Puerto Rico-only or explicitly filtered, and `cbps`/`unis` entries include full preserved-column `legacySchemaMap` coverage with notes for every non-exact mapping |
 | TC-020 | Business category mapping | `npm run test:business-categories` | Candidate categories include NAICS mappings, assumptions, confidence, and status without scoring or recommendation language |
 | TC-021 | Migration artifacts | `npm run test:migration-artifacts` | Migration documents include required release and rollback fields |
 | TC-022 | Security audit | Run all documented `npm audit` commands | Current lockfile-backed audit reports no blocking vulnerabilities |

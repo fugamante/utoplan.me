@@ -28,8 +28,10 @@ Current mapping evidence is documented in
 `data/sources/puerto-rico.json` under `legacySchemaMap` for `cbps` and `unis`
 candidates.
 
-Keep unresolved columns explicit (for example, `missing` or `derived`) and do
-not promote a source to production import on demo fixtures or seed rows.
+Keep every preserved legacy column explicit in the registry coverage for active
+mapped tables. Mark unresolved or transform-backed columns as `missing` or
+`derived`, include notes for every non-exact mapping, and do not promote a
+source to production import on demo fixtures or seed rows.
 
 ## Business Category Mapping Gate
 
@@ -78,7 +80,8 @@ npm run test:planning-context
 - `cbps`: Datos.PR County Business Patterns 2014 Puerto Rico CSV and municipality CSV.
 - `muns`: Datos.PR official Puerto Rico municipality boundary ZIP, plus the municipality-level CBP file where only tabular join data is needed.
 - `unis`: Datos.PR higher education directory for Puerto Rico, academic year 2017-18.
-- `cbps` fallback: Census 2014 CBP API filtered with `state:72`.
+- `cbps` fallback: Census 2014 CBP API filtered with `state:72`; current live
+  access requires an API key, so this remains an operator-blocked fallback.
 
 ## Unresolved Legacy Tables
 

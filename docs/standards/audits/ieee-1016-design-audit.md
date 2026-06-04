@@ -45,6 +45,7 @@ Review these artifacts during each IEEE 1016 audit:
 | `docs/modernization-roadmap.md` | current design state and phased intent | Are completed and in-progress design claims still true in code and tests? |
 | `docs/api-modernization.md` | API component design and compatibility boundary | Are typed API modules, generated output, and compatibility rules still aligned? |
 | `docs/frontend-inventory.md` | frontend component design and asset ownership | Are served assets, TypeScript boundaries, data hooks, and fixture rules current? |
+| `docs/product-scope.md` | product-boundary design | Does the design keep planning-context behavior descriptive and inside the approved non-recommendation scope? |
 | `docs/deployment-topology.md` | runtime topology and request flow | Does deployment design still match app/API/database service responsibilities? |
 | `docs/production-deployment.md` | operator design and release controls | Are health, readiness, secret, migration, rollback, and smoke-check responsibilities covered? |
 | `docs/database-migrations.md` | database evolution design | Are schema contracts, migration artifacts, rollback notes, and readiness baselines current? |
@@ -52,6 +53,8 @@ Review these artifacts during each IEEE 1016 audit:
 | `docs/data-provenance.md` | source trust design | Are unresolved provenance gaps visible in design decisions? |
 | `db/migrations/` | database design baseline | Do migration artifacts match API readiness and read-query assumptions? |
 | `data/sources/puerto-rico.json` | approved source registry | Are data design assumptions backed by registered source metadata? |
+| `data/mappings/puerto-rico-business-categories.json` | planning-context data design | Are category-to-NAICS mappings explicit and descriptive rather than implicit scoring logic? |
+| `data/planning-context/` | planning-context fixture design | Do summary/detail fixtures expose confidence, limitations, and unresolved questions? |
 | `app/app.js` | app server/proxy design | Does app serving, `/healthz`, proxying, and fixture gating match documented topology? |
 | `app/public/src/` | typed browser design | Are map, UI, and configuration responsibilities separated and tested? |
 | `dtoapi/modern/src/` | typed API design | Are routing, response envelopes, records, resources, and database access separated and tested? |
@@ -70,6 +73,8 @@ Review these artifacts during each IEEE 1016 audit:
   separate design concepts?
 - Are provenance gaps treated as product and design constraints, not merely
   documentation chores?
+- Is the descriptive planning-context boundary explicit enough to block score,
+  ranking, or recommendation drift?
 - Are mutating or production-impacting operations explicit and reviewable?
 
 ### Decomposition View
@@ -108,6 +113,8 @@ Review these artifacts during each IEEE 1016 audit:
 - Are legacy provenance gaps such as `cdepts`, `businesses`, and `grade_cs`
   still blocked from production-style use until source, license, and transform
   evidence exists?
+- Do business-category mappings and planning-context fixtures remain explicit,
+  descriptive, and visibly confidence-bounded?
 - Do seed data and demo fixtures remain visibly separate from production data?
 - Does `/readyz` verify the database schema baseline required by the running
   API?
@@ -159,8 +166,11 @@ changes:
   `db/migrations/`.
 - Compare data-intake and provenance docs against `data/sources/puerto-rico.json`
   and any import, seed, or fixture changes.
-- Confirm active mapped tables (`cbps`, `unis`) have consistent
-  `legacySchemaMap` coverage in the registry and
+- Compare `docs/product-scope.md`, category mappings, and planning-context
+  fixtures against frontend and API behavior so descriptive-only guardrails do
+  not drift silently.
+- Confirm active mapped tables (`cbps`, `unis`) have consistent full
+  preserved-column `legacySchemaMap` coverage in the registry and
   `docs/data-source-schema-mapping.md`.
 - Confirm design claims that mention tests are backed by executable tests or a
   documented manual verification procedure.

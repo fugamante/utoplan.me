@@ -51,6 +51,8 @@ Inspect these artifacts during each IEEE 830 audit:
   runtime boundary, typed source ownership, and next API slice rules.
 - `docs/frontend-inventory.md`: frontend served surface, map-first behavior,
   data URL policy, fixture constraints, and browser smoke expectations.
+- `docs/product-scope.md`: descriptive product boundary for planning-context
+  behavior and non-recommendation constraints.
 - `docs/data-intake.md`: Puerto Rico-only source acceptance requirements,
   registry fields, current candidates, and blocked legacy tables.
 - `docs/data-provenance.md`: verified legacy evidence, unresolved source gaps,
@@ -66,6 +68,10 @@ Inspect these artifacts during each IEEE 830 audit:
 - `docs/standards/*.md` and `docs/standards/audits/*.md`: cross-standard
   controls that add or constrain requirements.
 - `data/sources/puerto-rico.json`: accepted data-source requirement evidence.
+- `data/mappings/puerto-rico-business-categories.json`: category-to-NAICS
+  requirement evidence for descriptive planning-context selection.
+- `data/planning-context/`: descriptive planning-context fixture evidence for
+  municipality/category summary and detail behavior.
 - `db/migrations/`: database requirement and readiness baseline evidence.
 - `package.json`, service package manifests, CI configuration, Dockerfiles, and
   Compose files: executable requirement and environment evidence.
@@ -101,6 +107,9 @@ the current project surface.
   limited to demos and tests.
 - The modern API preserves known root and seeded read endpoint contracts before
   new endpoint work is accepted.
+- The modern API and browser preserve descriptive-only planning-context summary
+  and detail behavior before any score, ranking, or recommendation feature is
+  accepted.
 - Known record routes define status, envelope, CORS, gzip, missing-record, and
   unsupported-method behavior where those behaviors are part of the public
   contract.
@@ -117,12 +126,14 @@ the current project surface.
 - Each accepted production-style source requires publisher, portal, license,
   source URL, resource/API URL, target endpoint/table, status, source-basis
   note, and registry retrieval date.
-- `cbps` and `unis` source entries require `legacySchemaMap` column coverage
-  evidence with unresolved-field notes when coverage is partial.
+- `cbps` and `unis` source entries require full preserved-column
+  `legacySchemaMap` coverage evidence with notes for every non-exact mapping.
 - Broad national datasets require deterministic Puerto Rico filtering in both
   the registry and import logic.
 - Demo fixtures, test seed data, recovered legacy data, and production data are
   separate requirement classes.
+- Candidate business-category mappings and planning-context fixtures remain
+  descriptive and traceable, not implicit scoring logic.
 - Requirements identify provenance gaps as blockers, not as implementation
   backlog only.
 

@@ -73,7 +73,7 @@ mapping as the authoritative field reference and stores exact titles for the
 currently exposed fixture codes so the API/UI can show deterministic industry
 labels even when the municipality CSV omits `cnaic_name`.
 
-## Legacy Schema Mapping Snapshot (2026-05-24)
+## Legacy Schema Mapping Snapshot (2026-06-04)
 
 Field-level mapping evidence for registered Puerto Rico candidates now exists
 for `cbps` and `unis` in `docs/data-source-schema-mapping.md`.
@@ -82,11 +82,17 @@ Current status:
 
 - `cbps`: source-header evidence supports direct mapping for `cnaic`,
   `total_anual`, and `num_est`; municipality CSV also supports `county`.
-  `total_indus` and `cnaic_name` still need explicit transform decisions where
-  fields are missing or ambiguous.
+  Import-generated fields are now documented explicitly. `total_indus` and
+  `cnaic_name` still need explicit transform decisions where fields are missing
+  or ambiguous.
 - `unis`: source-header evidence supports `title` and a deterministic
-  `address` transform, but no coordinate fields are present for `lat`/`long`.
-  Geocoding policy remains a blocking decision for import readiness.
+  `address` transform, and import-generated fields are documented explicitly,
+  but no coordinate fields are present for `lat`/`long`. Geocoding policy
+  remains a blocking decision for import readiness.
+- `cbps` fallback API: the documented Census fallback fields still align with
+  legacy columns, but a live request on 2026-06-04 returned a `Missing Key`
+  response. Treat that fallback as operator-blocked until an API-key policy is
+  recorded.
 
 ## Provenance Gap
 
