@@ -148,6 +148,9 @@ Each source record must capture:
 - Full preserved-column legacy-source-to-target coverage for active mapped
   tables (`cbps`, `unis`) using `legacySchemaMap` in the registry, with notes
   for every non-exact mapping.
+- Import-readiness status and explicit blockers for active mapped tables when
+  unresolved transforms, source gaps, or operator dependencies still block
+  production-style import.
 
 Broad national datasets are acceptable only when the registry records the
 Puerto Rico filter and the import implementation enforces it.

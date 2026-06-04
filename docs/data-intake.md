@@ -15,6 +15,9 @@ Each accepted source must record:
 - Retrieval date at the registry level.
 - Legacy-schema mapping evidence for active target tables where mapping
   evidence exists.
+- Import-readiness status and explicit blockers for active mapped tables when
+  source gaps, transform decisions, or operator dependencies still prevent a
+  production-style import.
 
 Do not import broad national datasets unless the registry entry includes a deterministic Puerto Rico filter and the import script enforces that filter.
 
@@ -32,6 +35,10 @@ Keep every preserved legacy column explicit in the registry coverage for active
 mapped tables. Mark unresolved or transform-backed columns as `missing` or
 `derived`, include notes for every non-exact mapping, and do not promote a
 source to production import on demo fixtures or seed rows.
+
+When an active mapped-table candidate is not safe to import yet, record that
+state under `importReadiness` with a `blocked` status and one blocker entry per
+unresolved transform decision, source gap, or operator dependency.
 
 ## Business Category Mapping Gate
 

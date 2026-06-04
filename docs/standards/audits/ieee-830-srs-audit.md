@@ -128,6 +128,8 @@ the current project surface.
   note, and registry retrieval date.
 - `cbps` and `unis` source entries require full preserved-column
   `legacySchemaMap` coverage evidence with notes for every non-exact mapping.
+- `cbps` and `unis` candidates that remain unsafe to import require explicit
+  `importReadiness` blocker records instead of hiding unresolved risks in prose.
 - Broad national datasets require deterministic Puerto Rico filtering in both
   the registry and import logic.
 - Demo fixtures, test seed data, recovered legacy data, and production data are

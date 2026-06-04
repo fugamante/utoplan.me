@@ -87,6 +87,9 @@ release branch, production deployment, or merge that changes app/API behavior.
   check before import scripts or production-style data claims are accepted.
 - Confirm `cbps` and `unis` registry entries include full preserved-column
   `legacySchemaMap` coverage, with notes for every non-exact mapping.
+- Confirm blocked `cbps` and `unis` import candidates carry explicit
+  `importReadiness` blocker records for unresolved transforms, source gaps, or
+  operator dependencies.
 - Confirm planning-context fixtures pass the contract test and remain
   descriptive with explicit confidence labels, source metadata, and unresolved
   questions.

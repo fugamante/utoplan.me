@@ -51,6 +51,10 @@ var expectedColumnsByTable = {
   ]
 };
 
+function hasActiveMappedTarget(source) {
+  return hasTargetTable(source, 'cbps') || hasTargetTable(source, 'unis');
+}
+
 assert.strictEqual(registry.schemaVersion, 1);
 assert.strictEqual(registry.scope, 'puerto-rico-only');
 assert(isNonEmptyString(registry.retrievedAt));
@@ -70,8 +74,16 @@ registry.sources.forEach(function(source) {
   assert(isNonEmptyString(source.sourceBasis), source.id + ' sourceBasis is required');
   assert(hasPuertoRicoScope(source), source.id + ' must be Puerto Rico-only or filtered with state:72');
 
-  if (hasTargetTable(source, 'cbps') || hasTargetTable(source, 'unis')) {
+  if (hasActiveMappedTarget(source)) {
     assert(source.legacySchemaMap && typeof source.legacySchemaMap === 'object', source.id + ' must include legacySchemaMap');
+    assert(source.importReadiness && typeof source.importReadiness === 'object', source.id + ' must include importReadiness');
+    assert(source.importReadiness.status === 'blocked' || source.importReadiness.status === 'ready', source.id + ' importReadiness.status must be blocked or ready');
+    assert(isNonEmptyString(source.importReadiness.reviewedAt), source.id + ' importReadiness.reviewedAt is required');
+    assert(Array.isArray(source.importReadiness.blockers), source.id + ' importReadiness.blockers must be an array');
+    if (source.importReadiness.status === 'blocked') {
+      assert(source.importReadiness.blockers.length > 0, source.id + ' blocked importReadiness must include blockers');
+    }
+
     assert(isNonEmptyString(source.legacySchemaMap.table), source.id + ' legacySchemaMap.table is required');
     assert(isNonEmptyString(source.legacySchemaMap.evidenceType), source.id + ' legacySchemaMap.evidenceType is required');
     assert(isNonEmptyString(source.legacySchemaMap.evidenceDate), source.id + ' legacySchemaMap.evidenceDate is required');
@@ -110,6 +122,20 @@ registry.sources.forEach(function(source) {
       expectedColumns.slice().sort(),
       source.id + ' must cover every preserved legacy column for ' + source.legacySchemaMap.table
     );
+
+    source.importReadiness.blockers.forEach(function(blocker) {
+      assert(isNonEmptyString(blocker.id), source.id + ' blocker id is required');
+      assert(
+        blocker.kind === 'transform-decision' || blocker.kind === 'source-gap' || blocker.kind === 'operator-dependency',
+        source.id + ' blocker kind must be transform-decision, source-gap, or operator-dependency'
+      );
+      assert(Array.isArray(blocker.legacyColumns), source.id + ' blocker legacyColumns must be an array');
+      blocker.legacyColumns.forEach(function(column) {
+        assert(expectedColumns.indexOf(column) !== -1, source.id + ' blocker references unknown legacy column ' + column);
+      });
+      assert(isNonEmptyString(blocker.summary), source.id + ' blocker summary is required');
+      assert(isNonEmptyString(blocker.resolutionEvidence), source.id + ' blocker resolutionEvidence is required');
+    });
   }
 });
 

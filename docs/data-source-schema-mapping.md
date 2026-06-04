@@ -8,7 +8,8 @@ read schemas defined in:
 
 The mapping in this file is evidence-backed and scoped to currently registered
 `cbps` and `unis` candidates. It does not use demo fixtures or test seed data
-as provenance evidence.
+as provenance evidence. Source-level import blockers are mirrored in
+`data/sources/puerto-rico.json` under `importReadiness`.
 
 ## Evidence Snapshot (2026-06-04)
 

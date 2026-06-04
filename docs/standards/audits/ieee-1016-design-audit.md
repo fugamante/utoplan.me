@@ -172,6 +172,8 @@ changes:
 - Confirm active mapped tables (`cbps`, `unis`) have consistent full
   preserved-column `legacySchemaMap` coverage in the registry and
   `docs/data-source-schema-mapping.md`.
+- Confirm blocked import candidates expose machine-readable `importReadiness`
+  records so unresolved source risks are not left as prose-only warnings.
 - Confirm design claims that mention tests are backed by executable tests or a
   documented manual verification procedure.
 

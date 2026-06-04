@@ -84,15 +84,17 @@ Current status:
   `total_anual`, and `num_est`; municipality CSV also supports `county`.
   Import-generated fields are now documented explicitly. `total_indus` and
   `cnaic_name` still need explicit transform decisions where fields are missing
-  or ambiguous.
+  or ambiguous, and the registry now carries explicit import blockers for those
+  unresolved columns.
 - `unis`: source-header evidence supports `title` and a deterministic
   `address` transform, and import-generated fields are documented explicitly,
   but no coordinate fields are present for `lat`/`long`. Geocoding policy
-  remains a blocking decision for import readiness.
+  remains a blocking decision for import readiness, and the registry now
+  records that blocker separately from the mapping evidence.
 - `cbps` fallback API: the documented Census fallback fields still align with
   legacy columns, but a live request on 2026-06-04 returned a `Missing Key`
   response. Treat that fallback as operator-blocked until an API-key policy is
-  recorded.
+  recorded; the registry now carries that operational blocker explicitly.
 
 ## Provenance Gap
 
