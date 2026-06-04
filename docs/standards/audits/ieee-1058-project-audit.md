@@ -48,6 +48,8 @@ Inspect these artifacts during each IEEE 1058 audit:
   typed source ownership, test strategy, and remaining endpoint migration work.
 - `docs/frontend-inventory.md`: frontend surface inventory, map-first behavior,
   fixture constraints, browser smoke coverage, and first-party asset ownership.
+- `docs/product-scope.md`: descriptive planning-context scope boundary and next
+  product-work guardrails.
 - `docs/data-intake.md`: data intake scope, registry controls, accepted
   candidates, and blocked source classes.
 - `docs/data-provenance.md`: verified source evidence, unresolved gaps, and
@@ -63,6 +65,11 @@ Inspect these artifacts during each IEEE 1058 audit:
   commitments, audit corpuses, and standards-specific recommendations.
 - `db/migrations/`: database baseline and release change artifacts.
 - `data/sources/puerto-rico.json`: source registry and data scope evidence.
+- `data/mappings/puerto-rico-business-categories.json`,
+  `data/naics/planning-context-naics-titles.json`, and
+  `data/planning-context/`: planning-context scope evidence, candidate
+  category mapping inputs, controlled fact-label inputs, and descriptive
+  fixture slices.
 - Root and service `package.json` files, lockfiles, CI configuration,
   Dockerfiles, and Compose files: executable project control evidence.
 - Test suites under `app/test/`, `dtoapi/test/`, `dtoapi/modern/test/`, and

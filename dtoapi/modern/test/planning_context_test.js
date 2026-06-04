@@ -41,6 +41,7 @@ assert.strictEqual(detail.selection.municipalityCode, '003');
 assert.strictEqual(detail.municipality.label, 'Aguada');
 assert(Array.isArray(detail.cbpFacts));
 assert(detail.cbpFacts.length >= 1);
+assert.strictEqual(detail.cbpFacts[0].naicsTitle, 'Full-Service Restaurants');
 
 const missing = planningContext.findDetail('missing-fixture');
 assert.strictEqual(missing, null);

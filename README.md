@@ -97,6 +97,7 @@ The current modernization work is centered on:
 - `docs/database-migrations.md`: production database migration artifact strategy.
 - `docs/data-intake.md`: Puerto Rico-only source intake contract and registry policy.
 - `data/municipalities/`: source-backed planning-context municipality display-name registry.
+- `data/naics/`: source-backed planning-context NAICS title registry for active fixture codes.
 - `docs/data-provenance.md`: known evidence and open gaps for the original hackathon dataset.
 - `docs/deployment-topology.md`: integrated app/API deployment topology.
 - `docs/frontend-inventory.md`: static app source and asset inventory.
@@ -104,6 +105,7 @@ The current modernization work is centered on:
 - `docs/production-deployment.md`: production deployment checklist and rollback runbook.
 - `data/planning-context/`: descriptive planning-context fixtures that combine
   municipality and category selections with source-backed candidate facts.
+  Fact labels now include source-backed NAICS title text for the active fixture set.
 - `docs/standards/`: active IEEE 730, 828, 829, 830, 1016, 1012, and 1058
   standards corpus plus audit guides for ongoing modernization governance.
 

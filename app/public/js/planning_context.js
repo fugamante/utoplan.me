@@ -38,6 +38,7 @@ function asFact(value) {
         return null;
     }
     const naics = asNonEmptyString(value.naics);
+    const naicsTitle = asNonEmptyString(value.naicsTitle);
     const notes = asNonEmptyString(value.notes);
     const establishments = asNumber(value.establishments);
     const annualPayroll = asNumber(value.annualPayroll);
@@ -45,11 +46,12 @@ function asFact(value) {
     const sourceRow = isRecord(value.sourceRow) ? value.sourceRow : null;
     const employmentFlag = sourceRow ? asNonEmptyString(sourceRow.emp_nf) : null;
     const payrollFlag = sourceRow ? asNonEmptyString(sourceRow.ap_nf) : null;
-    if (!naics || !notes || establishments === null || annualPayroll === null || employment === null) {
+    if (!naics || !naicsTitle || !notes || establishments === null || annualPayroll === null || employment === null) {
         return null;
     }
     return {
         naics: naics,
+        naicsTitle: naicsTitle,
         notes: notes,
         display: {
             establishments: formatFactValue(establishments, null, 'masked'),
@@ -270,7 +272,7 @@ export function renderPlanningContextDetail(documentRef, result) {
         factSection.className = 'planningContextSection';
         const factTitle = documentRef.createElement('h4');
         factTitle.className = 'planningContextSectionTitle';
-        factTitle.textContent = 'CBP fact (' + fact.naics + ')';
+        factTitle.textContent = 'CBP fact: ' + fact.naicsTitle + ' (' + fact.naics + ')';
         factSection.appendChild(factTitle);
         const values = documentRef.createElement('ul');
         values.className = 'planningContextListBody';

@@ -64,6 +64,15 @@ Puerto Rico municipality boundary dataset published through Datos.PR. The
 current registry only covers the municipality codes used by the fixture set and
 does not yet establish a full import-ready municipality table.
 
+## NAICS Title Snapshot (2026-06-03)
+
+`data/naics/planning-context-naics-titles.json` now records source-backed
+NAICS title text for the active planning-context fixture codes. This registry
+is intentionally narrow: it uses the fallback Census CBP `NAICS2012_TTL`
+mapping as the authoritative field reference and stores exact titles for the
+currently exposed fixture codes so the API/UI can show deterministic industry
+labels even when the municipality CSV omits `cnaic_name`.
+
 ## Legacy Schema Mapping Snapshot (2026-05-24)
 
 Field-level mapping evidence for registered Puerto Rico candidates now exists

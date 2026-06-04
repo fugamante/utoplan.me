@@ -14,6 +14,15 @@ const MUNICIPALITY_REGISTRY_PATH = path.resolve(
   'municipalities',
   'planning-context-municipalities.json'
 );
+const NAICS_TITLE_REGISTRY_PATH = path.resolve(
+  __dirname,
+  '..',
+  '..',
+  '..',
+  'data',
+  'naics',
+  'planning-context-naics-titles.json'
+);
 const FIXTURE_ID_PATTERN = /^[a-z0-9]+(?:[_-][a-z0-9]+)*$/;
 const FORBIDDEN_DECISION_PATTERN = /\b(score|rank|ranking|recommend|best|should choose|profitable|suitability)\b/i;
 
@@ -111,6 +120,21 @@ interface MunicipalityRegistry {
   sourceFieldName: string;
   retrievedAt: string;
   entries: MunicipalityRegistryEntry[];
+}
+
+interface NaicsTitleRegistryEntry {
+  code: string;
+  title: string;
+  sourceUrl: string;
+}
+
+interface NaicsTitleRegistry {
+  schemaVersion: number;
+  scope: string;
+  sourceId: string;
+  sourceBasis: string;
+  retrievedAt: string;
+  entries: NaicsTitleRegistryEntry[];
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -212,6 +236,61 @@ function readMunicipalityRegistry(): MunicipalityRegistry {
   };
 }
 
+function readNaicsTitleRegistry(): NaicsTitleRegistry {
+  const raw = JSON.parse(fs.readFileSync(NAICS_TITLE_REGISTRY_PATH, 'utf8')) as unknown;
+
+  if (!isRecord(raw)) {
+    throw new Error('NAICS title registry must be an object');
+  }
+
+  if (raw.schemaVersion !== 1) {
+    throw new Error('NAICS title registry schemaVersion must be 1');
+  }
+
+  if (
+    !isNonEmptyString(raw.scope) ||
+    !isNonEmptyString(raw.sourceId) ||
+    !isNonEmptyString(raw.sourceBasis) ||
+    !isNonEmptyString(raw.retrievedAt)
+  ) {
+    throw new Error('NAICS title registry metadata is incomplete');
+  }
+
+  if (!Array.isArray(raw.entries) || raw.entries.length === 0) {
+    throw new Error('NAICS title registry entries must be a non-empty array');
+  }
+
+  const entries = raw.entries.map(function(entry: unknown, index: number): NaicsTitleRegistryEntry {
+    if (
+      !isRecord(entry) ||
+      !isNonEmptyString(entry.code) ||
+      !isNonEmptyString(entry.title) ||
+      !isNonEmptyString(entry.sourceUrl)
+    ) {
+      throw new Error('NAICS title registry entry is invalid at index ' + index);
+    }
+
+    if (!/^[0-9]{6}$/.test(entry.code)) {
+      throw new Error('NAICS title registry code must be six digits at index ' + index);
+    }
+
+    return {
+      code: entry.code,
+      title: entry.title,
+      sourceUrl: entry.sourceUrl
+    };
+  });
+
+  return {
+    schemaVersion: 1,
+    scope: raw.scope,
+    sourceId: raw.sourceId,
+    sourceBasis: raw.sourceBasis,
+    retrievedAt: raw.retrievedAt,
+    entries
+  };
+}
+
 function resolveMunicipalityLabel(code: string, codeSystem: string): string {
   const registry = readMunicipalityRegistry();
 
@@ -228,6 +307,19 @@ function resolveMunicipalityLabel(code: string, codeSystem: string): string {
   }
 
   return entry.name;
+}
+
+function resolveNaicsTitle(code: string): string {
+  const registry = readNaicsTitleRegistry();
+  const entry = registry.entries.find(function(candidate: NaicsTitleRegistryEntry): boolean {
+    return candidate.code === code;
+  });
+
+  if (!entry) {
+    throw new Error('missing NAICS title registry entry for ' + code);
+  }
+
+  return entry.title;
 }
 
 function validateFixtureShape(value: unknown, id: string): PlanningContextFixture {
@@ -301,6 +393,19 @@ function validateFixtureShape(value: unknown, id: string): PlanningContextFixtur
     throw new Error(id + ' confidence fields are incomplete');
   }
 
+  const normalizedFacts = cbpFacts.map(function(fact: unknown, index: number): Record<string, unknown> {
+    if (!isRecord(fact) || !isNonEmptyString(fact.naics) || !isNonEmptyString(fact.naicsTitle)) {
+      throw new Error(id + ' cbpFacts[' + index + '] must include non-empty naics and naicsTitle');
+    }
+
+    const canonicalNaicsTitle = resolveNaicsTitle(fact.naics);
+
+    return {
+      ...fact,
+      naicsTitle: canonicalNaicsTitle
+    };
+  });
+
   return {
     ...value,
     schemaVersion,
@@ -313,7 +418,7 @@ function validateFixtureShape(value: unknown, id: string): PlanningContextFixtur
     },
     businessCategory: businessCategory as PlanningContextFixture['businessCategory'],
     selection: selection as PlanningContextFixture['selection'],
-    cbpFacts: cbpFacts as Array<Record<string, unknown>>,
+    cbpFacts: normalizedFacts,
     sourceMetadata: sourceMetadata as Array<Record<string, unknown>>,
     confidence: confidence as PlanningContextFixture['confidence'],
     limitations: normalizedLimitations,

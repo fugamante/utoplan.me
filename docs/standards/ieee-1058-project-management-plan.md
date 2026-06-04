@@ -9,7 +9,8 @@ modernization project rather than a ceremonial one-time plan.
 
 The plan applies to the static map-first app, modern TypeScript API,
 PostgreSQL-backed read model, Docker deployment topology, Puerto Rico data
-source governance, standards documentation, and ongoing release operations.
+source governance, descriptive planning-context scope control, standards
+documentation, and ongoing release operations.
 
 ## 2. Scope
 
@@ -25,6 +26,8 @@ Covered work:
   checks under `db/migrations/`.
 - Puerto Rico-only data source intake, provenance, registry, and import
   readiness controls.
+- Product-boundary control for candidate business-category mappings and
+  descriptive planning-context fixtures under `data/` and `docs/`.
 - CI, Docker, local development, production deployment, rollback, release
   smoke, and security-audit workflows.
 - IEEE standards documents and audit files under `docs/standards/`.
@@ -43,11 +46,15 @@ Out of scope unless explicitly approved:
 - `docs/modernization-roadmap.md`
 - `docs/api-modernization.md`
 - `docs/frontend-inventory.md`
+- `docs/product-scope.md`
 - `docs/deployment-topology.md`
 - `docs/production-deployment.md`
 - `docs/database-migrations.md`
 - `docs/data-intake.md`
 - `docs/data-provenance.md`
+- `data/mappings/puerto-rico-business-categories.json`
+- `data/naics/planning-context-naics-titles.json`
+- `data/planning-context/`
 - `db/migrations/README.md`
 - `db/migrations/202605211200_baseline_read_v1.md`
 - `docs/standards/ieee-730-sqa-plan.md`
@@ -74,6 +81,8 @@ legacy prototype to reliable foundation:
 - Establish PostgreSQL-backed readiness and migration discipline.
 - Separate demo fixture, test seed, candidate source, and production data.
 - Rebuild data coverage only from source-backed Puerto Rico records.
+- Keep category mappings and planning-context UI/API behavior descriptive until
+  confidence, limitations, and unresolved questions are visible.
 - Maintain standards documents as the auditing corpus for ongoing work.
 
 ## 5. Project Organization

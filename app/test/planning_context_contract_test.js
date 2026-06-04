@@ -89,6 +89,7 @@ async function main() {
           emp_nf: 'D'
         },
         naics: '236118',
+        naicsTitle: 'Residential Remodelers',
         establishments: 2,
         annualPayroll: 0,
         employment: 0,
@@ -112,6 +113,7 @@ async function main() {
   assert(detail, 'detail payload should normalize');
   assert.strictEqual(detail.id, 'mun001_construction');
   assert.strictEqual(detail.confidence.rationale.length, 2);
+  assert.strictEqual(detail.cbpFacts[0].naicsTitle, 'Residential Remodelers');
   assert.strictEqual(detail.cbpFacts[0].display.annualPayroll, 'masked (disclosure-limited)');
   assert.strictEqual(detail.cbpFacts[0].display.employment, 'masked (disclosure-limited)');
 

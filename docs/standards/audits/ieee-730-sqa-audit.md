@@ -32,6 +32,8 @@ Review these artifacts during each IEEE 730 audit:
   rules, typed source ownership, and test locations.
 - `docs/frontend-inventory.md`: served surface, first-party browser ownership,
   fixture policy, TypeScript boundary, and browser smoke coverage.
+- `docs/product-scope.md`: current descriptive product boundary for planning
+  context and non-recommendation constraints.
 - `docs/database-migrations.md`: migration artifact format, release policy, and
   database review checklist.
 - `docs/data-provenance.md`: verified source evidence, unresolved provenance
@@ -45,10 +47,18 @@ Review these artifacts during each IEEE 730 audit:
   smoke checks.
 - `db/migrations/`: database change artifacts and schema baseline evidence.
 - `data/sources/puerto-rico.json`: approved candidate source registry.
+- `data/mappings/puerto-rico-business-categories.json`: candidate category
+  crosswalk used by descriptive planning-context fixtures.
+- `data/naics/planning-context-naics-titles.json`: controlled NAICS title
+  labels for exposed planning-context fact rows when the source CSV omits
+  `cnaic_name`.
+- `data/planning-context/`: descriptive municipality/category fixture slices
+  with visible confidence and limitation metadata.
 - `package.json`, `app/package.json`, `dtoapi/package.json`, and
   `dtoapi/modern/package.json`: authoritative scripts, dependencies, and audit
   surfaces.
-- CI configuration and Docker files: validation parity with documented release
+- CI configuration and Docker files, including `azure-pipelines.yml` and
+  `docker-compose.public-api.yml`: validation parity with documented release
   and compatibility checks.
 - Test suites under `app/test/`, `dtoapi/test/`, `dtoapi/modern/test/`, and
   `test/`: executable evidence for API contracts, browser behavior, source
@@ -141,6 +151,8 @@ Review these artifacts during each IEEE 730 audit:
   and transform path are recorded?
 - Are demo fixtures, test seed data, recovered legacy data, and production data
   kept visibly separate?
+- Do candidate business-category mappings and planning-context fixtures remain
+  descriptive and free of score, ranking, or recommendation drift?
 
 ### Security And Operational Quality
 

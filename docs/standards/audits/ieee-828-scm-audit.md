@@ -34,6 +34,10 @@ Audit these configuration item classes on every SCM review:
   schema contracts, seed/test database assets, and migration documentation.
 - Data provenance assets: `data/sources/puerto-rico.json`,
   `docs/data-intake.md`, `docs/data-provenance.md`, and fixture/test data.
+- Product-boundary and planning-context assets: `docs/product-scope.md`,
+  `data/mappings/puerto-rico-business-categories.json`,
+  `data/naics/planning-context-naics-titles.json`, and
+  `data/planning-context/`.
 - Release evidence: CI definitions, release smoke scripts, Docker validation
   commands, production runbooks, rollback instructions, tags, branches, commits,
   and pull requests.
@@ -51,8 +55,9 @@ Collect or inspect this evidence before issuing an IEEE 828 audit finding:
 - Build reproducibility: `npm run install:all`, `npm run build`, and lockfile
   changes that match package manifest changes.
 - Test baseline: `npm run test`, `npm run test:browser`,
-  `npm run test:data-sources`, and service-specific tests when the change is
-  narrower.
+  `npm run test:data-sources`, `npm run test:business-categories`,
+  `npm run test:planning-context`, and service-specific tests when the change
+  is narrower.
 - Docker compatibility: `npm run docker:test:db`,
   `npm run docker:test:proxy`, and
   `npm run docker:test:start-local-browser` when Docker is available.
@@ -66,11 +71,12 @@ Collect or inspect this evidence before issuing an IEEE 828 audit finding:
   readiness contract updates, and confirmation that app/API startup does not
   mutate schema.
 - Data control: source registry entries, Puerto Rico-only scope enforcement,
-  license/source URLs, retrieval dates, and separation of fixture, seed, and
+  license/source URLs, retrieval dates, category-mapping traceability,
+  planning-context fixture boundaries, and separation of fixture, seed, and
   production data.
 - Documentation trace: README, roadmap, deployment topology, production
-  deployment runbook, data intake/provenance notes, and database migration
-  strategy updated when behavior changes.
+  deployment runbook, product scope, data intake/provenance notes, and
+  database migration strategy updated when behavior changes.
 
 ## Recurring Audit Checklist
 
@@ -104,6 +110,8 @@ Collect or inspect this evidence before issuing an IEEE 828 audit finding:
   schema baseline, validation commands, and rollback expectation.
 - Data-source status identifies candidate, accepted, blocked, fixture, seed, and
   production data separately.
+- Product-scope status identifies whether planning-context behavior is still
+  descriptive and backed by visible confidence and limitation evidence.
 - Open provenance gaps remain visible until evidence is found or replacement
   sources are formally accepted.
 - Audit findings record recommendation state: proposed, accepted, implemented,
@@ -218,5 +226,8 @@ Review date:
 - Fixture mode remains limited to explicit offline demos and tests.
 - Source-backed Puerto Rico data remains the accepted data scope until broader
   scope is explicitly approved and documented.
+- Candidate business-category mappings and planning-context fixtures remain
+  controlled artifacts and must not become implicit scoring logic without a
+  documented standards and release update.
 - Standards documentation is living project control material and should be
   updated in the same bundle that changes the controlled behavior.

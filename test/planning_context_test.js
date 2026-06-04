@@ -7,10 +7,12 @@ var path = require('path');
 var fixturesDir = path.join(__dirname, '..', 'data', 'planning-context');
 var mappingPath = path.join(__dirname, '..', 'data', 'mappings', 'puerto-rico-business-categories.json');
 var municipalityRegistryPath = path.join(__dirname, '..', 'data', 'municipalities', 'planning-context-municipalities.json');
+var naicsTitleRegistryPath = path.join(__dirname, '..', 'data', 'naics', 'planning-context-naics-titles.json');
 var registryPath = path.join(__dirname, '..', 'data', 'sources', 'puerto-rico.json');
 
 var mapping = JSON.parse(fs.readFileSync(mappingPath, 'utf8'));
 var municipalityRegistry = JSON.parse(fs.readFileSync(municipalityRegistryPath, 'utf8'));
+var naicsTitleRegistry = JSON.parse(fs.readFileSync(naicsTitleRegistryPath, 'utf8'));
 var registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
 
 var fixtureFiles = fs.readdirSync(fixturesDir).filter(function(file) {
@@ -69,7 +71,14 @@ function assertCoverage(source, label) {
   });
 }
 
-function assertFixture(fixture, file, sourceIds, municipalityNames) {
+function toNaicsTitleMap(entries) {
+  return entries.reduce(function(result, entry) {
+    result[entry.code] = entry.title;
+    return result;
+  }, {});
+}
+
+function assertFixture(fixture, file, sourceIds, municipalityNames, naicsTitles) {
   var label = file + ': ';
 
   assert.strictEqual(fixture.schemaVersion, 1, label + 'schemaVersion must be 1');
@@ -116,6 +125,8 @@ function assertFixture(fixture, file, sourceIds, municipalityNames) {
     assert(fact && typeof fact === 'object', label + 'cbp fact must be an object at index ' + index);
     assert.strictEqual(fact.municipalityCode, fixture.municipality.code, label + 'fact municipality code must match fixture municipality');
     assert(fixture.selection.selectedNaicsCodes.indexOf(fact.naics) !== -1, label + 'fact NAICS must be selected in fixture selection');
+    assert(isNonEmptyString(fact.naicsTitle), label + 'fact naicsTitle is required');
+    assert.strictEqual(fact.naicsTitle, naicsTitles[fact.naics], label + 'fact naicsTitle must match the NAICS title registry');
     assert(Number.isInteger(fact.establishments) && fact.establishments >= 0, label + 'fact establishments must be a non-negative integer');
     assert(typeof fact.annualPayroll === 'number' && fact.annualPayroll >= 0, label + 'fact annualPayroll must be a non-negative number');
     assert(typeof fact.employment === 'number' && fact.employment >= 0, label + 'fact employment must be a non-negative number');
@@ -177,12 +188,13 @@ assert(fixtures.length >= 2, 'planning-context should include at least two fixtu
 
 var sourceIds = toSourceIdSet(registry.sources);
 var municipalityNames = toMunicipalityNameMap(municipalityRegistry.entries);
+var naicsTitles = toNaicsTitleMap(naicsTitleRegistry.entries);
 var municipalityCodes = {};
 var categoryIds = {};
 var pairKeys = {};
 
 fixtures.forEach(function(entry) {
-  assertFixture(entry.data, entry.file, sourceIds, municipalityNames);
+  assertFixture(entry.data, entry.file, sourceIds, municipalityNames, naicsTitles);
 
   var municipalityCode = entry.data.municipality.code;
   var categoryId = entry.data.businessCategory.id;

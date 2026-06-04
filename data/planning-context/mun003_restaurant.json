@@ -51,6 +51,7 @@
       },
       "municipalityCode": "003",
       "naics": "722511",
+      "naicsTitle": "Full-Service Restaurants",
       "establishments": 18,
       "annualPayroll": 667,
       "employment": 85,
@@ -95,11 +96,11 @@
   "limitations": [
     "This fixture is descriptive planning context only and is not a site recommendation.",
     "A single row does not support demand, viability, profitability, or permit conclusions.",
-    "Category naming currently comes from the crosswalk, not NAICS title text in this source row."
+    "The municipality CBP row does not include NAICS title text, so this fixture enriches the fact label from a separate Census-backed NAICS title registry."
   ],
   "unresolvedQuestions": [
     "Should the planning-context municipality registry expand to every Puerto Rico fipscty code before additional fixtures are added?",
     "Should rounded-noise values expose the raw Census `H` flag text alongside approximate numeric labels?",
-    "Should the planning-context contract include NAICS title enrichment before API/UI exposure?"
+    "Should the NAICS title registry expand to every mapped business-category code before additional fixtures are added?"
   ]
 }

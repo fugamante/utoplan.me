@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "scope": "planning-context-fixtures",
+  "sourceId": "census-cbp-2014-state-72-fallback",
+  "sourceBasis": "Canonical NAICS title text for active planning-context fixture codes, using the Census 2014 CBP fallback field mapping for `NAICS2012_TTL` and Census NAICS reference pages for exact industry names.",
+  "retrievedAt": "2026-06-03",
+  "entries": [
+    {
+      "code": "236118",
+      "title": "Residential Remodelers",
+      "sourceUrl": "https://www.census.gov/naics/?details=236118&input=236118&year=2012"
+    },
+    {
+      "code": "722511",
+      "title": "Full-Service Restaurants",
+      "sourceUrl": "https://www.census.gov/naics/?details=722511&input=722511&year=2012"
+    }
+  ]
+}

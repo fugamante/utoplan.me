@@ -57,6 +57,7 @@ The fixture must stay descriptive and include:
 - a municipality display name that matches `data/municipalities/planning-context-municipalities.json` when the fixture is exposed through the planning-context API/UI;
 - one business category from the crosswalk;
 - matching CBP facts selected by NAICS code and municipality code;
+- deterministic `naicsTitle` labels for exposed CBP facts, resolved from `data/naics/planning-context-naics-titles.json` when the source row does not carry title text;
 - source metadata, confidence labels, limitations, and unresolved questions.
 
 The fixture set should include at least two municipality/category slices so

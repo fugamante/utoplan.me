@@ -95,6 +95,7 @@ Audits should use repository evidence first:
 - `docs/modernization-roadmap.md`
 - `docs/api-modernization.md`
 - `docs/frontend-inventory.md`
+- `docs/product-scope.md`
 - `docs/data-intake.md`
 - `docs/data-provenance.md`
 - `docs/data-source-schema-mapping.md`
@@ -103,8 +104,12 @@ Audits should use repository evidence first:
 - `docs/production-deployment.md`
 - `db/migrations/`
 - `data/sources/puerto-rico.json`
+- `data/mappings/puerto-rico-business-categories.json`
+- `data/naics/planning-context-naics-titles.json`
+- `data/planning-context/`
 - Root/service `package.json` files and lockfiles
-- Dockerfiles, Compose files, and CI configuration
+- Dockerfiles, Compose files, and CI configuration such as
+  `docker-compose.public-api.yml` and `azure-pipelines.yml`
 - Tests under `app/test/`, `dtoapi/test/`, `dtoapi/modern/test/`, and `test/`
 
 External standards references may inform structure, but repository behavior is

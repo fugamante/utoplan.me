@@ -23,6 +23,8 @@ Covered work:
   compatibility paths.
 - PostgreSQL schema baselines and migration artifacts under `db/migrations/`.
 - Puerto Rico-only data source registry and provenance documentation.
+- Candidate business-category mappings and descriptive planning-context
+  fixtures under `data/`.
 - Operator documentation under `docs/`.
 
 Out of scope unless explicitly reintroduced:
@@ -52,6 +54,7 @@ Out of scope unless explicitly reintroduced:
 - `README.md`
 - `docs/modernization-roadmap.md`
 - `docs/api-modernization.md`
+- `docs/product-scope.md`
 - `docs/database-migrations.md`
 - `docs/data-intake.md`
 - `docs/data-provenance.md`
@@ -103,6 +106,10 @@ covered the role for the change set.
   the static app proxy for integrated deployments.
 - Data imports must use registry-approved, Puerto Rico-scoped sources with
   deterministic filters where needed.
+- Candidate business-category mappings and planning-context fixtures must stay
+  descriptive and avoid score, ranking, or recommendation drift.
+- Exposed planning-context CBP facts must use the controlled NAICS title
+  registry under `data/naics/` when the source row omits title text.
 
 ### 6.3 Documentation Controls
 
@@ -116,7 +123,11 @@ Required documentation records:
 - Migration artifacts in `db/migrations/` and policy updates in
   `docs/database-migrations.md`.
 - Data provenance and registry changes in `docs/data-provenance.md`,
-  `docs/data-intake.md`, and `data/sources/puerto-rico.json`.
+  `docs/data-intake.md`, `data/sources/puerto-rico.json`,
+  `data/mappings/puerto-rico-business-categories.json`,
+  `data/naics/planning-context-naics-titles.json`, and
+  `data/planning-context/`.
+- Product-boundary changes in `docs/product-scope.md`.
 - Release operations in `docs/production-deployment.md`.
 - Quality evidence, audits, and update cadence in this plan.
 
@@ -135,6 +146,8 @@ validation stack before release or PR publication.
 | Proxy contracts | `npm run docker:test:proxy` | App proxy, `/v1/*`, API origin, or integrated topology changes. |
 | Browser smoke | `npm run test:browser` and `npm run docker:test:start-local-browser` | Frontend, map, asset, proxy, or local-start changes. |
 | Data registry | `npm run test:data-sources` | Source registry, provenance, import, or data-scope changes. |
+| Business category mapping | `npm run test:business-categories` | Category crosswalk, planning-context selection, or descriptive-scope changes. |
+| Planning-context fixture | `npm run test:planning-context` | Planning-context fixture, summary/detail, or descriptive-guardrail changes. |
 | Migration contract | `npm run test:migration-artifacts` | Migration template or artifact changes. |
 | Deployment config | `npm run verify:deployment` and `npm run verify:release` | Release, environment, container, or operator workflow changes. |
 | Release smoke | `npm run verify:release-smoke` | Candidate deployed environment. |

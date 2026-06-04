@@ -52,6 +52,7 @@
       },
       "municipalityCode": "001",
       "naics": "236118",
+      "naicsTitle": "Residential Remodelers",
       "establishments": 2,
       "annualPayroll": 0,
       "employment": 0,
@@ -95,12 +96,12 @@
   },
   "limitations": [
     "This fixture is descriptive planning context only and is not a site recommendation.",
-    "The row does not include NAICS title text, so category naming currently comes from the crosswalk.",
+    "The municipality CBP row does not include NAICS title text, so this fixture enriches the fact label from a separate Census-backed NAICS title registry.",
     "A single row is not enough for demand, viability, profitability, or permitting conclusions."
   ],
   "unresolvedQuestions": [
     "Should the planning-context municipality registry expand to every Puerto Rico fipscty code before additional fixtures are added?",
     "Should establishment counts inherit a visible qualifier when payroll and employment stay disclosure-limited in the same row?",
-    "What deterministic policy should map missing CBP NAICS title text into user-facing labels?"
+    "Should the NAICS title registry expand to every mapped business-category code before additional fixtures are added?"
   ]
 }

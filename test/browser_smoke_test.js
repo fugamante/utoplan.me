@@ -179,6 +179,7 @@ async function main() {
               emp_nf: 'D'
             },
             naics: '236118',
+            naicsTitle: 'Residential Remodelers',
             establishments: 2,
             annualPayroll: 0,
             employment: 0,
@@ -228,6 +229,7 @@ async function main() {
               emp_nf: 'H'
             },
             naics: '722511',
+            naicsTitle: 'Full-Service Restaurants',
             establishments: 18,
             annualPayroll: 667,
             employment: 85,
@@ -237,7 +239,7 @@ async function main() {
             'A single row does not support demand, viability, profitability, or permit conclusions.'
           ],
           unresolvedQuestions: [
-            'Should the planning-context contract include NAICS title enrichment before API/UI exposure?'
+            'Should the NAICS title registry expand to every mapped business-category code before additional fixtures are added?'
           ],
           guardrails: {
             descriptiveOnly: true,
@@ -309,6 +311,10 @@ async function main() {
   assert(
     (await page.locator('[data-ui="planning-context-detail"]').innerText()).indexOf('Annual payroll: masked (disclosure-limited)') !== -1,
     'planning-context detail should mask disclosure-limited payroll values'
+  );
+  assert(
+    (await page.locator('[data-ui="planning-context-detail"]').innerText()).indexOf('CBP fact: Residential Remodelers (236118)') !== -1,
+    'planning-context detail should render source-backed NAICS title labels'
   );
   assert.strictEqual(await page.locator('.leaflet-tile-pane img.leaflet-tile').count() > 0, true, 'base map tiles should render');
   assert.strictEqual(await page.locator('.leaflet-marker-icon').count(), 1, 'university marker should render');

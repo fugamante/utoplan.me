@@ -40,6 +40,7 @@
 - The first page now requests `GET /v1/planning-context/:id` for the selected planning-context option and surfaces descriptive confidence, limitation, and unresolved-question detail in the same panel.
 - Planning-context summary/detail labels for the active fixture set now resolve against the source-backed municipality registry instead of placeholder `Municipality code ###` strings.
 - The first-page planning-context detail panel now renders disclosure-limited CBP values as masked and rounded/noise-flagged CBP values as approximate so the UI does not imply false precision from `D`/`H` source flags.
+- Planning-context CBP facts for the active fixture set now resolve deterministic source-backed `naicsTitle` labels from a Census-backed registry, and the first-page detail panel renders those labels instead of code-only fact headers.
 - `npm run verify:release` wraps app/API deployment verification for release jobs, and Azure validates the wrapper in sample mode without production secrets.
 - `npm run verify:release-smoke` checks deployed app `/healthz`, public `/v1/unis`, and optional API `/readyz` from configured release URLs.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
@@ -158,6 +159,7 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Enrich planning-context CBP facts with deterministic NAICS title text so the
-detail panel can show source-backed industry labels instead of code-only fact
-headers.
+Expand the planning-context NAICS title registry beyond the current active
+fixture codes so future municipality/category slices can reuse the same
+source-backed fact-label contract without reintroducing placeholder or
+crosswalk-only industry headers.

@@ -18,6 +18,8 @@ Controlled configuration domains:
 - Dockerfiles, Compose files, CI pipeline files, and deployment scripts.
 - Database migration artifacts under `db/migrations/`.
 - Data source registry and provenance records under `data/` and `docs/`.
+- Candidate business-category mappings and planning-context fixtures under
+  `data/`.
 - Standards documents under `docs/standards/`.
 - Production deployment, release, rollback, and readiness documentation.
 
@@ -30,6 +32,7 @@ Generated dependency directories, compiled output, local environment files, cred
 - `docs/modernization-roadmap.md`.
 - `docs/api-modernization.md`.
 - `docs/frontend-inventory.md`.
+- `docs/product-scope.md`.
 - `docs/database-migrations.md`.
 - `docs/deployment-topology.md`.
 - `docs/production-deployment.md`.
@@ -59,10 +62,15 @@ Primary configuration items:
 - TypeScript and JavaScript source files used by the app and API.
 - Committed browser JavaScript generated from app TypeScript because it is served directly by `app/public/index.html`.
 - Tests under root, `app/test/`, `dtoapi/test/`, `dtoapi/modern/test/`, and browser smoke tests.
-- Dockerfiles and Compose files, including seeded DB, proxy, integrated, and browser validation variants.
+- Dockerfiles and Compose files, including seeded DB, proxy, integrated,
+  browser validation, and optional public API exposure variants.
 - CI pipeline files.
 - Migration artifacts in `db/migrations/`.
 - Source registry records such as `data/sources/puerto-rico.json`.
+- Controlled NAICS title registry records such as
+  `data/naics/planning-context-naics-titles.json`.
+- Candidate business-category mappings and planning-context fixtures under
+  `data/`.
 - Product, deployment, provenance, and standards documentation.
 
 Secondary configuration evidence:
@@ -223,6 +231,8 @@ Docker assets are controlled artifacts:
 - `Dockerfile.proxy-test` validates same-origin proxy behavior.
 - `Dockerfile.start-local-browser-test` validates rendered map behavior against the seeded integrated path.
 - `docker-compose.integrated.yml` defines the app/API deployment topology.
+- `docker-compose.public-api.yml` defines the optional host-exposed API overlay
+  for intentional public API smoke paths.
 
 Generated `node_modules` directories and compiled CommonJS output under `dtoapi/modern/lib/` are not source baselines. Committed browser assets under `app/public/js/` are controlled because they are directly served by the static app.
 

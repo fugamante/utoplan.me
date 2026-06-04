@@ -64,14 +64,16 @@ Review these artifacts during each IEEE 1012 audit:
 | `docs/modernization-roadmap.md` | phase validation | Are active phase exit criteria independently checked and current? |
 | `docs/api-modernization.md` | API verification evidence | Are compatibility contracts and typed API boundaries verified before changes are accepted? |
 | `docs/frontend-inventory.md` | frontend verification evidence | Are served assets, map behavior, fixtures, and browser hooks represented in checks? |
+| `docs/product-scope.md` | product-boundary validation evidence | Do planning-context features remain descriptive and within the approved non-recommendation scope? |
 | `docs/deployment-topology.md` | operational validation evidence | Does runtime topology match the validated request flow and API visibility assumptions? |
 | `docs/production-deployment.md` | release validation evidence | Are preflight, smoke, rollback, secret, and readiness checks sufficient for promotion decisions? |
 | `docs/database-migrations.md` and `db/migrations/` | database verification evidence | Do migration artifacts include preflight, apply, read-only verify, rollback, and readiness impact? |
 | `docs/data-intake.md` and `data/sources/puerto-rico.json` | data validation evidence | Are production-style sources Puerto Rico-scoped, licensed, dated, and target-mapped? |
 | `docs/data-provenance.md` | data trust validation | Are unresolved legacy source gaps visible and blocking where appropriate? |
+| `data/mappings/puerto-rico-business-categories.json`, `data/naics/planning-context-naics-titles.json`, and `data/planning-context/` | descriptive planning-context validation evidence | Do category mappings, NAICS title labels, and planning-context fixtures remain descriptive, traceable, and confidence-bounded? |
 | `package.json` and service manifests | executable V&V surface | Do scripts, audits, and dependencies match documented gates? |
 | `app/test/`, `dtoapi/test/`, `dtoapi/modern/test/`, and `test/` | verification implementation | Do tests prove requirements and design contracts rather than only implementation details? |
-| Dockerfiles, Compose files, CI definitions, and verification scripts | environment validation | Do container and CI paths exercise the intended release topology? |
+| Dockerfiles, Compose files, CI definitions such as `azure-pipelines.yml`, and verification scripts | environment validation | Do container and CI paths exercise the intended release topology? |
 
 The formal IEEE 1012 V&V plan baseline is
 `docs/standards/ieee-1012-vv-plan.md`. If that artifact is temporarily

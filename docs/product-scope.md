@@ -59,9 +59,12 @@ That rendering policy is now:
 - rounded/noise-flagged `H` payroll or employment values render as `approx. <value>`;
 - unflagged values remain numeric descriptive context only.
 
-Next, enrich planning-context fact labels with source-backed NAICS title text
-so the detail panel can show industry labels more clearly without inventing new
-decision logic.
+That contract now includes source-backed NAICS title text for the active
+planning-context fixture codes so the detail panel can show industry labels
+more clearly without inventing new decision logic.
+
+Next, expand the NAICS title registry to additional mapped category codes
+before adding more planning-context fixtures.
 
 Keep fixtures descriptive. Do not add a score, rank, or recommendation until
 the underlying facts, confidence labels, and limitations are visible and

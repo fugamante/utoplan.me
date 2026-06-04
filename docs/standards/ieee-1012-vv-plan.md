@@ -8,9 +8,10 @@ the resulting system is fit for its stated planning purpose.
 
 The plan applies to the static browser app, modern TypeScript Node API,
 PostgreSQL read model, Docker deployment topology, release checks, migration
-artifacts, data provenance controls, and standards corpus. It is intended to
-remain active for the life of the modernization fork and to be updated whenever
-project behavior, gates, risks, or recommendations change.
+artifacts, data provenance controls, descriptive planning-context artifacts,
+and standards corpus. It is intended to remain active for the life of the
+modernization fork and to be updated whenever project behavior, gates, risks,
+or recommendations change.
 
 ## 2. Scope
 
@@ -23,7 +24,8 @@ project behavior, gates, risks, or recommendations change.
   reproducible, testable, deployable map-first planning tool for Puerto Rico
   business formation analysis.
 - Independent review of public API behavior, browser behavior, data source
-  scope, provenance evidence, release readiness, and rollback readiness.
+  scope, provenance evidence, descriptive planning-context boundaries, release
+  readiness, and rollback readiness.
 - Ongoing audit of accepted hardening and optimization recommendations.
 
 ### 2.2 Out Of Scope
@@ -59,11 +61,15 @@ project behavior, gates, risks, or recommendations change.
 - `README.md`
 - `docs/modernization-roadmap.md`
 - `docs/api-modernization.md`
+- `docs/product-scope.md`
 - `docs/database-migrations.md`
 - `docs/data-intake.md`
 - `docs/data-provenance.md`
 - `docs/deployment-topology.md`
 - `docs/production-deployment.md`
+- `data/mappings/puerto-rico-business-categories.json`
+- `data/naics/planning-context-naics-titles.json`
+- `data/planning-context/`
 - `docs/standards/ieee-730-sqa-plan.md`
 - `docs/standards/ieee-829-test-document.md`
 - `db/migrations/README.md`
@@ -134,6 +140,8 @@ Verify implementation changes through code review and focused checks:
 - Environment parsing fails safely for production database requirements.
 - Error handling avoids exposing raw database errors to clients.
 - New data intake code enforces registered Puerto Rico filters.
+- Planning-context and category-mapping changes stay descriptive and retain
+  confidence, limitations, and unresolved-question evidence.
 - Tests are added or updated with behavior changes.
 
 Validate implementation by exercising the product path that users or operators
@@ -165,6 +173,8 @@ acceptance criteria:
 
 - Map-first app loads from the app origin without relying on fixture data in
   production-like environments.
+- Planning-context summaries remain same-origin, descriptive, and traceable to
+  candidate business-category mappings and fixture evidence.
 - Seeded API read contracts pass with PostgreSQL.
 - Public API behavior remains compatible unless a breaking change was approved.
 - Readiness, deployment verification, and release smoke checks agree.
@@ -218,6 +228,8 @@ stack before PR publication or release promotion.
 | Proxy contracts | `npm run docker:test:proxy` | App proxy, `/v1/*`, API origin, or integrated topology changes. |
 | Integrated browser path | `npm run docker:test:start-local-browser` | Release-impacting app/API/browser/data-flow changes. |
 | Data registry | `npm run test:data-sources` | Source registry, provenance, import, or data-scope changes. |
+| Business category mapping | `npm run test:business-categories` | Category crosswalk, planning-context selection, or descriptive-scope changes. |
+| Planning-context fixture | `npm run test:planning-context` | Planning-context fixture, summary/detail, or descriptive-guardrail changes. |
 | Migration artifact | `npm run test:migration-artifacts` | Migration template, artifact, readiness schema, or rollback changes. |
 | Deployment verification | `npm run verify:deployment` and `npm run verify:release` | Release, container, environment, or operator workflow changes. |
 | Release smoke | `UTOPLAN_APP_URL=<url> npm run verify:release-smoke` | Candidate deployed environment. |
@@ -240,6 +252,7 @@ release evidence, and audit record.
 | Database read baseline | `docs/database-migrations.md`, migration artifacts | `db/migrations/`, readiness design | `npm run test:migration-artifacts`, `npm run docker:test:db` |
 | Deployment topology | `docs/deployment-topology.md`, production runbook | IEEE 1016 SDD | Docker proxy/browser tests, deployment verification |
 | Data provenance | `docs/data-intake.md`, `docs/data-provenance.md`, `docs/data-source-schema-mapping.md` | Source registry, import design | `npm run test:data-sources`, data review |
+| Planning context | `docs/product-scope.md`, candidate category mapping, NAICS title registry, planning-context fixtures | IEEE 1016 SDD, API/frontend notes | `npm run test:business-categories`, `npm run test:planning-context`, `npm run test:browser` |
 | Release readiness | IEEE 730 SQA, IEEE 829 test document, production runbook | Release checklist | Release smoke, audit record, rollback review |
 | Standards corpus | This plan and peer IEEE documents | Audit hooks | Standards audit and document diffs |
 
