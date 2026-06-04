@@ -27,6 +27,18 @@
 - `db/migrations/202605211200_baseline_read_v1.md` records the existing read schema as the initial production reference.
 - `docs/data-provenance.md` records the current evidence for original hackathon data sources and tracks the unresolved organizer-provided dataset provenance gap.
 - `docs/data-intake.md` and `data/sources/puerto-rico.json` define the Puerto Rico-only source intake contract for future data replacement work.
+- `docs/data-source-schema-mapping.md` now maps the registered Puerto Rico
+  `cbps` and `unis` candidates to the preserved legacy read-schema columns in
+  `dtoapi/modern/src/resource_contract.ts` and
+  `db/migrations/202605211200_baseline_read_v1.md`.
+- The Puerto Rico source registry now records machine-readable
+  `legacySchemaMap` coverage and `importReadiness` blockers for active mapped
+  tables so import work can distinguish accepted transforms from unresolved
+  source gaps and operator decisions.
+- Current data-source blockers are explicit: the municipality-level `cbps`
+  candidate still needs an approved `cnaic_name` title-source strategy, and
+  the `unis` candidate still needs a reproducible geocoding policy for `lat`
+  and `long`.
 - `docs/product-scope.md` defines the current product boundary: descriptive Puerto Rico planning context before recommendations, rankings, or automated decisions.
 - `data/mappings/puerto-rico-business-categories.json` defines the first candidate business-category to NAICS crosswalk for source-backed planning context.
 - `npm run test:data-sources` validates that registered import candidates are Puerto Rico-only or explicitly filtered to Puerto Rico.
@@ -159,7 +171,7 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Expand the planning-context NAICS title registry beyond the current active
-fixture codes so future municipality/category slices can reuse the same
-source-backed fact-label contract without reintroducing placeholder or
-crosswalk-only industry headers.
+Document and approve the production-style `cbps.cnaic_name` source strategy for
+Puerto Rico municipality imports so the preferred `datospr-cbp-2014-municipios`
+candidate can move past its remaining schema gap without reusing
+planning-context-only title fixtures or crosswalk labels as import evidence.
