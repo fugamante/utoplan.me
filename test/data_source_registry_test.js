@@ -27,6 +27,10 @@ function isCoverageValue(value) {
   return value === 'exact' || value === 'derived' || value === 'missing';
 }
 
+function isIsoDate(value) {
+  return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value);
+}
+
 var expectedColumnsByTable = {
   cbps: [
     'id',
@@ -57,7 +61,7 @@ function hasActiveMappedTarget(source) {
 
 assert.strictEqual(registry.schemaVersion, 1);
 assert.strictEqual(registry.scope, 'puerto-rico-only');
-assert(isNonEmptyString(registry.retrievedAt));
+assert(isIsoDate(registry.retrievedAt), 'registry retrievedAt must be an ISO YYYY-MM-DD date');
 assert(Array.isArray(registry.sources));
 assert(registry.sources.length > 0);
 
@@ -78,7 +82,7 @@ registry.sources.forEach(function(source) {
     assert(source.legacySchemaMap && typeof source.legacySchemaMap === 'object', source.id + ' must include legacySchemaMap');
     assert(source.importReadiness && typeof source.importReadiness === 'object', source.id + ' must include importReadiness');
     assert(source.importReadiness.status === 'blocked' || source.importReadiness.status === 'ready', source.id + ' importReadiness.status must be blocked or ready');
-    assert(isNonEmptyString(source.importReadiness.reviewedAt), source.id + ' importReadiness.reviewedAt is required');
+    assert(isIsoDate(source.importReadiness.reviewedAt), source.id + ' importReadiness.reviewedAt must be an ISO YYYY-MM-DD date');
     assert(Array.isArray(source.importReadiness.blockers), source.id + ' importReadiness.blockers must be an array');
     if (source.importReadiness.status === 'blocked') {
       assert(source.importReadiness.blockers.length > 0, source.id + ' blocked importReadiness must include blockers');
@@ -86,7 +90,7 @@ registry.sources.forEach(function(source) {
 
     assert(isNonEmptyString(source.legacySchemaMap.table), source.id + ' legacySchemaMap.table is required');
     assert(isNonEmptyString(source.legacySchemaMap.evidenceType), source.id + ' legacySchemaMap.evidenceType is required');
-    assert(isNonEmptyString(source.legacySchemaMap.evidenceDate), source.id + ' legacySchemaMap.evidenceDate is required');
+    assert(isIsoDate(source.legacySchemaMap.evidenceDate), source.id + ' legacySchemaMap.evidenceDate must be an ISO YYYY-MM-DD date');
     assert(Array.isArray(source.legacySchemaMap.columnCoverage), source.id + ' legacySchemaMap.columnCoverage must be an array');
     assert(source.legacySchemaMap.columnCoverage.length > 0, source.id + ' legacySchemaMap.columnCoverage must not be empty');
     assert(Object.prototype.hasOwnProperty.call(expectedColumnsByTable, source.legacySchemaMap.table), source.id + ' legacySchemaMap.table must be supported');

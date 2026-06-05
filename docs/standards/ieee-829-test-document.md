@@ -219,6 +219,8 @@ Data validation protects provenance and scope:
 - Every source must include publisher, portal, license, source URL, resource or
   API URL, target legacy table or endpoint, retrieval date, candidate status,
   and source-basis note.
+- Registry `retrievedAt`, `legacySchemaMap.evidenceDate`, and
+  `importReadiness.reviewedAt` values must use ISO `YYYY-MM-DD` strings.
 - Sources targeting active mapped tables (`cbps`, `unis`) must include
   `legacySchemaMap` coverage entries with unresolved-field notes where needed.
 - Broad national datasets are blocked unless the registry and import path

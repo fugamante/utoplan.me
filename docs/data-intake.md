@@ -12,7 +12,7 @@ Each accepted source must record:
 - Publisher, portal, license, source URL, and resource URL or API URL.
 - Target legacy table or endpoint.
 - Candidate status and a short source-basis note.
-- Retrieval date at the registry level.
+- Retrieval date at the registry level as an ISO `YYYY-MM-DD` string.
 - Legacy-schema mapping evidence for active target tables where mapping
   evidence exists.
 - Import-readiness status and explicit blockers for active mapped tables when
@@ -39,6 +39,8 @@ source to production import on demo fixtures or seed rows.
 When an active mapped-table candidate is not safe to import yet, record that
 state under `importReadiness` with a `blocked` status and one blocker entry per
 unresolved transform decision, source gap, or operator dependency.
+Record `legacySchemaMap.evidenceDate` and `importReadiness.reviewedAt` as ISO
+`YYYY-MM-DD` strings so provenance reviews stay machine-checkable.
 
 ## Business Category Mapping Gate
 
