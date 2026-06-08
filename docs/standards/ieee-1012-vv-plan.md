@@ -218,6 +218,7 @@ stack before PR publication or release promotion.
 
 | Gate | Command or evidence | Required when |
 | --- | --- | --- |
+| Node runtime | `npm run test:node-runtime` | Runtime pin, engines, install hook, CI, Docker, or toolchain changes. |
 | Clean install | `npm run install:all` | Dependency, lockfile, CI, Docker, or release changes. |
 | Build baseline | `npm run build` | Code, TypeScript, script, or validation changes. |
 | Root tests | `npm run test` | Normal pre-merge validation. |

@@ -73,6 +73,8 @@ Inspect these artifacts during each IEEE 830 audit:
 - `data/planning-context/`: descriptive planning-context fixture evidence for
   municipality/category summary and detail behavior.
 - `db/migrations/`: database requirement and readiness baseline evidence.
+- `.node-version`, `.nvmrc`, and `scripts/verify_node_runtime.js`: reviewed
+  runtime requirement evidence for local, CI, and Docker validation parity.
 - `package.json`, service package manifests, CI configuration, Dockerfiles, and
   Compose files: executable requirement and environment evidence.
 - Tests under `app/test/`, `dtoapi/test/`, `dtoapi/modern/test/`, and `test/`:
@@ -155,6 +157,8 @@ the current project surface.
 
 - Requirements include reproducible install, build, test, and start workflows
   from the repository root.
+- Requirements keep the reviewed Node 22 runtime explicit across version pins,
+  package metadata, CI, and `npm run test:node-runtime`.
 - Requirements include dependency and generated-output hygiene.
 - Requirements include security expectations for dependency audits, secret
   handling, private API exposure, and raw error suppression.

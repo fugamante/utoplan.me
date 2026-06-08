@@ -37,6 +37,8 @@ Out of scope unless explicitly reintroduced:
 
 - Preserve known legacy public behavior while replacing obsolete runtime
   components.
+- Keep local install, build, test, CI, and Docker workflows pinned to the
+  reviewed Node 22 major declared in `.node-version` and `.nvmrc`.
 - Keep root install, build, test, and deployment checks reproducible from
   lockfiles.
 - Prevent fixture data from being mistaken for production data.
@@ -84,6 +86,8 @@ covered the role for the change set.
 
 - Use small, cohesive changes that preserve public interfaces unless the
   behavior change is intentional and documented.
+- Keep local and CI Node runtime selection aligned with `.node-version`,
+  `.nvmrc`, and `scripts/verify_node_runtime.js`.
 - Keep generated dependency folders and compiled output out of source control.
 - Add or update tests with behavior changes, especially around API contracts,
   deployment checks, readiness, migrations, and source intake.
@@ -138,6 +142,7 @@ validation stack before release or PR publication.
 
 | Gate | Command or evidence | Required when |
 | --- | --- | --- |
+| Node runtime | `npm run test:node-runtime` | Runtime pin, engines, install hook, CI, Docker, or toolchain changes. |
 | Clean install | `npm run install:all` | Dependency, lockfile, CI, Docker, or release changes. |
 | Build baseline | `npm run build` | Any code or validation-script change. |
 | Root tests | `npm run test` | Normal pre-merge validation. |

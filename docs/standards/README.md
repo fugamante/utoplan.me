@@ -102,12 +102,16 @@ Audits should use repository evidence first:
 - `docs/database-migrations.md`
 - `docs/deployment-topology.md`
 - `docs/production-deployment.md`
+- `.node-version`
+- `.nvmrc`
 - `db/migrations/`
 - `data/sources/puerto-rico.json`
 - `data/mappings/puerto-rico-business-categories.json`
 - `data/naics/planning-context-naics-titles.json`
 - `data/planning-context/`
 - Root/service `package.json` files and lockfiles
+- Runtime and release verifier scripts such as `scripts/verify_node_runtime.js`,
+  `scripts/release_preflight.js`, and `scripts/release_smoke_check.js`
 - Dockerfiles, Compose files, and CI configuration such as
   `docker-compose.public-api.yml` and `azure-pipelines.yml`
 - Tests under `app/test/`, `dtoapi/test/`, `dtoapi/modern/test/`, and `test/`

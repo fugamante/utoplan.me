@@ -43,6 +43,7 @@ evidence and must record restoration of the formal baseline as an action item.
 | Evidence | IEEE 829 role | Required audit question |
 | --- | --- | --- |
 | `README.md` root commands and Docker validation | Test plan, procedure summary | Do documented commands match executable scripts? |
+| `.node-version`, `.nvmrc`, and `scripts/verify_node_runtime.js` | Test environment | Does every local, CI, and Docker test path use the reviewed Node 22 major? |
 | `docs/modernization-roadmap.md` phase gates | Test plan, summary | Are active phase exit criteria covered by tests? |
 | `docs/api-modernization.md` | Test design, case traceability | Are API contracts pinned before endpoint changes? |
 | `docs/frontend-inventory.md` | Test design, item scope | Are browser and fixture boundaries represented in tests? |
@@ -68,6 +69,8 @@ release branch, production deployment, or merge that changes app/API behavior.
 
 - Confirm `README.md` command inventory matches `package.json` scripts and does
   not list obsolete test commands.
+- Confirm `.node-version`, `.nvmrc`, package `engines`, CI, and
+  `npm run test:node-runtime` still agree on the reviewed Node major.
 - Confirm every active roadmap exit criterion has executable or documented test
   evidence.
 - Confirm new or changed `/v1/*`, `/healthz`, or `/readyz` behavior has API
@@ -266,8 +269,8 @@ Release decision:
 - Class: required hardening
 - Finding: deployed release smoke currently validates app `/healthz`,
   `/v1/unis`, and optional API `/readyz`, but not the same-origin
-  `/v1/planning-context` path that the first page now uses for descriptive
-  planning-context summaries.
+  `/v1/planning-context` summary/detail path that the current first page now
+  uses for descriptive planning-context rendering.
 - Acceptance evidence:
   - `scripts/release_smoke_check.js` validates a successful
     `GET /v1/planning-context` response from `UTOPLAN_APP_URL`.
@@ -276,9 +279,9 @@ Release decision:
   - `docs/production-deployment.md`, the IEEE 829 test document, and this audit
     corpus describe the expanded deployed smoke scope.
 - Revisit trigger:
-  - When the deployed first-page planning-context path becomes release-critical,
-    or before the next release candidate that promotes planning-context UI/API
-    behavior beyond internal modernization validation.
+  - Before the next release candidate that treats the current first-page
+    planning-context summary/detail path as part of normal public behavior, or
+    sooner if `scripts/release_smoke_check.js` changes.
 - Status: proposed
 
 ### RECO-829-2026-06-08-01

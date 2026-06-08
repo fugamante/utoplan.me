@@ -26,8 +26,8 @@ Audit these configuration item classes on every SCM review:
 - Source code: `app/`, `dtoapi/`, `scripts/`, first-party TypeScript sources,
   static server glue, and tests.
 - Build and dependency manifests: root `package.json`, package lockfiles,
-  service-level package manifests, TypeScript configuration, Dockerfiles, and
-  Compose files.
+  service-level package manifests, `.node-version`, `.nvmrc`, TypeScript
+  configuration, Dockerfiles, and Compose files.
 - Runtime configuration contracts: documented environment variables, production
   verifier scripts, health/readiness endpoints, and proxy mode settings.
 - Database artifacts: `db/migrations/`, `db/migrations/TEMPLATE.md`, readiness
@@ -54,6 +54,8 @@ Collect or inspect this evidence before issuing an IEEE 828 audit finding:
   note explaining why the change exists.
 - Build reproducibility: `npm run install:all`, `npm run build`, and lockfile
   changes that match package manifest changes.
+- Runtime reproducibility: `.node-version`, `.nvmrc`, package `engines`, CI,
+  and `scripts/verify_node_runtime.js` agree on the reviewed Node major.
 - Test baseline: `npm run test`, `npm run test:browser`,
   `npm run test:data-sources`, `npm run test:business-categories`,
   `npm run test:planning-context`, and service-specific tests when the change
@@ -87,6 +89,8 @@ Collect or inspect this evidence before issuing an IEEE 828 audit finding:
 - Generated outputs and dependency folders remain ignored and absent from source
   control.
 - Lockfiles change only with manifest or dependency-resolution changes.
+- Node runtime pins remain synchronized across `.node-version`, `.nvmrc`,
+  package metadata, CI, and runtime-verifier scripts.
 - Branch names, commit subjects, PR titles, and release notes avoid personal
   identifiers and AI/tool/vendor labels.
 - The current baseline can be reconstructed from repository files, documented

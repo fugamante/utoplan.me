@@ -17,6 +17,8 @@ data provenance controls, release validation, and ongoing audit duties.
 ### 2.1 In Scope
 
 - Root workspace install, build, and test workflows.
+- Pinned Node runtime verification through `.node-version`, `.nvmrc`, and
+  `scripts/verify_node_runtime.js`.
 - Static app behavior under `app/`, including same-origin `/v1/*` proxying,
   health reporting, explicit fixture mode, and browser map smoke coverage.
 - Modern API behavior under `dtoapi/modern`, including root contract,
@@ -48,6 +50,7 @@ data provenance controls, release validation, and ongoing audit duties.
 
 | Item | Location | Primary Risk |
 | --- | --- | --- |
+| Node runtime verifier | `.node-version`, `.nvmrc`, `scripts/verify_node_runtime.js` | Local, CI, or Docker validation drifts onto an unreviewed Node major |
 | Static app server | `app/app.js` | Incorrect proxy mode, fixture leakage, static asset failures |
 | Browser map | `app/public/` | Missing map render, bad data fallback, console/page errors |
 | Frontend TypeScript boundary | `app/public/src/` | Generated browser assets drift from typed source |
@@ -71,13 +74,14 @@ data provenance controls, release validation, and ongoing audit duties.
 Use layered validation so narrow contract failures are fast and deployment
 failures are still caught before release:
 
-1. Run dependency and compile/test checks from lockfiles.
-2. Run DB-free API and app contract tests on the host.
-3. Run source registry, migration artifact, deployment config, and release
+1. Verify the pinned Node runtime before install or test workflows proceed.
+2. Run dependency and compile/test checks from lockfiles.
+3. Run DB-free API and app contract tests on the host.
+4. Run source registry, migration artifact, deployment config, and release
    verifier tests.
-4. Run Docker compatibility tests for seeded Postgres, app/API proxying, and
+5. Run Docker compatibility tests for seeded Postgres, app/API proxying, and
    browser rendering through the integrated topology.
-5. Run production release smoke checks against deployed URLs before promotion.
+6. Run production release smoke checks against deployed URLs before promotion.
 
 The root acceptance command is:
 
@@ -88,6 +92,7 @@ npm run test
 The release preflight stack is:
 
 ```sh
+npm run test:node-runtime
 npm run install:all
 npm run build
 npm run verify:deployment
@@ -112,6 +117,8 @@ Postgres validation, and the app/API proxy topology.
 A change is test-acceptable when:
 
 - `npm run test` passes from the repository root.
+- `npm run test:node-runtime` passes against the pinned Node 22 major before
+  local, CI, or Docker workflows are accepted as comparable evidence.
 - TypeScript-generated browser and API outputs are current after source edits.
 - Docker DB, proxy, and browser compatibility checks pass for release-impacting
   app, API, database, or deployment changes.
@@ -254,6 +261,7 @@ Release validation checks that the intended commit can be operated safely:
 | ID | Name | Procedure | Expected Result |
 | --- | --- | --- | --- |
 | TC-001 | Root test baseline | `npm run test` | All host contract and verification tests pass |
+| TC-001A | Node runtime pin | `npm run test:node-runtime` | Local validation runs on the pinned Node 22 major |
 | TC-002 | Clean install | `npm run install:all` | Root, app, API, and modern API install from lockfiles |
 | TC-003 | Build baseline | `npm run build` | Build delegates to test baseline and passes |
 | TC-004 | API contracts | `npm run test:api` | Root, response, resource, route, and DB-free contracts pass |
@@ -286,6 +294,7 @@ Release validation checks that the intended commit can be operated safely:
 1. Install dependencies:
 
    ```sh
+   npm run test:node-runtime
    npm run install:all
    ```
 

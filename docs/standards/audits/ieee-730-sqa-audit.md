@@ -26,6 +26,8 @@ Review these artifacts during each IEEE 730 audit:
 
 - `README.md`: product vision, modernization purpose, project layout, root
   commands, Docker validation, local app/API flow, and runtime environment.
+- `.node-version`, `.nvmrc`, and `scripts/verify_node_runtime.js`: pinned Node
+  runtime evidence for local, CI, Docker, and install-hook parity.
 - `docs/modernization-roadmap.md`: active phases, exit criteria, current state,
   immediate next step, and security/dependency gate status.
 - `docs/api-modernization.md`: modern API runtime boundary, compatibility
@@ -83,6 +85,8 @@ Review these artifacts during each IEEE 730 audit:
 ### Process And Standards
 
 - Are root commands in `README.md` still valid and aligned with package scripts?
+- Do `.node-version`, `.nvmrc`, package `engines`, and `npm run test:node-runtime`
+  still agree on the reviewed Node major?
 - Does the modernization roadmap record current status and next action without
   stale phase claims?
 - Do code changes preserve the documented boundary between dependency-free app

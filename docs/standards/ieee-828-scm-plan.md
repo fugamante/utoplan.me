@@ -15,6 +15,8 @@ Controlled configuration domains:
 - Static app source and assets under `app/`.
 - Modern API source, contracts, and tests under `dtoapi/modern/`.
 - Root, app, API, and modern API package manifests and lockfiles.
+- Runtime version pins and verifier scripts such as `.node-version`, `.nvmrc`,
+  and `scripts/verify_node_runtime.js`.
 - Dockerfiles, Compose files, CI pipeline files, and deployment scripts.
 - Database migration artifacts under `db/migrations/`.
 - Data source registry and provenance records under `data/` and `docs/`.
@@ -95,6 +97,8 @@ Runtime baselines are named by contract, not by environment accident. The curren
 The development baseline is the current modernization branch plus all committed lockfiles and tests. A development baseline is acceptable when:
 
 - Root installation can be reproduced from lockfiles.
+- `npm run test:node-runtime` passes against the pinned Node 22 major from
+  `.node-version` and `.nvmrc`.
 - `npm run build` has defined behavior.
 - Affected contract tests pass or failures are documented.
 - Documentation changed by the work reflects the actual behavior.
@@ -188,6 +192,10 @@ Local development uses the root scripts documented in `README.md`. Developers ma
 npm run start:local
 ```
 
+Local install, build, and test workflows are pinned to the reviewed Node 22
+major declared in `.node-version` and `.nvmrc`. `scripts/verify_node_runtime.js`
+enforces that pin before install, test, build, and start commands run.
+
 Manual local service mode uses:
 
 ```sh
@@ -233,6 +241,8 @@ Docker assets are controlled artifacts:
 - `docker-compose.integrated.yml` defines the app/API deployment topology.
 - `docker-compose.public-api.yml` defines the optional host-exposed API overlay
   for intentional public API smoke paths.
+- `.node-version`, `.nvmrc`, and `scripts/verify_node_runtime.js` define the
+  authoritative local and CI Node runtime pin.
 
 Generated `node_modules` directories and compiled CommonJS output under `dtoapi/modern/lib/` are not source baselines. Committed browser assets under `app/public/js/` are controlled because they are directly served by the static app.
 
