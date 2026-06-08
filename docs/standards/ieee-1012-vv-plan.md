@@ -158,7 +158,7 @@ Browser -> app:8080 -> static assets
 
 Required integration checks:
 
-- `npm run start:local` wires app and API with `UTOPLAN_API_ORIGIN`.
+- `npm run start:local` wires app and API with `UTOPLAN_API_ORIGIN` and waits for API `/readyz` before starting the app process.
 - `/v1/unis` resolves through the app proxy from modern API data when proxy
   mode is enabled.
 - `UTOPLAN_DEMO_FIXTURE=1` is required for offline fixture mode.

@@ -61,7 +61,7 @@ npm run install:all
 npm run build
 npm run verify:deployment
 npm run verify:release
-npm run test:release-smoke
+npm run verify:release-smoke
 npm run test:browser
 npm run docker:test:db
 npm run docker:test:proxy

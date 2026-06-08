@@ -280,3 +280,24 @@ Release decision:
     or before the next release candidate that promotes planning-context UI/API
     behavior beyond internal modernization validation.
 - Status: proposed
+
+### RECO-829-2026-06-08-01
+
+- Class: required documentation
+- Finding: release procedures drifted by naming `npm run test:release-smoke`
+  as the deployed release-smoke gate even though that command only validates
+  the smoke script contract locally; the actual deployed smoke gate is
+  `npm run verify:release-smoke` with release URLs set.
+- Acceptance evidence:
+  - `docs/production-deployment.md` lists `npm run verify:release-smoke` in the
+    release-candidate preflight stack.
+  - `docs/standards/ieee-829-test-document.md` uses
+    `npm run verify:release-smoke` for deployed smoke procedures while keeping
+    `TC-015` as the local smoke-script contract test.
+  - `docs/standards/audits/ieee-730-sqa-audit.md` names
+    `npm run verify:release-smoke` in the normal release-readiness validation
+    stack.
+- Revisit trigger:
+  - Next time the release smoke script, release URL contract, or release gate
+    naming changes.
+- Status: implemented

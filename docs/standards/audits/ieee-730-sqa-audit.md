@@ -112,7 +112,7 @@ Review these artifacts during each IEEE 730 audit:
 - Has the project run the appropriate validation stack for the changed surface?
 - For normal release readiness, is the documented validation stack still:
   `npm run install:all`, `npm run build`, `npm run verify:deployment`,
-  `npm run verify:release`, `npm run test:release-smoke`,
+  `npm run verify:release`, `npm run verify:release-smoke`,
   `npm run test:browser`, `npm run docker:test:db`,
   `npm run docker:test:proxy`, `npm run docker:test:start-local-browser`, and
   npm audits for root, `app`, `dtoapi`, and `dtoapi/modern`?

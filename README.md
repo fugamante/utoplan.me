@@ -164,7 +164,7 @@ Run the modern API and static app as two local services when validating integrat
 npm run start:local
 ```
 
-`npm run start:local` starts the modern API on `UTOPLAN_API_PORT` or `3001`, starts the static app on `UTOPLAN_APP_PORT` or `8080`, and passes `UTOPLAN_API_ORIGIN` into the static app. The browser keeps using same-origin URLs such as `/v1/unis`.
+`npm run start:local` starts the modern API on `UTOPLAN_API_PORT` or `3001`, waits for API `/readyz` to return `200`, then starts the static app on `UTOPLAN_APP_PORT` or `8080` with `UTOPLAN_API_ORIGIN` passed in. The browser keeps using same-origin URLs such as `/v1/unis`.
 
 To run the services manually:
 

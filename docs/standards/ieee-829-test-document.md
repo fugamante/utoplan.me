@@ -92,7 +92,7 @@ npm run install:all
 npm run build
 npm run verify:deployment
 npm run verify:release
-npm run test:release-smoke
+npm run verify:release-smoke
 npm run test:browser
 npm run docker:test:db
 npm run docker:test:proxy
@@ -185,7 +185,7 @@ Browser -> app:8080 -> static assets
 
 Required integration assertions:
 
-- `npm run start:local` wires app and API with `UTOPLAN_API_ORIGIN`.
+- `npm run start:local` wires app and API with `UTOPLAN_API_ORIGIN` and waits for API `/readyz` before starting the app process.
 - Same-origin `/v1/unis` reads from the modern API when the proxy is enabled.
 - Offline fixture mode requires explicit `UTOPLAN_DEMO_FIXTURE=1`.
 - API `/readyz` checks database reachability and `baseline-read-v1`.
