@@ -68,6 +68,7 @@ or recommendations change.
 - `docs/deployment-topology.md`
 - `docs/production-deployment.md`
 - `data/mappings/puerto-rico-business-categories.json`
+- `data/municipalities/planning-context-municipalities.json`
 - `data/naics/planning-context-naics-titles.json`
 - `data/planning-context/`
 - `docs/standards/ieee-730-sqa-plan.md`
@@ -253,7 +254,7 @@ release evidence, and audit record.
 | Database read baseline | `docs/database-migrations.md`, migration artifacts | `db/migrations/`, readiness design | `npm run test:migration-artifacts`, `npm run docker:test:db` |
 | Deployment topology | `docs/deployment-topology.md`, production runbook | IEEE 1016 SDD | Docker proxy/browser tests, deployment verification |
 | Data provenance | `docs/data-intake.md`, `docs/data-provenance.md`, `docs/data-source-schema-mapping.md` | Source registry, import design | `npm run test:data-sources`, data review |
-| Planning context | `docs/product-scope.md`, candidate category mapping, NAICS title registry, planning-context fixtures | IEEE 1016 SDD, API/frontend notes | `npm run test:business-categories`, `npm run test:planning-context`, `npm run test:browser` |
+| Planning context | `docs/product-scope.md`, candidate category mapping, municipality registry, NAICS title registry, planning-context fixtures | IEEE 1016 SDD, API/frontend notes | `npm run test:business-categories`, `npm run test:planning-context`, `npm run test:browser` |
 | Release readiness | IEEE 730 SQA, IEEE 829 test document, production runbook | Release checklist | Release smoke, audit record, rollback review |
 | Standards corpus | This plan and peer IEEE documents | Audit hooks | Standards audit and document diffs |
 

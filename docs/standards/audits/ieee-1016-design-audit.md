@@ -54,6 +54,7 @@ Review these artifacts during each IEEE 1016 audit:
 | `db/migrations/` | database design baseline | Do migration artifacts match API readiness and read-query assumptions? |
 | `data/sources/puerto-rico.json` | approved source registry | Are data design assumptions backed by registered source metadata? |
 | `data/mappings/puerto-rico-business-categories.json` | planning-context data design | Are category-to-NAICS mappings explicit and descriptive rather than implicit scoring logic? |
+| `data/municipalities/planning-context-municipalities.json` | planning-context label design | Are active municipality labels source-backed instead of placeholder UI text? |
 | `data/planning-context/` | planning-context fixture design | Do summary/detail fixtures expose confidence, limitations, and unresolved questions? |
 | `app/app.js` | app server/proxy design | Does app serving, `/healthz`, proxying, and fixture gating match documented topology? |
 | `app/public/src/` | typed browser design | Are map, UI, and configuration responsibilities separated and tested? |

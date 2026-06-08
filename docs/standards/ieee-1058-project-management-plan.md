@@ -53,6 +53,7 @@ Out of scope unless explicitly approved:
 - `docs/data-intake.md`
 - `docs/data-provenance.md`
 - `data/mappings/puerto-rico-business-categories.json`
+- `data/municipalities/planning-context-municipalities.json`
 - `data/naics/planning-context-naics-titles.json`
 - `data/planning-context/`
 - `db/migrations/README.md`

@@ -69,6 +69,8 @@ Primary configuration items:
 - CI pipeline files.
 - Migration artifacts in `db/migrations/`.
 - Source registry records such as `data/sources/puerto-rico.json`.
+- Controlled municipality display-name registry records such as
+  `data/municipalities/planning-context-municipalities.json`.
 - Controlled NAICS title registry records such as
   `data/naics/planning-context-naics-titles.json`.
 - Candidate business-category mappings and planning-context fixtures under

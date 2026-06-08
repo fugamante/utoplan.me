@@ -45,6 +45,7 @@ Out of scope unless explicitly revived:
 - `docs/product-scope.md`
 - `docs/production-deployment.md`
 - `data/mappings/puerto-rico-business-categories.json`
+- `data/municipalities/planning-context-municipalities.json`
 - `data/planning-context/`
 - `db/migrations/202605211200_baseline_read_v1.md`
 - IEEE 1016, Software Design Description structure.
@@ -116,6 +117,7 @@ PostgreSQL
 | Database artifacts | `db/migrations/` | Record explicit production schema/data changes, verification, and rollback. |
 | Data source registry | `data/sources/puerto-rico.json` | Record approved Puerto Rico-scoped source candidates before imports. |
 | Business category mapping | `data/mappings/puerto-rico-business-categories.json` | Record candidate category-to-NAICS mappings that planning-context fixtures may reference without turning them into scores or recommendations. |
+| Municipality display-name registry | `data/municipalities/planning-context-municipalities.json` | Record source-backed municipality labels for the active planning-context fixture set. |
 | Planning-context fixtures | `data/planning-context/` | Record descriptive municipality/category slices with confidence, limitations, and unresolved questions. |
 | Release scripts | `scripts/`, `test/` | Verify deployment configuration, release smoke behavior, and integration contracts. |
 

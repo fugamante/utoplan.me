@@ -51,6 +51,9 @@ Review these artifacts during each IEEE 730 audit:
 - `data/sources/puerto-rico.json`: approved candidate source registry.
 - `data/mappings/puerto-rico-business-categories.json`: candidate category
   crosswalk used by descriptive planning-context fixtures.
+- `data/municipalities/planning-context-municipalities.json`: controlled
+  municipality display-name registry for active planning-context summaries and
+  details.
 - `data/naics/planning-context-naics-titles.json`: controlled NAICS title
   labels for exposed planning-context fact rows when the source CSV omits
   `cnaic_name`.
@@ -157,6 +160,8 @@ Review these artifacts during each IEEE 730 audit:
   kept visibly separate?
 - Do candidate business-category mappings and planning-context fixtures remain
   descriptive and free of score, ranking, or recommendation drift?
+- Do exposed planning-context municipality labels remain source-backed instead
+  of falling back to placeholder names?
 
 ### Security And Operational Quality
 

@@ -59,6 +59,7 @@ data provenance controls, release validation, and ongoing audit duties.
 | API database boundary | `dtoapi/modern/src/db.ts` | Bad environment parsing, leaked connection lifecycle |
 | Seeded read endpoints | `dtoapi/modern/src/records.ts` | Wrong payloads, missing-record behavior, schema drift |
 | Planning-context API runtime | `dtoapi/modern/src/planning_context.ts` | Descriptive fixture data drifts into score/recommendation semantics or serves incomplete fixture contracts |
+| Municipality display-name registry | `data/municipalities/planning-context-municipalities.json` | Planning-context summaries/details render placeholder or unverified municipality names |
 | Data source registry | `data/sources/puerto-rico.json` | Non-Puerto Rico or unlicensed source intake |
 | Business category mapping | `data/mappings/puerto-rico-business-categories.json` | Category-specific planning context turns descriptive CBP facts into unsupported scores or recommendations |
 | Planning-context fixture | `data/planning-context/*.json` | Category context hides uncertainty or drifts into recommendation language |
@@ -236,6 +237,10 @@ Data validation protects provenance and scope:
   source, license, and transform path are recorded.
 - Business categories must include explicit NAICS mappings, assumptions,
   confidence, and status before they are used to select CBP facts.
+- Exposed planning-context municipality names must resolve from
+  `data/municipalities/planning-context-municipalities.json` for the active
+  fixture set; placeholder municipality labels are not acceptable release
+  evidence.
 - Category mappings must not encode scores, rankings, recommendations,
   profitability claims, or municipality suitability conclusions.
 - Planning-context fixtures must keep municipality/category/fact matching

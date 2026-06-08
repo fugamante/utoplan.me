@@ -53,6 +53,7 @@ evidence and must record restoration of the formal baseline as an action item.
 | `docs/data-intake.md` | Test design, quality gate | Are Puerto Rico-only source controls validated before import? |
 | `data/sources/puerto-rico.json` | Test item, test data | Are source records scoped, licensed, dated, and mapped to active legacy columns where evidence exists? |
 | `data/mappings/puerto-rico-business-categories.json` | Test item, test data | Do candidate business-category mappings stay descriptive and traceable to NAICS evidence without score drift? |
+| `data/municipalities/planning-context-municipalities.json` | Test item, test data | Do exposed planning-context municipality labels stay source-backed for the active fixture set? |
 | `data/planning-context/*.json` | Test item, test data | Do planning-context fixtures keep fact matching, uncertainty, and unresolved questions visible without recommendation drift? |
 | `db/migrations/*.md` | Test item, transmittal | Are database baselines and changes tied to readiness behavior? |
 | `dtoapi/test/*.js` | API test cases | Do preserved compatibility tests cover public behavior? |
@@ -96,6 +97,9 @@ release branch, production deployment, or merge that changes app/API behavior.
 - Confirm planning-context fixtures pass the contract test and remain
   descriptive with explicit confidence labels, source metadata, and unresolved
   questions.
+- Confirm exposed planning-context municipality labels resolve from
+  `data/municipalities/planning-context-municipalities.json` for the active
+  fixture set.
 - Confirm test data, seed data, and production data are identified separately in
   test procedures and release summaries.
 - Confirm release smoke procedures identify the commit, image/artifact, app URL,

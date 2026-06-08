@@ -66,6 +66,7 @@ Inspect these artifacts during each IEEE 1058 audit:
 - `db/migrations/`: database baseline and release change artifacts.
 - `data/sources/puerto-rico.json`: source registry and data scope evidence.
 - `data/mappings/puerto-rico-business-categories.json`,
+  `data/municipalities/planning-context-municipalities.json`,
   `data/naics/planning-context-naics-titles.json`, and
   `data/planning-context/`: planning-context scope evidence, candidate
   category mapping inputs, controlled fact-label inputs, and descriptive

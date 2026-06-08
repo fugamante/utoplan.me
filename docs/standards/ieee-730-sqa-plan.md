@@ -129,6 +129,7 @@ Required documentation records:
 - Data provenance and registry changes in `docs/data-provenance.md`,
   `docs/data-intake.md`, `data/sources/puerto-rico.json`,
   `data/mappings/puerto-rico-business-categories.json`,
+  `data/municipalities/planning-context-municipalities.json`,
   `data/naics/planning-context-naics-titles.json`, and
   `data/planning-context/`.
 - Product-boundary changes in `docs/product-scope.md`.

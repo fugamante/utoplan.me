@@ -36,6 +36,7 @@ Audit these configuration item classes on every SCM review:
   `docs/data-intake.md`, `docs/data-provenance.md`, and fixture/test data.
 - Product-boundary and planning-context assets: `docs/product-scope.md`,
   `data/mappings/puerto-rico-business-categories.json`,
+  `data/municipalities/planning-context-municipalities.json`,
   `data/naics/planning-context-naics-titles.json`, and
   `data/planning-context/`.
 - Release evidence: CI definitions, release smoke scripts, Docker validation

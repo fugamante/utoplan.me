@@ -70,6 +70,9 @@ Inspect these artifacts during each IEEE 830 audit:
 - `data/sources/puerto-rico.json`: accepted data-source requirement evidence.
 - `data/mappings/puerto-rico-business-categories.json`: category-to-NAICS
   requirement evidence for descriptive planning-context selection.
+- `data/municipalities/planning-context-municipalities.json`: municipality
+  naming requirement evidence for descriptive planning-context summaries and
+  details.
 - `data/planning-context/`: descriptive planning-context fixture evidence for
   municipality/category summary and detail behavior.
 - `db/migrations/`: database requirement and readiness baseline evidence.
@@ -138,6 +141,8 @@ the current project surface.
   separate requirement classes.
 - Candidate business-category mappings and planning-context fixtures remain
   descriptive and traceable, not implicit scoring logic.
+- Active planning-context municipality labels remain source-backed and do not
+  regress to placeholder naming in API or browser-visible responses.
 - Requirements identify provenance gaps as blockers, not as implementation
   backlog only.
 

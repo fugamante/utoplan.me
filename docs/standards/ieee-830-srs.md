@@ -41,6 +41,7 @@ Puerto Rico data coverage and documents unresolved provenance gaps.
 - `docs/data-source-schema-mapping.md`
 - `docs/database-migrations.md`
 - `data/mappings/puerto-rico-business-categories.json`
+- `data/municipalities/planning-context-municipalities.json`
 - `data/planning-context/`
 - `db/migrations/202605211200_baseline_read_v1.md`
 - `docs/standards/ieee-730-sqa-plan.md`
@@ -73,6 +74,9 @@ contracts working while rebuilding the data and technical foundation.
 - `data/mappings/puerto-rico-business-categories.json` records the current
   candidate business-category to NAICS crosswalk used by descriptive
   planning-context fixtures.
+- `data/municipalities/planning-context-municipalities.json` records the
+  source-backed municipality display names used by the active planning-context
+  fixture set.
 - `data/planning-context/` records descriptive municipality/category fixture
   slices served by the read-only planning-context API.
 - Docker and npm scripts provide build, test, local integration, and release
@@ -203,7 +207,7 @@ contracts working while rebuilding the data and technical foundation.
 | FR-012 | Unresolved legacy tables shall remain blocked for production import. | `cdepts`, `businesses`, and `grade_cs` imports are blocked until source, license, and transform path are recorded. |
 | FR-013 | Public behavior changes shall update related requirements, design, test, and release docs. | Relevant IEEE and project docs change in the same bundle as the behavior change. |
 | FR-014 | The API shall expose read-only planning-context summary/detail routes with explicit descriptive-only guardrails. | `GET /v1/planning-context` and `GET /v1/planning-context/:id` return descriptive fixture payloads with guardrail flags and reject unsupported methods with `405`. |
-| FR-015 | The first page shall render planning-context summary options from same-origin `/v1/planning-context` and load selected descriptive detail from `/v1/planning-context/:id` without score/ranking/recommendation language. | Browser smoke verifies the summary/detail request paths and rendered descriptive options, confidence, limitations, unresolved questions, and CBP fact-value masking/approximation rules. |
+| FR-015 | The first page shall render planning-context summary options from same-origin `/v1/planning-context` and load selected descriptive detail from `/v1/planning-context/:id` without score/ranking/recommendation language. | Browser smoke verifies the summary/detail request paths and rendered descriptive options, source-backed municipality names, confidence, limitations, unresolved questions, and CBP fact-value masking/approximation rules. |
 
 ## 9. Nonfunctional Requirements
 
