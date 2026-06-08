@@ -323,6 +323,15 @@ an explicit accepted risk:
   are still missing.
 - The original organizer-provided dataset name, license, files, and transform
   path remain unresolved.
+- Deployed release smoke still validates app `/healthz`, public `/v1/unis`,
+  and optional API `/readyz`, but it does not yet exercise the same-origin
+  `/v1/planning-context` summary/detail path that the first page now uses for
+  descriptive planning-context rendering.
+- The preferred municipality-level `cbps` replacement candidate remains blocked
+  until an approved source-backed strategy for the preserved `cnaic_name`
+  column is recorded with a deterministic join rule.
+- The `unis` replacement candidate remains blocked until a reproducible
+  geocoding policy is approved for the preserved `lat` and `long` columns.
 - `cdepts`, `businesses`, and `grade_cs` need source identification before
   production-style import.
 - Production migration execution remains operator-managed; no in-repo migration

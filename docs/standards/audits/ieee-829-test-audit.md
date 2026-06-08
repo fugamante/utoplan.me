@@ -279,9 +279,9 @@ Release decision:
   - `docs/production-deployment.md`, the IEEE 829 test document, and this audit
     corpus describe the expanded deployed smoke scope.
 - Revisit trigger:
-  - Before the next release candidate that treats the current first-page
-    planning-context summary/detail path as part of normal public behavior, or
-    sooner if `scripts/release_smoke_check.js` changes.
+  - Before the next production-style release candidate from the current
+    first-page planning-context baseline, or sooner if release, rollback, or
+    smoke decisions need to rely on planning-context availability.
 - Status: proposed
 
 ### RECO-829-2026-06-08-01

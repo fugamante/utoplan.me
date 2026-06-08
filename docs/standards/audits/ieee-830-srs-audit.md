@@ -330,6 +330,32 @@ Owner:
 Review date:
 ```
 
+## Active Recommendations
+
+### RECO-830-2026-06-08-01
+
+- Class: required hardening
+- Finding: the preferred municipality-level `cbps` replacement candidate is
+  still blocked on the preserved `cnaic_name` requirement, but the standards
+  corpus tracked that gap only as roadmap prose and registry blockers instead
+  of an explicit requirements recommendation.
+- Acceptance evidence:
+  - `docs/data-source-schema-mapping.md` records the approved source-backed
+    `cnaic_name` title source and deterministic join rule for the preferred
+    municipality-level `cbps` candidate.
+  - `data/sources/puerto-rico.json` updates the affected `cbps`
+    `importReadiness` blocker state to match the approved title-source
+    decision.
+  - `docs/standards/ieee-830-srs.md` and any affected release/data docs reflect
+    the resolved requirement state.
+  - `npm run test:data-sources` passes after the requirement and registry
+    updates.
+- Revisit trigger:
+  - Before any production-style `cbps` import work, or before a release claims
+    source-backed municipality business-pattern refresh behavior beyond the
+    current descriptive planning-context fixtures.
+- Status: proposed
+
 ## Current SRS Control Expectations
 
 - Requirements remain anchored in Puerto Rico business-planning support and
