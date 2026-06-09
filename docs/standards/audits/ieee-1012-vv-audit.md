@@ -183,8 +183,9 @@ product and operational purpose.
   topology.
 - Production API startup fails fast when required database configuration is
   missing.
-- App `/healthz`, API `/healthz`, API `/readyz`, public `/v1/unis`, and browser
-  smoke checks are sufficient to support release and rollback decisions.
+- App `/healthz`, API `/healthz`, API `/readyz`, public `/v1/unis`, deployed
+  first-page planning-context API reachability, and browser smoke checks are
+  sufficient to support release and rollback decisions.
 - Rollback criteria include readiness failure, fixture leakage, public endpoint
   failure, database query failure, and browser smoke failure.
 - Release evidence identifies the app/API artifact pair, commit, database
@@ -375,6 +376,29 @@ Owner area:
 Review date:
 Next trigger:
 ```
+
+## Active Recommendations
+
+### RECO-1012-2026-06-08-01
+
+- Class: required validation
+- Finding: deployed release smoke proves app `/healthz`, `/v1/unis`, and
+  optional API `/readyz`, but it does not yet validate the same-origin
+  planning-context summary path that the first page now uses. That leaves a
+  release decision gap between validated browser behavior in pre-release
+  environments and deployed-path validation after rollout.
+- Acceptance evidence:
+  - `scripts/release_smoke_check.js` validates a successful
+    `GET /v1/planning-context` response from `UTOPLAN_APP_URL`.
+  - `test/release_smoke_check_test.js` covers the new validation path and
+    failure behavior.
+  - `docs/production-deployment.md` and the IEEE 829 test document reflect the
+    expanded deployed smoke expectation.
+- Revisit trigger:
+  - Before the next production-style release candidate that depends on the
+    current first-page planning-context flow, or sooner if rollback or release
+    decisions must rely on deployed planning-context availability.
+- Status: proposed
 
 ## Current Control Expectations
 

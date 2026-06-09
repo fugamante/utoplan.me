@@ -128,8 +128,9 @@ Review these artifacts during each IEEE 730 audit:
 - Are health and readiness checks aligned with the service responsibility:
   app `/healthz`, API `/healthz`, and API `/readyz` for database/schema
   readiness?
-- Do release smoke checks verify public app access and same-origin `/v1/unis`
-  behavior through the app?
+- Do release smoke checks verify public app access, same-origin `/v1/unis`
+  behavior through the app, and any same-origin first-page API paths the
+  current release depends on?
 
 ### Configuration Management Alignment
 
@@ -259,3 +260,25 @@ Each completed IEEE 730 audit should produce or update a short record with:
 
 Keep audit records concise enough to remain useful during ongoing modernization
 work, but specific enough that the next auditor can reproduce the conclusion.
+
+## Active Recommendations
+
+### RECO-730-2026-06-08-01
+
+- Class: required hardening
+- Finding: deployed release smoke currently validates app `/healthz`,
+  `/v1/unis`, and optional API `/readyz`, but it does not validate the
+  same-origin `/v1/planning-context` path that the first page now depends on
+  for descriptive planning-context rendering.
+- Acceptance evidence:
+  - `scripts/release_smoke_check.js` validates a successful
+    `GET /v1/planning-context` response from `UTOPLAN_APP_URL`.
+  - `test/release_smoke_check_test.js` covers the planning-context release
+    smoke assertion and failure behavior.
+  - `docs/production-deployment.md`, `docs/standards/ieee-829-test-document.md`,
+    and this audit corpus describe the expanded deployed smoke scope.
+- Revisit trigger:
+  - Before the next production-style release candidate that relies on the
+    first-page planning-context baseline, or sooner if release, rollback, or
+    smoke decisions need to rely on planning-context availability.
+- Status: proposed
