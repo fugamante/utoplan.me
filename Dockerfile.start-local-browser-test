@@ -4,12 +4,11 @@ WORKDIR /workspace
 
 ENV NODE_ENV=test
 
-RUN npx -y playwright@1.60.0 install --with-deps
-
 COPY .node-version ./
 COPY scripts ./scripts/
 COPY package.json package-lock.json ./
 RUN npm ci
+RUN npx playwright install --with-deps
 COPY app/package.json app/package-lock.json ./app/
 RUN npm --prefix app ci
 COPY dtoapi/modern/package.json dtoapi/modern/package-lock.json ./dtoapi/modern/
