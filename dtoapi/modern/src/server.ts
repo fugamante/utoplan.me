@@ -15,6 +15,10 @@ export const CORS_HEADERS: OutgoingHttpHeaders = {
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
 };
 
+export const SECURITY_HEADERS: OutgoingHttpHeaders = {
+  'X-Content-Type-Options': 'nosniff'
+};
+
 export function acceptsGzip(request: IncomingMessage): boolean {
   return String(request.headers['accept-encoding'] || '').indexOf('gzip') !== -1;
 }
@@ -40,6 +44,7 @@ function sendJson(
 ): void {
   const headers = Object.assign({}, CORS_HEADERS, extraHeaders || {}, {
     'Content-Type': 'application/json; charset=utf-8',
+    ...SECURITY_HEADERS,
     'X-Powered-By': 'utoplan-modern-api'
   });
 
@@ -193,7 +198,7 @@ export function createServer(): Server {
     const pathname = new URL(request.url || '/', 'http://127.0.0.1').pathname;
 
     if (request.method === 'OPTIONS') {
-      response.writeHead(204, CORS_HEADERS);
+      response.writeHead(204, Object.assign({}, CORS_HEADERS, SECURITY_HEADERS));
       response.end();
       return;
     }

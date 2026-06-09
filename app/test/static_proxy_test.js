@@ -125,6 +125,7 @@ async function main() {
   var health = await request(appPort, '/healthz');
   var healthBody = JSON.parse(health.body.toString('utf8'));
   assert.strictEqual(health.statusCode, 200, 'proxied app health check should return HTTP 200');
+  assert.strictEqual(health.headers['x-content-type-options'], 'nosniff');
   assert.strictEqual(healthBody.apiProxy, true);
   assert.strictEqual(healthBody.demoFixture, false);
 
