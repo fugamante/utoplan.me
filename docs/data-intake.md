@@ -42,6 +42,15 @@ unresolved transform decision, source gap, or operator dependency.
 Record `legacySchemaMap.evidenceDate` and `importReadiness.reviewedAt` as ISO
 `YYYY-MM-DD` strings so provenance reviews stay machine-checkable.
 
+When a preserved legacy column is absent from the primary source but approved
+for import through a deterministic auxiliary join, record that rule under
+`legacySchemaMap.columnStrategies`. Each strategy must identify the
+`legacyColumn`, approval `status`, strategy `kind`, auxiliary `sourceId`,
+resolved source field, join key, and notes. For active `cbps.cnaic_name`
+coverage, the strategy must use a source-backed Census title reference and must
+not treat `data/naics/planning-context-naics-titles.json` as production import
+evidence.
+
 ## Business Category Mapping Gate
 
 Before building category-specific planning context, map user-facing business

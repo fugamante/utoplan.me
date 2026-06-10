@@ -150,6 +150,9 @@ Each source record must capture:
 - Full preserved-column legacy-source-to-target coverage for active mapped
   tables (`cbps`, `unis`) using `legacySchemaMap` in the registry, with notes
   for every non-exact mapping.
+- Approved `legacySchemaMap.columnStrategies` for preserved columns that are
+  absent from the primary source but resolved through deterministic
+  source-backed auxiliary joins.
 - Import-readiness status and explicit blockers for active mapped tables when
   unresolved transforms, source gaps, or operator dependencies still block
   production-style import.

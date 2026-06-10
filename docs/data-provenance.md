@@ -84,8 +84,11 @@ Current status:
   `total_anual`, and `num_est`; municipality CSV also supports `county`.
   Import-generated fields are now documented explicitly. The Datos.PR CSV
   candidates now adopt `total_indus -> emp` as an evidence-backed preserved
-  employee-count transform, while `cnaic_name` still needs a documented
-  title-source strategy where the CSV omits it.
+  employee-count transform. `cnaic_name` now has an approved source strategy:
+  join CSV `naics` to the registered fallback Census CBP title reference on
+  exact NAICS 2012 code and read `NAICS2012_TTL`, without treating the
+  planning-context title registry as import evidence. Execution remains blocked
+  until that auxiliary title reference has a reproducible operator path.
 - `unis`: source-header evidence supports `title` and a deterministic
   `address` transform, and import-generated fields are documented explicitly.
   The `desc` field now has a deterministic labeled-text transform, but no

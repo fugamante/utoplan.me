@@ -32,13 +32,13 @@
             "resolutionEvidence": "Use a source variant with county coverage or explicitly retire this candidate for county-backed imports."
           },
           {
-            "id": "cbps-aggregate-naics-title-gap",
-            "kind": "source-gap",
+            "id": "cbps-aggregate-title-reference-access",
+            "kind": "operator-dependency",
             "legacyColumns": [
               "cnaic_name"
             ],
-            "summary": "Aggregate CBP CSV lacks NAICS title text for the preserved cnaic_name column.",
-            "resolutionEvidence": "Record an approved title-text source and deterministic join rule before import."
+            "summary": "The approved cnaic_name title join depends on the auxiliary Census CBP title reference, but no cached title artifact or approved API-key path is recorded yet.",
+            "resolutionEvidence": "Record a reproducible cached title extract or an approved Census API-key handling path before import."
           }
         ]
       },
@@ -46,6 +46,21 @@
         "table": "cbps",
         "evidenceDate": "2026-06-04",
         "evidenceType": "resource-header",
+        "columnStrategies": [
+          {
+            "legacyColumn": "cnaic_name",
+            "status": "approved",
+            "kind": "auxiliary-source-join",
+            "sourceId": "census-cbp-2014-state-72-fallback",
+            "sourceField": "NAICS2012_TTL",
+            "joinKey": {
+              "sourceField": "naics",
+              "referenceField": "NAICS2012",
+              "normalizer": "trimmed exact NAICS 2012 code text"
+            },
+            "notes": "Approved title-source strategy for Datos.PR CBP CSV imports: join each source naics value to the fallback Census CBP title reference by exact NAICS 2012 code and populate cnaic_name from NAICS2012_TTL. The planning-context NAICS title registry is fixture-only and must not be used as import evidence or the production title source."
+          }
+        ],
         "columnCoverage": [
           {
             "legacyColumn": "id",
@@ -136,13 +151,13 @@
         "reviewedAt": "2026-06-04",
         "blockers": [
           {
-            "id": "cbps-municipal-naics-title-gap",
-            "kind": "source-gap",
+            "id": "cbps-municipal-title-reference-access",
+            "kind": "operator-dependency",
             "legacyColumns": [
               "cnaic_name"
             ],
-            "summary": "Municipality-level CBP CSV lacks NAICS title text for the preserved cnaic_name column.",
-            "resolutionEvidence": "Record an approved title-text source and deterministic join rule before import."
+            "summary": "The approved cnaic_name title join depends on the auxiliary Census CBP title reference, but no cached title artifact or approved API-key path is recorded yet.",
+            "resolutionEvidence": "Record a reproducible cached title extract or an approved Census API-key handling path before import."
           }
         ]
       },
@@ -150,6 +165,21 @@
         "table": "cbps",
         "evidenceDate": "2026-06-04",
         "evidenceType": "resource-header",
+        "columnStrategies": [
+          {
+            "legacyColumn": "cnaic_name",
+            "status": "approved",
+            "kind": "auxiliary-source-join",
+            "sourceId": "census-cbp-2014-state-72-fallback",
+            "sourceField": "NAICS2012_TTL",
+            "joinKey": {
+              "sourceField": "naics",
+              "referenceField": "NAICS2012",
+              "normalizer": "trimmed exact NAICS 2012 code text"
+            },
+            "notes": "Approved title-source strategy for Datos.PR CBP CSV imports: join each source naics value to the fallback Census CBP title reference by exact NAICS 2012 code and populate cnaic_name from NAICS2012_TTL. The planning-context NAICS title registry is fixture-only and must not be used as import evidence or the production title source."
+          }
+        ],
         "columnCoverage": [
           {
             "legacyColumn": "id",

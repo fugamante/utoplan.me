@@ -359,7 +359,9 @@ Review date:
   - Before any production-style `cbps` import work, or before a release claims
     source-backed municipality business-pattern refresh behavior beyond the
     current descriptive planning-context fixtures.
-- Status: proposed
+- Status: complete (2026-06-10); the approved `cbps.cnaic_name` auxiliary
+  join strategy now lives in the source registry and mapping docs, and the
+  remaining blocker is narrowed to reproducible title-reference access.
 
 ## Current SRS Control Expectations
 

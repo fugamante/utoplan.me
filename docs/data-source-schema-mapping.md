@@ -65,6 +65,28 @@ Legacy columns: `id`, `total_indus`, `total_anual`, `cnaic`, `cnaic_name`,
 | `created_at` | `generated` | derived | Generated at import time. |
 | `updated_at` | `generated` | derived | Generated at import time. |
 
+### Approved `cnaic_name` Strategy For Datos.PR CBP CSV Imports
+
+The Datos.PR CBP CSV candidates remain the preferred Puerto Rico business
+pattern inputs, but both omit title text for the preserved `cnaic_name`
+column. The approved production-style strategy is:
+
+1. Use the CSV `naics` field as the primary code.
+2. Join it to the registered fallback Census CBP reference source
+   `census-cbp-2014-state-72-fallback` on exact 2012 NAICS code text
+   (`naics -> NAICS2012`) after trim-only normalization.
+3. Populate `cnaic_name` from the fallback reference field `NAICS2012_TTL`.
+
+Control notes:
+
+- This is an approved auxiliary-source join strategy, not a permission to use
+  planning-context fixture titles as import evidence.
+- `data/naics/planning-context-naics-titles.json` remains fixture-only and does
+  not satisfy production import provenance for `cbps.cnaic_name`.
+- Import execution is still blocked until the auxiliary Census title reference
+  has a reproducible access path, such as a cached checked-in extract or an
+  approved Census API-key handling policy.
+
 ### census-cbp-2014-state-72-fallback (API)
 
 The fallback API currently requests:
@@ -96,9 +118,10 @@ Legacy columns: `id`, `title`, `address`, `desc`, `lat`, `long`, `created_at`,
 
 ## Blocking Notes
 
-- `cbps`: promoting a source to import-ready still requires a strategy for
-  `cnaic_name` where absent. The `total_indus -> emp` transform is now
-  accepted for the Datos.PR CBP CSV candidates.
+- `cbps`: the `total_indus -> emp` transform and the `cnaic_name` auxiliary
+  join strategy are now approved for the Datos.PR CBP CSV candidates, but
+  import execution still needs a reproducible access path for the auxiliary
+  Census title reference.
 - `unis`: import readiness is blocked on a reproducible geocoding policy for
   `lat`/`long`. The `desc` formatting rule is now accepted.
 - `cbps` fallback API: operator use is blocked until a Census API key source,

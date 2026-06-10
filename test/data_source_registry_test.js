@@ -59,6 +59,18 @@ function hasActiveMappedTarget(source) {
   return hasTargetTable(source, 'cbps') || hasTargetTable(source, 'unis');
 }
 
+function findColumnCoverage(map, column) {
+  return map.columnCoverage.find(function(entry) {
+    return entry.legacyColumn === column;
+  });
+}
+
+function findSourceById(sourceId) {
+  return registry.sources.find(function(entry) {
+    return entry.id === sourceId;
+  });
+}
+
 assert.strictEqual(registry.schemaVersion, 1);
 assert.strictEqual(registry.scope, 'puerto-rico-only');
 assert(isIsoDate(registry.retrievedAt), 'registry retrievedAt must be an ISO YYYY-MM-DD date');
@@ -91,6 +103,9 @@ registry.sources.forEach(function(source) {
     assert(isNonEmptyString(source.legacySchemaMap.table), source.id + ' legacySchemaMap.table is required');
     assert(isNonEmptyString(source.legacySchemaMap.evidenceType), source.id + ' legacySchemaMap.evidenceType is required');
     assert(isIsoDate(source.legacySchemaMap.evidenceDate), source.id + ' legacySchemaMap.evidenceDate must be an ISO YYYY-MM-DD date');
+    if (source.legacySchemaMap.columnStrategies !== undefined) {
+      assert(Array.isArray(source.legacySchemaMap.columnStrategies), source.id + ' legacySchemaMap.columnStrategies must be an array when present');
+    }
     assert(Array.isArray(source.legacySchemaMap.columnCoverage), source.id + ' legacySchemaMap.columnCoverage must be an array');
     assert(source.legacySchemaMap.columnCoverage.length > 0, source.id + ' legacySchemaMap.columnCoverage must not be empty');
     assert(Object.prototype.hasOwnProperty.call(expectedColumnsByTable, source.legacySchemaMap.table), source.id + ' legacySchemaMap.table must be supported');
@@ -126,6 +141,41 @@ registry.sources.forEach(function(source) {
       expectedColumns.slice().sort(),
       source.id + ' must cover every preserved legacy column for ' + source.legacySchemaMap.table
     );
+
+    if (source.legacySchemaMap.table === 'cbps' && findColumnCoverage(source.legacySchemaMap, 'cnaic_name').coverage === 'missing') {
+      assert(Array.isArray(source.legacySchemaMap.columnStrategies), source.id + ' must include columnStrategies when cbps cnaic_name is not present in the source');
+
+      var cnaicNameStrategies = source.legacySchemaMap.columnStrategies.filter(function(strategy) {
+        return strategy.legacyColumn === 'cnaic_name';
+      });
+
+      assert.strictEqual(cnaicNameStrategies.length, 1, source.id + ' must include exactly one cnaic_name column strategy');
+
+      var strategy = cnaicNameStrategies[0];
+      assert.strictEqual(strategy.status, 'approved', source.id + ' cnaic_name strategy must be approved');
+      assert.strictEqual(strategy.kind, 'auxiliary-source-join', source.id + ' cnaic_name strategy must use auxiliary-source-join');
+      assert(isNonEmptyString(strategy.sourceId), source.id + ' cnaic_name strategy sourceId is required');
+      assert(isNonEmptyString(strategy.sourceField), source.id + ' cnaic_name strategy sourceField is required');
+      assert(strategy.joinKey && typeof strategy.joinKey === 'object', source.id + ' cnaic_name strategy joinKey is required');
+      assert(isNonEmptyString(strategy.joinKey.sourceField), source.id + ' cnaic_name strategy joinKey.sourceField is required');
+      assert(isNonEmptyString(strategy.joinKey.referenceField), source.id + ' cnaic_name strategy joinKey.referenceField is required');
+      assert(isNonEmptyString(strategy.joinKey.normalizer), source.id + ' cnaic_name strategy joinKey.normalizer is required');
+      assert(isNonEmptyString(strategy.notes), source.id + ' cnaic_name strategy notes are required');
+
+      var referenceSource = findSourceById(strategy.sourceId);
+      assert(referenceSource, source.id + ' cnaic_name strategy sourceId must reference a registered source');
+      assert(hasTargetTable(referenceSource, 'cbps'), source.id + ' cnaic_name strategy sourceId must target cbps');
+
+      var referenceCnaicCoverage = findColumnCoverage(referenceSource.legacySchemaMap, 'cnaic_name');
+      var referenceCodeCoverage = findColumnCoverage(referenceSource.legacySchemaMap, 'cnaic');
+
+      assert(referenceCnaicCoverage, source.id + ' cnaic_name strategy sourceId must document cnaic_name coverage');
+      assert(referenceCodeCoverage, source.id + ' cnaic_name strategy sourceId must document cnaic coverage');
+      assert(referenceCnaicCoverage.coverage === 'exact', source.id + ' cnaic_name strategy sourceId must expose exact cnaic_name coverage');
+      assert(referenceCnaicCoverage.sourceFields.indexOf(strategy.sourceField) !== -1, source.id + ' cnaic_name strategy sourceField must exist on the reference source');
+      assert(referenceCodeCoverage.sourceFields.indexOf(strategy.joinKey.referenceField) !== -1, source.id + ' cnaic_name strategy joinKey.referenceField must exist on the reference source');
+      assert(findColumnCoverage(source.legacySchemaMap, 'cnaic').sourceFields.indexOf(strategy.joinKey.sourceField) !== -1, source.id + ' cnaic_name strategy joinKey.sourceField must exist on the primary source');
+    }
 
     source.importReadiness.blockers.forEach(function(blocker) {
       assert(isNonEmptyString(blocker.id), source.id + ' blocker id is required');
