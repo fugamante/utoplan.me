@@ -331,9 +331,10 @@ an explicit accepted risk:
   and optional API `/readyz`, but it does not yet exercise the same-origin
   `/v1/planning-context` summary/detail path that the first page now uses for
   descriptive planning-context rendering.
-- The preferred municipality-level `cbps` replacement candidate remains blocked
-  until an approved source-backed strategy for the preserved `cnaic_name`
-  column is recorded with a deterministic join rule.
+- The approved `cbps.cnaic_name` auxiliary join now depends on the checked-in
+  `data/naics/cbp-naics-titles.json` Census title artifact staying aligned with
+  the registered Puerto Rico CBP source snapshot and its documented rebuild
+  command.
 - The `unis` replacement candidate remains blocked until a reproducible
   geocoding policy is approved for the preserved `lat` and `long` columns.
 - `cdepts`, `businesses`, and `grade_cs` need source identification before

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "scope": "puerto-rico-only",
-  "retrievedAt": "2026-06-04",
+  "retrievedAt": "2026-06-10",
   "sources": [
     {
       "id": "datospr-cbp-2014-puerto-rico",
@@ -20,7 +20,7 @@
       "notes": "Candidate replacement for the legacy cbps table; confirm transform decisions before import.",
       "importReadiness": {
         "status": "blocked",
-        "reviewedAt": "2026-06-04",
+        "reviewedAt": "2026-06-10",
         "blockers": [
           {
             "id": "cbps-aggregate-county-gap",
@@ -30,21 +30,12 @@
             ],
             "summary": "Puerto Rico aggregate CBP file does not include municipality or county-equivalent codes required by the preserved schema.",
             "resolutionEvidence": "Use a source variant with county coverage or explicitly retire this candidate for county-backed imports."
-          },
-          {
-            "id": "cbps-aggregate-title-reference-access",
-            "kind": "operator-dependency",
-            "legacyColumns": [
-              "cnaic_name"
-            ],
-            "summary": "The approved cnaic_name title join depends on the auxiliary Census CBP title reference, but no cached title artifact or approved API-key path is recorded yet.",
-            "resolutionEvidence": "Record a reproducible cached title extract or an approved Census API-key handling path before import."
           }
         ]
       },
       "legacySchemaMap": {
         "table": "cbps",
-        "evidenceDate": "2026-06-04",
+        "evidenceDate": "2026-06-10",
         "evidenceType": "resource-header",
         "columnStrategies": [
           {
@@ -58,7 +49,8 @@
               "referenceField": "NAICS2012",
               "normalizer": "trimmed exact NAICS 2012 code text"
             },
-            "notes": "Approved title-source strategy for Datos.PR CBP CSV imports: join each source naics value to the fallback Census CBP title reference by exact NAICS 2012 code and populate cnaic_name from NAICS2012_TTL. The planning-context NAICS title registry is fixture-only and must not be used as import evidence or the production title source."
+            "localArtifactPath": "data/naics/cbp-naics-titles.json",
+            "notes": "Approved title-source strategy for Datos.PR CBP CSV imports: join each source naics value to the checked-in cbp-naics-titles registry derived from the fallback Census CBP title reference by exact NAICS 2012 code and populate cnaic_name from the cached NAICS2012_TTL title text. The planning-context NAICS title registry is fixture-only and must not be used as import evidence or the production title source."
           }
         ],
         "columnCoverage": [
@@ -147,23 +139,13 @@
       "sourceBasis": "Municipality-level 2014 County Business Patterns data for Puerto Rico.",
       "notes": "Use as the preferred municipality-level CBP source if it preserves the legacy county/municipality join shape.",
       "importReadiness": {
-        "status": "blocked",
-        "reviewedAt": "2026-06-04",
-        "blockers": [
-          {
-            "id": "cbps-municipal-title-reference-access",
-            "kind": "operator-dependency",
-            "legacyColumns": [
-              "cnaic_name"
-            ],
-            "summary": "The approved cnaic_name title join depends on the auxiliary Census CBP title reference, but no cached title artifact or approved API-key path is recorded yet.",
-            "resolutionEvidence": "Record a reproducible cached title extract or an approved Census API-key handling path before import."
-          }
-        ]
+        "status": "ready",
+        "reviewedAt": "2026-06-10",
+        "blockers": []
       },
       "legacySchemaMap": {
         "table": "cbps",
-        "evidenceDate": "2026-06-04",
+        "evidenceDate": "2026-06-10",
         "evidenceType": "resource-header",
         "columnStrategies": [
           {
@@ -177,7 +159,8 @@
               "referenceField": "NAICS2012",
               "normalizer": "trimmed exact NAICS 2012 code text"
             },
-            "notes": "Approved title-source strategy for Datos.PR CBP CSV imports: join each source naics value to the fallback Census CBP title reference by exact NAICS 2012 code and populate cnaic_name from NAICS2012_TTL. The planning-context NAICS title registry is fixture-only and must not be used as import evidence or the production title source."
+            "localArtifactPath": "data/naics/cbp-naics-titles.json",
+            "notes": "Approved title-source strategy for Datos.PR CBP CSV imports: join each source naics value to the checked-in cbp-naics-titles registry derived from the fallback Census CBP title reference by exact NAICS 2012 code and populate cnaic_name from the cached NAICS2012_TTL title text. The planning-context NAICS title registry is fixture-only and must not be used as import evidence or the production title source."
           }
         ],
         "columnCoverage": [

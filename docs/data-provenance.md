@@ -87,8 +87,9 @@ Current status:
   employee-count transform. `cnaic_name` now has an approved source strategy:
   join CSV `naics` to the registered fallback Census CBP title reference on
   exact NAICS 2012 code and read `NAICS2012_TTL`, without treating the
-  planning-context title registry as import evidence. Execution remains blocked
-  until that auxiliary title reference has a reproducible operator path.
+  planning-context title registry as import evidence. Execution remained
+  blocked at this snapshot until that auxiliary title reference had a
+  reproducible operator path.
 - `unis`: source-header evidence supports `title` and a deterministic
   `address` transform, and import-generated fields are documented explicitly.
   The `desc` field now has a deterministic labeled-text transform, but no
@@ -99,6 +100,19 @@ Current status:
   legacy columns, but a live request on 2026-06-04 returned a `Missing Key`
   response. Treat that fallback as operator-blocked until an API-key policy is
   recorded; the registry now carries that operational blocker explicitly.
+
+## Import Title Registry Snapshot (2026-06-10)
+
+`data/naics/cbp-naics-titles.json` now records checked-in Census title text for
+all 1,772 distinct `naics` codes observed in the registered Puerto Rico CBP
+CSV candidates. It is generated from the official Census
+`naics-descriptions/naics2012.txt` reference plus the registered Datos.PR CBP
+code set through `node scripts/sync_naics_registry.js`.
+
+This registry is the approved production-style auxiliary join artifact for
+`cbps.cnaic_name`. It removes the municipality-level `cbps` import blocker
+without relying on the live Census API or the narrower planning-context title
+fixture registry.
 
 ## Provenance Gap
 

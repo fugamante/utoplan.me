@@ -351,17 +351,21 @@ Review date:
   - `data/sources/puerto-rico.json` updates the affected `cbps`
     `importReadiness` blocker state to match the approved title-source
     decision.
+  - `data/naics/cbp-naics-titles.json` records a checked-in Census title
+    artifact for the full registered Puerto Rico CBP code set, with
+    `scripts/sync_naics_registry.js` as the documented rebuild path.
   - `docs/standards/ieee-830-srs.md` and any affected release/data docs reflect
     the resolved requirement state.
-  - `npm run test:data-sources` passes after the requirement and registry
-    updates.
+  - `npm run test:data-sources` and `npm run test:naics-registry` pass after
+    the requirement and registry updates.
 - Revisit trigger:
   - Before any production-style `cbps` import work, or before a release claims
     source-backed municipality business-pattern refresh behavior beyond the
     current descriptive planning-context fixtures.
 - Status: complete (2026-06-10); the approved `cbps.cnaic_name` auxiliary
-  join strategy now lives in the source registry and mapping docs, and the
-  remaining blocker is narrowed to reproducible title-reference access.
+  join strategy now lives in the source registry and mapping docs, the checked-in
+  Census title artifact closes the reproducible title-reference gap, and the
+  preferred municipality-level `cbps` candidate is import-ready.
 
 ## Current SRS Control Expectations
 

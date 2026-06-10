@@ -71,6 +71,10 @@ function findSourceById(sourceId) {
   });
 }
 
+function resolveRepoPath(relativePath) {
+  return path.join(__dirname, '..', relativePath);
+}
+
 assert.strictEqual(registry.schemaVersion, 1);
 assert.strictEqual(registry.scope, 'puerto-rico-only');
 assert(isIsoDate(registry.retrievedAt), 'registry retrievedAt must be an ISO YYYY-MM-DD date');
@@ -160,7 +164,9 @@ registry.sources.forEach(function(source) {
       assert(isNonEmptyString(strategy.joinKey.sourceField), source.id + ' cnaic_name strategy joinKey.sourceField is required');
       assert(isNonEmptyString(strategy.joinKey.referenceField), source.id + ' cnaic_name strategy joinKey.referenceField is required');
       assert(isNonEmptyString(strategy.joinKey.normalizer), source.id + ' cnaic_name strategy joinKey.normalizer is required');
+      assert(isNonEmptyString(strategy.localArtifactPath), source.id + ' cnaic_name strategy localArtifactPath is required');
       assert(isNonEmptyString(strategy.notes), source.id + ' cnaic_name strategy notes are required');
+      assert(fs.existsSync(resolveRepoPath(strategy.localArtifactPath)), source.id + ' cnaic_name strategy localArtifactPath must exist in the repository');
 
       var referenceSource = findSourceById(strategy.sourceId);
       assert(referenceSource, source.id + ' cnaic_name strategy sourceId must reference a registered source');

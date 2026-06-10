@@ -46,9 +46,10 @@ When a preserved legacy column is absent from the primary source but approved
 for import through a deterministic auxiliary join, record that rule under
 `legacySchemaMap.columnStrategies`. Each strategy must identify the
 `legacyColumn`, approval `status`, strategy `kind`, auxiliary `sourceId`,
-resolved source field, join key, and notes. For active `cbps.cnaic_name`
-coverage, the strategy must use a source-backed Census title reference and must
-not treat `data/naics/planning-context-naics-titles.json` as production import
+resolved source field, join key, local checked-in artifact path, and notes. For
+active `cbps.cnaic_name` coverage, the strategy must use a source-backed Census
+title reference, point at `data/naics/cbp-naics-titles.json`, and must not
+treat `data/naics/planning-context-naics-titles.json` as production import
 evidence.
 
 ## Business Category Mapping Gate
@@ -111,6 +112,7 @@ Run the registry contract check with:
 
 ```sh
 npm run test:data-sources
+npm run test:naics-registry
 ```
 
-The root `npm run test` command also runs this check.
+The root `npm run test` command also runs both checks.

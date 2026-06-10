@@ -107,6 +107,7 @@ Audits should use repository evidence first:
 - `db/migrations/`
 - `data/sources/puerto-rico.json`
 - `data/mappings/puerto-rico-business-categories.json`
+- `data/naics/cbp-naics-titles.json`
 - `data/municipalities/planning-context-municipalities.json`
 - `data/naics/planning-context-naics-titles.json`
 - `data/planning-context/`

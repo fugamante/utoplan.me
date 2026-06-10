@@ -49,6 +49,8 @@ Review these artifacts during each IEEE 730 audit:
   smoke checks.
 - `db/migrations/`: database change artifacts and schema baseline evidence.
 - `data/sources/puerto-rico.json`: approved candidate source registry.
+- `data/naics/cbp-naics-titles.json`: checked-in Census title artifact for the
+  approved `cbps.cnaic_name` import join.
 - `data/mappings/puerto-rico-business-categories.json`: candidate category
   crosswalk used by descriptive planning-context fixtures.
 - `data/municipalities/planning-context-municipalities.json`: controlled

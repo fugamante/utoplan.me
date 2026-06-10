@@ -83,9 +83,9 @@ Control notes:
   planning-context fixture titles as import evidence.
 - `data/naics/planning-context-naics-titles.json` remains fixture-only and does
   not satisfy production import provenance for `cbps.cnaic_name`.
-- Import execution is still blocked until the auxiliary Census title reference
-  has a reproducible access path, such as a cached checked-in extract or an
-  approved Census API-key handling policy.
+- `data/naics/cbp-naics-titles.json` is the approved checked-in Census title
+  artifact for this join. Rebuild it with `node scripts/sync_naics_registry.js`
+  when the registered Puerto Rico CBP source snapshot changes.
 
 ### census-cbp-2014-state-72-fallback (API)
 
@@ -119,9 +119,9 @@ Legacy columns: `id`, `title`, `address`, `desc`, `lat`, `long`, `created_at`,
 ## Blocking Notes
 
 - `cbps`: the `total_indus -> emp` transform and the `cnaic_name` auxiliary
-  join strategy are now approved for the Datos.PR CBP CSV candidates, but
-  import execution still needs a reproducible access path for the auxiliary
-  Census title reference.
+  join strategy are now approved for the Datos.PR CBP CSV candidates, and the
+  checked-in Census title artifact now provides the reproducible access path for
+  `cnaic_name`.
 - `unis`: import readiness is blocked on a reproducible geocoding policy for
   `lat`/`long`. The `desc` formatting rule is now accepted.
 - `cbps` fallback API: operator use is blocked until a Census API key source,

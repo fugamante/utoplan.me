@@ -98,6 +98,9 @@ The current modernization work is centered on:
 - `docs/data-intake.md`: Puerto Rico-only source intake contract and registry policy.
 - `data/municipalities/`: source-backed planning-context municipality display-name registry.
 - `data/naics/`: source-backed planning-context NAICS title registry for active fixture codes.
+- `data/naics/cbp-naics-titles.json`: checked-in Census title registry for all
+  registered Puerto Rico CBP `naics` codes used by the approved
+  `cbps.cnaic_name` import join.
 - `docs/data-provenance.md`: known evidence and open gaps for the original hackathon dataset.
 - `docs/deployment-topology.md`: integrated app/API deployment topology.
 - `docs/frontend-inventory.md`: static app source and asset inventory.
@@ -121,6 +124,7 @@ npm run install:all
 npm run test
 npm run test:browser
 npm run test:data-sources
+npm run test:naics-registry
 npm run test:planning-context
 npm run test:db
 npm run test:browser:start-local
@@ -149,6 +153,10 @@ The Docker build runs `npm run install:all` and `npm run build`, so it validates
 `npm run docker:test:start-local-browser` runs Chromium against the seeded `start:local` path and verifies the map renders modern API data without fetching the offline fixture.
 
 `npm run test:browser` runs a Playwright Chromium smoke test against the static app. Run `npx playwright install chromium` once on a fresh local machine before using it.
+
+`npm run test:naics-registry` validates the checked-in Census title registry for
+the full registered Puerto Rico CBP code set so the approved `cbps.cnaic_name`
+import join does not depend on a live Census API key.
 
 `npm run test:browser:start-local` runs the app, modern API, and Chromium on the host machine against a seeded `baseline-read-v1` database. It honors explicit `TEST_DATABASE_*` settings, otherwise provisions the disposable Compose `db` service on a loopback host port, ignores ambient database environment variables such as `DATABASE_URL`, and removes the service after the run. Set `START_LOCAL_BROWSER_USE_ENV_DB=1` only when you intentionally want to reuse an existing baseline-ready database.
 

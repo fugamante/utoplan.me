@@ -35,13 +35,18 @@
   `legacySchemaMap` coverage and `importReadiness` blockers for active mapped
   tables so import work can distinguish accepted transforms from unresolved
   source gaps and operator decisions.
-- Current data-source blockers are explicit: the municipality-level `cbps`
-  candidate still needs an approved `cnaic_name` title-source strategy, and
-  the `unis` candidate still needs a reproducible geocoding policy for `lat`
-  and `long`.
+- The approved `cbps.cnaic_name` import join now uses the checked-in
+  `data/naics/cbp-naics-titles.json` Census title registry for the full
+  registered Puerto Rico CBP code set, so the municipality-level `cbps`
+  candidate is import-ready without a live Census API key.
+- Current data-source blockers are explicit: the `unis` candidate still needs a
+  reproducible geocoding policy for `lat` and `long`.
 - `docs/product-scope.md` defines the current product boundary: descriptive Puerto Rico planning context before recommendations, rankings, or automated decisions.
 - `data/mappings/puerto-rico-business-categories.json` defines the first candidate business-category to NAICS crosswalk for source-backed planning context.
 - `npm run test:data-sources` validates that registered import candidates are Puerto Rico-only or explicitly filtered to Puerto Rico.
+- `npm run test:naics-registry` validates the checked-in Census title registry
+  for the registered Puerto Rico CBP code set and the approved
+  `cbps.cnaic_name` auxiliary join path.
 - `npm run test:business-categories` validates the candidate category crosswalk and rejects scoring-oriented contract drift.
 - `data/planning-context/mun001_construction.json` defines the first descriptive planning-context fixture for one municipality/category selection with matching CBP facts, confidence labels, and unresolved questions.
 - `data/planning-context/mun003_restaurant.json` adds a second descriptive planning-context fixture for a different municipality/category slice so confidence and unresolved-question patterns can be compared.
@@ -175,7 +180,8 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Document and approve the production-style `cbps.cnaic_name` source strategy for
-Puerto Rico municipality imports so the preferred `datospr-cbp-2014-municipios`
-candidate can move past its remaining schema gap without reusing
-planning-context-only title fixtures or crosswalk labels as import evidence.
+Document and approve the reproducible `unis.lat` / `unis.long` geocoding policy
+for Puerto Rico higher-education imports so the preferred
+`datospr-higher-ed-directory-2017-18` candidate can move from mapping evidence
+to import-ready status without inventing coordinates or reusing demo-only
+fixtures.
