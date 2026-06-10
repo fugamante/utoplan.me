@@ -5,7 +5,7 @@ WORKDIR /workspace
 COPY .node-version ./
 COPY scripts ./scripts/
 COPY dtoapi/modern/package.json dtoapi/modern/package-lock.json ./dtoapi/modern/
-RUN npm --prefix dtoapi/modern ci
+RUN npm --prefix dtoapi/modern ci --ignore-scripts
 
 COPY dtoapi/modern ./dtoapi/modern/
 RUN npm --prefix dtoapi/modern run build
@@ -20,7 +20,7 @@ ENV PORT=3001
 COPY .node-version ./
 COPY scripts ./scripts/
 COPY dtoapi/modern/package.json dtoapi/modern/package-lock.json ./dtoapi/modern/
-RUN npm --prefix dtoapi/modern ci --omit=dev
+RUN npm --prefix dtoapi/modern ci --omit=dev --ignore-scripts
 
 COPY --from=build /workspace/dtoapi/modern/lib ./dtoapi/modern/lib/
 

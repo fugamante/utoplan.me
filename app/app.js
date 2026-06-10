@@ -22,7 +22,9 @@ var types = {
 };
 
 var securityHeaders = {
-  'X-Content-Type-Options': 'nosniff'
+  'Referrer-Policy': 'no-referrer',
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY'
 };
 
 function contentType(filePath) {

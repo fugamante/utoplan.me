@@ -82,12 +82,16 @@ async function main() {
 
   var index = await request('/');
   assert.strictEqual(index.statusCode, 200, 'index should return HTTP 200');
+  assert.strictEqual(index.headers['referrer-policy'], 'no-referrer');
   assert.strictEqual(index.headers['x-content-type-options'], 'nosniff');
+  assert.strictEqual(index.headers['x-frame-options'], 'DENY');
 
   var health = await request('/healthz');
   var healthBody = JSON.parse(health.body.toString('utf8'));
   assert.strictEqual(health.statusCode, 200, 'health check should return HTTP 200');
+  assert.strictEqual(health.headers['referrer-policy'], 'no-referrer');
   assert.strictEqual(health.headers['x-content-type-options'], 'nosniff');
+  assert.strictEqual(health.headers['x-frame-options'], 'DENY');
   assert.strictEqual(healthBody.status, 'ok');
   assert.strictEqual(healthBody.service, 'utoplan-static-app');
   assert.strictEqual(healthBody.apiProxy, false);
@@ -147,7 +151,9 @@ async function main() {
   for (var i = 0; i < assets.length; i++) {
     var asset = await request(assets[i]);
     assert.strictEqual(asset.statusCode, 200, assets[i] + ' should return HTTP 200');
+    assert.strictEqual(asset.headers['referrer-policy'], 'no-referrer');
     assert.strictEqual(asset.headers['x-content-type-options'], 'nosniff');
+    assert.strictEqual(asset.headers['x-frame-options'], 'DENY');
     assert(asset.body.length > 0, assets[i] + ' should not be empty');
   }
 

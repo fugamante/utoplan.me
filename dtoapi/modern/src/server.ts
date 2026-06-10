@@ -16,7 +16,9 @@ export const CORS_HEADERS: OutgoingHttpHeaders = {
 };
 
 export const SECURITY_HEADERS: OutgoingHttpHeaders = {
-  'X-Content-Type-Options': 'nosniff'
+  'Referrer-Policy': 'no-referrer',
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY'
 };
 
 export function acceptsGzip(request: IncomingMessage): boolean {

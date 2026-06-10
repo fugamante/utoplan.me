@@ -14,6 +14,8 @@ var publicCompose = fs.readFileSync(path.join(root, 'docker-compose.public-api.y
 assert(appDockerfile.indexOf('ENV NODE_ENV=production') !== -1);
 assert(apiDockerfile.indexOf('scripts/verify_deployment_config.js') !== -1);
 assert(apiDockerfile.indexOf('--service=api') !== -1);
+assert(apiDockerfile.indexOf('ci --ignore-scripts') !== -1);
+assert(apiDockerfile.indexOf('ci --omit=dev --ignore-scripts') !== -1);
 assert(browserTestDockerfile.indexOf('RUN npm ci') !== -1);
 assert(browserTestDockerfile.indexOf('RUN npx playwright install --with-deps') !== -1);
 assert(browserTestDockerfile.indexOf('playwright@') === -1);
