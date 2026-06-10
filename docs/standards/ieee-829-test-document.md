@@ -100,6 +100,7 @@ npm run verify:deployment
 npm run verify:release
 npm run verify:release-smoke
 npm run test:browser
+npm run test:browser:start-local
 npm run docker:test:db
 npm run docker:test:proxy
 npm run docker:test:start-local-browser
@@ -138,7 +139,13 @@ A change is test-acceptable when:
   preserve descriptive multi-slice municipality/category coverage with matching
   CBP facts, visible confidence labels, and unresolved questions.
 - Browser-facing planning-context UI changes pass `npm run test:browser` and
-  keep summary language descriptive with no score/ranking/recommendation claims.
+  `npm run test:browser:start-local`, keeping summary/detail language
+  descriptive with no score/ranking/recommendation claims in both static-mocked
+  and real same-origin integrated paths. The integrated host-native run must
+  honor explicit `TEST_DATABASE_*` settings, otherwise execute against the
+  disposable seeded Compose `db` service by default and ignore ambient local
+  database settings unless the operator explicitly opts into a known
+  baseline-ready database.
 - Migration changes include an artifact under `db/migrations/` with preflight,
   apply, verification, rollback, and post-deploy checks.
 
@@ -291,6 +298,7 @@ Release validation checks that the intended commit can be operated safely:
 | TC-023 | Planning-context fixture | `npm run test:planning-context` | Fixtures keep municipality/category/CBP matching explicit with source metadata, confidence labels, limitations, and unresolved questions, and include at least two municipality/category slices while remaining descriptive |
 | TC-024 | Planning-context API contract | `npm run test:api` | `GET /v1/planning-context` and `GET /v1/planning-context/:id` return read-only descriptive payloads with guardrails and reject unsupported methods with `405` |
 | TC-025 | Planning-context summary/detail UI | `npm run test:browser` | First page requests `/v1/planning-context`, loads selected detail from `/v1/planning-context/:id`, and renders descriptive municipality/category, confidence, CBP fact-value masking/approximation, limitation, and unresolved-question content without score/ranking/recommendation language |
+| TC-026 | Integrated planning-context browser path | `npm run test:browser:start-local` | Browser renders seeded same-origin `/v1/unis` and `/v1/planning-context` data through `start:local`, loads descriptive detail from the real API path, avoids the offline fixture, and does not depend on an ambient host database schema |
 
 ## 7. Test Procedure Specification
 

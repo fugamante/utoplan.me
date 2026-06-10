@@ -318,7 +318,7 @@ an explicit accepted risk:
 | FR-012 | Provenance risk control | `docs/data-provenance.md`, source registry review |
 | FR-013 | Documentation consistency | Standards and project-doc review |
 | FR-014 | Read-only planning-context API contract | `npm run test:api`, `dtoapi/modern/test/planning_context_test.js` |
-| FR-015 | Planning-context summary UI contract | `npm run test:browser`, `app/test/static_smoke_test.js` |
+| FR-015 | Planning-context summary UI contract | `npm run test:browser`, `npm run test:browser:start-local`, `app/test/static_smoke_test.js` with `test:browser:start-local` running against the provisioned seeded baseline database unless the operator explicitly opts into a known baseline-ready alternative |
 | DR-001 - DR-006, DR-002A | Trustworthy Puerto Rico data product | Registry tests, provenance docs, source-schema mapping docs, import review, future recommendation tests |
 
 ## 13. Open Requirements And Risks

@@ -225,7 +225,8 @@ stack before PR publication or release promotion.
 | Root tests | `npm run test` | Normal pre-merge validation. |
 | API contracts | `npm run test:api` and `npm run test:api:modern` | API behavior, response, routing, gzip, CORS, error, or DB-boundary changes. |
 | Static app contracts | `npm run test:app` | Static server, proxy, fixture, health, or browser config changes. |
-| Browser smoke | `npm run test:browser` | Frontend, map, asset, or browser-visible data-flow changes. |
+| Browser smoke | `npm run test:browser` | Frontend, map, asset, or browser-visible data-flow changes in the static app path. |
+| Integrated browser smoke | `npm run test:browser:start-local` | Same-origin app/API/browser data-flow changes that need host-native integrated evidence before Docker or release smoke. The run must honor explicit `TEST_DATABASE_*` settings, otherwise provision the seeded Compose `db` service and ignore ambient database environment variables unless the operator explicitly opts into a known baseline-ready database. |
 | DB contracts | `npm run docker:test:db` | Database schema, query, readiness, seed, or migration changes. |
 | Proxy contracts | `npm run docker:test:proxy` | App proxy, `/v1/*`, API origin, or integrated topology changes. |
 | Integrated browser path | `npm run docker:test:start-local-browser` | Release-impacting app/API/browser/data-flow changes. |
@@ -249,12 +250,12 @@ release evidence, and audit record.
 | Area | Requirement source | Design source | Verification evidence |
 | --- | --- | --- | --- |
 | Product purpose | `README.md`, IEEE 830 SRS | IEEE 1016 SDD, roadmap | Acceptance review, browser smoke, release summary |
-| Static app and map | README, roadmap | `docs/frontend-inventory.md`, IEEE 1016 SDD | `npm run test:app`, `npm run test:browser` |
+| Static app and map | README, roadmap | `docs/frontend-inventory.md`, IEEE 1016 SDD | `npm run test:app`, `npm run test:browser`, `npm run test:browser:start-local` |
 | Modern API | `docs/api-modernization.md`, IEEE 830 SRS | API notes, IEEE 1016 SDD | `npm run test:api`, `npm run test:api:modern` |
 | Database read baseline | `docs/database-migrations.md`, migration artifacts | `db/migrations/`, readiness design | `npm run test:migration-artifacts`, `npm run docker:test:db` |
 | Deployment topology | `docs/deployment-topology.md`, production runbook | IEEE 1016 SDD | Docker proxy/browser tests, deployment verification |
 | Data provenance | `docs/data-intake.md`, `docs/data-provenance.md`, `docs/data-source-schema-mapping.md` | Source registry, import design | `npm run test:data-sources`, data review |
-| Planning context | `docs/product-scope.md`, candidate category mapping, municipality registry, NAICS title registry, planning-context fixtures | IEEE 1016 SDD, API/frontend notes | `npm run test:business-categories`, `npm run test:planning-context`, `npm run test:browser` |
+| Planning context | `docs/product-scope.md`, candidate category mapping, municipality registry, NAICS title registry, planning-context fixtures | IEEE 1016 SDD, API/frontend notes | `npm run test:business-categories`, `npm run test:planning-context`, `npm run test:browser`, `npm run test:browser:start-local` |
 | Release readiness | IEEE 730 SQA, IEEE 829 test document, production runbook | Release checklist | Release smoke, audit record, rollback review |
 | Standards corpus | This plan and peer IEEE documents | Audit hooks | Standards audit and document diffs |
 

@@ -331,9 +331,18 @@ npm run install:all
 npm run build
 npm run test
 npm run test:browser
+npm run test:browser:start-local
 npm run verify:deployment
 npm run verify:release
 npm run verify:release-smoke
+```
+
+`npm run test:browser:start-local` is expected to provision a disposable seeded
+Compose `db` service by default, honor explicit `TEST_DATABASE_*` settings,
+and ignore ambient database environment variables unless the operator
+explicitly opts into a known baseline-ready database.
+
+```sh
 npm run docker:test:db
 npm run docker:test:proxy
 npm run docker:test:start-local-browser

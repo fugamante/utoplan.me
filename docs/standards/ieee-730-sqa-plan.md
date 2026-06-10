@@ -150,7 +150,7 @@ validation stack before release or PR publication.
 | API contracts | `npm run test:api` and `npm run test:api:modern` | API behavior, response, routing, gzip, CORS, error, or DB boundary changes. |
 | DB contracts | `npm run docker:test:db` | Database schema, query, readiness, or migration changes. |
 | Proxy contracts | `npm run docker:test:proxy` | App proxy, `/v1/*`, API origin, or integrated topology changes. |
-| Browser smoke | `npm run test:browser` and `npm run docker:test:start-local-browser` | Frontend, map, asset, proxy, or local-start changes. |
+| Browser smoke | `npm run test:browser`, `npm run test:browser:start-local`, and `npm run docker:test:start-local-browser` | Frontend, map, asset, proxy, or local-start changes. The host-native `test:browser:start-local` path must honor explicit `TEST_DATABASE_*` settings, otherwise provision the seeded Compose `db` service and ignore ambient database environment variables unless the operator explicitly opts into a known baseline-ready database. |
 | Data registry | `npm run test:data-sources` | Source registry, provenance, import, or data-scope changes. |
 | Business category mapping | `npm run test:business-categories` | Category crosswalk, planning-context selection, or descriptive-scope changes. |
 | Planning-context fixture | `npm run test:planning-context` | Planning-context fixture, summary/detail, or descriptive-guardrail changes. |

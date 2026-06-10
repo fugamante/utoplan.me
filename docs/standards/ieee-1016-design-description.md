@@ -377,10 +377,20 @@ Key validation paths:
 - `docker build -t utoplanme:modernization .`
 - `npm run docker:test:db`
 - `npm run docker:test:proxy`
+- `npm run test:browser:start-local`
 - `npm run docker:test:start-local-browser`
 
 Docker checks may be skipped only when Docker is unavailable; skipped checks
 and reasons must be recorded in the change report.
+
+The host-native `npm run test:browser:start-local` path keeps the app, API,
+and browser on the host machine, but it must still run against a deterministic
+seeded database. The test honors explicit `TEST_DATABASE_*` settings;
+otherwise it provisions the Compose `db` service, discovers its
+loopback-mapped port, ignores ambient database environment variables such as
+`DATABASE_URL`, and tears the service down after the run. Operators may opt
+into an existing baseline-ready database only through an explicit test-specific
+override.
 
 ## 10. Interface Design
 
@@ -495,7 +505,7 @@ Use these rules when modifying the design:
 | API contracts | `npm run test:api`, `npm run test:api:modern` |
 | DB read contract | `npm run docker:test:db` |
 | App/API proxy | `npm run docker:test:proxy` |
-| Browser map behavior | `npm run test:browser`, `npm run docker:test:start-local-browser` |
+| Browser map behavior | `npm run test:browser`, `npm run test:browser:start-local`, `npm run docker:test:start-local-browser` |
 | Deployment config | `npm run verify:deployment`, `npm run verify:release` |
 | Release smoke | `npm run verify:release-smoke` |
 | Data source scope | `npm run test:data-sources` |

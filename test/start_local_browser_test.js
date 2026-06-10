@@ -3,9 +3,57 @@
 const assert = require('assert');
 const childProcess = require('child_process');
 const http = require('http');
+const path = require('path');
 const {chromium} = require('@playwright/test');
 
 let localServer;
+let dockerDbStarted = false;
+
+function rootDir() {
+  return path.join(__dirname, '..');
+}
+
+function runCommand(command, args) {
+  const result = childProcess.spawnSync(command, args, {
+    cwd: rootDir(),
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'pipe']
+  });
+
+  if (result.status !== 0) {
+    throw new Error((result.stderr || result.stdout || (command + ' failed')).trim());
+  }
+
+  return result.stdout.trim();
+}
+
+function ensureSeededDatabase(env) {
+  if (env.TEST_DATABASE_HOST && env.TEST_DATABASE_USER && env.TEST_DATABASE_DB) {
+    return {};
+  }
+
+  if (env.START_LOCAL_BROWSER_USE_ENV_DB === '1') {
+    return {};
+  }
+
+  runCommand('docker', ['compose', 'up', '-d', '--build', 'db']);
+  dockerDbStarted = true;
+
+  const endpoint = runCommand('docker', ['compose', 'port', 'db', '5432']);
+  const match = endpoint.match(/^(.*):(\d+)$/);
+
+  if (!match) {
+    throw new Error('unexpected docker compose port output: ' + endpoint);
+  }
+
+  return {
+    TEST_DATABASE_HOST: match[1] === '0.0.0.0' ? '127.0.0.1' : match[1],
+    TEST_DATABASE_PORT: match[2],
+    TEST_DATABASE_USER: 'postgres',
+    TEST_DATABASE_PASSWORD: 'postgres',
+    TEST_DATABASE_DB: 'dtoapi_test'
+  };
+}
 
 function request(port, path) {
   return new Promise(function(resolve, reject) {
@@ -71,13 +119,27 @@ function stopLocal() {
   }
 }
 
+function stopDockerDb() {
+  if (!dockerDbStarted) {
+    return;
+  }
+
+  childProcess.spawnSync('docker', ['compose', 'rm', '-f', '-s', '-v', 'db'], {
+    cwd: rootDir(),
+    stdio: 'ignore'
+  });
+  dockerDbStarted = false;
+}
+
 function startLocal(apiPort, appPort) {
+  const databaseEnv = ensureSeededDatabase(process.env);
   localServer = childProcess.spawn(process.platform === 'win32' ? 'npm.cmd' : 'npm', ['run', 'start:local'], {
-    cwd: __dirname + '/..',
+    cwd: rootDir(),
     env: Object.assign({}, process.env, {
+      DATABASE_URL: '',
       UTOPLAN_API_PORT: apiPort,
       UTOPLAN_APP_PORT: appPort
-    }),
+    }, databaseEnv),
     detached: process.platform !== 'win32',
     stdio: ['ignore', 'pipe', 'pipe']
   });
@@ -152,16 +214,22 @@ async function main() {
 
   await browser.close();
   stopLocal();
+  stopDockerDb();
 }
 
-process.on('exit', stopLocal);
+process.on('exit', function() {
+  stopLocal();
+  stopDockerDb();
+});
 process.on('SIGINT', function() {
   stopLocal();
+  stopDockerDb();
   process.exit(130);
 });
 
 main().catch(function(error) {
   stopLocal();
+  stopDockerDb();
   console.error(error.stack || error.message);
   process.exit(1);
 });

@@ -53,6 +53,10 @@
 - Planning-context summary/detail labels for the active fixture set now resolve against the source-backed municipality registry instead of placeholder `Municipality code ###` strings.
 - The first-page planning-context detail panel now renders disclosure-limited CBP values as masked and rounded/noise-flagged CBP values as approximate so the UI does not imply false precision from `D`/`H` source flags.
 - Planning-context CBP facts for the active fixture set now resolve deterministic source-backed `naicsTitle` labels from a Census-backed registry, and the first-page detail panel renders those labels instead of code-only fact headers.
+- `npm run test:browser:start-local` now validates the host-native integrated
+  `start:local` path against a seeded `baseline-read-v1` database, including
+  same-origin planning-context summary/detail requests, rendered descriptive
+  detail, and fixture exclusion.
 - `npm run verify:release` wraps app/API deployment verification for release jobs, and Azure validates the wrapper in sample mode without production secrets.
 - `npm run verify:release-smoke` checks deployed app `/healthz`, public `/v1/unis`, and optional API `/readyz` from configured release URLs.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.

@@ -150,6 +150,8 @@ The Docker build runs `npm run install:all` and `npm run build`, so it validates
 
 `npm run test:browser` runs a Playwright Chromium smoke test against the static app. Run `npx playwright install chromium` once on a fresh local machine before using it.
 
+`npm run test:browser:start-local` runs the app, modern API, and Chromium on the host machine against a seeded `baseline-read-v1` database. It honors explicit `TEST_DATABASE_*` settings, otherwise provisions the disposable Compose `db` service on a loopback host port, ignores ambient database environment variables such as `DATABASE_URL`, and removes the service after the run. Set `START_LOCAL_BROWSER_USE_ENV_DB=1` only when you intentionally want to reuse an existing baseline-ready database.
+
 The legacy Nodal API path has been retired from the normal project tree. The modern API runs from `dtoapi/modern`, compiles TypeScript sources to ignored CommonJS output under `dtoapi/modern/lib/`, and preserves the captured root and seeded read endpoint contracts.
 
 The static app and modern API both expose `/healthz` for runtime health checks.

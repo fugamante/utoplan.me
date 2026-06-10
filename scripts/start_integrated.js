@@ -13,6 +13,7 @@ function buildConfig(env) {
   var apiPort = env.UTOPLAN_API_PORT || '3001';
   var appPort = env.UTOPLAN_APP_PORT || '8080';
   var apiOrigin = env.UTOPLAN_API_ORIGIN || 'http://127.0.0.1:' + apiPort;
+  var readyTimeoutMs = Number(env.UTOPLAN_START_READY_TIMEOUT_MS || 60000);
 
   return {
     api: {
@@ -32,7 +33,8 @@ function buildConfig(env) {
     },
     appUrl: 'http://127.0.0.1:' + appPort,
     apiOrigin: apiOrigin,
-    apiReadyUrl: new URL('/readyz', apiOrigin).toString()
+    apiReadyUrl: new URL('/readyz', apiOrigin).toString(),
+    readyTimeoutMs: Number.isFinite(readyTimeoutMs) && readyTimeoutMs > 0 ? readyTimeoutMs : 60000
   };
 }
 
@@ -122,7 +124,7 @@ function start(env) {
     stopAll(143);
   });
 
-  waitForReady(config.apiReadyUrl, Date.now() + 30000).then(function() {
+  waitForReady(config.apiReadyUrl, Date.now() + config.readyTimeoutMs).then(function() {
     if (shuttingDown) {
       return;
     }

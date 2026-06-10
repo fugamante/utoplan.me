@@ -3,6 +3,10 @@
 const assert = require('assert');
 const http = require('http');
 
+if (!process.env.MODERN_DB_TEST_USE_ENV_DB) {
+  process.env.DATABASE_URL = '';
+}
+
 const db = require('../lib/db');
 const modernApi = require('../lib/server');
 
