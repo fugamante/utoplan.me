@@ -255,8 +255,6 @@
         "policyDocPath": "docs/unis-geocoding-policy.md",
         "cacheArtifactPath": "data/geocoding/unis-census-geocoder-cache.json",
         "quarantineArtifactPath": "data/geocoding/unis-import-quarantine.json",
-        "matchReviewPolicyDocPath": "docs/unis-alias-campus-match-policy.md",
-        "matchReviewArtifactPath": "data/unis/ipeds-alias-campus-review.json",
         "servicePath": "geographies/onelineaddress",
         "benchmark": "Public_AR_Census2020",
         "vintage": "Census2020_Current",
@@ -285,8 +283,8 @@
               "lat",
               "long"
             ],
-            "summary": "Reviewed alias/campus decisions and quarantine records now exist for the unmatched directory rows, but production-style unis import still needs reviewed Census geocoder cache entries for the approved rows.",
-            "resolutionEvidence": "Use the reviewed decisions in data/unis/ipeds-alias-campus-review.json to geocode only the approved rows under docs/unis-geocoding-policy.md, populate data/geocoding/unis-census-geocoder-cache.json with reviewed Puerto Rico matches, and keep data/geocoding/unis-import-quarantine.json aligned with the excluded rows."
+            "summary": "The exact-match IPEDS audit only covers 11 of 57 directory rows, and the remaining 46 rows stay quarantined because cross-source alias or campus promotion is not allowed.",
+            "resolutionEvidence": "Build reviewed Census geocoder cache entries only for rows with exact source-backed identity evidence, keep the 46 unmatched rows in data/geocoding/unis-import-quarantine.json, and do not promote non-exact institution-name matches without a future source-policy change."
           }
         ]
       },

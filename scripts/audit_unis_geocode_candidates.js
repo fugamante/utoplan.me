@@ -185,7 +185,7 @@ function main() {
     ],
     exactMatches: exactMatches,
     unmatchedInstitutions: unmatchedInstitutions,
-    nextDecision: 'Use the reviewed alias/campus decisions in data/unis/ipeds-alias-campus-review.json to build the Census geocoder cache for approved rows and keep the quarantine artifact aligned for excluded rows before marking unis import-ready.'
+    nextDecision: 'Build the Census geocoder cache only for rows with exact source-backed institution identity evidence, and keep the remaining unmatched rows quarantined without alias expansion before marking unis import-ready.'
   }, null, 2) + '\n');
 
   process.stdout.write('wrote geocode audit to ' + OUTPUT_PATH + '\n');

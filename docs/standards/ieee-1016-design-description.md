@@ -158,9 +158,9 @@ Each source record must capture:
   production-style import.
 - Machine-readable `legacySchemaMap.evidenceDate` and
   `importReadiness.reviewedAt` values as ISO `YYYY-MM-DD` strings.
-- Geocoded `unis` review control must identify the alias/campus policy
-  document and the checked-in row-level decision artifact used before
-  unmatched rows move beyond the exact-match baseline.
+- Geocoded `unis` review control must preserve the exact-match audit baseline
+  and quarantine non-exact institution-name rows rather than promoting them
+  through alias logic.
 
 Broad national datasets are acceptable only when the registry records the
 Puerto Rico filter and the import implementation enforces it.

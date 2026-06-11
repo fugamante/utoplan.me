@@ -60,14 +60,9 @@ rows.
 Before broad `unis` geocoder refresh work begins, keep a checked-in exact-match
 baseline at `data/unis/ipeds-geocode-audit.json`. Use that audit to document
 how many rows already have auxiliary coordinate evidence, and keep
-`importReadiness.status: blocked` until reviewed alias/campus match rules
-either promote additional Puerto Rico rows into the approved cache or explain
-their exclusion in the quarantine artifact.
-
-For the active `unis` candidate, keep the reviewed alias/campus rules in
-`docs/unis-alias-campus-match-policy.md` and record row-level outcomes in
-`data/unis/ipeds-alias-campus-review.json` before unmatched rows move into the
-approved Census cache path.
+`importReadiness.status: blocked` until rows with exact source-backed identity
+evidence move into the approved cache path and all remaining unmatched rows are
+recorded in the quarantine artifact.
 
 When a preserved legacy column is absent from the primary source but approved
 for import through a deterministic auxiliary join, record that rule under

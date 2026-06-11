@@ -94,8 +94,8 @@ release branch, production deployment, or merge that changes app/API behavior.
 - Confirm blocked `cbps` and `unis` import candidates carry explicit
   `importReadiness` blocker records for unresolved transforms, source gaps, or
   operator dependencies.
-- Confirm unmatched `unis` alias/campus approvals use the checked-in policy and
-  row-level review artifact before later cache/quarantine claims are accepted.
+- Confirm unmatched `unis` rows remain quarantined when their institution
+  identity is not exact and source-backed.
 - Confirm planning-context fixtures pass the contract test and remain
   descriptive with explicit confidence labels, source metadata, and unresolved
   questions.

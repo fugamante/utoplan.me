@@ -147,36 +147,19 @@ Current status:
 - The `unis` import path therefore remains blocked on a reviewed match policy
   and quarantine rule rather than on a lack of candidate coordinate evidence.
 
-## `unis` Alias/Campus Review Policy Snapshot (2026-06-11)
+## `unis` Exact-Match Only Snapshot (2026-06-11)
 
-`docs/unis-alias-campus-match-policy.md` now records the approved review gate
-for promoting unmatched directory rows beyond the strict exact-match audit.
-
-Current control:
-
-- No fuzzy matching, parent-system coordinate borrowing, or invented fallback
-  coordinates are permitted.
-- Reviewed outcomes must be recorded row by row in
-  `data/unis/ipeds-alias-campus-review.json`.
-- Only reviewed `approved-alias` or `approved-campus` rows may advance into
-  the checked-in Census cache workflow; the rest remain quarantined.
-
-## `unis` Alias/Campus Review Snapshot (2026-06-11)
-
-The first checked-in review pass now records row-level outcomes in
-`data/unis/ipeds-alias-campus-review.json`.
+The project now treats cross-source alias or campus promotion as out of scope
+for `unis` import evidence.
 
 Current status:
 
-- 19 unmatched rows now have reviewed `approved-alias` or `approved-campus`
-  outcomes backed by address, translation, campus, or explicit parenthetical
-  evidence in the registered sources.
-- 27 rows remain quarantined in the paired
-  `data/geocoding/unis-import-quarantine.json` artifact because the available
-  IPEDS evidence did not justify an unambiguous alias/campus promotion.
-- The `unis` import path is now blocked on building reviewed Census cache
-  entries for the approved rows rather than on an undefined alias/campus
-  policy decision.
+- The strict exact-match audit still covers 11 of 57 rows.
+- The remaining 46 rows are quarantined in
+  `data/geocoding/unis-import-quarantine.json`.
+- The quarantine decision is intentional: no non-exact institution-name match
+  is promoted into import evidence because that could create identity drift and
+  reduce trust in downstream analysis.
 
 ## Provenance Gap
 
