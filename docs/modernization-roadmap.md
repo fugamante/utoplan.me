@@ -193,9 +193,9 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Register and review a stronger `unis` institution-authority stack before more
-row promotion work proceeds: use the federal NCES and U.S. Department of
-Education corroboration sources already recorded in the Puerto Rico registry,
-document whether the Puerto Rico Department of State ORLIE postsecondary
-listing can be operationalized as a reproducible public source, then revisit
-the 27 quarantined rows before further cache-building work.
+Keep the stronger `unis` institution-authority stack registered and
+machine-checked before more row promotion work proceeds: preserve the federal
+NCES and U.S. Department of Education corroboration sources in the Puerto Rico
+registry, document whether the Puerto Rico Department of State ORLIE
+postsecondary listing can be operationalized as a reproducible public source,
+then revisit the 27 quarantined rows before further cache-building work.

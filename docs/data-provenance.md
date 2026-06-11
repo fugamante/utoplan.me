@@ -70,6 +70,17 @@ Practical implication:
   machine-checked registry source yet, because this pass did not confirm a
   reusable public export contract or explicit reuse terms.
 
+Registry implication:
+
+- Keep the NCES and U.S. Department of Education Puerto Rico-filtered
+  corroboration entries registered while the `unis` import path remains blocked
+  on stronger institution authority.
+- Do not treat those corroboration entries as direct `unis` row sources or as
+  a substitute for the approved Census geocoder cache/quarantine workflow.
+- Treat the Puerto Rico Department of State ORLIE/JIP surface as a remaining
+  authority-stack gap until it can be described as a reproducible public source
+  with explicit operator handling.
+
 ## Product Mapping Snapshot (2026-05-26)
 
 The first product-facing category contract now lives in

@@ -138,6 +138,9 @@ the current project surface.
 - Geocoded `unis` approvals for unmatched rows require a checked-in
   alias/campus policy document and row-level review artifact rather than
   prose-only operator approval.
+- A `unis` authority-stack blocker requires registered Puerto Rico-filtered
+  corroboration sources for institution identity and accreditation review, and
+  those sources must stay out of the direct row-import path.
 - Broad national datasets require deterministic Puerto Rico filtering in both
   the registry and import logic.
 - Demo fixtures, test seed data, recovered legacy data, and production data are

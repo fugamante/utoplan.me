@@ -183,6 +183,36 @@ function validateUnisGeocodingPolicy(source) {
   }
 }
 
+function validateUnisAuthorityStack(source) {
+  var strongerAuthorityBlocker = source.importReadiness.blockers.find(function(blocker) {
+    return blocker.id === 'stronger-unis-identity-authority-required';
+  });
+
+  if (!strongerAuthorityBlocker) {
+    return;
+  }
+
+  var identitySource = findSourceById('nces-college-navigator-puerto-rico');
+  assert(identitySource, source.id + ' stronger authority blocker requires the NCES corroboration source to be registered');
+  assert(hasTargetTable(identitySource, 'unis-identity'), source.id + ' NCES corroboration source must target unis-identity');
+  assert.strictEqual(identitySource.scope, 'puerto-rico-filtered', source.id + ' NCES corroboration source must stay Puerto Rico-filtered');
+  assert.strictEqual(identitySource.scopeFilter, 'state:PR', source.id + ' NCES corroboration source must pin the Puerto Rico state filter');
+  assert(
+    identitySource.notes.indexOf('not a direct replacement row source') !== -1,
+    source.id + ' NCES corroboration source notes must keep it out of the direct unis import path'
+  );
+
+  var accreditationSource = findSourceById('usdoe-dapip-puerto-rico');
+  assert(accreditationSource, source.id + ' stronger authority blocker requires the U.S. Department of Education corroboration source to be registered');
+  assert(hasTargetTable(accreditationSource, 'unis-accreditation'), source.id + ' U.S. Department of Education corroboration source must target unis-accreditation');
+  assert.strictEqual(accreditationSource.scope, 'puerto-rico-filtered', source.id + ' U.S. Department of Education corroboration source must stay Puerto Rico-filtered');
+  assert.strictEqual(accreditationSource.scopeFilter, 'state:Puerto Rico', source.id + ' U.S. Department of Education corroboration source must pin the Puerto Rico state filter');
+  assert(
+    accreditationSource.notes.indexOf('not as a direct legacy unis import source') !== -1,
+    source.id + ' U.S. Department of Education corroboration source notes must keep it out of the direct unis import path'
+  );
+}
+
 assert.strictEqual(registry.schemaVersion, 1);
 assert.strictEqual(registry.scope, 'puerto-rico-only');
 assert(isIsoDate(registry.retrievedAt), 'registry retrievedAt must be an ISO YYYY-MM-DD date');
@@ -296,6 +326,7 @@ registry.sources.forEach(function(source) {
 
     if (source.legacySchemaMap.table === 'unis') {
       validateUnisGeocodingPolicy(source);
+      validateUnisAuthorityStack(source);
 
       if (source.geocodingPolicy.matchReviewArtifactPath) {
         var auditArtifact = JSON.parse(fs.readFileSync(resolveRepoPath('data/unis/ipeds-geocode-audit.json'), 'utf8'));

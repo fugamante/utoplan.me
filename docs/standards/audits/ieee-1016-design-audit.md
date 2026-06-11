@@ -178,6 +178,9 @@ changes:
 - Confirm unmatched `unis` alias/campus promotions depend on a checked-in
   policy document and row-level review artifact before geocoder cache work
   claims import evidence.
+- Confirm a stronger-authority-blocked `unis` path keeps the registered NCES
+  and U.S. Department of Education corroboration entries as Puerto Rico-
+  filtered review-only sources rather than direct import inputs.
 - Confirm design claims that mention tests are backed by executable tests or a
   documented manual verification procedure.
 

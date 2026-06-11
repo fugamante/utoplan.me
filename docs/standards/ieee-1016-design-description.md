@@ -161,6 +161,10 @@ Each source record must capture:
 - Geocoded `unis` review control must identify the alias/campus policy
   document and the checked-in row-level decision artifact used before
   unmatched rows move beyond the exact-match baseline.
+- When the `unis` import path is blocked on stronger institution authority,
+  the registry must also retain Puerto Rico-filtered NCES identity and U.S.
+  Department of Education accreditation corroboration entries and keep them
+  documented as review-only support rather than direct row-import sources.
 
 Broad national datasets are acceptable only when the registry records the
 Puerto Rico filter and the import implementation enforces it.

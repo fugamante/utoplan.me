@@ -117,6 +117,36 @@ Legacy columns: `id`, `title`, `address`, `desc`, `lat`, `long`, `created_at`,
 | `created_at` | `generated` | derived | Generated at import time. |
 | `updated_at` | `generated` | derived | Generated at import time. |
 
+### Registered `unis` Corroboration Sources
+
+The stronger `unis` institution-authority stack now has two registered Puerto
+Rico-filtered corroboration sources. They do not replace the Datos.PR row
+source and they do not justify direct import on their own, but they do provide
+field-level evidence for preserving real-institution identity decisions before
+more non-exact alias/campus promotion work proceeds.
+
+#### nces-college-navigator-puerto-rico
+
+Available corroboration evidence against preserved legacy columns:
+
+| Legacy column | Evidence role | Notes |
+| --- | --- | --- |
+| `title` | corroborates | Candidate federal institution naming surface for Puerto Rico-filtered identity review. |
+| `address` | corroborates | Puerto Rico-filtered institution search/export can corroborate campus location text before geocoder promotion. |
+| `desc` | none | Current modernization record does not treat NCES metadata as a direct replacement for legacy `desc`. |
+| `lat` / `long` | none | NCES is not the approved coordinate authority in this path. Coordinates remain derived only through the reviewed Census geocoder cache. |
+
+#### usdoe-dapip-puerto-rico
+
+Available corroboration evidence against preserved legacy columns:
+
+| Legacy column | Evidence role | Notes |
+| --- | --- | --- |
+| `title` | corroborates | Federal accreditation search can corroborate institution identity under the Puerto Rico state filter. |
+| `address` | corroborates | Accreditation search can corroborate institution location text for in-scope review. |
+| `desc` | none | Accreditation status does not replace the preserved legacy `desc` transform. |
+| `lat` / `long` | none | DAPIP is not the approved coordinate authority in this path. Coordinates remain tied to the reviewed Census geocoder cache. |
+
 ## Blocking Notes
 
 - `cbps`: the `total_indus -> emp` transform and the `cnaic_name` auxiliary
@@ -127,12 +157,14 @@ Legacy columns: `id`, `title`, `address`, `desc`, `lat`, `long`, `created_at`,
   `docs/unis-geocoding-policy.md`, with checked-in cache storage at
   `data/geocoding/unis-census-geocoder-cache.json` and paired quarantine
   storage at `data/geocoding/unis-import-quarantine.json`. `unis` import
-  readiness must remain blocked until the institution-authority stack is
-  stronger than the current Datos.PR-plus-single-audit baseline, the reviewed
-  Census cache contains Puerto Rico matches for the reviewed approved rows, the
-  quarantine artifact records the remaining excluded rows, and the stricter
-  11-of-57 IPEDS exact-match baseline at `data/unis/ipeds-geocode-audit.json`
-  stays paired with the reviewed alias/campus approval policy in
+  readiness must remain blocked until the institution-authority stack keeps the
+  registered NCES identity corroboration and U.S. Department of Education
+  accreditation corroboration sources in place beyond the current
+  Datos.PR-plus-single-audit baseline, the reviewed Census cache contains
+  Puerto Rico matches for the reviewed approved rows, the quarantine artifact
+  records the remaining excluded rows, and the stricter 11-of-57 IPEDS
+  exact-match baseline at `data/unis/ipeds-geocode-audit.json` stays paired
+  with the reviewed alias/campus approval policy in
   `docs/unis-alias-campus-match-policy.md` and the row-level decision artifact
   `data/unis/ipeds-alias-campus-review.json`.
 - `cbps` fallback API: operator use is blocked until a Census API key source,

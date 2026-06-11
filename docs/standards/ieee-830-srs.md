@@ -279,6 +279,7 @@ contracts working while rebuilding the data and technical foundation.
 | DR-002A | Active mapped tables (`cbps`, `unis`) shall include full preserved-column source-to-legacy coverage evidence in the registry, with notes for every non-exact mapping. | `npm run test:data-sources` enforces complete `legacySchemaMap` coverage and `docs/data-source-schema-mapping.md` documents the same mapping. |
 | DR-002B | Active mapped-table candidates that are not yet safe to import shall record explicit import-readiness blockers in the registry. | `npm run test:data-sources` enforces `importReadiness` status, review date, and blocker records for `cbps`/`unis` candidates. |
 | DR-002C | Active mapped-table candidates that derive preserved coordinates through an external geocoder shall pin a reproducible geocoding policy, checked-in cache artifact path, and reviewed alias/campus decision artifact before import. | `npm run test:data-sources` enforces the `geocodingPolicy` contract for `unis`, while `docs/unis-geocoding-policy.md` and `docs/unis-alias-campus-match-policy.md` record the approved workflow. |
+| DR-002D | When `unis` import remains blocked on stronger institution authority, the registry shall retain Puerto Rico-filtered corroboration sources for institution identity and accreditation review and shall keep them out of the direct row-import path. | `npm run test:data-sources` enforces the NCES and U.S. Department of Education corroboration entries, their Puerto Rico filters, and their non-import notes while `docs/data-source-schema-mapping.md` documents their limited evidence role. |
 | DR-003 | Demo fixtures, test seed data, replacement candidates, and production data shall remain distinguishable. | Docs and health checks identify fixture mode; release checks verify fixture mode is absent. |
 | DR-004 | Original hackathon dataset provenance gaps shall remain visible until resolved. | `docs/data-provenance.md` records known evidence and unresolved source gaps. |
 | DR-005 | Source-to-endpoint transforms shall be documented before production import. | Import PRs include field mapping, filters, license evidence, and target endpoint impact. |
@@ -343,7 +344,8 @@ an explicit accepted risk:
 - The `unis` replacement candidate also still needs a stronger institution-
   authority stack than the current Datos.PR directory plus a single auxiliary
   exact-match audit before unresolved real-institution rows should be treated
-  as durable production exclusions.
+  as durable production exclusions, and the remaining ORLIE/JIP
+  operationalization question is still open.
 - `cdepts`, `businesses`, and `grade_cs` need source identification before
   production-style import.
 - Production migration execution remains operator-managed; no in-repo migration
