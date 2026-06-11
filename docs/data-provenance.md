@@ -147,6 +147,20 @@ Current status:
 - The `unis` import path therefore remains blocked on a reviewed match policy
   and quarantine rule rather than on a lack of candidate coordinate evidence.
 
+## `unis` Alias/Campus Review Policy Snapshot (2026-06-11)
+
+`docs/unis-alias-campus-match-policy.md` now records the approved review gate
+for promoting unmatched directory rows beyond the strict exact-match audit.
+
+Current control:
+
+- No fuzzy matching, parent-system coordinate borrowing, or invented fallback
+  coordinates are permitted.
+- Reviewed outcomes must be recorded row by row in
+  `data/unis/ipeds-alias-campus-review.json`.
+- Only reviewed `approved-alias` or `approved-campus` rows may advance into
+  the checked-in Census cache workflow; the rest remain quarantined.
+
 ## Provenance Gap
 
 Before production use, public release, or broad data refresh work, identify and record:

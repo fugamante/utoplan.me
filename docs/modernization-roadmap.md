@@ -43,6 +43,11 @@
   geocoder cache and checked-in quarantine artifact as the authoritative import
   gate; production-style `unis` import stays blocked until reviewed Puerto Rico
   matches exist and excluded rows are recorded explicitly.
+- `docs/unis-alias-campus-match-policy.md` and
+  `data/unis/ipeds-alias-campus-review.json` now define the reviewed
+  alias/campus approval gate for unmatched `unis` rows so geocode-cache work
+  can proceed from row-level evidence rather than prose-only operator
+  decisions.
 - `docs/product-scope.md` defines the current product boundary: descriptive Puerto Rico planning context before recommendations, rankings, or automated decisions.
 - `data/mappings/puerto-rico-business-categories.json` defines the first candidate business-category to NAICS crosswalk for source-backed planning context.
 - `npm run test:data-sources` validates that registered import candidates are Puerto Rico-only or explicitly filtered to Puerto Rico.
@@ -185,8 +190,9 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Use the checked-in `data/unis/ipeds-geocode-audit.json` exact-match baseline to
-approve the first reviewed `unis` alias/campus match policy, then build the
-reviewed Census geocoding cache and paired quarantine artifact for the
-remaining unmatched or out-of-scope Puerto Rico higher-education rows before
-production-style `unis` imports begin.
+Use the checked-in `data/unis/ipeds-geocode-audit.json` exact-match baseline
+plus `data/unis/ipeds-alias-campus-review.json` to record the first reviewed
+row-level `unis` alias/campus decisions, then build the reviewed Census
+geocoding cache and paired quarantine artifact for the remaining unmatched or
+out-of-scope Puerto Rico higher-education rows before production-style `unis`
+imports begin.

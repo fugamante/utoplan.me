@@ -83,6 +83,8 @@ function validateUnisGeocodingPolicy(source) {
   assert(isNonEmptyString(source.geocodingPolicy.policyDocPath), source.id + ' geocodingPolicy.policyDocPath is required');
   assert(isNonEmptyString(source.geocodingPolicy.cacheArtifactPath), source.id + ' geocodingPolicy.cacheArtifactPath is required');
   assert(isNonEmptyString(source.geocodingPolicy.quarantineArtifactPath), source.id + ' geocodingPolicy.quarantineArtifactPath is required');
+  assert(isNonEmptyString(source.geocodingPolicy.matchReviewPolicyDocPath), source.id + ' geocodingPolicy.matchReviewPolicyDocPath is required');
+  assert(isNonEmptyString(source.geocodingPolicy.matchReviewArtifactPath), source.id + ' geocodingPolicy.matchReviewArtifactPath is required');
   assert(isNonEmptyString(source.geocodingPolicy.servicePath), source.id + ' geocodingPolicy.servicePath is required');
   assert(isNonEmptyString(source.geocodingPolicy.benchmark), source.id + ' geocodingPolicy.benchmark is required');
   assert(isNonEmptyString(source.geocodingPolicy.vintage), source.id + ' geocodingPolicy.vintage is required');
@@ -98,6 +100,8 @@ function validateUnisGeocodingPolicy(source) {
   assert(fs.existsSync(resolveRepoPath(source.geocodingPolicy.policyDocPath)), source.id + ' geocodingPolicy.policyDocPath must exist in the repository');
   assert(fs.existsSync(resolveRepoPath(source.geocodingPolicy.cacheArtifactPath)), source.id + ' geocodingPolicy.cacheArtifactPath must exist in the repository');
   assert(fs.existsSync(resolveRepoPath(source.geocodingPolicy.quarantineArtifactPath)), source.id + ' geocodingPolicy.quarantineArtifactPath must exist in the repository');
+  assert(fs.existsSync(resolveRepoPath(source.geocodingPolicy.matchReviewPolicyDocPath)), source.id + ' geocodingPolicy.matchReviewPolicyDocPath must exist in the repository');
+  assert(fs.existsSync(resolveRepoPath(source.geocodingPolicy.matchReviewArtifactPath)), source.id + ' geocodingPolicy.matchReviewArtifactPath must exist in the repository');
 
   var geocodingCache = JSON.parse(fs.readFileSync(resolveRepoPath(source.geocodingPolicy.cacheArtifactPath), 'utf8'));
   assert.strictEqual(geocodingCache.schemaVersion, 1, source.id + ' geocoding cache schemaVersion must be 1');
@@ -112,9 +116,23 @@ function validateUnisGeocodingPolicy(source) {
     source.id + ' quarantine artifact status must be pending-reviewed-cache or reviewed'
   );
 
+  var matchReviewArtifact = JSON.parse(fs.readFileSync(resolveRepoPath(source.geocodingPolicy.matchReviewArtifactPath), 'utf8'));
+  assert.strictEqual(matchReviewArtifact.schemaVersion, 1, source.id + ' match review artifact schemaVersion must be 1');
+  assert.strictEqual(matchReviewArtifact.sourceId, source.id, source.id + ' match review artifact sourceId must match the source id');
+  assert(isNonEmptyString(matchReviewArtifact.auxiliarySourceId), source.id + ' match review artifact auxiliarySourceId is required');
+  assert.strictEqual(matchReviewArtifact.policyDocPath, source.geocodingPolicy.matchReviewPolicyDocPath, source.id + ' match review artifact policyDocPath must match geocodingPolicy.matchReviewPolicyDocPath');
+  assert(
+    matchReviewArtifact.status === 'pending-review' || matchReviewArtifact.status === 'reviewed',
+    source.id + ' match review artifact status must be pending-review or reviewed'
+  );
+  assert(matchReviewArtifact.reviewedAt === null || isIsoDate(matchReviewArtifact.reviewedAt), source.id + ' match review artifact reviewedAt must be null or ISO YYYY-MM-DD');
+  assert(Array.isArray(matchReviewArtifact.approvedMatches), source.id + ' match review artifact approvedMatches must be an array');
+  assert(Array.isArray(matchReviewArtifact.quarantinedRows), source.id + ' match review artifact quarantinedRows must be an array');
+
   if (source.importReadiness.status === 'ready') {
     assert(geocodingCache.records.length > 0, source.id + ' importReadiness cannot be ready while the reviewed geocoding cache is empty');
     assert.strictEqual(quarantineArtifact.status, 'reviewed', source.id + ' ready importReadiness requires a reviewed quarantine artifact');
+    assert.strictEqual(matchReviewArtifact.status, 'reviewed', source.id + ' ready importReadiness requires a reviewed match review artifact');
   }
 }
 

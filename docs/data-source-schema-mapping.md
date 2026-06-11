@@ -130,8 +130,9 @@ Legacy columns: `id`, `title`, `address`, `desc`, `lat`, `long`, `created_at`,
   readiness must remain blocked until the reviewed Census cache contains
   Puerto Rico matches, the quarantine artifact records the remaining
   unmatched or out-of-scope rows, and the stricter 11-of-57 IPEDS exact-match
-  baseline at `data/unis/ipeds-geocode-audit.json` has a reviewed policy for
-  how alias/campus mismatches are promoted or excluded.
+  baseline at `data/unis/ipeds-geocode-audit.json` is paired with the reviewed
+  alias/campus approval policy in `docs/unis-alias-campus-match-policy.md` and
+  the row-level decision artifact `data/unis/ipeds-alias-campus-review.json`.
 - `cbps` fallback API: operator use is blocked until a Census API key source,
   storage path, and rotation policy are recorded.
 - `cdepts`, `businesses`, and `grade_cs` remain blocked in the source registry

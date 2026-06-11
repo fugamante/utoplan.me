@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "datospr-higher-ed-directory-2017-18",
+  "auxiliarySourceId": "nces-ipeds-postsecondary-2009",
+  "policyDocPath": "docs/unis-alias-campus-match-policy.md",
+  "status": "pending-review",
+  "reviewedAt": null,
+  "approvedMatches": [],
+  "quarantinedRows": []
+}

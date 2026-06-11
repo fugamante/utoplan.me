@@ -135,6 +135,9 @@ the current project surface.
   `legacySchemaMap` coverage evidence with notes for every non-exact mapping.
 - `cbps` and `unis` candidates that remain unsafe to import require explicit
   `importReadiness` blocker records instead of hiding unresolved risks in prose.
+- Geocoded `unis` approvals for unmatched rows require a checked-in
+  alias/campus policy document and row-level review artifact rather than
+  prose-only operator approval.
 - Broad national datasets require deterministic Puerto Rico filtering in both
   the registry and import logic.
 - Demo fixtures, test seed data, recovered legacy data, and production data are

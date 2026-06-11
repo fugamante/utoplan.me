@@ -35,4 +35,8 @@ assert.strictEqual(audit.exactMatches[0].longitude, '-66.19127', 'expected exact
 assert(audit.unmatchedInstitutions.some(function(entry) {
   return entry.directoryInstitution === 'Atlantic University College' && entry.candidateCount === 0;
 }), 'expected Atlantic University College to remain unmatched');
-assert(typeof audit.nextDecision === 'string' && audit.nextDecision.length > 0, 'nextDecision is required');
+assert.strictEqual(
+  audit.nextDecision,
+  'Record reviewed row-level alias and campus decisions in data/unis/ipeds-alias-campus-review.json under docs/unis-alias-campus-match-policy.md, or choose a different Puerto Rico coordinate source before marking unis import-ready.',
+  'nextDecision mismatch'
+);

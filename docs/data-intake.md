@@ -64,6 +64,11 @@ how many rows already have auxiliary coordinate evidence, and keep
 either promote additional Puerto Rico rows into the approved cache or explain
 their exclusion in the quarantine artifact.
 
+For the active `unis` candidate, keep the reviewed alias/campus rules in
+`docs/unis-alias-campus-match-policy.md` and record row-level outcomes in
+`data/unis/ipeds-alias-campus-review.json` before unmatched rows move into the
+approved Census cache path.
+
 When a preserved legacy column is absent from the primary source but approved
 for import through a deterministic auxiliary join, record that rule under
 `legacySchemaMap.columnStrategies`. Each strategy must identify the

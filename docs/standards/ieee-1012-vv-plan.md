@@ -256,7 +256,7 @@ release evidence, and audit record.
 | Modern API | `docs/api-modernization.md`, IEEE 830 SRS | API notes, IEEE 1016 SDD | `npm run test:api`, `npm run test:api:modern` |
 | Database read baseline | `docs/database-migrations.md`, migration artifacts | `db/migrations/`, readiness design | `npm run test:migration-artifacts`, `npm run docker:test:db` |
 | Deployment topology | `docs/deployment-topology.md`, production runbook | IEEE 1016 SDD | Docker proxy/browser tests, deployment verification |
-| Data provenance | `docs/data-intake.md`, `docs/data-provenance.md`, `docs/data-source-schema-mapping.md` | Source registry, import design | `npm run test:data-sources`, data review |
+| Data provenance | `docs/data-intake.md`, `docs/data-provenance.md`, `docs/data-source-schema-mapping.md`, `docs/unis-alias-campus-match-policy.md` | Source registry, import design | `npm run test:data-sources`, data review |
 | Planning context | `docs/product-scope.md`, candidate category mapping, municipality registry, NAICS title registry, planning-context fixtures | IEEE 1016 SDD, API/frontend notes | `npm run test:business-categories`, `npm run test:planning-context`, `npm run test:browser`, `npm run test:browser:start-local` |
 | Release readiness | IEEE 730 SQA, IEEE 829 test document, production runbook | Release checklist | Release smoke, audit record, rollback review |
 | Standards corpus | This plan and peer IEEE documents | Audit hooks | Standards audit and document diffs |

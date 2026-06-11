@@ -185,7 +185,7 @@ function main() {
     ],
     exactMatches: exactMatches,
     unmatchedInstitutions: unmatchedInstitutions,
-    nextDecision: 'Approve a reviewed alias and campus-match policy, or choose a different Puerto Rico coordinate source before marking unis import-ready.'
+    nextDecision: 'Record reviewed row-level alias and campus decisions in data/unis/ipeds-alias-campus-review.json under docs/unis-alias-campus-match-policy.md, or choose a different Puerto Rico coordinate source before marking unis import-ready.'
   }, null, 2) + '\n');
 
   process.stdout.write('wrote geocode audit to ' + OUTPUT_PATH + '\n');

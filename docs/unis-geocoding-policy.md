@@ -54,6 +54,10 @@ their address is corrected or a reviewed exception path is added.
   `data/geocoding/unis-census-geocoder-cache.json`
 - Checked-in quarantine artifact:
   `data/geocoding/unis-import-quarantine.json`
+- Checked-in alias/campus review artifact:
+  `data/unis/ipeds-alias-campus-review.json`
+- Alias/campus review policy:
+  `docs/unis-alias-campus-match-policy.md`
 - Required source review fields per cached record:
   source id, normalized address, benchmark, vintage, longitude, latitude,
   Puerto Rico geography evidence, review status, and review timestamp
@@ -97,3 +101,13 @@ Current baseline on 2026-06-11:
 
 This audit is intentionally strict. It is a safety baseline for reviewed join
 policy, not a fuzzy-matching permission slip.
+
+## Alias And Campus Review Gate
+
+Before broad geocoder refresh work begins for unmatched rows, complete the
+review gate defined in `docs/unis-alias-campus-match-policy.md` and record the
+row-level outcomes in `data/unis/ipeds-alias-campus-review.json`.
+
+Only rows with reviewed `approved-alias` or `approved-campus` decisions may
+move forward into the checked-in Census cache workflow. Quarantined rows must
+stay excluded until new public-source evidence justifies a reviewed change.
