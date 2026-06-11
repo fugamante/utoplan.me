@@ -241,6 +241,9 @@ Data validation protects provenance and scope:
 - Active `unis` mapping evidence must also pin an approved geocoding policy,
   policy document path, and checked-in cache artifact path before lat/long are
   treated as derived import fields.
+- `unis` geocoding work must also keep a checked-in exact-match audit baseline
+  so alias expansion or quarantine decisions are grounded in measured Puerto
+  Rico source coverage.
 - Broad national datasets are blocked unless the registry and import path
   enforce a deterministic Puerto Rico filter.
 - Unresolved legacy tables remain blocked for production-style import until

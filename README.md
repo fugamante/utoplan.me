@@ -103,6 +103,8 @@ The current modernization work is centered on:
 - `data/naics/`: source-backed planning-context NAICS title registry for active fixture codes.
 - `data/geocoding/`: checked-in reviewed geocoding artifacts for approved
   import flows.
+- `data/unis/ipeds-geocode-audit.json`: checked-in exact-match audit between
+  the active higher-ed directory and Puerto Rico IPEDS coordinates.
 - `data/naics/cbp-naics-titles.json`: checked-in Census title registry for all
   registered Puerto Rico CBP `naics` codes used by the approved
   `cbps.cnaic_name` import join.
@@ -130,6 +132,7 @@ npm run test
 npm run test:browser
 npm run test:data-sources
 npm run test:naics-registry
+npm run test:unis-geocode-audit
 npm run test:planning-context
 npm run test:db
 npm run test:browser:start-local
@@ -162,6 +165,10 @@ The Docker build runs `npm run install:all` and `npm run build`, so it validates
 `npm run test:naics-registry` validates the checked-in Census title registry for
 the full registered Puerto Rico CBP code set so the approved `cbps.cnaic_name`
 import join does not depend on a live Census API key.
+
+`npm run test:unis-geocode-audit` validates the checked-in Puerto Rico
+higher-education coordinate audit so the current `unis` blocker stays grounded
+in measured exact-match coverage rather than geocoder-only assumptions.
 
 `npm run test:browser:start-local` runs the app, modern API, and Chromium on the host machine against a seeded `baseline-read-v1` database. It honors explicit `TEST_DATABASE_*` settings, otherwise provisions the disposable Compose `db` service on a loopback host port, ignores ambient database environment variables such as `DATABASE_URL`, and removes the service after the run. Set `START_LOCAL_BROWSER_USE_ENV_DB=1` only when you intentionally want to reuse an existing baseline-ready database.
 

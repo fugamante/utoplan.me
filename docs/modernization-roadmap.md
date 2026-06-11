@@ -39,16 +39,20 @@
   `data/naics/cbp-naics-titles.json` Census title registry for the full
   registered Puerto Rico CBP code set, so the municipality-level `cbps`
   candidate is import-ready without a live Census API key.
-- The `unis` higher-ed replacement candidate now has an approved reproducible
-  geocoding policy pinned to the Census geocoder, a checked-in cache artifact
-  path, and validated review rules for deriving preserved `lat` and `long`
-  values from Puerto Rico source addresses.
+- The `unis` higher-ed replacement candidate now has a checked-in exact-match
+  audit against Puerto Rico IPEDS coordinates at
+  `data/unis/ipeds-geocode-audit.json`; the current strict name+municipality
+  rule matches 11 of 57 directory rows and keeps the import blocked pending a
+  reviewed alias, campus, and quarantine policy.
 - `docs/product-scope.md` defines the current product boundary: descriptive Puerto Rico planning context before recommendations, rankings, or automated decisions.
 - `data/mappings/puerto-rico-business-categories.json` defines the first candidate business-category to NAICS crosswalk for source-backed planning context.
 - `npm run test:data-sources` validates that registered import candidates are Puerto Rico-only or explicitly filtered to Puerto Rico.
 - `npm run test:naics-registry` validates the checked-in Census title registry
   for the registered Puerto Rico CBP code set and the approved
   `cbps.cnaic_name` auxiliary join path.
+- `npm run test:unis-geocode-audit` validates the checked-in higher-education
+  coordinate audit so `unis` blocker state stays tied to reproducible source
+  evidence.
 - `npm run test:business-categories` validates the candidate category crosswalk and rejects scoring-oriented contract drift.
 - `data/planning-context/mun001_construction.json` defines the first descriptive planning-context fixture for one municipality/category selection with matching CBP facts, confidence labels, and unresolved questions.
 - `data/planning-context/mun003_restaurant.json` adds a second descriptive planning-context fixture for a different municipality/category slice so confidence and unresolved-question patterns can be compared.
@@ -182,7 +186,8 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Build the first reviewed `unis` geocoding cache from the approved Census
-geocoder policy and define the importer quarantine behavior for unmatched or
-out-of-scope Puerto Rico higher-education rows before production-style `unis`
+Approve the first reviewed alias and campus-match policy for `unis`
+coordinates, using `data/unis/ipeds-geocode-audit.json` as the exact-match
+baseline, and define importer quarantine behavior for the 46 currently
+unmatched Puerto Rico higher-education rows before production-style `unis`
 imports begin.

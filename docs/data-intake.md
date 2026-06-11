@@ -120,6 +120,7 @@ Run the registry contract check with:
 ```sh
 npm run test:data-sources
 npm run test:naics-registry
+npm run test:unis-geocode-audit
 ```
 
-The root `npm run test` command also runs both checks.
+The root `npm run test` command also runs all three checks.

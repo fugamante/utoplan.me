@@ -61,3 +61,19 @@ their address is corrected or a reviewed exception path is added.
 
 The checked-in cache is the reproducible import artifact. Live API responses
 may be used only to build or refresh that artifact under this policy.
+
+## Exact-Match Baseline
+
+Before using the live geocoder for broad row coverage, review the checked-in
+exact-match audit at `data/unis/ipeds-geocode-audit.json`.
+
+Current baseline on 2026-06-11:
+
+- Auxiliary source: Puerto Rico IPEDS postsecondary coordinates on Datos.PR
+- Match rule: normalized exact institution name plus municipality only
+- Coverage: 11 exact matches out of 57 directory rows
+- Remaining gap: 46 rows still need reviewed alias/campus handling or
+  quarantine
+
+This audit is intentionally strict. It is a safety baseline for reviewed join
+policy, not a fuzzy-matching permission slip.

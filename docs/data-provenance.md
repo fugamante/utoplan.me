@@ -130,6 +130,21 @@ Current control:
 - Rows without reviewed Puerto Rico matches remain excluded from
   production-style import rather than receiving invented coordinates.
 
+## `unis` Coordinate Audit Snapshot (2026-06-11)
+
+`data/unis/ipeds-geocode-audit.json` now records the first reproducible
+exact-match audit against the Puerto Rico IPEDS postsecondary dataset already
+published on Datos.PR.
+
+Current status:
+
+- Exact normalized institution-name plus municipality matching covers 11 of 57
+  rows from the active `datospr-higher-ed-directory-2017-18` source.
+- 46 rows remain unmatched without reviewed alias expansion, campus handling,
+  or manual overrides.
+- The `unis` import path therefore remains blocked on a reviewed match policy
+  and quarantine rule rather than on a lack of candidate coordinate evidence.
+
 ## Provenance Gap
 
 Before production use, public release, or broad data refresh work, identify and record:

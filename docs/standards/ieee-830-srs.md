@@ -336,9 +336,10 @@ an explicit accepted risk:
   `data/naics/cbp-naics-titles.json` Census title artifact staying aligned with
   the registered Puerto Rico CBP source snapshot and its documented rebuild
   command.
-- The `unis` replacement candidate now depends on building and reviewing the
-  first checked-in geocoding cache under the approved policy before
-  production-style import rows can be generated.
+- The `unis` replacement candidate now depends on approving reviewed
+  alias/campus match rules and quarantine behavior beyond the strict 11-of-57
+  exact-match baseline recorded in `data/unis/ipeds-geocode-audit.json`
+  before production-style import rows can be generated.
 - `cdepts`, `businesses`, and `grade_cs` need source identification before
   production-style import.
 - Production migration execution remains operator-managed; no in-repo migration
