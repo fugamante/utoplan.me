@@ -42,6 +42,13 @@ unresolved transform decision, source gap, or operator dependency.
 Record `legacySchemaMap.evidenceDate` and `importReadiness.reviewedAt` as ISO
 `YYYY-MM-DD` strings so provenance reviews stay machine-checkable.
 
+When preserved coordinates are derived through an approved external geocoder,
+record the pinned provider, request path, benchmark/vintage pair, address
+construction rule, review rule, and checked-in cache artifact path under a
+machine-readable `geocodingPolicy`. For the active `unis` candidate, that
+policy must point at `docs/unis-geocoding-policy.md` and
+`data/geocoding/unis-census-geocoder-cache.json`.
+
 When a preserved legacy column is absent from the primary source but approved
 for import through a deterministic auxiliary join, record that rule under
 `legacySchemaMap.columnStrategies`. Each strategy must identify the

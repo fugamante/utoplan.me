@@ -238,6 +238,9 @@ Data validation protects provenance and scope:
   `importReadiness.reviewedAt` values must use ISO `YYYY-MM-DD` strings.
 - Sources targeting active mapped tables (`cbps`, `unis`) must include
   `legacySchemaMap` coverage entries with unresolved-field notes where needed.
+- Active `unis` mapping evidence must also pin an approved geocoding policy,
+  policy document path, and checked-in cache artifact path before lat/long are
+  treated as derived import fields.
 - Broad national datasets are blocked unless the registry and import path
   enforce a deterministic Puerto Rico filter.
 - Unresolved legacy tables remain blocked for production-style import until
@@ -291,7 +294,7 @@ Release validation checks that the intended commit can be operated safely:
 | TC-016 | Live release smoke | `UTOPLAN_APP_URL=<url> npm run verify:release-smoke` | Public app health and `/v1/unis` smoke pass |
 | TC-017 | API readiness | `curl -fsS <api-origin>/readyz` | API reports ready only with DB and schema available |
 | TC-018 | App health | `curl -fsS <app-origin>/healthz` | App reports expected service, proxy state, and no fixture leakage |
-| TC-019 | Source registry | `npm run test:data-sources` | Registered sources are Puerto Rico-only or explicitly filtered, and `cbps`/`unis` entries include full preserved-column `legacySchemaMap` coverage plus explicit `importReadiness` blockers for unresolved import risks |
+| TC-019 | Source registry | `npm run test:data-sources` | Registered sources are Puerto Rico-only or explicitly filtered, `cbps`/`unis` entries include full preserved-column `legacySchemaMap` coverage, and active `unis` geocoding policy/cache controls are pinned when coordinates are derived |
 | TC-020 | Business category mapping | `npm run test:business-categories` | Candidate categories include NAICS mappings, assumptions, confidence, and status without scoring or recommendation language |
 | TC-021 | Migration artifacts | `npm run test:migration-artifacts` | Migration documents include required release and rollback fields |
 | TC-022 | Security audit | Run all documented `npm audit` commands | Current lockfile-backed audit reports no blocking vulnerabilities |

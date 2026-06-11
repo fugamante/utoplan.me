@@ -39,8 +39,10 @@
   `data/naics/cbp-naics-titles.json` Census title registry for the full
   registered Puerto Rico CBP code set, so the municipality-level `cbps`
   candidate is import-ready without a live Census API key.
-- Current data-source blockers are explicit: the `unis` candidate still needs a
-  reproducible geocoding policy for `lat` and `long`.
+- The `unis` higher-ed replacement candidate now has an approved reproducible
+  geocoding policy pinned to the Census geocoder, a checked-in cache artifact
+  path, and validated review rules for deriving preserved `lat` and `long`
+  values from Puerto Rico source addresses.
 - `docs/product-scope.md` defines the current product boundary: descriptive Puerto Rico planning context before recommendations, rankings, or automated decisions.
 - `data/mappings/puerto-rico-business-categories.json` defines the first candidate business-category to NAICS crosswalk for source-backed planning context.
 - `npm run test:data-sources` validates that registered import candidates are Puerto Rico-only or explicitly filtered to Puerto Rico.
@@ -180,8 +182,7 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Document and approve the reproducible `unis.lat` / `unis.long` geocoding policy
-for Puerto Rico higher-education imports so the preferred
-`datospr-higher-ed-directory-2017-18` candidate can move from mapping evidence
-to import-ready status without inventing coordinates or reusing demo-only
-fixtures.
+Build the first reviewed `unis` geocoding cache from the approved Census
+geocoder policy and define the importer quarantine behavior for unmatched or
+out-of-scope Puerto Rico higher-education rows before production-style `unis`
+imports begin.

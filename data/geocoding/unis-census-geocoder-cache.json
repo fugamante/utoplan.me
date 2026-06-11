@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "provider": "U.S. Census Geocoding Services API",
+  "benchmark": "Public_AR_Census2020",
+  "vintage": "Census2020_Current",
+  "generatedAt": null,
+  "records": []
+}

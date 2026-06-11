@@ -97,6 +97,7 @@ Audits should use repository evidence first:
 - `docs/frontend-inventory.md`
 - `docs/product-scope.md`
 - `docs/data-intake.md`
+- `docs/unis-geocoding-policy.md`
 - `docs/data-provenance.md`
 - `docs/data-source-schema-mapping.md`
 - `docs/database-migrations.md`
@@ -108,6 +109,7 @@ Audits should use repository evidence first:
 - `data/sources/puerto-rico.json`
 - `data/mappings/puerto-rico-business-categories.json`
 - `data/naics/cbp-naics-titles.json`
+- `data/geocoding/unis-census-geocoder-cache.json`
 - `data/municipalities/planning-context-municipalities.json`
 - `data/naics/planning-context-naics-titles.json`
 - `data/planning-context/`

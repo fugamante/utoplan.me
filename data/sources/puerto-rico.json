@@ -248,26 +248,71 @@
       "resourceId": "818869e2-82c6-4189-bff8-40616e5d3010",
       "sourceBasis": "Puerto Rico higher education institution directory that can replace or refresh the legacy unis endpoint after field mapping.",
       "notes": "This resource was published after the 2016 hackathon, so it is not confirmed original input.",
+      "geocodingPolicy": {
+        "status": "approved",
+        "providerName": "U.S. Census Geocoding Services API",
+        "providerType": "external-geocoder",
+        "policyDocPath": "docs/unis-geocoding-policy.md",
+        "cacheArtifactPath": "data/geocoding/unis-census-geocoder-cache.json",
+        "servicePath": "geographies/onelineaddress",
+        "benchmark": "Public_AR_Census2020",
+        "vintage": "Census2020_Current",
+        "addressFields": [
+          "Dirección Física",
+          "Dirección Física 2",
+          "Pueblo"
+        ],
+        "addressSuffix": "Puerto Rico",
+        "coordinateFields": {
+          "lat": "y",
+          "long": "x"
+        },
+        "scopeGuard": "Accept only matched results that resolve within Puerto Rico geography.",
+        "reviewRule": "Rows without reviewed Puerto Rico matches remain excluded from production-style import."
+      },
       "importReadiness": {
-        "status": "blocked",
-        "reviewedAt": "2026-06-04",
-        "blockers": [
-          {
-            "id": "unis-geocode-policy",
-            "kind": "operator-dependency",
-            "legacyColumns": [
-              "lat",
-              "long"
-            ],
-            "summary": "The higher-ed directory has no coordinate fields, so lat/long require an approved geocoding source and reproducible policy.",
-            "resolutionEvidence": "Record the geocoding provider, cache/storage plan, and review rule before import."
-          }
-        ]
+        "status": "ready",
+        "reviewedAt": "2026-06-10",
+        "blockers": []
       },
       "legacySchemaMap": {
         "table": "unis",
-        "evidenceDate": "2026-06-04",
+        "evidenceDate": "2026-06-10",
         "evidenceType": "resource-header",
+        "columnStrategies": [
+          {
+            "legacyColumn": "lat",
+            "status": "approved",
+            "kind": "geocode-from-address",
+            "sourceField": "y",
+            "joinKey": {
+              "sourceFields": [
+                "Dirección Física",
+                "Dirección Física 2",
+                "Pueblo"
+              ],
+              "normalizer": "trimmed non-empty fields joined with ', ' and suffixed with 'Puerto Rico'"
+            },
+            "localArtifactPath": "data/geocoding/unis-census-geocoder-cache.json",
+            "notes": "Approved geocoding strategy: derive latitude from the reviewed Census geocoder cache built from the normalized Puerto Rico single-line address under docs/unis-geocoding-policy.md."
+          },
+          {
+            "legacyColumn": "long",
+            "status": "approved",
+            "kind": "geocode-from-address",
+            "sourceField": "x",
+            "joinKey": {
+              "sourceFields": [
+                "Dirección Física",
+                "Dirección Física 2",
+                "Pueblo"
+              ],
+              "normalizer": "trimmed non-empty fields joined with ', ' and suffixed with 'Puerto Rico'"
+            },
+            "localArtifactPath": "data/geocoding/unis-census-geocoder-cache.json",
+            "notes": "Approved geocoding strategy: derive longitude from the reviewed Census geocoder cache built from the normalized Puerto Rico single-line address under docs/unis-geocoding-policy.md."
+          }
+        ],
         "columnCoverage": [
           {
             "legacyColumn": "id",
@@ -305,15 +350,23 @@
           },
           {
             "legacyColumn": "lat",
-            "sourceFields": [],
-            "coverage": "missing",
-            "notes": "No coordinate fields in the source header."
+            "sourceFields": [
+              "Dirección Física",
+              "Dirección Física 2",
+              "Pueblo"
+            ],
+            "coverage": "derived",
+            "notes": "Approved transform: derive latitude from the reviewed Census geocoder cache using the normalized Puerto Rico single-line address."
           },
           {
             "legacyColumn": "long",
-            "sourceFields": [],
-            "coverage": "missing",
-            "notes": "No coordinate fields in the source header."
+            "sourceFields": [
+              "Dirección Física",
+              "Dirección Física 2",
+              "Pueblo"
+            ],
+            "coverage": "derived",
+            "notes": "Approved transform: derive longitude from the reviewed Census geocoder cache using the normalized Puerto Rico single-line address."
           },
           {
             "legacyColumn": "created_at",

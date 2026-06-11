@@ -96,8 +96,13 @@ The current modernization work is centered on:
 - `docs/api-modernization.md`: modern API replacement notes.
 - `docs/database-migrations.md`: production database migration artifact strategy.
 - `docs/data-intake.md`: Puerto Rico-only source intake contract and registry policy.
+- `docs/unis-geocoding-policy.md`: approved reproducible geocoding policy for
+  deriving `unis.lat` and `unis.long` from registered Puerto Rico source
+  addresses.
 - `data/municipalities/`: source-backed planning-context municipality display-name registry.
 - `data/naics/`: source-backed planning-context NAICS title registry for active fixture codes.
+- `data/geocoding/`: checked-in reviewed geocoding artifacts for approved
+  import flows.
 - `data/naics/cbp-naics-titles.json`: checked-in Census title registry for all
   registered Puerto Rico CBP `naics` codes used by the approved
   `cbps.cnaic_name` import join.

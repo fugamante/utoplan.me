@@ -11,7 +11,7 @@ The mapping in this file is evidence-backed and scoped to currently registered
 as provenance evidence. Source-level import blockers are mirrored in
 `data/sources/puerto-rico.json` under `importReadiness`.
 
-## Evidence Snapshot (2026-06-04)
+## Evidence Snapshot (2026-06-10)
 
 - `cbps` Puerto Rico CSV header (`cbp14pr.csv`) observed from the registered
   Datos.PR resource on 2026-06-04:
@@ -112,7 +112,8 @@ Legacy columns: `id`, `title`, `address`, `desc`, `lat`, `long`, `created_at`,
 | `title` | `Nombre de la Institución` | exact | Institution name field is present. |
 | `address` | `Dirección Física`, `Dirección Física 2`, `Pueblo` | derived | Deterministic concatenation is possible. |
 | `desc` | `Unidad Académica`, `Principal Ejecutivo` | derived | Approved transform: join present fields as labeled text in source order, e.g. `Academic unit: <value>; Principal executive: <value>`. |
-| `lat`, `long` | none | missing | No coordinate fields in source header; geocoding policy needed. |
+| `lat` | `Dirección Física`, `Dirección Física 2`, `Pueblo` | derived | Approved transform: build a normalized Puerto Rico single-line address and derive latitude from reviewed Census geocoder response field `y`. |
+| `long` | `Dirección Física`, `Dirección Física 2`, `Pueblo` | derived | Approved transform: build a normalized Puerto Rico single-line address and derive longitude from reviewed Census geocoder response field `x`. |
 | `created_at` | `generated` | derived | Generated at import time. |
 | `updated_at` | `generated` | derived | Generated at import time. |
 
@@ -122,8 +123,10 @@ Legacy columns: `id`, `title`, `address`, `desc`, `lat`, `long`, `created_at`,
   join strategy are now approved for the Datos.PR CBP CSV candidates, and the
   checked-in Census title artifact now provides the reproducible access path for
   `cnaic_name`.
-- `unis`: import readiness is blocked on a reproducible geocoding policy for
-  `lat`/`long`. The `desc` formatting rule is now accepted.
+- `unis`: the geocoding policy for `lat`/`long` is now approved and pinned in
+  `docs/unis-geocoding-policy.md`, with checked-in cache storage at
+  `data/geocoding/unis-census-geocoder-cache.json`. The next step is to build
+  the first reviewed cache contents and quarantine unmatched rows.
 - `cbps` fallback API: operator use is blocked until a Census API key source,
   storage path, and rotation policy are recorded.
 - `cdepts`, `businesses`, and `grade_cs` remain blocked in the source registry

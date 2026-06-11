@@ -75,6 +75,32 @@ function resolveRepoPath(relativePath) {
   return path.join(__dirname, '..', relativePath);
 }
 
+function validateUnisGeocodingPolicy(source) {
+  assert(source.geocodingPolicy && typeof source.geocodingPolicy === 'object', source.id + ' must include geocodingPolicy');
+  assert.strictEqual(source.geocodingPolicy.status, 'approved', source.id + ' geocodingPolicy.status must be approved');
+  assert(isNonEmptyString(source.geocodingPolicy.providerName), source.id + ' geocodingPolicy.providerName is required');
+  assert.strictEqual(source.geocodingPolicy.providerType, 'external-geocoder', source.id + ' geocodingPolicy.providerType must be external-geocoder');
+  assert(isNonEmptyString(source.geocodingPolicy.policyDocPath), source.id + ' geocodingPolicy.policyDocPath is required');
+  assert(isNonEmptyString(source.geocodingPolicy.cacheArtifactPath), source.id + ' geocodingPolicy.cacheArtifactPath is required');
+  assert(isNonEmptyString(source.geocodingPolicy.servicePath), source.id + ' geocodingPolicy.servicePath is required');
+  assert(isNonEmptyString(source.geocodingPolicy.benchmark), source.id + ' geocodingPolicy.benchmark is required');
+  assert(isNonEmptyString(source.geocodingPolicy.vintage), source.id + ' geocodingPolicy.vintage is required');
+  assert(Array.isArray(source.geocodingPolicy.addressFields), source.id + ' geocodingPolicy.addressFields must be an array');
+  assert(source.geocodingPolicy.addressFields.length > 0, source.id + ' geocodingPolicy.addressFields must not be empty');
+  assert(isNonEmptyString(source.geocodingPolicy.addressSuffix), source.id + ' geocodingPolicy.addressSuffix is required');
+  assert(source.geocodingPolicy.coordinateFields && typeof source.geocodingPolicy.coordinateFields === 'object', source.id + ' geocodingPolicy.coordinateFields are required');
+  assert.strictEqual(source.geocodingPolicy.coordinateFields.lat, 'y', source.id + ' geocodingPolicy.coordinateFields.lat must be y');
+  assert.strictEqual(source.geocodingPolicy.coordinateFields.long, 'x', source.id + ' geocodingPolicy.coordinateFields.long must be x');
+  assert(isNonEmptyString(source.geocodingPolicy.scopeGuard), source.id + ' geocodingPolicy.scopeGuard is required');
+  assert(isNonEmptyString(source.geocodingPolicy.reviewRule), source.id + ' geocodingPolicy.reviewRule is required');
+  assert(fs.existsSync(resolveRepoPath(source.geocodingPolicy.policyDocPath)), source.id + ' geocodingPolicy.policyDocPath must exist in the repository');
+  assert(fs.existsSync(resolveRepoPath(source.geocodingPolicy.cacheArtifactPath)), source.id + ' geocodingPolicy.cacheArtifactPath must exist in the repository');
+
+  var geocodingCache = JSON.parse(fs.readFileSync(resolveRepoPath(source.geocodingPolicy.cacheArtifactPath), 'utf8'));
+  assert.strictEqual(geocodingCache.schemaVersion, 1, source.id + ' geocoding cache schemaVersion must be 1');
+  assert(Array.isArray(geocodingCache.records), source.id + ' geocoding cache records must be an array');
+}
+
 assert.strictEqual(registry.schemaVersion, 1);
 assert.strictEqual(registry.scope, 'puerto-rico-only');
 assert(isIsoDate(registry.retrievedAt), 'registry retrievedAt must be an ISO YYYY-MM-DD date');
@@ -181,6 +207,37 @@ registry.sources.forEach(function(source) {
       assert(referenceCnaicCoverage.sourceFields.indexOf(strategy.sourceField) !== -1, source.id + ' cnaic_name strategy sourceField must exist on the reference source');
       assert(referenceCodeCoverage.sourceFields.indexOf(strategy.joinKey.referenceField) !== -1, source.id + ' cnaic_name strategy joinKey.referenceField must exist on the reference source');
       assert(findColumnCoverage(source.legacySchemaMap, 'cnaic').sourceFields.indexOf(strategy.joinKey.sourceField) !== -1, source.id + ' cnaic_name strategy joinKey.sourceField must exist on the primary source');
+    }
+
+    if (source.legacySchemaMap.table === 'unis') {
+      validateUnisGeocodingPolicy(source);
+
+      ['lat', 'long'].forEach(function(column) {
+        var coverage = findColumnCoverage(source.legacySchemaMap, column);
+        assert.strictEqual(coverage.coverage, 'derived', source.id + ' ' + column + ' coverage must be derived after geocoding-policy approval');
+      });
+
+      assert(Array.isArray(source.legacySchemaMap.columnStrategies), source.id + ' must include columnStrategies for geocoded unis coordinates');
+
+      var geocodeStrategies = source.legacySchemaMap.columnStrategies.filter(function(strategy) {
+        return strategy.legacyColumn === 'lat' || strategy.legacyColumn === 'long';
+      });
+
+      assert.strictEqual(geocodeStrategies.length, 2, source.id + ' must include exactly two geocode column strategies');
+
+      geocodeStrategies.forEach(function(strategy) {
+        assert.strictEqual(strategy.status, 'approved', source.id + ' geocode strategy must be approved');
+        assert.strictEqual(strategy.kind, 'geocode-from-address', source.id + ' geocode strategy kind must be geocode-from-address');
+        assert(isNonEmptyString(strategy.sourceField), source.id + ' geocode strategy sourceField is required');
+        assert(strategy.joinKey && typeof strategy.joinKey === 'object', source.id + ' geocode strategy joinKey is required');
+        assert(Array.isArray(strategy.joinKey.sourceFields), source.id + ' geocode strategy joinKey.sourceFields must be an array');
+        assert(strategy.joinKey.sourceFields.length > 0, source.id + ' geocode strategy joinKey.sourceFields must not be empty');
+        assert(isNonEmptyString(strategy.joinKey.normalizer), source.id + ' geocode strategy joinKey.normalizer is required');
+        assert(isNonEmptyString(strategy.localArtifactPath), source.id + ' geocode strategy localArtifactPath is required');
+        assert(fs.existsSync(resolveRepoPath(strategy.localArtifactPath)), source.id + ' geocode strategy localArtifactPath must exist in the repository');
+        assert.strictEqual(strategy.localArtifactPath, source.geocodingPolicy.cacheArtifactPath, source.id + ' geocode strategy localArtifactPath must match geocodingPolicy cacheArtifactPath');
+        assert(isNonEmptyString(strategy.notes), source.id + ' geocode strategy notes are required');
+      });
     }
 
     source.importReadiness.blockers.forEach(function(blocker) {

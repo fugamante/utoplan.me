@@ -114,6 +114,22 @@ This registry is the approved production-style auxiliary join artifact for
 without relying on the live Census API or the narrower planning-context title
 fixture registry.
 
+## `unis` Geocoding Policy Snapshot (2026-06-10)
+
+`docs/unis-geocoding-policy.md` now records the approved reproducible geocoding
+policy for deriving preserved `unis.lat` and `unis.long` values from the
+registered Puerto Rico higher-education directory.
+
+Current control:
+
+- Provider is the U.S. Census Geocoding Services API with pinned
+  `Public_AR_Census2020` benchmark and `Census2020_Current` vintage settings.
+- Input address construction is deterministic and Puerto Rico-scoped.
+- Reviewed results are expected to be stored in the checked-in cache artifact
+  `data/geocoding/unis-census-geocoder-cache.json`.
+- Rows without reviewed Puerto Rico matches remain excluded from
+  production-style import rather than receiving invented coordinates.
+
 ## Provenance Gap
 
 Before production use, public release, or broad data refresh work, identify and record:
