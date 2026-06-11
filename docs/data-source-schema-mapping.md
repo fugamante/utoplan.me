@@ -128,8 +128,10 @@ Legacy columns: `id`, `title`, `address`, `desc`, `lat`, `long`, `created_at`,
   `data/geocoding/unis-census-geocoder-cache.json` and paired quarantine
   storage at `data/geocoding/unis-import-quarantine.json`. `unis` import
   readiness must remain blocked until the reviewed Census cache contains
-  Puerto Rico matches and the quarantine artifact records the remaining
-  unmatched or out-of-scope rows.
+  Puerto Rico matches, the quarantine artifact records the remaining
+  unmatched or out-of-scope rows, and the stricter 11-of-57 IPEDS exact-match
+  baseline at `data/unis/ipeds-geocode-audit.json` has a reviewed policy for
+  how alias/campus mismatches are promoted or excluded.
 - `cbps` fallback API: operator use is blocked until a Census API key source,
   storage path, and rotation policy are recorded.
 - `cdepts`, `businesses`, and `grade_cs` remain blocked in the source registry

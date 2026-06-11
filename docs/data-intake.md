@@ -57,6 +57,13 @@ unmatched, out-of-scope, and unreviewed rows in
 Puerto Rico matches and the quarantine artifact records the remaining excluded
 rows.
 
+Before broad `unis` geocoder refresh work begins, keep a checked-in exact-match
+baseline at `data/unis/ipeds-geocode-audit.json`. Use that audit to document
+how many rows already have auxiliary coordinate evidence, and keep
+`importReadiness.status: blocked` until reviewed alias/campus match rules
+either promote additional Puerto Rico rows into the approved cache or explain
+their exclusion in the quarantine artifact.
+
 When a preserved legacy column is absent from the primary source but approved
 for import through a deterministic auxiliary join, record that rule under
 `legacySchemaMap.columnStrategies`. Each strategy must identify the

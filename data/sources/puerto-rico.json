@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "scope": "puerto-rico-only",
-  "retrievedAt": "2026-06-10",
+  "retrievedAt": "2026-06-11",
   "sources": [
     {
       "id": "datospr-cbp-2014-puerto-rico",
@@ -274,7 +274,7 @@
       },
       "importReadiness": {
         "status": "blocked",
-        "reviewedAt": "2026-06-10",
+        "reviewedAt": "2026-06-11",
         "blockers": [
           {
             "id": "reviewed-census-geocode-cache-required",
@@ -283,8 +283,8 @@
               "lat",
               "long"
             ],
-            "summary": "The approved Census geocoder cache is still empty, so reviewed coordinate evidence does not yet exist for production-style unis import.",
-            "resolutionEvidence": "Populate data/geocoding/unis-census-geocoder-cache.json with reviewed Puerto Rico matches and update the paired quarantine artifact for excluded rows."
+            "summary": "The exact-match IPEDS audit only covers 11 of 57 directory rows, so production-style unis import still needs a reviewed alias/campus match policy plus a reviewed Census cache and paired quarantine artifact.",
+            "resolutionEvidence": "Use data/unis/ipeds-geocode-audit.json as the baseline, approve how non-exact alias or campus rows will be matched or excluded, then populate data/geocoding/unis-census-geocoder-cache.json with reviewed Puerto Rico matches and record the remaining rows in the paired quarantine artifact."
           }
         ]
       },
