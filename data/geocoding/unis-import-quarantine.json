@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "datospr-higher-ed-directory-2017-18",
+  "policy": "Exclude rows from production-style unis import when the reviewed Census cache is missing a Puerto Rico match, resolves outside Puerto Rico, or lacks reviewed x/y coordinates.",
+  "generatedAt": null,
+  "status": "pending-reviewed-cache",
+  "records": []
+}

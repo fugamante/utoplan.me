@@ -52,6 +52,8 @@ or recommendations change.
   data from being confused.
 - Require source, license, retrieval, Puerto Rico scope, transform, and target
   endpoint evidence before production-style data intake.
+- Require reviewed geocode-cache evidence plus explicit quarantine records
+  before geocoded `unis` intake can be validated as import-ready.
 - Keep release readiness tied to repeatable commands, Docker compatibility,
   browser smoke coverage, dependency audit status, rollback notes, and open
   anomaly review.

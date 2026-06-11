@@ -49,6 +49,14 @@ machine-readable `geocodingPolicy`. For the active `unis` candidate, that
 policy must point at `docs/unis-geocoding-policy.md` and
 `data/geocoding/unis-census-geocoder-cache.json`.
 
+When a geocoded source is not yet fully importable, record a checked-in
+quarantine artifact for excluded rows. The active `unis` candidate must keep
+unmatched, out-of-scope, and unreviewed rows in
+`data/geocoding/unis-import-quarantine.json` and must not report
+`importReadiness.status: ready` until the approved cache contains reviewed
+Puerto Rico matches and the quarantine artifact records the remaining excluded
+rows.
+
 When a preserved legacy column is absent from the primary source but approved
 for import through a deterministic auxiliary join, record that rule under
 `legacySchemaMap.columnStrategies`. Each strategy must identify the

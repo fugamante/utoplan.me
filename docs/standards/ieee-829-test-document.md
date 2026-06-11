@@ -133,6 +133,9 @@ A change is test-acceptable when:
   include explicit descriptive guardrails in API contracts.
 - Data source changes pass `npm run test:data-sources` and preserve
   Puerto Rico-only scope or deterministic Puerto Rico filtering.
+- Geocoded `unis` intake changes keep the reviewed Census cache artifact and
+  the quarantine artifact consistent, and may not claim import readiness while
+  the approved cache is empty.
 - Business category mapping changes pass `npm run test:business-categories`
   and remain descriptive rather than scoring-oriented.
 - Planning-context fixture changes pass `npm run test:planning-context` and
@@ -238,6 +241,8 @@ Data validation protects provenance and scope:
   `importReadiness.reviewedAt` values must use ISO `YYYY-MM-DD` strings.
 - Sources targeting active mapped tables (`cbps`, `unis`) must include
   `legacySchemaMap` coverage entries with unresolved-field notes where needed.
+- Geocoded `unis` sources must include both cache and quarantine artifact paths,
+  and readiness assertions must agree with the reviewed cache contents.
 - Active `unis` mapping evidence must also pin an approved geocoding policy,
   policy document path, and checked-in cache artifact path before lat/long are
   treated as derived import fields.

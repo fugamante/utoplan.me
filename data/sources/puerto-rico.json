@@ -254,6 +254,7 @@
         "providerType": "external-geocoder",
         "policyDocPath": "docs/unis-geocoding-policy.md",
         "cacheArtifactPath": "data/geocoding/unis-census-geocoder-cache.json",
+        "quarantineArtifactPath": "data/geocoding/unis-import-quarantine.json",
         "servicePath": "geographies/onelineaddress",
         "benchmark": "Public_AR_Census2020",
         "vintage": "Census2020_Current",
@@ -268,12 +269,24 @@
           "long": "x"
         },
         "scopeGuard": "Accept only matched results that resolve within Puerto Rico geography.",
-        "reviewRule": "Rows without reviewed Puerto Rico matches remain excluded from production-style import."
+        "reviewRule": "Rows without reviewed Puerto Rico matches remain excluded from production-style import.",
+        "quarantineRule": "Write unmatched, out-of-scope, or unreviewed rows to the checked-in quarantine artifact and keep them excluded from import output until reviewed evidence changes."
       },
       "importReadiness": {
-        "status": "ready",
+        "status": "blocked",
         "reviewedAt": "2026-06-10",
-        "blockers": []
+        "blockers": [
+          {
+            "id": "reviewed-census-geocode-cache-required",
+            "kind": "operator-dependency",
+            "legacyColumns": [
+              "lat",
+              "long"
+            ],
+            "summary": "The approved Census geocoder cache is still empty, so reviewed coordinate evidence does not yet exist for production-style unis import.",
+            "resolutionEvidence": "Populate data/geocoding/unis-census-geocoder-cache.json with reviewed Puerto Rico matches and update the paired quarantine artifact for excluded rows."
+          }
+        ]
       },
       "legacySchemaMap": {
         "table": "unis",

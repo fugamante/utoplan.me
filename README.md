@@ -102,7 +102,8 @@ The current modernization work is centered on:
 - `data/municipalities/`: source-backed planning-context municipality display-name registry.
 - `data/naics/`: source-backed planning-context NAICS title registry for active fixture codes.
 - `data/geocoding/`: checked-in reviewed geocoding artifacts for approved
-  import flows.
+  import flows, including exclusion quarantine records for rows that remain
+  outside production-style import.
 - `data/unis/ipeds-geocode-audit.json`: checked-in exact-match audit between
   the active higher-ed directory and Puerto Rico IPEDS coordinates.
 - `data/naics/cbp-naics-titles.json`: checked-in Census title registry for all

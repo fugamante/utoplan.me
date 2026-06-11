@@ -125,10 +125,11 @@ Legacy columns: `id`, `title`, `address`, `desc`, `lat`, `long`, `created_at`,
   `cnaic_name`.
 - `unis`: the geocoding policy for `lat`/`long` is now approved and pinned in
   `docs/unis-geocoding-policy.md`, with checked-in cache storage at
-  `data/geocoding/unis-census-geocoder-cache.json`. The checked-in
-  `data/unis/ipeds-geocode-audit.json` exact-match baseline currently resolves
-  11 of 57 rows and shows that the next step is a reviewed alias/campus policy
-  plus quarantine handling for the remaining unmatched rows.
+  `data/geocoding/unis-census-geocoder-cache.json` and paired quarantine
+  storage at `data/geocoding/unis-import-quarantine.json`. `unis` import
+  readiness must remain blocked until the reviewed Census cache contains
+  Puerto Rico matches and the quarantine artifact records the remaining
+  unmatched or out-of-scope rows.
 - `cbps` fallback API: operator use is blocked until a Census API key source,
   storage path, and rotation policy are recorded.
 - `cdepts`, `businesses`, and `grade_cs` remain blocked in the source registry

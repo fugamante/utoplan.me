@@ -39,11 +39,10 @@
   `data/naics/cbp-naics-titles.json` Census title registry for the full
   registered Puerto Rico CBP code set, so the municipality-level `cbps`
   candidate is import-ready without a live Census API key.
-- The `unis` higher-ed replacement candidate now has a checked-in exact-match
-  audit against Puerto Rico IPEDS coordinates at
-  `data/unis/ipeds-geocode-audit.json`; the current strict name+municipality
-  rule matches 11 of 57 directory rows and keeps the import blocked pending a
-  reviewed alias, campus, and quarantine policy.
+- The `unis` higher-ed replacement candidate now treats the approved Census
+  geocoder cache and checked-in quarantine artifact as the authoritative import
+  gate; production-style `unis` import stays blocked until reviewed Puerto Rico
+  matches exist and excluded rows are recorded explicitly.
 - `docs/product-scope.md` defines the current product boundary: descriptive Puerto Rico planning context before recommendations, rankings, or automated decisions.
 - `data/mappings/puerto-rico-business-categories.json` defines the first candidate business-category to NAICS crosswalk for source-backed planning context.
 - `npm run test:data-sources` validates that registered import candidates are Puerto Rico-only or explicitly filtered to Puerto Rico.
@@ -186,8 +185,7 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Approve the first reviewed alias and campus-match policy for `unis`
-coordinates, using `data/unis/ipeds-geocode-audit.json` as the exact-match
-baseline, and define importer quarantine behavior for the 46 currently
-unmatched Puerto Rico higher-education rows before production-style `unis`
+Build the first reviewed `unis` geocoding cache from the approved Census
+geocoder policy and populate the paired quarantine artifact for unmatched or
+out-of-scope Puerto Rico higher-education rows before production-style `unis`
 imports begin.

@@ -110,6 +110,7 @@ Audits should use repository evidence first:
 - `data/mappings/puerto-rico-business-categories.json`
 - `data/naics/cbp-naics-titles.json`
 - `data/geocoding/unis-census-geocoder-cache.json`
+- `data/geocoding/unis-import-quarantine.json`
 - `data/municipalities/planning-context-municipalities.json`
 - `data/naics/planning-context-naics-titles.json`
 - `data/planning-context/`

@@ -127,6 +127,8 @@ Current control:
 - Input address construction is deterministic and Puerto Rico-scoped.
 - Reviewed results are expected to be stored in the checked-in cache artifact
   `data/geocoding/unis-census-geocoder-cache.json`.
+- Excluded rows are expected to be recorded in the paired checked-in quarantine
+  artifact `data/geocoding/unis-import-quarantine.json`.
 - Rows without reviewed Puerto Rico matches remain excluded from
   production-style import rather than receiving invented coordinates.
 

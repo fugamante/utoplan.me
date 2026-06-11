@@ -82,6 +82,7 @@ function validateUnisGeocodingPolicy(source) {
   assert.strictEqual(source.geocodingPolicy.providerType, 'external-geocoder', source.id + ' geocodingPolicy.providerType must be external-geocoder');
   assert(isNonEmptyString(source.geocodingPolicy.policyDocPath), source.id + ' geocodingPolicy.policyDocPath is required');
   assert(isNonEmptyString(source.geocodingPolicy.cacheArtifactPath), source.id + ' geocodingPolicy.cacheArtifactPath is required');
+  assert(isNonEmptyString(source.geocodingPolicy.quarantineArtifactPath), source.id + ' geocodingPolicy.quarantineArtifactPath is required');
   assert(isNonEmptyString(source.geocodingPolicy.servicePath), source.id + ' geocodingPolicy.servicePath is required');
   assert(isNonEmptyString(source.geocodingPolicy.benchmark), source.id + ' geocodingPolicy.benchmark is required');
   assert(isNonEmptyString(source.geocodingPolicy.vintage), source.id + ' geocodingPolicy.vintage is required');
@@ -93,12 +94,28 @@ function validateUnisGeocodingPolicy(source) {
   assert.strictEqual(source.geocodingPolicy.coordinateFields.long, 'x', source.id + ' geocodingPolicy.coordinateFields.long must be x');
   assert(isNonEmptyString(source.geocodingPolicy.scopeGuard), source.id + ' geocodingPolicy.scopeGuard is required');
   assert(isNonEmptyString(source.geocodingPolicy.reviewRule), source.id + ' geocodingPolicy.reviewRule is required');
+  assert(isNonEmptyString(source.geocodingPolicy.quarantineRule), source.id + ' geocodingPolicy.quarantineRule is required');
   assert(fs.existsSync(resolveRepoPath(source.geocodingPolicy.policyDocPath)), source.id + ' geocodingPolicy.policyDocPath must exist in the repository');
   assert(fs.existsSync(resolveRepoPath(source.geocodingPolicy.cacheArtifactPath)), source.id + ' geocodingPolicy.cacheArtifactPath must exist in the repository');
+  assert(fs.existsSync(resolveRepoPath(source.geocodingPolicy.quarantineArtifactPath)), source.id + ' geocodingPolicy.quarantineArtifactPath must exist in the repository');
 
   var geocodingCache = JSON.parse(fs.readFileSync(resolveRepoPath(source.geocodingPolicy.cacheArtifactPath), 'utf8'));
   assert.strictEqual(geocodingCache.schemaVersion, 1, source.id + ' geocoding cache schemaVersion must be 1');
   assert(Array.isArray(geocodingCache.records), source.id + ' geocoding cache records must be an array');
+
+  var quarantineArtifact = JSON.parse(fs.readFileSync(resolveRepoPath(source.geocodingPolicy.quarantineArtifactPath), 'utf8'));
+  assert.strictEqual(quarantineArtifact.schemaVersion, 1, source.id + ' quarantine artifact schemaVersion must be 1');
+  assert.strictEqual(quarantineArtifact.sourceId, source.id, source.id + ' quarantine artifact sourceId must match the source id');
+  assert(Array.isArray(quarantineArtifact.records), source.id + ' quarantine artifact records must be an array');
+  assert(
+    quarantineArtifact.status === 'pending-reviewed-cache' || quarantineArtifact.status === 'reviewed',
+    source.id + ' quarantine artifact status must be pending-reviewed-cache or reviewed'
+  );
+
+  if (source.importReadiness.status === 'ready') {
+    assert(geocodingCache.records.length > 0, source.id + ' importReadiness cannot be ready while the reviewed geocoding cache is empty');
+    assert.strictEqual(quarantineArtifact.status, 'reviewed', source.id + ' ready importReadiness requires a reviewed quarantine artifact');
+  }
 }
 
 assert.strictEqual(registry.schemaVersion, 1);

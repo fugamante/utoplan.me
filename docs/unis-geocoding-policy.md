@@ -52,15 +52,35 @@ their address is corrected or a reviewed exception path is added.
 
 - Checked-in cache artifact:
   `data/geocoding/unis-census-geocoder-cache.json`
+- Checked-in quarantine artifact:
+  `data/geocoding/unis-import-quarantine.json`
 - Required source review fields per cached record:
   source id, normalized address, benchmark, vintage, longitude, latitude,
   Puerto Rico geography evidence, review status, and review timestamp
+- Required quarantine fields per excluded row:
+  source id, normalized address, exclusion reason, review status, and review
+  timestamp when applicable
 - Re-run trigger:
   source-address change, benchmark/vintage change, provider contract change, or
   cache schema change
 
 The checked-in cache is the reproducible import artifact. Live API responses
 may be used only to build or refresh that artifact under this policy.
+
+## Quarantine Rule
+
+Rows remain outside production-style `unis` import output when any of these
+conditions hold:
+
+- no Census match is returned for the normalized Puerto Rico address;
+- the matched geography does not resolve within Puerto Rico; or
+- the response lacks reviewed `x`/`y` coordinate evidence.
+
+Each excluded row must be written to
+`data/geocoding/unis-import-quarantine.json` with the reason for exclusion.
+The source registry must keep `importReadiness.status` blocked until the
+reviewed cache and quarantine artifact together explain the full source row
+set.
 
 ## Exact-Match Baseline
 
