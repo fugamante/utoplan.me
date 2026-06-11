@@ -1,34 +1,16 @@
 {
   "schemaVersion": 1,
   "sourceId": "datospr-higher-ed-directory-2017-18",
-  "policy": "Exclude rows from production-style unis import when the reviewed Census cache is missing a Puerto Rico match, resolves outside Puerto Rico, lacks reviewed x/y coordinates, or lacks exact source-backed institution identity evidence without alias expansion.",
+  "policy": "Exclude rows from production-style unis import when the reviewed Census cache is missing a Puerto Rico match, resolves outside Puerto Rico, lacks reviewed x/y coordinates, or has no approved narrow alias/campus review outcome.",
   "generatedAt": "2026-06-11",
   "status": "reviewed",
   "records": [
     {
       "sourceId": "datospr-higher-ed-directory-2017-18",
-      "directoryInstitution": "Atlantic University College",
-      "directoryMunicipality": "GUAYNABO",
-      "normalizedAddress": "Calle Colton #9, GUAYNABO, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
-      "reviewStatus": "reviewed",
-      "reviewedAt": "2026-06-11"
-    },
-    {
-      "sourceId": "datospr-higher-ed-directory-2017-18",
       "directoryInstitution": "Cambridge College",
       "directoryMunicipality": "SAN JUAN",
       "normalizedAddress": "268 Ponce de Leon Avenue, Suite 1400, SAN JUAN, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
-      "reviewStatus": "reviewed",
-      "reviewedAt": "2026-06-11"
-    },
-    {
-      "sourceId": "datospr-higher-ed-directory-2017-18",
-      "directoryInstitution": "Caribbean University",
-      "directoryMunicipality": "BAYAMON",
-      "normalizedAddress": "Carr 167 km 21.2, Ext Forest Hills, BAYAMON, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
+      "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
     },
@@ -37,7 +19,7 @@
       "directoryInstitution": "Centro de Estudios Avanzados de PR y el Caribe",
       "directoryMunicipality": "SAN JUAN",
       "normalizedAddress": "Calle del Cristo #52 Viejo San Juan, SAN JUAN, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
+      "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
     },
@@ -46,16 +28,7 @@
       "directoryInstitution": "Colegio de Cinematografía, Artes y Televisión",
       "directoryMunicipality": "SAN JUAN",
       "normalizedAddress": "Ave. Gautier Benitez Esq. Monsenñor, Esq. Monseños Berrios, SAN JUAN, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
-      "reviewStatus": "reviewed",
-      "reviewedAt": "2026-06-11"
-    },
-    {
-      "sourceId": "datospr-higher-ed-directory-2017-18",
-      "directoryInstitution": "Columbia Central University",
-      "directoryMunicipality": "CAGUAS",
-      "normalizedAddress": "Carr. 183 Km. 1.7, Salida de Caguas hacia San Lorenzo, CAGUAS, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
+      "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
     },
@@ -64,16 +37,7 @@
       "directoryInstitution": "Conservatorio de Música de Puerto Rico",
       "directoryMunicipality": "SAN JUAN",
       "normalizedAddress": "951 Ave. Ponce de León, SAN JUAN, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
-      "reviewStatus": "reviewed",
-      "reviewedAt": "2026-06-11"
-    },
-    {
-      "sourceId": "datospr-higher-ed-directory-2017-18",
-      "directoryInstitution": "Dewey University",
-      "directoryMunicipality": "SAN JUAN",
-      "normalizedAddress": "Ave. Barbosa #427, SAN JUAN, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
+      "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
     },
@@ -82,34 +46,7 @@
       "directoryInstitution": "Dublin Institute of Technology",
       "directoryMunicipality": "GUAYNABO",
       "normalizedAddress": "Metro Parque #7, Metro Office Park Suite 204, GUAYNABO, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
-      "reviewStatus": "reviewed",
-      "reviewedAt": "2026-06-11"
-    },
-    {
-      "sourceId": "datospr-higher-ed-directory-2017-18",
-      "directoryInstitution": "EDP Universityof Puerto Rico",
-      "directoryMunicipality": "SAN JUAN",
-      "normalizedAddress": "560 Ave. Ponce de León, SAN JUAN, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
-      "reviewStatus": "reviewed",
-      "reviewedAt": "2026-06-11"
-    },
-    {
-      "sourceId": "datospr-higher-ed-directory-2017-18",
-      "directoryInstitution": "Educational Technical College",
-      "directoryMunicipality": "BAYAMON",
-      "normalizedAddress": "1685 Carr. #2 Km. 11.2, BAYAMON, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
-      "reviewStatus": "reviewed",
-      "reviewedAt": "2026-06-11"
-    },
-    {
-      "sourceId": "datospr-higher-ed-directory-2017-18",
-      "directoryInstitution": "Escuela de Artes Plásticas y Diseño de Puerto Rico",
-      "directoryMunicipality": "SAN JUAN",
-      "normalizedAddress": "Campos del Morro, Bo. Ballajá, SAN JUAN, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
+      "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
     },
@@ -118,16 +55,7 @@
       "directoryInstitution": "Escuela de Enfermeros/as Anestesistas de PR",
       "directoryMunicipality": "SAN JUAN",
       "normalizedAddress": "728 Avda. Ponce de León, Oficina 201, Hato Rey, SAN JUAN, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
-      "reviewStatus": "reviewed",
-      "reviewedAt": "2026-06-11"
-    },
-    {
-      "sourceId": "datospr-higher-ed-directory-2017-18",
-      "directoryInstitution": "Escuela de Medicina San Juan Bautista",
-      "directoryMunicipality": "CAGUAS",
-      "normalizedAddress": "Turabo Gardens Road 172 Caguas to Cidra, CAGUAS, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
+      "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
     },
@@ -136,16 +64,7 @@
       "directoryInstitution": "Herbert Fletcher University",
       "directoryMunicipality": "MAYAGUEZ",
       "normalizedAddress": "Carr. #2 Km. 158.2 Avenida Hosto #74 Bo. Guanajibo, MAYAGUEZ, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
-      "reviewStatus": "reviewed",
-      "reviewedAt": "2026-06-11"
-    },
-    {
-      "sourceId": "datospr-higher-ed-directory-2017-18",
-      "directoryInstitution": "Huertas College Caguas",
-      "directoryMunicipality": "CAGUAS",
-      "normalizedAddress": "Calle Héctor R. Bunker #41, CAGUAS, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
+      "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
     },
@@ -154,7 +73,7 @@
       "directoryInstitution": "Industrial Biotechnological Institute IBI",
       "directoryMunicipality": "SAN JUAN",
       "normalizedAddress": "Carretera 871 Barrio Arenas, SAN JUAN, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
+      "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
     },
@@ -163,7 +82,7 @@
       "directoryInstitution": "Instituto Comercial de PR Junior College",
       "directoryMunicipality": "SAN JUAN",
       "normalizedAddress": "Munoz Rivera 558, Hato Rey, SAN JUAN, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
+      "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
     },
@@ -172,7 +91,7 @@
       "directoryInstitution": "Instituto de Banca y Comercio",
       "directoryMunicipality": "SAN JUAN",
       "normalizedAddress": "Ave. Ponce de Leon # 61, Barrio Hato Rey, SAN JUAN, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
+      "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
     },
@@ -205,37 +124,10 @@
     },
     {
       "sourceId": "datospr-higher-ed-directory-2017-18",
-      "directoryInstitution": "Lomalinda University",
-      "directoryMunicipality": "MAYAGUEZ",
-      "normalizedAddress": "(Universidad Adventista de las Antillas) Carr. #106, Km. 2.2 Interior, MAYAGUEZ, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
-      "reviewStatus": "reviewed",
-      "reviewedAt": "2026-06-11"
-    },
-    {
-      "sourceId": "datospr-higher-ed-directory-2017-18",
-      "directoryInstitution": "Mech Tech College",
-      "directoryMunicipality": "CAGUAS",
-      "normalizedAddress": "Parque Industrial Oeste, Calle B #39-40, CAGUAS, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
-      "reviewStatus": "reviewed",
-      "reviewedAt": "2026-06-11"
-    },
-    {
-      "sourceId": "datospr-higher-ed-directory-2017-18",
       "directoryInstitution": "Monteclaro: Escuela de Hotelería y Artes Culinarias",
       "directoryMunicipality": "PALMER",
       "normalizedAddress": "Carretera 955 km 4.8, PALMER, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
-      "reviewStatus": "reviewed",
-      "reviewedAt": "2026-06-11"
-    },
-    {
-      "sourceId": "datospr-higher-ed-directory-2017-18",
-      "directoryInstitution": "National University College",
-      "directoryMunicipality": "BAYAMON",
-      "normalizedAddress": "Carr. #2, Km. 11.2, Edificio National College Plaza,Edif. #1660, BAYAMON, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
+      "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
     },
@@ -244,16 +136,7 @@
       "directoryInstitution": "Nova Southeastern University",
       "directoryMunicipality": "SAN JUAN",
       "normalizedAddress": "997 Calle San Roberto, Professional Offices Park IV, SAN JUAN, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
-      "reviewStatus": "reviewed",
-      "reviewedAt": "2026-06-11"
-    },
-    {
-      "sourceId": "datospr-higher-ed-directory-2017-18",
-      "directoryInstitution": "Ponce Health Sciences University",
-      "directoryMunicipality": "Ponce",
-      "normalizedAddress": "388 Zona Industrial Reparada 2, Ponce, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
+      "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
     },
@@ -262,16 +145,7 @@
       "directoryInstitution": "Ponce Paramedical College",
       "directoryMunicipality": "Coto Laurel",
       "normalizedAddress": "Bo. Sábalos #410 Carretera #2, Coto Laurel, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
-      "reviewStatus": "reviewed",
-      "reviewedAt": "2026-06-11"
-    },
-    {
-      "sourceId": "datospr-higher-ed-directory-2017-18",
-      "directoryInstitution": "Pontificia Universidad Católica de PR",
-      "directoryMunicipality": "PONCE",
-      "normalizedAddress": "2250 Boulevard Luis A. Ferré-Aguayo, PONCE, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
+      "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
     },
@@ -280,16 +154,7 @@
       "directoryInstitution": "Rutgers University",
       "directoryMunicipality": "SAN JUAN",
       "normalizedAddress": "Calle Gonzalez #1012, Urb. Santa Rita, Río Piedras, SAN JUAN, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
-      "reviewStatus": "reviewed",
-      "reviewedAt": "2026-06-11"
-    },
-    {
-      "sourceId": "datospr-higher-ed-directory-2017-18",
-      "directoryInstitution": "Trinity College",
-      "directoryMunicipality": "PONCE",
-      "normalizedAddress": "#834 Avenida Hostos, PONCE, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
+      "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
     },
@@ -298,7 +163,7 @@
       "directoryInstitution": "Universal Technology College",
       "directoryMunicipality": "CAMUY",
       "normalizedAddress": "Calle Muñoz Rivera #167, CAMUY, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
+      "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
     },
@@ -307,7 +172,7 @@
       "directoryInstitution": "Universidad Ana G. Méndez",
       "directoryMunicipality": "SAN JUAN",
       "normalizedAddress": "Avda. Ponce de León #1552, Urb. Reparto Seín, Sector El Cinco, Cupey, SAN JUAN, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
+      "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
     },
@@ -322,19 +187,10 @@
     },
     {
       "sourceId": "datospr-higher-ed-directory-2017-18",
-      "directoryInstitution": "Universidad Central de Bayamón",
-      "directoryMunicipality": "BAYAMON",
-      "normalizedAddress": "Avenida Zaya Verde Reparto la Milagrosa, Hato Tejas Bayamón, BAYAMON, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
-      "reviewStatus": "reviewed",
-      "reviewedAt": "2026-06-11"
-    },
-    {
-      "sourceId": "datospr-higher-ed-directory-2017-18",
       "directoryInstitution": "Universidad Complutense de Madrid",
       "directoryMunicipality": "SAN JUAN",
       "normalizedAddress": "(Universidad Interamericana, Escuela de Derecho), Calle Federico Costa #84, Ubr. Industrial Tres Monjitas, Hato Rey, SAN JUAN, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
+      "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
     },
@@ -343,7 +199,7 @@
       "directoryInstitution": "Universidad de Puerto Rico",
       "directoryMunicipality": "SAN JUAN",
       "normalizedAddress": "Calle Flamboyán, Jardín Botánico Sur, Río Piedras, SAN JUAN, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
+      "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
     },
@@ -352,7 +208,7 @@
       "directoryInstitution": "Universidad del Sagrado Corazón",
       "directoryMunicipality": "SAN JUAN",
       "normalizedAddress": "Calle Rosales, Esq. San Antonio, Parada 26 1/2, SAN JUAN, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
+      "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
     },
@@ -370,25 +226,7 @@
       "directoryInstitution": "Universidad Internacional Iberoamericana",
       "directoryMunicipality": "ARECIBO",
       "normalizedAddress": "Carr. 658 Km. 1.3  Bo. Arenalejos Sector Palache, ARECIBO, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
-      "reviewStatus": "reviewed",
-      "reviewedAt": "2026-06-11"
-    },
-    {
-      "sourceId": "datospr-higher-ed-directory-2017-18",
-      "directoryInstitution": "Universidad Metropolitana",
-      "directoryMunicipality": "SAN JUAN",
-      "normalizedAddress": "1399 Ave. Ana G. Méndez, Carr. 176, Km. 0.03, SAN JUAN, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
-      "reviewStatus": "reviewed",
-      "reviewedAt": "2026-06-11"
-    },
-    {
-      "sourceId": "datospr-higher-ed-directory-2017-18",
-      "directoryInstitution": "Universidad Politécnica de Puerto Rico",
-      "directoryMunicipality": "SAN JUAN",
-      "normalizedAddress": "Ave. Ponce de León 377, Hato Rey, SAN JUAN, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
+      "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
     },
@@ -397,7 +235,7 @@
       "directoryInstitution": "Universidad Universal",
       "directoryMunicipality": "SAN JUAN",
       "normalizedAddress": "Calle Méjico #16, Hato Rey, SAN JUAN, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
+      "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
     },
@@ -406,16 +244,7 @@
       "directoryInstitution": "University of Miami",
       "directoryMunicipality": "GUAYNABO",
       "normalizedAddress": "Carretera 165 #50, Sector Buchanan, Parque Industrial Amelia, GUAYNABO, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
-      "reviewStatus": "reviewed",
-      "reviewedAt": "2026-06-11"
-    },
-    {
-      "sourceId": "datospr-higher-ed-directory-2017-18",
-      "directoryInstitution": "University of Phoenix",
-      "directoryMunicipality": "GUAYNABO",
-      "normalizedAddress": "Santander Tower at San Patricio, Calle Tabonuco B-7, suite 400, GUAYNABO, Puerto Rico",
-      "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
+      "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
     }

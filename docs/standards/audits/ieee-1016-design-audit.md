@@ -175,8 +175,9 @@ changes:
   `docs/data-source-schema-mapping.md`.
 - Confirm blocked import candidates expose machine-readable `importReadiness`
   records so unresolved source risks are not left as prose-only warnings.
-- Confirm unmatched `unis` rows remain quarantined when institution identity is
-  not exact and source-backed.
+- Confirm unmatched `unis` alias/campus promotions depend on a checked-in
+  policy document and row-level review artifact before geocoder cache work
+  claims import evidence.
 - Confirm design claims that mention tests are backed by executable tests or a
   documented manual verification procedure.
 

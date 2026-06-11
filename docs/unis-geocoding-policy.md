@@ -54,6 +54,10 @@ their address is corrected or a reviewed exception path is added.
   `data/geocoding/unis-census-geocoder-cache.json`
 - Checked-in quarantine artifact:
   `data/geocoding/unis-import-quarantine.json`
+- Checked-in alias/campus review artifact:
+  `data/unis/ipeds-alias-campus-review.json`
+- Alias/campus review policy:
+  `docs/unis-alias-campus-match-policy.md`
 - Required source review fields per cached record:
   source id, normalized address, benchmark, vintage, longitude, latitude,
   Puerto Rico geography evidence, review status, and review timestamp
@@ -92,15 +96,25 @@ Current baseline on 2026-06-11:
 - Auxiliary source: Puerto Rico IPEDS postsecondary coordinates on Datos.PR
 - Match rule: normalized exact institution name plus municipality only
 - Coverage: 11 exact matches out of 57 directory rows
-- Remaining gap: 46 rows still require quarantine because exact
-  source-backed institution identity has not been confirmed
+- Remaining gap: 46 rows still need reviewed alias/campus handling or
+  quarantine
 
 This audit is intentionally strict. It is a safety baseline for reviewed join
 policy, not a fuzzy-matching permission slip.
 
+## Alias And Campus Review Gate
+
+Before broad geocoder refresh work begins for unmatched rows, complete the
+review gate defined in `docs/unis-alias-campus-match-policy.md` and record the
+row-level outcomes in `data/unis/ipeds-alias-campus-review.json`.
+
+Only rows with reviewed `approved-alias` or `approved-campus` decisions may
+move forward into the checked-in Census cache workflow. Quarantined rows must
+stay excluded until new public-source evidence justifies a reviewed change.
+
 Current reviewed baseline on 2026-06-11:
 
-- All 46 unmatched rows remain excluded and are mirrored in the reviewed
-  quarantine artifact.
-- Cross-source alias or campus promotion is intentionally disabled to avoid
-  creating institution-identity ambiguity in downstream analysis.
+- 19 unmatched rows are now approved for cache-building work through the
+  alias/campus review artifact.
+- 27 rows remain excluded and are mirrored in the reviewed quarantine
+  artifact.

@@ -37,6 +37,6 @@ assert(audit.unmatchedInstitutions.some(function(entry) {
 }), 'expected Atlantic University College to remain unmatched');
 assert.strictEqual(
   audit.nextDecision,
-  'Build the Census geocoder cache only for rows with exact source-backed institution identity evidence, and keep the remaining unmatched rows quarantined without alias expansion before marking unis import-ready.',
+  'Use the reviewed narrow alias/campus decisions in data/unis/ipeds-alias-campus-review.json to build the Census geocoder cache for approved rows and keep the quarantine artifact aligned for excluded rows before marking unis import-ready.',
   'nextDecision mismatch'
 );

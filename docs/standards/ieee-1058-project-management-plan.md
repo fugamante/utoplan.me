@@ -95,7 +95,7 @@ legacy prototype to reliable foundation:
 | Technical lead | Owns architecture, API/app boundaries, release topology, and technical tradeoffs. |
 | API implementer | Maintains `dtoapi/modern`, typed contracts, database access, `/healthz`, `/readyz`, and API tests. |
 | Frontend implementer | Maintains `app`, browser map behavior, static serving, proxy mode, fixture gate, and browser smoke coverage. |
-| Data steward | Owns Puerto Rico source registry, provenance evidence, license checks, source filters, quarantine controls, and import readiness. |
+| Data steward | Owns Puerto Rico source registry, provenance evidence, license checks, source filters, alias/campus review artifacts, and import readiness. |
 | Database owner | Owns schema baselines, migration artifacts, readiness compatibility, rollback notes, and DB validation. |
 | QA/V&V owner | Owns quality gates, test evidence, verification planning, validation checks, and incident follow-up. |
 | SCM owner | Owns branch hygiene, configuration items, release baselines, lockfiles, artifacts, and public repository hygiene. |
