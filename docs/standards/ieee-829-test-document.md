@@ -237,6 +237,9 @@ Data validation protects provenance and scope:
 - Every source must include publisher, portal, license, source URL, resource or
   API URL, target legacy table or endpoint, retrieval date, candidate status,
   and source-basis note.
+- Puerto Rico-filtered national sources must keep the exact approved filter
+  expression in the registry rather than relying on undocumented operator
+  memory.
 - Registry `retrievedAt`, `legacySchemaMap.evidenceDate`, and
   `importReadiness.reviewedAt` values must use ISO `YYYY-MM-DD` strings.
 - Sources targeting active mapped tables (`cbps`, `unis`) must include
@@ -253,7 +256,8 @@ Data validation protects provenance and scope:
   so alias expansion or quarantine decisions are grounded in measured Puerto
   Rico source coverage.
 - Broad national datasets are blocked unless the registry and import path
-  enforce a deterministic Puerto Rico filter.
+  enforce a deterministic Puerto Rico filter, such as `state:72`, `state:PR`,
+  or `state:Puerto Rico`.
 - Unresolved legacy tables remain blocked for production-style import until
   source, license, and transform path are recorded.
 - Business categories must include explicit NAICS mappings, assumptions,

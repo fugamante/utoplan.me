@@ -8,7 +8,9 @@ Accepted source records must be listed in `data/sources/puerto-rico.json` before
 
 Each accepted source must record:
 
-- Puerto Rico-only scope, or an explicit Puerto Rico filter such as Census `state:72`.
+- Puerto Rico-only scope, or an explicit deterministic Puerto Rico filter such
+  as Census `state:72`, NCES `state:PR`, or a federal search surface using
+  `state:Puerto Rico`.
 - Publisher, portal, license, source URL, and resource URL or API URL.
 - Target legacy table or endpoint.
 - Candidate status and a short source-basis note.
@@ -20,6 +22,10 @@ Each accepted source must record:
   production-style import.
 
 Do not import broad national datasets unless the registry entry includes a deterministic Puerto Rico filter and the import script enforces that filter.
+
+For operator-reviewed registry entries, keep the exact filter expression in
+`scopeFilter` so later refresh work can reproduce the Puerto Rico slice without
+guessing which national rows were in scope.
 
 ## Legacy Schema Mapping Gate
 
@@ -126,6 +132,8 @@ npm run test:planning-context
 - `cbps`: Datos.PR County Business Patterns 2014 Puerto Rico CSV and municipality CSV.
 - `muns`: Datos.PR official Puerto Rico municipality boundary ZIP, plus the municipality-level CBP file where only tabular join data is needed.
 - `unis`: Datos.PR higher education directory for Puerto Rico, academic year 2017-18.
+- `unis` identity support: NCES College Navigator with the Puerto Rico state filter and spreadsheet export.
+- `unis` accreditation support: U.S. Department of Education accreditation search with the Puerto Rico state filter.
 - `cbps` fallback: Census 2014 CBP API filtered with `state:72`; current live
   access requires an API key, so this remains an operator-blocked fallback.
 

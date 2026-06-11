@@ -127,11 +127,12 @@ Legacy columns: `id`, `title`, `address`, `desc`, `lat`, `long`, `created_at`,
   `docs/unis-geocoding-policy.md`, with checked-in cache storage at
   `data/geocoding/unis-census-geocoder-cache.json` and paired quarantine
   storage at `data/geocoding/unis-import-quarantine.json`. `unis` import
-  readiness must remain blocked until the reviewed Census cache contains
-  Puerto Rico matches for the reviewed approved rows, the quarantine artifact
-  records the remaining excluded rows, and the stricter 11-of-57 IPEDS
-  exact-match baseline at `data/unis/ipeds-geocode-audit.json` stays paired
-  with the reviewed alias/campus approval policy in
+  readiness must remain blocked until the institution-authority stack is
+  stronger than the current Datos.PR-plus-single-audit baseline, the reviewed
+  Census cache contains Puerto Rico matches for the reviewed approved rows, the
+  quarantine artifact records the remaining excluded rows, and the stricter
+  11-of-57 IPEDS exact-match baseline at `data/unis/ipeds-geocode-audit.json`
+  stays paired with the reviewed alias/campus approval policy in
   `docs/unis-alias-campus-match-policy.md` and the row-level decision artifact
   `data/unis/ipeds-alias-campus-review.json`.
 - `cbps` fallback API: operator use is blocked until a Census API key source,

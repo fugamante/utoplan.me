@@ -43,6 +43,9 @@
   geocoder cache and checked-in quarantine artifact as the authoritative import
   gate; production-style `unis` import stays blocked until reviewed Puerto Rico
   matches exist and excluded rows are recorded explicitly.
+- The `unis` path now also records stronger federal corroboration candidates
+  for institution identity and accreditation so real Puerto Rico institutions
+  are not screened only through the current single auxiliary audit method.
 - `docs/unis-alias-campus-match-policy.md` and
   `data/unis/ipeds-alias-campus-review.json` now define the reviewed
   alias/campus approval gate for unmatched `unis` rows so geocode-cache work
@@ -190,7 +193,9 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Use the reviewed approvals in `data/unis/ipeds-alias-campus-review.json` to
-build the Census geocoder cache for the 19 approved `unis` rows, and keep
-`data/geocoding/unis-import-quarantine.json` aligned with the 27 excluded rows
-before production-style `unis` imports begin.
+Register and review a stronger `unis` institution-authority stack before more
+row promotion work proceeds: use the federal NCES and U.S. Department of
+Education corroboration sources already recorded in the Puerto Rico registry,
+document whether the Puerto Rico Department of State ORLIE postsecondary
+listing can be operationalized as a reproducible public source, then revisit
+the 27 quarantined rows before further cache-building work.

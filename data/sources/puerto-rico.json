@@ -279,6 +279,18 @@
         "reviewedAt": "2026-06-11",
         "blockers": [
           {
+            "id": "stronger-unis-identity-authority-required",
+            "kind": "operator-dependency",
+            "legacyColumns": [
+              "title",
+              "address",
+              "lat",
+              "long"
+            ],
+            "summary": "The current Datos.PR directory plus single auxiliary audit path is not a strong enough institution authority for all real Puerto Rico institutions; stronger corroboration sources must be reviewed before more non-exact row promotion work proceeds.",
+            "resolutionEvidence": "Review the registered NCES College Navigator and U.S. Department of Education accreditation sources with Puerto Rico filters, determine whether the Puerto Rico Department of State ORLIE postsecondary listing can be operationalized as a reproducible source, and only then revisit unresolved unis identity decisions."
+          },
+          {
             "id": "reviewed-census-geocode-cache-required",
             "kind": "operator-dependency",
             "legacyColumns": [
@@ -401,6 +413,38 @@
           }
         ]
       }
+    },
+    {
+      "id": "nces-college-navigator-puerto-rico",
+      "status": "candidate",
+      "targetTables": [
+        "unis-identity"
+      ],
+      "publisher": "National Center for Education Statistics",
+      "portal": "College Navigator",
+      "license": "U.S. Government public data",
+      "scope": "puerto-rico-filtered",
+      "scopeFilter": "state:PR",
+      "sourceUrl": "https://nces.ed.gov/collegenavigator/",
+      "resourceUrl": "https://nces.ed.gov/collegenavigator/",
+      "sourceBasis": "Federal higher-education institution directory with Puerto Rico state filtering and spreadsheet export; candidate corroboration source for institution identity, campus labels, and address review.",
+      "notes": "Use only with the Puerto Rico state filter. This source is stronger for institution identity review than the current single auxiliary exact-match audit, but it is not a direct replacement row source for the preserved unis table."
+    },
+    {
+      "id": "usdoe-dapip-puerto-rico",
+      "status": "candidate",
+      "targetTables": [
+        "unis-accreditation"
+      ],
+      "publisher": "U.S. Department of Education",
+      "portal": "Database of Accredited Postsecondary Institutions and Programs",
+      "license": "U.S. Government public data",
+      "scope": "puerto-rico-filtered",
+      "scopeFilter": "state:Puerto Rico",
+      "sourceUrl": "https://ope.ed.gov/accreditation/Search.aspx/",
+      "resourceUrl": "https://ope.ed.gov/accreditation/Search.aspx/",
+      "sourceBasis": "Federal accreditation search with a Puerto Rico state filter; candidate corroboration source for whether a postsecondary institution is accredited and in-scope for higher-ed review.",
+      "notes": "Use only with the Puerto Rico state filter. Treat this as accreditation corroboration, not as a direct legacy unis import source."
     },
     {
       "id": "datospr-official-municipality-boundaries",

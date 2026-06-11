@@ -44,6 +44,32 @@ The strongest source matches found so far are:
 
 The `api.utoplan.me` host no longer resolves, and this pass did not recover archived API responses. Treat all row-level data from the original API as unrecovered.
 
+## Stronger `unis` Authority Stack (2026-06-11)
+
+The current `unis` modernization path should not rely on the Datos.PR directory
+plus a single auxiliary IPEDS-style audit as the long-term institution
+authority for Puerto Rico.
+
+Higher-authority sources identified in this pass:
+
+- The Puerto Rico Department of State Office of Registration and Licensing
+  (ORLIE) now oversees postsecondary institution licensure under Law 212-2018
+  and links the official postsecondary institution listing surface.
+- NCES College Navigator provides a Puerto Rico state selector and spreadsheet
+  export for institution search results.
+- The U.S. Department of Education accreditation search provides a Puerto Rico
+  state filter for accredited postsecondary institutions and programs.
+
+Practical implication:
+
+- Treat the Datos.PR directory as the working Puerto Rico row source.
+- Treat NCES and U.S. Department of Education as corroboration sources for
+  institution identity and accreditation review.
+- Treat the Puerto Rico Department of State ORLIE/JIP surface as the next
+  source-authority target to operationalize, not as a fully accepted
+  machine-checked registry source yet, because this pass did not confirm a
+  reusable public export contract or explicit reuse terms.
+
 ## Product Mapping Snapshot (2026-05-26)
 
 The first product-facing category contract now lives in
@@ -173,9 +199,9 @@ Current status:
   evidence in the registered sources.
 - 27 rows remain quarantined in the paired
   `data/geocoding/unis-import-quarantine.json`.
-- The `unis` import path is now blocked on building reviewed Census cache
-  entries for the approved rows rather than on an undefined alias/campus
-  policy decision.
+- The `unis` import path is now additionally blocked on establishing a stronger
+  institution-authority stack before more non-exact row promotion work is
+  treated as durable production evidence.
 
 ## Provenance Gap
 

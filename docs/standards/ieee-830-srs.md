@@ -274,7 +274,7 @@ contracts working while rebuilding the data and technical foundation.
 
 | ID | Requirement | Acceptance criteria |
 | --- | --- | --- |
-| DR-001 | Active production-style data scope shall remain Puerto Rico-only. | Registry entries are Puerto Rico-only or enforce a documented Puerto Rico filter. |
+| DR-001 | Active production-style data scope shall remain Puerto Rico-only. | Registry entries are Puerto Rico-only or enforce a documented deterministic Puerto Rico filter. |
 | DR-002 | Every accepted source shall record publisher, portal, license, URLs, retrieval date, target endpoint, status, and source-basis note. | `npm run test:data-sources` passes and manual review confirms complete metadata. |
 | DR-002A | Active mapped tables (`cbps`, `unis`) shall include full preserved-column source-to-legacy coverage evidence in the registry, with notes for every non-exact mapping. | `npm run test:data-sources` enforces complete `legacySchemaMap` coverage and `docs/data-source-schema-mapping.md` documents the same mapping. |
 | DR-002B | Active mapped-table candidates that are not yet safe to import shall record explicit import-readiness blockers in the registry. | `npm run test:data-sources` enforces `importReadiness` status, review date, and blocker records for `cbps`/`unis` candidates. |
@@ -340,6 +340,10 @@ an explicit accepted risk:
   alias/campus match rules and quarantine behavior beyond the strict 11-of-57
   exact-match baseline recorded in `data/unis/ipeds-geocode-audit.json`
   before production-style import rows can be generated.
+- The `unis` replacement candidate also still needs a stronger institution-
+  authority stack than the current Datos.PR directory plus a single auxiliary
+  exact-match audit before unresolved real-institution rows should be treated
+  as durable production exclusions.
 - `cdepts`, `businesses`, and `grade_cs` need source identification before
   production-style import.
 - Production migration execution remains operator-managed; no in-repo migration

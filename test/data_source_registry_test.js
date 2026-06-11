@@ -16,7 +16,14 @@ function hasPuertoRicoScope(source) {
     return true;
   }
 
-  return source.scope === 'puerto-rico-filtered' && source.scopeFilter === 'state:72';
+  return (
+    source.scope === 'puerto-rico-filtered' &&
+    (
+      source.scopeFilter === 'state:72' ||
+      source.scopeFilter === 'state:PR' ||
+      source.scopeFilter === 'state:Puerto Rico'
+    )
+  );
 }
 
 function hasTargetTable(source, table) {
@@ -193,7 +200,10 @@ registry.sources.forEach(function(source) {
   assert(isNonEmptyString(source.sourceUrl), source.id + ' sourceUrl is required');
   assert(isNonEmptyString(source.resourceUrl) || isNonEmptyString(source.apiUrl), source.id + ' must include a resourceUrl or apiUrl');
   assert(isNonEmptyString(source.sourceBasis), source.id + ' sourceBasis is required');
-  assert(hasPuertoRicoScope(source), source.id + ' must be Puerto Rico-only or filtered with state:72');
+  assert(
+    hasPuertoRicoScope(source),
+    source.id + ' must be Puerto Rico-only or use an approved deterministic Puerto Rico scope filter'
+  );
 
   if (hasActiveMappedTarget(source)) {
     assert(source.legacySchemaMap && typeof source.legacySchemaMap === 'object', source.id + ' must include legacySchemaMap');
