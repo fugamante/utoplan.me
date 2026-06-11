@@ -116,7 +116,12 @@ decision.
 
 ## Current Status
 
-As of 2026-06-11, this policy is approved as the review gate, but the review
-artifact remains unpopulated. `unis` import readiness must stay blocked until
-reviewed decisions exist and the downstream cache/quarantine artifacts reflect
-them.
+As of 2026-06-11, the first reviewed pass is checked in:
+
+- `data/unis/ipeds-alias-campus-review.json` records 19 approved alias/campus
+  matches and 27 quarantined rows from the 46 previously unmatched entries.
+- `data/geocoding/unis-import-quarantine.json` now mirrors the reviewed
+  quarantined rows.
+- `unis` import readiness remains blocked because the approved rows still need
+  reviewed Census geocoder cache entries before preserved `lat`/`long` values
+  can be imported.

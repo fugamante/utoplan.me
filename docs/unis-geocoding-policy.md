@@ -111,3 +111,10 @@ row-level outcomes in `data/unis/ipeds-alias-campus-review.json`.
 Only rows with reviewed `approved-alias` or `approved-campus` decisions may
 move forward into the checked-in Census cache workflow. Quarantined rows must
 stay excluded until new public-source evidence justifies a reviewed change.
+
+Current reviewed baseline on 2026-06-11:
+
+- 19 unmatched rows are now approved for cache-building work through the
+  alias/campus review artifact.
+- 27 rows remain excluded and are mirrored in the reviewed quarantine
+  artifact.

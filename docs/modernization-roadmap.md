@@ -190,9 +190,7 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Use the checked-in `data/unis/ipeds-geocode-audit.json` exact-match baseline
-plus `data/unis/ipeds-alias-campus-review.json` to record the first reviewed
-row-level `unis` alias/campus decisions, then build the reviewed Census
-geocoding cache and paired quarantine artifact for the remaining unmatched or
-out-of-scope Puerto Rico higher-education rows before production-style `unis`
-imports begin.
+Use the reviewed approvals in `data/unis/ipeds-alias-campus-review.json` to
+build the Census geocoder cache for the 19 approved `unis` rows, and keep
+`data/geocoding/unis-import-quarantine.json` aligned with the 27 excluded rows
+before production-style `unis` imports begin.

@@ -161,6 +161,23 @@ Current control:
 - Only reviewed `approved-alias` or `approved-campus` rows may advance into
   the checked-in Census cache workflow; the rest remain quarantined.
 
+## `unis` Alias/Campus Review Snapshot (2026-06-11)
+
+The first checked-in review pass now records row-level outcomes in
+`data/unis/ipeds-alias-campus-review.json`.
+
+Current status:
+
+- 19 unmatched rows now have reviewed `approved-alias` or `approved-campus`
+  outcomes backed by address, translation, campus, or explicit parenthetical
+  evidence in the registered sources.
+- 27 rows remain quarantined in the paired
+  `data/geocoding/unis-import-quarantine.json` artifact because the available
+  IPEDS evidence did not justify an unambiguous alias/campus promotion.
+- The `unis` import path is now blocked on building reviewed Census cache
+  entries for the approved rows rather than on an undefined alias/campus
+  policy decision.
+
 ## Provenance Gap
 
 Before production use, public release, or broad data refresh work, identify and record:

@@ -110,6 +110,7 @@ function validateUnisGeocodingPolicy(source) {
   var quarantineArtifact = JSON.parse(fs.readFileSync(resolveRepoPath(source.geocodingPolicy.quarantineArtifactPath), 'utf8'));
   assert.strictEqual(quarantineArtifact.schemaVersion, 1, source.id + ' quarantine artifact schemaVersion must be 1');
   assert.strictEqual(quarantineArtifact.sourceId, source.id, source.id + ' quarantine artifact sourceId must match the source id');
+  assert(quarantineArtifact.generatedAt === null || isIsoDate(quarantineArtifact.generatedAt), source.id + ' quarantine artifact generatedAt must be null or ISO YYYY-MM-DD');
   assert(Array.isArray(quarantineArtifact.records), source.id + ' quarantine artifact records must be an array');
   assert(
     quarantineArtifact.status === 'pending-reviewed-cache' || quarantineArtifact.status === 'reviewed',
@@ -128,6 +129,45 @@ function validateUnisGeocodingPolicy(source) {
   assert(matchReviewArtifact.reviewedAt === null || isIsoDate(matchReviewArtifact.reviewedAt), source.id + ' match review artifact reviewedAt must be null or ISO YYYY-MM-DD');
   assert(Array.isArray(matchReviewArtifact.approvedMatches), source.id + ' match review artifact approvedMatches must be an array');
   assert(Array.isArray(matchReviewArtifact.quarantinedRows), source.id + ' match review artifact quarantinedRows must be an array');
+
+  matchReviewArtifact.approvedMatches.forEach(function(record) {
+    assert(isNonEmptyString(record.directoryInstitution), source.id + ' approved match directoryInstitution is required');
+    assert(isNonEmptyString(record.directoryMunicipality), source.id + ' approved match directoryMunicipality is required');
+    assert(isNonEmptyString(record.directoryAddress), source.id + ' approved match directoryAddress is required');
+    assert(isNonEmptyString(record.auxiliaryInstitution), source.id + ' approved match auxiliaryInstitution is required');
+    assert(isNonEmptyString(record.auxiliaryMunicipality), source.id + ' approved match auxiliaryMunicipality is required');
+    assert(isNonEmptyString(record.auxiliaryUnitid), source.id + ' approved match auxiliaryUnitid is required');
+    assert(record.decisionType === 'approved-alias' || record.decisionType === 'approved-campus', source.id + ' approved match decisionType must be approved-alias or approved-campus');
+    assert(isNonEmptyString(record.evidenceSummary), source.id + ' approved match evidenceSummary is required');
+    assert(isNonEmptyString(record.reviewer), source.id + ' approved match reviewer is required');
+    assert(isIsoDate(record.reviewedAt), source.id + ' approved match reviewedAt must be ISO YYYY-MM-DD');
+  });
+
+  matchReviewArtifact.quarantinedRows.forEach(function(record) {
+    assert(isNonEmptyString(record.directoryInstitution), source.id + ' quarantined row directoryInstitution is required');
+    assert(isNonEmptyString(record.directoryMunicipality), source.id + ' quarantined row directoryMunicipality is required');
+    assert(isNonEmptyString(record.directoryAddress), source.id + ' quarantined row directoryAddress is required');
+    assert(isNonEmptyString(record.quarantineReason), source.id + ' quarantined row quarantineReason is required');
+    assert(isNonEmptyString(record.reviewer), source.id + ' quarantined row reviewer is required');
+    assert(isIsoDate(record.reviewedAt), source.id + ' quarantined row reviewedAt must be ISO YYYY-MM-DD');
+  });
+
+  quarantineArtifact.records.forEach(function(record) {
+    assert.strictEqual(record.sourceId, source.id, source.id + ' quarantine record sourceId must match');
+    assert(isNonEmptyString(record.directoryInstitution), source.id + ' quarantine record directoryInstitution is required');
+    assert(isNonEmptyString(record.directoryMunicipality), source.id + ' quarantine record directoryMunicipality is required');
+    assert(isNonEmptyString(record.normalizedAddress), source.id + ' quarantine record normalizedAddress is required');
+    assert(isNonEmptyString(record.exclusionReason), source.id + ' quarantine record exclusionReason is required');
+    assert.strictEqual(record.reviewStatus, 'reviewed', source.id + ' quarantine record reviewStatus must be reviewed');
+    assert(isIsoDate(record.reviewedAt), source.id + ' quarantine record reviewedAt must be ISO YYYY-MM-DD');
+  });
+
+  if (matchReviewArtifact.status === 'reviewed') {
+    assert(isIsoDate(matchReviewArtifact.reviewedAt), source.id + ' reviewed match review artifact must include reviewedAt');
+    assert(matchReviewArtifact.approvedMatches.length + matchReviewArtifact.quarantinedRows.length > 0, source.id + ' reviewed match review artifact must include decisions');
+    assert.strictEqual(quarantineArtifact.status, 'reviewed', source.id + ' reviewed match review artifact requires a reviewed quarantine artifact');
+    assert.strictEqual(quarantineArtifact.records.length, matchReviewArtifact.quarantinedRows.length, source.id + ' quarantine artifact must mirror reviewed quarantined row count');
+  }
 
   if (source.importReadiness.status === 'ready') {
     assert(geocodingCache.records.length > 0, source.id + ' importReadiness cannot be ready while the reviewed geocoding cache is empty');
@@ -246,6 +286,18 @@ registry.sources.forEach(function(source) {
 
     if (source.legacySchemaMap.table === 'unis') {
       validateUnisGeocodingPolicy(source);
+
+      if (source.geocodingPolicy.matchReviewArtifactPath) {
+        var auditArtifact = JSON.parse(fs.readFileSync(resolveRepoPath('data/unis/ipeds-geocode-audit.json'), 'utf8'));
+        var matchReviewArtifact = JSON.parse(fs.readFileSync(resolveRepoPath(source.geocodingPolicy.matchReviewArtifactPath), 'utf8'));
+        if (matchReviewArtifact.status === 'reviewed') {
+          assert.strictEqual(
+            matchReviewArtifact.approvedMatches.length + matchReviewArtifact.quarantinedRows.length,
+            auditArtifact.summary.unmatchedCount,
+            source.id + ' reviewed alias/campus decisions must cover every unmatched audit row'
+          );
+        }
+      }
 
       ['lat', 'long'].forEach(function(column) {
         var coverage = findColumnCoverage(source.legacySchemaMap, column);

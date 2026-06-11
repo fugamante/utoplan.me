@@ -285,8 +285,8 @@
               "lat",
               "long"
             ],
-            "summary": "The exact-match IPEDS audit only covers 11 of 57 directory rows, so production-style unis import still needs row-level reviewed alias/campus decisions plus a reviewed Census cache and paired quarantine artifact.",
-            "resolutionEvidence": "Use data/unis/ipeds-geocode-audit.json as the baseline, record reviewed outcomes in data/unis/ipeds-alias-campus-review.json under docs/unis-alias-campus-match-policy.md, then populate data/geocoding/unis-census-geocoder-cache.json with reviewed Puerto Rico matches and record the remaining rows in the paired quarantine artifact."
+            "summary": "Reviewed alias/campus decisions and quarantine records now exist for the unmatched directory rows, but production-style unis import still needs reviewed Census geocoder cache entries for the approved rows.",
+            "resolutionEvidence": "Use the reviewed decisions in data/unis/ipeds-alias-campus-review.json to geocode only the approved rows under docs/unis-geocoding-policy.md, populate data/geocoding/unis-census-geocoder-cache.json with reviewed Puerto Rico matches, and keep data/geocoding/unis-import-quarantine.json aligned with the excluded rows."
           }
         ]
       },
