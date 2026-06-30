@@ -1,3 +1,4 @@
 FROM postgres:16-alpine
 
 COPY docker/postgres/init.sql /docker-entrypoint-initdb.d/001_contract_data.sql
+COPY docker/postgres/002_unis_partial_seed.sql /docker-entrypoint-initdb.d/002_unis_partial_seed.sql

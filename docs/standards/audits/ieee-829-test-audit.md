@@ -97,8 +97,9 @@ release branch, production deployment, or merge that changes app/API behavior.
 - Confirm unmatched `unis` alias/campus approvals use the checked-in policy and
   row-level review artifact before later cache/quarantine claims are accepted.
 - Confirm a stronger-authority-blocked `unis` registry still includes the
-  Puerto Rico-filtered NCES and U.S. Department of Education corroboration
-  entries and that test coverage keeps them out of the direct row-import path.
+  NCES identity, U.S. Department of Education accreditation, and Puerto Rico
+  ORLIE/JIP licensure corroboration entries and that test coverage keeps them
+  out of the direct row-import path.
 - Confirm planning-context fixtures pass the contract test and remain
   descriptive with explicit confidence labels, source metadata, and unresolved
   questions.

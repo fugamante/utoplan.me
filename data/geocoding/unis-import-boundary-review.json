@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "datospr-higher-ed-directory-2017-18",
+  "reviewedAt": "2026-06-26",
+  "reviewer": "Modernization Maintainer",
+  "status": "accepted",
+  "decision": "accept-partial-import",
+  "decisionSummary": "Accept a partial unis import boundary using only the 4 reviewed Puerto Rico Census cache-backed rows. This is partial source-backed coverage, not full Puerto Rico higher-education readiness; the 15 approved geocoder-quarantined rows and 27 identity-quarantined rows remain excluded and must stay visible in API/UI coverage language.",
+  "productBoundary": "descriptive-only",
+  "evidenceArtifacts": {
+    "cacheArtifactPath": "data/geocoding/unis-census-geocoder-cache.json",
+    "quarantineArtifactPath": "data/geocoding/unis-import-quarantine.json",
+    "addressReviewArtifactPath": "data/geocoding/unis-public-address-review.json",
+    "addressVerificationArtifactPath": "data/geocoding/unis-address-verification.json",
+    "matchReviewArtifactPath": "data/unis/ipeds-alias-campus-review.json",
+    "identityReviewArtifactPath": "data/unis/identity-review.json",
+    "geocodeAuditArtifactPath": "data/unis/ipeds-geocode-audit.json",
+    "policyDocPath": "docs/unis-geocoding-policy.md"
+  },
+  "authoritySources": [
+    {
+      "sourceId": "datospr-higher-ed-directory-2017-18",
+      "role": "primary-directory-row-source"
+    },
+    {
+      "sourceId": "nces-college-navigator-puerto-rico",
+      "role": "identity-corroboration-only"
+    },
+    {
+      "sourceId": "usdoe-dapip-puerto-rico",
+      "role": "accreditation-corroboration-only"
+    },
+    {
+      "sourceId": "prdos-orlie-jip-postsecondary-listing",
+      "role": "licensure-corroboration-only"
+    }
+  ],
+  "currentCounts": {
+    "reviewedAliasCampusApprovedRows": 19,
+    "reviewedCensusCacheRows": 4,
+    "geocoderQuarantinedApprovedRows": 15,
+    "identityQuarantinedRows": 27,
+    "reviewedRowsAccountedFor": 46
+  },
+  "acceptedBoundary": {
+    "coverage": "partial",
+    "coverageLabel": "Partial reviewed Census-cache coverage: 4 included rows, 42 reviewed exclusions.",
+    "includedRows": 4,
+    "excludedRows": 42,
+    "apiCoverageLanguage": "The /v1/unis collection may contain only the reviewed Census-cache-backed subset from the accepted partial import boundary; it is not complete Puerto Rico higher-education coverage.",
+    "uiCoverageLanguage": "University layer uses partial reviewed source coverage: 4 included rows, with 42 reviewed exclusions still outside the layer.",
+    "exclusionLanguage": "Excluded rows remain outside production-style unis output until corrected address evidence or row-level authority review changes their status.",
+    "allowedOutputRule": "Only records present in data/geocoding/unis-census-geocoder-cache.json may be generated through this partial import boundary.",
+    "blockedOutputRule": "Rows recorded only in data/geocoding/unis-import-quarantine.json must not be generated into production-style unis output.",
+    "sourceFieldRule": "Legacy detail fields such as desc may be populated only from checked-in source-field rows that exactly match the accepted Census-cache boundary.",
+    "sourceFieldsArtifactPath": "data/unis/partial-source-fields.json",
+    "generatedArtifactPath": "data/generated/unis-partial-import.json",
+    "generatedSeedPath": "docker/postgres/002_unis_partial_seed.sql",
+    "buildCommand": "node scripts/build_unis_slice.js"
+  },
+  "workBoard": [
+    {
+      "id": "partial-cache-import-boundary",
+      "candidate": "Accept a partial import boundary using only reviewed Census cache-backed rows.",
+      "evidence": "The reviewed cache now contains 4 Puerto Rico Census matches from 19 approved alias/campus rows after one official-address correction was promoted.",
+      "impact": "Would enable a narrow source-backed import slice without invented coordinates.",
+      "risk": "A partial production table could be mistaken for complete Puerto Rico higher-education coverage unless the user-facing and API contracts clearly expose the boundary.",
+      "decision": "accept-partial-with-coverage-language",
+      "status": "accepted"
+    },
+    {
+      "id": "source-backed-legacy-detail-fields",
+      "candidate": "Add source-backed legacy detail fields for the current 4 generated rows.",
+      "evidence": "The primary Datos.PR directory has checked-in source-field extraction in data/unis/partial-source-fields.json for exactly the 4 cache-backed rows.",
+      "impact": "Makes the partial university layer more informative while keeping coverage limited to reviewed cache rows.",
+      "risk": "Detail fields could be mistaken for broader readiness unless the artifact is machine-checked against the cache and quarantine set.",
+      "decision": "accept-for-current-partial-slice",
+      "status": "implemented"
+    },
+    {
+      "id": "corrected-address-evidence",
+      "candidate": "Collect corrected address evidence for the remaining geocoder-quarantined approved rows.",
+      "evidence": "data/geocoding/unis-address-verification.json reruns the 15 non-promoted approved rows against the pinned Census benchmark/vintage; 13 rows were attempted, 2 lacked current official address evidence, and 0 rows are promotion-eligible.",
+      "impact": "Clarifies that the current 4-row partial slice should not expand from the available reviewed address evidence.",
+      "risk": "A Puerto Rico geocoder response for Columbia Central University could be misread as promotable even though the matched Census street conflicts with the reviewed public-address evidence and the row is a stale inactive additional location.",
+      "decision": "retain-remaining-geocoder-quarantine",
+      "status": "verified-no-promotion"
+    },
+    {
+      "id": "identity-quarantine-review",
+      "candidate": "Review the 27 identity-quarantined rows against NCES, DAPIP, and ORLIE/JIP corroboration.",
+      "evidence": "data/unis/identity-review.json covers all 27 alias/campus-quarantined rows, records 5 NCES+DAPIP+ORLIE/JIP-corroborated identity/campus candidates, keeps 22 rows without row-level authority corroboration, and records zero identity-promoted, coordinate-eligible, or generated-output-eligible rows. ORLIE/JIP row evidence is bounded in data/unis/orlie-jip-row-review.json.",
+      "impact": "Makes the identity exclusion more source-backed and machine-checkable while keeping the partial import slice limited to reviewed Census-cache rows.",
+      "risk": "NCES+DAPIP+ORLIE/JIP corroboration does not resolve alias/campus, address, or Census gates; future authority review must update the artifact before any readiness decision changes.",
+      "decision": "record-nces-dapip-orlie-corroboration-retain-quarantine",
+      "status": "nces-dapip-orlie-corroborated-partial"
+    },
+    {
+      "id": "contract-hardening",
+      "candidate": "Machine-check the import boundary so partial cache evidence cannot be treated as import readiness.",
+      "evidence": "The cache, quarantine, match-review, and registry artifacts already expose counts and blockers.",
+      "impact": "Prevents accidental import-readiness drift and preserves the descriptive-only boundary.",
+      "risk": "Does not add new import rows by itself.",
+      "decision": "extend-for-accepted-partial-boundary",
+      "status": "complete"
+    }
+  ],
+  "invariants": [
+    "Cache-backed rows may be treated as the only accepted partial production-style import subset, not as complete Puerto Rico higher-education coverage.",
+    "Rows without reviewed Puerto Rico Census cache records remain excluded from production-style import output.",
+    "A Puerto Rico geocoder match is not sufficient for promotion when the matched Census address conflicts with the reviewed public-address evidence.",
+    "Legacy detail fields such as desc may be emitted only from data/unis/partial-source-fields.json rows that exactly match the accepted cache-backed subset.",
+    "Identity, accreditation, and licensure corroboration sources do not replace the primary Datos.PR row source and do not provide coordinate authority.",
+    "NCES, DAPIP, and ORLIE/JIP corroboration do not resolve alias/campus, public-address, or Census-cache gates.",
+    "Identity-quarantined rows remain excluded from generated/imported output unless data/unis/identity-review.json records all required row-level authority evidence and the full address/geocode evidence chain is updated.",
+    "No rankings, recommendations, scores, legal conclusions, zoning conclusions, finance conclusions, inferred coordinates, or invented coordinates may be introduced through this boundary."
+  ],
+  "requiredBeforeReady": [
+    "New corrected address evidence that changes data/geocoding/unis-address-verification.json from zero promotion-eligible rows, then updates cache, quarantine, boundary, registry, generated outputs, and tests together.",
+    "Row-level authority decisions in data/unis/identity-review.json for identity-quarantined rows, including DAPIP/ORLIE corroboration and the full alias/campus, address, and Census-cache evidence chain if they are ever reconsidered for future import.",
+    "Tests that fail if uncached or identity-quarantined rows appear in production-style unis import output."
+  ]
+}

@@ -2,7 +2,6 @@ FROM node:22-bookworm-slim
 
 WORKDIR /workspace
 
-ENV NODE_ENV=production
 ENV PORT=8080
 
 COPY .node-version ./
@@ -17,6 +16,8 @@ RUN npm run install:all
 COPY . .
 
 RUN npm run build
+
+ENV NODE_ENV=production
 
 EXPOSE 8080
 

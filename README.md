@@ -1,13 +1,47 @@
-# utoplan.Me Modernization Fork
+# utoplan.Me
 
-`utoplan.Me` began as a hackathon project by Imaginary Films. This
-modernization fork preserves that origin while rebuilding the project as a
-roadmap and decision-support tool for business formation in Puerto Rico.
+`utoplan.Me` is a map-first planning tool for evaluating where a business idea
+can take root in Puerto Rico. It combines local economic, workforce, education,
+zoning, and infrastructure signals so founders, investors, planners, and local
+development teams can reason about place-based opportunity before committing
+capital, time, and people.
 
-The goal is not only to show public data on a map. The goal is to help the
-people behind a business endeavor understand where an idea can take root, what
-local conditions affect it, and which in-situ resources can support it before,
-during, and after planning.
+This repository is the modernization fork of the original Imaginary Films
+hackathon prototype. The current work preserves the useful public behavior of
+that prototype while rebuilding the application as a reproducible, testable,
+PostgreSQL-backed Node and TypeScript system with explicit data provenance.
+
+## Current State
+
+- Static browser app with same-origin `/v1/*` data requests.
+- Modern TypeScript Node API compatibility layer under `dtoapi/modern`.
+- PostgreSQL-backed deployment path with health and readiness checks.
+- Puerto Rico-only source-backed data intake and quarantine contracts.
+- Docker and host-native validation for app, API, database, and proxy paths.
+- IEEE-aligned planning, design, quality, test, and verification documentation.
+
+## Quick Start
+
+Use Node 22.x. Install the root workspace and both nested packages:
+
+```sh
+npm run install:all
+```
+
+Run the integrated local app and modern API:
+
+```sh
+npm run start:local
+```
+
+`npm run start:local` starts the API on `UTOPLAN_API_PORT` or `3001`, waits for
+`/readyz`, then starts the static app on `UTOPLAN_APP_PORT` or `8080`. The
+browser continues to request same-origin paths such as `/v1/unis`.
+
+For explicit offline demos only, run the app with `UTOPLAN_DEMO_FIXTURE=1` to
+map `/v1/unis` to `app/public/data/unis.json`. Without
+`UTOPLAN_API_ORIGIN` or `UTOPLAN_DEMO_FIXTURE=1`, the static app does not serve
+`/v1/*` paths.
 
 ## Product Vision
 
@@ -71,7 +105,7 @@ Trustworthy provenance is part of the product. Because the intended decisions
 can involve investment, permitting, hiring, and long-term commitments, data must
 be source-backed, scoped clearly, and separated from demo or test fixtures.
 
-## Modernization Purpose
+## Modernization Scope
 
 This fork focuses on turning the original prototype into a reproducible,
 testable, and deployable foundation for that larger economic planning engine.
@@ -91,56 +125,94 @@ The current modernization work is centered on:
 
 ## Project Layout
 
+### Runtime
+
 - `app/`: dependency-free Node static web app and first-party browser assets.
-- `dtoapi/`: modern API compatibility server and tests.
+- `dtoapi/`: legacy API package shell plus modern API launch path.
+- `dtoapi/modern/`: TypeScript API compatibility server and tests.
+- `docker/postgres/`: seeded PostgreSQL initialization artifacts.
+
+### Product And Architecture Docs
+
 - `docs/api-modernization.md`: modern API replacement notes.
 - `docs/database-migrations.md`: production database migration artifact strategy.
+- `docs/deployment-topology.md`: integrated app/API deployment topology.
+- `docs/frontend-inventory.md`: static app source and asset inventory.
+- `docs/modernization-roadmap.md`: modernization plan and phase gates.
+- `docs/production-deployment.md`: production deployment checklist and rollback runbook.
+- `docs/standards/`: active IEEE 730, 828, 829, 830, 1016, 1012, and 1058
+  standards corpus plus audit guides for ongoing modernization governance.
+
+### Data And Provenance
+
 - `docs/data-intake.md`: Puerto Rico-only source intake contract and registry policy.
+- `docs/data-provenance.md`: known evidence and open gaps for the original
+  hackathon dataset.
 - `docs/unis-geocoding-policy.md`: approved reproducible geocoding policy for
   deriving `unis.lat` and `unis.long` from registered Puerto Rico source
   addresses.
 - `data/municipalities/`: source-backed planning-context municipality display-name registry.
 - `data/naics/`: source-backed planning-context NAICS title registry for active fixture codes.
+- `data/planning-context/`: descriptive planning-context fixtures that combine
+  municipality and category selections with source-backed candidate facts.
 - `data/geocoding/`: checked-in reviewed geocoding artifacts for approved
-  import flows, including exclusion quarantine records for rows that remain
-  outside production-style import.
+  import flows, including exclusion quarantine records and the current `unis`
+  partial-import boundary review for rows that remain outside production-style
+  import.
+- `data/geocoding/unis-address-verification.json`: pinned Census verification
+  for the 15 approved `unis` rows that remain geocoder-quarantined.
+- `data/unis/identity-review.json`: row-level identity-authority exclusion
+  contract for the 27 `unis` rows that remain identity-quarantined, including
+  5 NCES+DAPIP+ORLIE/JIP-corroborated rows that are still not import-ready.
+- `data/unis/orlie-jip-row-review.json`: bounded ORLIE/JIP public Power BI
+  row-review artifact for the 5 identity-corroborated rows; it stores
+  licensure-listing context only and excludes personal contact fields.
+- `data/generated/unis-partial-import.json`: generated 4-row partial `unis`
+  import slice rebuilt from the accepted Census-cache boundary by
+  `node scripts/build_unis_slice.js`.
+- `data/unis/partial-source-fields.json`: reviewed source fields for legacy
+  `unis.desc` generation, scoped to the same 4 accepted cache-backed rows.
 - `data/unis/ipeds-geocode-audit.json`: checked-in exact-match audit between
   the active higher-ed directory and Puerto Rico IPEDS coordinates.
 - `data/naics/cbp-naics-titles.json`: checked-in Census title registry for all
   registered Puerto Rico CBP `naics` codes used by the approved
   `cbps.cnaic_name` import join.
-- `docs/data-provenance.md`: known evidence and open gaps for the original hackathon dataset.
-- `docs/deployment-topology.md`: integrated app/API deployment topology.
-- `docs/frontend-inventory.md`: static app source and asset inventory.
-- `docs/modernization-roadmap.md`: modernization plan and phase gates.
-- `docs/production-deployment.md`: production deployment checklist and rollback runbook.
-- `data/planning-context/`: descriptive planning-context fixtures that combine
-  municipality and category selections with source-backed candidate facts.
-  Fact labels now include source-backed NAICS title text for the active fixture set.
-- `docs/standards/`: active IEEE 730, 828, 829, 830, 1016, 1012, and 1058
-  standards corpus plus audit guides for ongoing modernization governance.
 
-## Root Commands
+## Validation Commands
+
+`npm run build` is the root validation alias and currently runs the full root
+test suite:
 
 ```sh
 npm run build
-npm run docker:build
-npm run docker:test:db
-npm run docker:test:proxy
-npm run docker:test:start-local-browser
-npm run install:all
 npm run test
+```
+
+Use focused checks while iterating:
+
+```sh
 npm run test:browser
+npm run test:browser:start-local
+npm run test:business-categories
 npm run test:data-sources
+npm run test:deployment-config
+npm run test:deployment-containers
+npm run test:migration-artifacts
 npm run test:naics-registry
 npm run test:unis-geocode-audit
+npm run test:unis-identity-review
+npm run test:unis-import
+npm run test:unis-public-address-review
 npm run test:planning-context
-npm run test:db
-npm run test:browser:start-local
-npm run start:app
-npm run start:api
-npm run start:api:modern
-npm run start:local
+```
+
+Data-maintenance helpers:
+
+```sh
+npm run build:unis-import
+npm run sync:unis-geocode-cache
+npm run verify:unis-addresses
+npm run verify:unis-identity
 ```
 
 ## Docker Validation
@@ -153,15 +225,25 @@ npm run docker:test:proxy
 npm run docker:test:start-local-browser
 ```
 
-The Docker build runs `npm run install:all` and `npm run build`, so it validates clean installs and the API test baseline before producing an image.
+The Docker build runs `npm run install:all` and `npm run build`, so it validates
+clean installs and the API test baseline before producing an image.
 
-`npm run docker:test:db` builds a disposable seeded Postgres image from `Dockerfile.postgres-test`, runs the DB-backed modern API contract tests in a current Node container, and tears the Compose stack down afterward.
+`npm run docker:test:db` builds a disposable seeded Postgres image from
+`Dockerfile.postgres-test`, runs the DB-backed modern API contract tests in a
+current Node container, and tears the Compose stack down afterward.
 
-`npm run docker:test:proxy` uses the same seeded Postgres image, starts `npm run start:local` inside the test container, and verifies `/v1/unis` is served through the proxy from real modern API data rather than the offline fixture.
+`npm run docker:test:proxy` uses the same seeded Postgres image, starts
+`npm run start:local` inside the test container, and verifies `/v1/unis` is
+served through the proxy from real modern API data rather than the offline
+fixture.
 
-`npm run docker:test:start-local-browser` runs Chromium against the seeded `start:local` path and verifies the map renders modern API data without fetching the offline fixture.
+`npm run docker:test:start-local-browser` runs Chromium against the seeded
+`start:local` path and verifies the map renders modern API data without
+fetching the offline fixture.
 
-`npm run test:browser` runs a Playwright Chromium smoke test against the static app. Run `npx playwright install chromium` once on a fresh local machine before using it.
+`npm run test:browser` runs a Playwright Chromium smoke test against the static
+app. Run `npx playwright install chromium` once on a fresh local machine before
+using it.
 
 `npm run test:naics-registry` validates the checked-in Census title registry for
 the full registered Puerto Rico CBP code set so the approved `cbps.cnaic_name`
@@ -171,9 +253,18 @@ import join does not depend on a live Census API key.
 higher-education coordinate audit so the current `unis` blocker stays grounded
 in measured exact-match coverage rather than geocoder-only assumptions.
 
-`npm run test:browser:start-local` runs the app, modern API, and Chromium on the host machine against a seeded `baseline-read-v1` database. It honors explicit `TEST_DATABASE_*` settings, otherwise provisions the disposable Compose `db` service on a loopback host port, ignores ambient database environment variables such as `DATABASE_URL`, and removes the service after the run. Set `START_LOCAL_BROWSER_USE_ENV_DB=1` only when you intentionally want to reuse an existing baseline-ready database.
+`npm run test:browser:start-local` runs the app, modern API, and Chromium on the
+host machine against a seeded `baseline-read-v1` database. It honors explicit
+`TEST_DATABASE_*` settings, otherwise provisions the disposable Compose `db`
+service on a loopback host port, ignores ambient database environment variables
+such as `DATABASE_URL`, and removes the service after the run. Set
+`START_LOCAL_BROWSER_USE_ENV_DB=1` only when you intentionally want to reuse an
+existing baseline-ready database.
 
-The legacy Nodal API path has been retired from the normal project tree. The modern API runs from `dtoapi/modern`, compiles TypeScript sources to ignored CommonJS output under `dtoapi/modern/lib/`, and preserves the captured root and seeded read endpoint contracts.
+The legacy Nodal API path has been retired from the normal project tree. The
+modern API runs from `dtoapi/modern`, compiles TypeScript sources to ignored
+CommonJS output under `dtoapi/modern/lib/`, and preserves the captured root and
+seeded read endpoint contracts.
 
 The static app and modern API both expose `/healthz` for runtime health checks.
 
@@ -181,13 +272,12 @@ Use `npm run start:api:modern` to run the modern API locally on `PORT` or `3001`
 
 ## Local App And API Flow
 
-Run the modern API and static app as two local services when validating integrated map data:
+Run the modern API and static app as two local services when validating
+integrated map data:
 
 ```sh
 npm run start:local
 ```
-
-`npm run start:local` starts the modern API on `UTOPLAN_API_PORT` or `3001`, waits for API `/readyz` to return `200`, then starts the static app on `UTOPLAN_APP_PORT` or `8080` with `UTOPLAN_API_ORIGIN` passed in. The browser keeps using same-origin URLs such as `/v1/unis`.
 
 To run the services manually:
 
@@ -195,8 +285,6 @@ To run the services manually:
 PORT=3001 npm run start:api:modern
 UTOPLAN_API_ORIGIN=http://127.0.0.1:3001 PORT=8080 npm run start:app
 ```
-
-For explicit offline demos only, run the app with `UTOPLAN_DEMO_FIXTURE=1` to map `/v1/unis` to `app/public/data/unis.json`. Without `UTOPLAN_API_ORIGIN` or `UTOPLAN_DEMO_FIXTURE=1`, `/v1/*` paths are not handled by the static app.
 
 ## API Database Environment
 

@@ -16,6 +16,7 @@ RUN npm --prefix dtoapi/modern ci
 
 COPY app ./app/
 COPY dtoapi ./dtoapi/
+COPY data ./data/
 COPY test ./test/
 
 CMD ["npm", "run", "test:browser:start-local"]

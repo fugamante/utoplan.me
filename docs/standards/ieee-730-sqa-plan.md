@@ -110,8 +110,9 @@ covered the role for the change set.
   the static app proxy for integrated deployments.
 - Data imports must use registry-approved, Puerto Rico-scoped sources with
   deterministic filters where needed.
-- Geocoded import candidates must keep reviewed cache artifacts and exclusion
-  quarantine artifacts in sync before import readiness can move to ready.
+- Geocoded import candidates must keep reviewed cache artifacts, exclusion
+  quarantine artifacts, and partial import-boundary reviews in sync before
+  import readiness can move to ready.
 - Candidate business-category mappings and planning-context fixtures must stay
   descriptive and avoid score, ranking, or recommendation drift.
 - Exposed planning-context CBP facts must use the controlled NAICS title
@@ -217,7 +218,8 @@ Before accepting new production-style data:
 - Transform assumptions are reviewed against legacy endpoint schemas.
 - Demo/test seed data cannot overwrite or masquerade as production data.
 - Geocoded sources cannot be marked import-ready unless reviewed coordinate
-  cache evidence and explicit quarantine records account for excluded rows.
+  cache evidence, explicit quarantine records, and any partial import-boundary
+  decision account for excluded rows.
 
 ## 10. Metrics
 

@@ -129,8 +129,29 @@ As of 2026-06-11, the first reviewed pass is checked in:
 - `data/unis/ipeds-alias-campus-review.json` records 19 approved narrow
   alias/campus matches and 27 quarantined rows from the 46 previously
   unmatched entries.
-- `data/geocoding/unis-import-quarantine.json` mirrors the reviewed
-  quarantined rows.
-- `unis` import readiness remains blocked because the approved rows still need
-  reviewed Census geocoder cache entries before preserved `lat`/`long` values
-  can be imported.
+- As of 2026-06-23, `data/geocoding/unis-census-geocoder-cache.json` records
+  4 reviewed Puerto Rico Census matches from those 19 approved rows.
+- `data/geocoding/unis-public-address-review.json` records the row-level
+  public-address review for the 16 approved rows that initially failed the
+  pinned Census path; 1 row was promoted and 15 remain excluded.
+- `data/geocoding/unis-import-quarantine.json` keeps the 27 identity-
+  quarantined rows and adds 15 geocoder-specific exclusions for approved rows
+  that did not return reviewed Puerto Rico Census matches.
+- `data/unis/identity-review.json` now records that all 27 identity-
+  quarantined rows remain reviewed-excluded; 5 have NCES identity/campus plus
+  DAPIP accreditation and ORLIE/JIP licensure-listing corroboration, 22 still
+  lack row-level authority corroboration, and zero are coordinate-eligible or
+  generated-output eligible.
+- `data/geocoding/unis-address-verification.json` verifies that those 15
+  geocoder-specific exclusions currently have zero promotion-eligible rows
+  under the pinned Census benchmark/vintage.
+- `data/geocoding/unis-import-boundary-review.json` records that partial
+  production-style import from the 4 cache-backed rows is accepted with
+  explicit coverage language.
+- `node scripts/build_unis_slice.js` generates only those 4 cache-backed rows
+  into `data/generated/unis-partial-import.json` and
+  `docker/postgres/002_unis_partial_seed.sql`. Legacy `desc` values come only
+  from `data/unis/partial-source-fields.json` for the same accepted rows.
+- Full `unis` import readiness remains blocked until corrected address evidence
+  changes the zero-promotion verification result or row-level authority review
+  changes `data/unis/identity-review.json` and the full evidence chain.

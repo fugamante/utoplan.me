@@ -194,16 +194,29 @@ async function main() {
   await page.goto(baseUrl, {waitUntil: 'networkidle'});
 
   assert.strictEqual(await page.locator('[data-map="main"]').count(), 1, 'map container should render');
-  assert.strictEqual(await page.locator('.leaflet-marker-icon').count(), 1, 'API-backed university marker should render');
-  assert.strictEqual(await page.locator('.leaflet-popup-content').textContent(), 'Contract University18.42,-66.06');
-  await page.waitForSelector('[data-ui="planning-context-detail"] .planningContextSection');
+  assert.strictEqual(await page.locator('.leaflet-marker-icon').count(), 4, 'API-backed partial university markers should render');
+  assert.strictEqual(
+    await page.locator('.leaflet-popup-content').textContent(),
+    'Universidad Politécnica de Puerto Rico18.465156173786,-66.097033809568'
+  );
   assert(
-    (await page.locator('[data-ui="planning-context-detail"]').innerText()).indexOf('Unresolved questions') !== -1,
+    (await page.locator('[data-ui="unis-coverage-status"]').innerText()).indexOf('Partial reviewed Census-cache coverage') !== -1,
+    'page should render unis partial coverage status from the real same-origin API path'
+  );
+  await page.waitForSelector('[data-ui="planning-context-detail"] .planningContextSection');
+  const planningDetailText = (await page.locator('[data-ui="planning-context-detail"]').innerText()).toLowerCase();
+  assert(
+    planningDetailText.indexOf('unresolved questions') !== -1,
     'page should render planning-context detail from the real same-origin API path'
   );
   assert(
-    (await page.locator('[data-ui="planning-context-detail"]').innerText()).indexOf('masked (disclosure-limited)') !== -1,
+    planningDetailText.indexOf('masked (disclosure-limited)') !== -1,
     'page should render disclosure-limited values as masked in the real same-origin API path'
+  );
+  assert(
+    planningDetailText.indexOf('source provenance') !== -1 &&
+    planningDetailText.indexOf('u.s. census bureau via datos.pr') !== -1,
+    'page should render planning-context source provenance from the real same-origin API path'
   );
   assert(requestedPaths.includes('/v1/unis'), 'browser should request the same-origin modern API collection');
   assert(requestedPaths.includes('/v1/planning-context'), 'browser should request planning-context summaries');

@@ -96,9 +96,26 @@ export interface PlanningContextFixture {
   [key: string]: unknown;
 }
 
+export interface PlanningContextSource {
+  sourceId: string;
+  publisher: string;
+  portal: string;
+  license: string;
+  retrievedAt: string;
+  resourceUrl?: string;
+  targetTables: string[];
+  legacySchemaCoverage: Record<string, string>;
+}
+
+export interface PlanningContextSourceProvenance {
+  sourceCount: number;
+  sources: PlanningContextSource[];
+}
+
 export interface PlanningContextDetail extends PlanningContextFixture {
   id: string;
   guardrails: Guardrails;
+  sourceProvenance: PlanningContextSourceProvenance;
 }
 
 interface FixtureEntry {
@@ -426,6 +443,77 @@ function validateFixtureShape(value: unknown, id: string): PlanningContextFixtur
   };
 }
 
+function validateSourceMetadataEntry(value: unknown, id: string, index: number): PlanningContextSource {
+  const label = id + ' sourceMetadata[' + index + ']';
+
+  if (!isRecord(value)) {
+    throw new Error(label + ' must be an object');
+  }
+
+  if (
+    !isNonEmptyString(value.sourceId) ||
+    !isNonEmptyString(value.publisher) ||
+    !isNonEmptyString(value.portal) ||
+    !isNonEmptyString(value.license) ||
+    !isNonEmptyString(value.retrievedAt)
+  ) {
+    throw new Error(label + ' provenance fields are incomplete');
+  }
+
+  if (!Array.isArray(value.targetTables) || value.targetTables.length === 0) {
+    throw new Error(label + ' targetTables must be a non-empty array');
+  }
+
+  const targetTables = value.targetTables.map(function(table: unknown, tableIndex: number): string {
+    if (!isNonEmptyString(table)) {
+      throw new Error(label + ' targetTables must contain non-empty strings at index ' + tableIndex);
+    }
+
+    return table;
+  });
+
+  if (!isRecord(value.legacySchemaCoverage)) {
+    throw new Error(label + ' legacySchemaCoverage is required');
+  }
+
+  const legacySchemaCoverage: Record<string, string> = {};
+  Object.keys(value.legacySchemaCoverage).sort().forEach(function(column: string): void {
+    const coverage = value.legacySchemaCoverage as Record<string, unknown>;
+    if (!isNonEmptyString(coverage[column])) {
+      throw new Error(label + ' legacySchemaCoverage must contain non-empty coverage for ' + column);
+    }
+
+    legacySchemaCoverage[column] = coverage[column];
+  });
+
+  const output: PlanningContextSource = {
+    sourceId: value.sourceId,
+    publisher: value.publisher,
+    portal: value.portal,
+    license: value.license,
+    retrievedAt: value.retrievedAt,
+    targetTables,
+    legacySchemaCoverage
+  };
+
+  if (isNonEmptyString(value.resourceUrl)) {
+    output.resourceUrl = value.resourceUrl;
+  }
+
+  return output;
+}
+
+function buildSourceProvenance(fixture: PlanningContextFixture, id: string): PlanningContextSourceProvenance {
+  const sources = fixture.sourceMetadata.map(function(source: unknown, index: number): PlanningContextSource {
+    return validateSourceMetadataEntry(source, id, index);
+  });
+
+  return {
+    sourceCount: sources.length,
+    sources
+  };
+}
+
 function validateDescriptiveGuardrails(fixture: PlanningContextFixture, id: string): void {
   assertNoForbiddenDecisionLanguage(fixture.municipality.notes, id + ' municipality.notes');
   assertNoForbiddenDecisionLanguage(fixture.selection.selectionBasis, id + ' selection.selectionBasis');
@@ -534,6 +622,7 @@ export function findDetail(id: string): PlanningContextDetail | null {
   return {
     id,
     ...fixture,
-    guardrails: guardrails()
+    guardrails: guardrails(),
+    sourceProvenance: buildSourceProvenance(fixture, id)
   };
 }

@@ -2,8 +2,9 @@
   "schemaVersion": 1,
   "sourceId": "datospr-higher-ed-directory-2017-18",
   "policy": "Exclude rows from production-style unis import when the reviewed Census cache is missing a Puerto Rico match, resolves outside Puerto Rico, lacks reviewed x/y coordinates, or has no approved narrow alias/campus review outcome.",
-  "generatedAt": "2026-06-11",
+  "generatedAt": "2026-06-23",
   "status": "reviewed",
+  "addressReviewArtifactPath": "data/geocoding/unis-public-address-review.json",
   "records": [
     {
       "sourceId": "datospr-higher-ed-directory-2017-18",
@@ -13,6 +14,15 @@
       "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
+    },
+    {
+      "sourceId": "datospr-higher-ed-directory-2017-18",
+      "directoryInstitution": "Caribbean University",
+      "directoryMunicipality": "BAYAMON",
+      "normalizedAddress": "Carretera 167 Km 21.2, Bayamón, PR 00960",
+      "exclusionReason": "No reviewed Puerto Rico Census geocoder match was returned for this approved alias/campus row; keep it excluded from production-style unis import until address evidence changes.",
+      "reviewStatus": "reviewed",
+      "reviewedAt": "2026-06-23"
     },
     {
       "sourceId": "datospr-higher-ed-directory-2017-18",
@@ -34,6 +44,15 @@
     },
     {
       "sourceId": "datospr-higher-ed-directory-2017-18",
+      "directoryInstitution": "Columbia Central University",
+      "directoryMunicipality": "CAGUAS",
+      "normalizedAddress": "5 Genova St., Caguas, PR 00725",
+      "exclusionReason": "No reviewed Puerto Rico Census geocoder match was returned for this approved alias/campus row; keep it excluded from production-style unis import until address evidence changes.",
+      "reviewStatus": "reviewed",
+      "reviewedAt": "2026-06-23"
+    },
+    {
+      "sourceId": "datospr-higher-ed-directory-2017-18",
       "directoryInstitution": "Conservatorio de Música de Puerto Rico",
       "directoryMunicipality": "SAN JUAN",
       "normalizedAddress": "951 Ave. Ponce de León, SAN JUAN, Puerto Rico",
@@ -43,12 +62,48 @@
     },
     {
       "sourceId": "datospr-higher-ed-directory-2017-18",
+      "directoryInstitution": "Dewey University",
+      "directoryMunicipality": "SAN JUAN",
+      "normalizedAddress": "425 Avenida Barbosa, Hato Rey, Puerto Rico 00923",
+      "exclusionReason": "No reviewed Puerto Rico Census geocoder match was returned for this approved alias/campus row; keep it excluded from production-style unis import until address evidence changes.",
+      "reviewStatus": "reviewed",
+      "reviewedAt": "2026-06-23"
+    },
+    {
+      "sourceId": "datospr-higher-ed-directory-2017-18",
       "directoryInstitution": "Dublin Institute of Technology",
       "directoryMunicipality": "GUAYNABO",
       "normalizedAddress": "Metro Parque #7, Metro Office Park Suite 204, GUAYNABO, Puerto Rico",
       "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
+    },
+    {
+      "sourceId": "datospr-higher-ed-directory-2017-18",
+      "directoryInstitution": "EDP Universityof Puerto Rico",
+      "directoryMunicipality": "SAN JUAN",
+      "normalizedAddress": "560 Ave. Ponce de León, Hato Rey, PR 00918",
+      "exclusionReason": "No reviewed Puerto Rico Census geocoder match was returned for this approved alias/campus row; keep it excluded from production-style unis import until address evidence changes.",
+      "reviewStatus": "reviewed",
+      "reviewedAt": "2026-06-23"
+    },
+    {
+      "sourceId": "datospr-higher-ed-directory-2017-18",
+      "directoryInstitution": "Educational Technical College",
+      "directoryMunicipality": "BAYAMON",
+      "normalizedAddress": "1685 Carr. #2 Km. 11.2, BAYAMON, Puerto Rico",
+      "exclusionReason": "No reviewed Puerto Rico Census geocoder match was returned for this approved alias/campus row; keep it excluded from production-style unis import until address evidence changes.",
+      "reviewStatus": "reviewed",
+      "reviewedAt": "2026-06-23"
+    },
+    {
+      "sourceId": "datospr-higher-ed-directory-2017-18",
+      "directoryInstitution": "Escuela de Artes Plásticas y Diseño de Puerto Rico",
+      "directoryMunicipality": "SAN JUAN",
+      "normalizedAddress": "Calle Norzagaray Final, Campos del Morro, Barrio Ballajá, San Juan, PR 00901",
+      "exclusionReason": "No reviewed Puerto Rico Census geocoder match was returned for this approved alias/campus row; keep it excluded from production-style unis import until address evidence changes.",
+      "reviewStatus": "reviewed",
+      "reviewedAt": "2026-06-23"
     },
     {
       "sourceId": "datospr-higher-ed-directory-2017-18",
@@ -67,6 +122,15 @@
       "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
+    },
+    {
+      "sourceId": "datospr-higher-ed-directory-2017-18",
+      "directoryInstitution": "Huertas College Caguas",
+      "directoryMunicipality": "CAGUAS",
+      "normalizedAddress": "Héctor R. Bunker #41, Caguas, PR 00725",
+      "exclusionReason": "No reviewed Puerto Rico Census geocoder match was returned for this approved alias/campus row; keep it excluded from production-style unis import until address evidence changes.",
+      "reviewStatus": "reviewed",
+      "reviewedAt": "2026-06-23"
     },
     {
       "sourceId": "datospr-higher-ed-directory-2017-18",
@@ -124,12 +188,39 @@
     },
     {
       "sourceId": "datospr-higher-ed-directory-2017-18",
+      "directoryInstitution": "Lomalinda University",
+      "directoryMunicipality": "MAYAGUEZ",
+      "normalizedAddress": "Carretera 106 Km 2.2 Int., Mayagüez, PR 00680",
+      "exclusionReason": "No reviewed Puerto Rico Census geocoder match was returned for this approved alias/campus row; keep it excluded from production-style unis import until address evidence changes.",
+      "reviewStatus": "reviewed",
+      "reviewedAt": "2026-06-23"
+    },
+    {
+      "sourceId": "datospr-higher-ed-directory-2017-18",
+      "directoryInstitution": "Mech Tech College",
+      "directoryMunicipality": "CAGUAS",
+      "normalizedAddress": "Parque Industrial Oeste, Calle B #39-40, Caguas, PR 00725",
+      "exclusionReason": "No reviewed Puerto Rico Census geocoder match was returned for this approved alias/campus row; keep it excluded from production-style unis import until address evidence changes.",
+      "reviewStatus": "reviewed",
+      "reviewedAt": "2026-06-23"
+    },
+    {
+      "sourceId": "datospr-higher-ed-directory-2017-18",
       "directoryInstitution": "Monteclaro: Escuela de Hotelería y Artes Culinarias",
       "directoryMunicipality": "PALMER",
       "normalizedAddress": "Carretera 955 km 4.8, PALMER, Puerto Rico",
       "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
+    },
+    {
+      "sourceId": "datospr-higher-ed-directory-2017-18",
+      "directoryInstitution": "National University College",
+      "directoryMunicipality": "BAYAMON",
+      "normalizedAddress": "State Road #2, Km. 11.2, National University College Plaza Building #1660, Bayamón, PR 00960",
+      "exclusionReason": "No reviewed Puerto Rico Census geocoder match was returned for this approved alias/campus row; keep it excluded from production-style unis import until address evidence changes.",
+      "reviewStatus": "reviewed",
+      "reviewedAt": "2026-06-23"
     },
     {
       "sourceId": "datospr-higher-ed-directory-2017-18",
@@ -142,12 +233,30 @@
     },
     {
       "sourceId": "datospr-higher-ed-directory-2017-18",
+      "directoryInstitution": "Ponce Health Sciences University",
+      "directoryMunicipality": "Ponce",
+      "normalizedAddress": "388 Zona Industrial Reparada 2, Ponce, Puerto Rico 00716",
+      "exclusionReason": "No reviewed Puerto Rico Census geocoder match was returned for this approved alias/campus row; keep it excluded from production-style unis import until address evidence changes.",
+      "reviewStatus": "reviewed",
+      "reviewedAt": "2026-06-23"
+    },
+    {
+      "sourceId": "datospr-higher-ed-directory-2017-18",
       "directoryInstitution": "Ponce Paramedical College",
       "directoryMunicipality": "Coto Laurel",
       "normalizedAddress": "Bo. Sábalos #410 Carretera #2, Coto Laurel, Puerto Rico",
       "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
+    },
+    {
+      "sourceId": "datospr-higher-ed-directory-2017-18",
+      "directoryInstitution": "Pontificia Universidad Católica de PR",
+      "directoryMunicipality": "PONCE",
+      "normalizedAddress": "2250 Boulevard Luis A. Ferré Aguayo, Ponce, Puerto Rico 00717",
+      "exclusionReason": "No reviewed Puerto Rico Census geocoder match was returned for this approved alias/campus row; keep it excluded from production-style unis import until address evidence changes.",
+      "reviewStatus": "reviewed",
+      "reviewedAt": "2026-06-23"
     },
     {
       "sourceId": "datospr-higher-ed-directory-2017-18",
@@ -184,6 +293,15 @@
       "exclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
+    },
+    {
+      "sourceId": "datospr-higher-ed-directory-2017-18",
+      "directoryInstitution": "Universidad Central de Bayamón",
+      "directoryMunicipality": "BAYAMON",
+      "normalizedAddress": "Reparto La Milagrosa, Bayamón, PR 00960-1725",
+      "exclusionReason": "No reviewed Puerto Rico Census geocoder match was returned for this approved alias/campus row; keep it excluded from production-style unis import until address evidence changes.",
+      "reviewStatus": "reviewed",
+      "reviewedAt": "2026-06-23"
     },
     {
       "sourceId": "datospr-higher-ed-directory-2017-18",
@@ -232,6 +350,15 @@
     },
     {
       "sourceId": "datospr-higher-ed-directory-2017-18",
+      "directoryInstitution": "Universidad Metropolitana",
+      "directoryMunicipality": "SAN JUAN",
+      "normalizedAddress": "Ave. Ana G. Mendez Carr. 176, Km 0.3, San Juan, P.R. 00926",
+      "exclusionReason": "No reviewed Puerto Rico Census geocoder match was returned for this approved alias/campus row; keep it excluded from production-style unis import until address evidence changes.",
+      "reviewStatus": "reviewed",
+      "reviewedAt": "2026-06-23"
+    },
+    {
+      "sourceId": "datospr-higher-ed-directory-2017-18",
       "directoryInstitution": "Universidad Universal",
       "directoryMunicipality": "SAN JUAN",
       "normalizedAddress": "Calle Méjico #16, Hato Rey, SAN JUAN, Puerto Rico",
@@ -247,6 +374,15 @@
       "exclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
       "reviewStatus": "reviewed",
       "reviewedAt": "2026-06-11"
+    },
+    {
+      "sourceId": "datospr-higher-ed-directory-2017-18",
+      "directoryInstitution": "University of Phoenix",
+      "directoryMunicipality": "GUAYNABO",
+      "normalizedAddress": "Santander Tower at San Patricio, Calle Tabonuco B-7, suite 400, GUAYNABO, Puerto Rico",
+      "exclusionReason": "No reviewed Puerto Rico Census geocoder match was returned for this approved alias/campus row; keep it excluded from production-style unis import until address evidence changes.",
+      "reviewStatus": "reviewed",
+      "reviewedAt": "2026-06-23"
     }
   ]
 }

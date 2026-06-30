@@ -45,12 +45,28 @@ export interface PlanningContextDetail {
   cbpFacts: PlanningContextFact[];
   limitations: string[];
   unresolvedQuestions: string[];
+  sourceProvenance: PlanningContextSourceProvenance;
   guardrails: {
     descriptiveOnly: boolean;
     noScores: boolean;
     noRankings: boolean;
     noRecommendations: boolean;
   };
+}
+
+export interface PlanningContextSource {
+  sourceId: string;
+  publisher: string;
+  portal: string;
+  license: string;
+  retrievedAt: string;
+  targetTables: string[];
+  legacySchemaCoverage: Record<string, string>;
+}
+
+export interface PlanningContextSourceProvenance {
+  sourceCount: number;
+  sources: PlanningContextSource[];
 }
 
 export interface PlanningContextDetailResult {
@@ -153,6 +169,89 @@ function asFact(value: unknown): PlanningContextFact | null {
   };
 }
 
+function asCoverageMap(value: unknown): Record<string, string> | null {
+  if (!isRecord(value)) {
+    return null;
+  }
+
+  const output: Record<string, string> = {};
+  const keys = Object.keys(value).sort();
+
+  if (keys.length === 0) {
+    return null;
+  }
+
+  for (let index = 0; index < keys.length; index += 1) {
+    const key = keys[index];
+    const coverage = asNonEmptyString(value[key]);
+
+    if (!coverage) {
+      return null;
+    }
+
+    output[key] = coverage;
+  }
+
+  return output;
+}
+
+function asSource(value: unknown): PlanningContextSource | null {
+  if (!isRecord(value)) {
+    return null;
+  }
+
+  const sourceId = asNonEmptyString(value.sourceId);
+  const publisher = asNonEmptyString(value.publisher);
+  const portal = asNonEmptyString(value.portal);
+  const license = asNonEmptyString(value.license);
+  const retrievedAt = asNonEmptyString(value.retrievedAt);
+  const targetTables = asStringList(value.targetTables);
+  const legacySchemaCoverage = asCoverageMap(value.legacySchemaCoverage);
+
+  if (!sourceId || !publisher || !portal || !license || !retrievedAt || !targetTables || !legacySchemaCoverage) {
+    return null;
+  }
+
+  return {
+    sourceId: sourceId,
+    publisher: publisher,
+    portal: portal,
+    license: license,
+    retrievedAt: retrievedAt,
+    targetTables: targetTables,
+    legacySchemaCoverage: legacySchemaCoverage
+  };
+}
+
+function asSourceProvenance(value: unknown): PlanningContextSourceProvenance | null {
+  if (!isRecord(value) || !Array.isArray(value.sources)) {
+    return null;
+  }
+
+  const sourceCount = asNumber(value.sourceCount);
+
+  if (sourceCount === null || sourceCount !== value.sources.length || sourceCount === 0) {
+    return null;
+  }
+
+  const sources: PlanningContextSource[] = [];
+
+  for (let index = 0; index < value.sources.length; index += 1) {
+    const source = asSource(value.sources[index]);
+
+    if (!source) {
+      return null;
+    }
+
+    sources.push(source);
+  }
+
+  return {
+    sourceCount: sourceCount,
+    sources: sources
+  };
+}
+
 function asSummary(value: unknown): PlanningContextSummary | null {
   if (!isRecord(value)) {
     return null;
@@ -243,8 +342,9 @@ function asDetail(value: unknown): PlanningContextDetail | null {
   const cbpFacts = Array.isArray(value.cbpFacts) ? value.cbpFacts : null;
   const limitations = asStringList(value.limitations);
   const unresolvedQuestions = asStringList(value.unresolvedQuestions);
+  const sourceProvenance = asSourceProvenance(value.sourceProvenance);
 
-  if (!confidenceRationale || !cbpFacts || !limitations || !unresolvedQuestions) {
+  if (!confidenceRationale || !cbpFacts || !limitations || !unresolvedQuestions || !sourceProvenance) {
     return null;
   }
 
@@ -271,6 +371,7 @@ function asDetail(value: unknown): PlanningContextDetail | null {
     cbpFacts: normalizedFacts,
     limitations: limitations,
     unresolvedQuestions: unresolvedQuestions,
+    sourceProvenance: sourceProvenance,
     guardrails: summary.guardrails
   };
 }
@@ -405,7 +506,7 @@ export function renderPlanningContextDetail(
     return;
   }
 
-  status.textContent = 'Descriptive detail only (confidence, limitations, unresolved questions).';
+  status.textContent = 'Descriptive detail only (confidence, limitations, provenance, unresolved questions).';
 
   const detail = result.detail;
   const summary = documentRef.createElement('h3');
@@ -447,6 +548,14 @@ export function renderPlanningContextDetail(
 
   appendListSection(documentRef, container, 'Confidence rationale', detail.confidence.rationale);
   appendListSection(documentRef, container, 'Limitations', detail.limitations);
+  appendListSection(
+    documentRef,
+    container,
+    'Source provenance',
+    detail.sourceProvenance.sources.map(function(source: PlanningContextSource): string {
+      return source.publisher + ' via ' + source.portal + ' (' + source.sourceId + ', retrieved ' + source.retrievedAt + ')';
+    })
+  );
   appendListSection(documentRef, container, 'Unresolved questions', detail.unresolvedQuestions);
 }
 

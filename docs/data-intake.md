@@ -63,6 +63,65 @@ unmatched, out-of-scope, and unreviewed rows in
 Puerto Rico matches and the quarantine artifact records the remaining excluded
 rows.
 
+When a geocoded source has a partial reviewed cache, record a checked-in import
+boundary review before any production-style import output is accepted. The
+active `unis` candidate keeps that review in
+`data/geocoding/unis-import-boundary-review.json`. The current accepted
+boundary permits only the reviewed Census-cache-backed subset and requires
+API/UI coverage language until full coverage is reviewed.
+
+The operational partial `unis` slice is generated with:
+
+```sh
+node scripts/build_unis_slice.js
+```
+
+That command reads the accepted boundary, cache, and quarantine artifacts, then
+writes `data/generated/unis-partial-import.json` and
+`docker/postgres/002_unis_partial_seed.sql`. The generated output may include
+only cache-backed rows and must leave quarantined rows out. The generator also
+reads `data/unis/partial-source-fields.json` to populate legacy detail fields
+such as `desc` for the included rows only; that artifact must exactly match the
+accepted cache-backed boundary and must not store principal-executive names or
+contact fields.
+
+Corrected-address verification for the approved rows that remain geocoder-
+quarantined is generated with:
+
+```sh
+npm run verify:unis-addresses
+```
+
+That command writes `data/geocoding/unis-address-verification.json`. It is a
+verification artifact, not an import artifact: rows remain excluded unless the
+reviewed public-address evidence and pinned Census result are explicitly
+accepted into the cache, quarantine, boundary, registry, generated outputs, and
+tests together.
+
+For `unis`, approved alias/campus identity review is not coordinate evidence by
+itself. Each approved row must be partitioned into either the reviewed Census
+cache or a geocoder-specific quarantine record before the import path can claim
+that the approved row set has been processed.
+
+Identity-authority exclusion review for rows that did not receive an accepted
+alias/campus decision is generated with:
+
+```sh
+npm run verify:unis-identity
+```
+
+That command writes `data/unis/identity-review.json`. It is an exclusion and
+readiness-control artifact, not an import artifact: NCES, DAPIP, and ORLIE/JIP
+may corroborate row-level identity review, but they do not replace the primary
+Datos.PR row source, provide coordinate authority, or make a row
+generated-output eligible without the full alias/campus, public-address, and
+Census-cache evidence chain. Current NCES, DAPIP, and ORLIE/JIP corroborations
+in the artifact are exclusion/readiness-control evidence, not import evidence.
+The ORLIE/JIP row-level subset is bounded in
+`data/unis/orlie-jip-row-review.json`; it stores licensure-listing context only,
+excludes personal contact fields, and does not provide coordinate authority or
+public-address correction evidence.
+
 Before broad `unis` geocoder refresh work begins, keep a checked-in exact-match
 baseline at `data/unis/ipeds-geocode-audit.json`. Use that audit to document
 how many rows already have auxiliary coordinate evidence, and keep
@@ -134,6 +193,7 @@ npm run test:planning-context
 - `unis`: Datos.PR higher education directory for Puerto Rico, academic year 2017-18.
 - `unis` identity support: NCES College Navigator with the Puerto Rico state filter and spreadsheet export.
 - `unis` accreditation support: U.S. Department of Education accreditation search with the Puerto Rico state filter.
+- `unis` licensure support: Puerto Rico Department of State ORLIE/JIP public postsecondary listing.
 - `cbps` fallback: Census 2014 CBP API filtered with `state:72`; current live
   access requires an API key, so this remains an operator-blocked fallback.
 

@@ -23,6 +23,7 @@ COPY dtoapi/modern/package.json dtoapi/modern/package-lock.json ./dtoapi/modern/
 RUN npm --prefix dtoapi/modern ci --omit=dev --ignore-scripts
 
 COPY --from=build /workspace/dtoapi/modern/lib ./dtoapi/modern/lib/
+COPY data ./data/
 
 EXPOSE 3001
 

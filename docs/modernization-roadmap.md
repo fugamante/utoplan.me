@@ -40,12 +40,33 @@
   registered Puerto Rico CBP code set, so the municipality-level `cbps`
   candidate is import-ready without a live Census API key.
 - The `unis` higher-ed replacement candidate now treats the approved Census
-  geocoder cache and checked-in quarantine artifact as the authoritative import
-  gate; production-style `unis` import stays blocked until reviewed Puerto Rico
-  matches exist and excluded rows are recorded explicitly.
+  geocoder cache, checked-in quarantine artifact, and accepted partial import
+  boundary as the authoritative import gate; production-style output is limited
+  to reviewed Census-cache-backed rows until coverage changes.
+- The reviewed Census geocoder cache now contains 4 Puerto Rico matches from
+  the 19 approved alias/campus rows, while 15 approved rows without Census
+  matches and the 27 identity-quarantined rows remain excluded through the
+  quarantine artifact.
+- The `unis` import boundary review now records the MAX decision board in
+  `data/geocoding/unis-import-boundary-review.json`: partial import from the 4
+  cache-backed rows is accepted with explicit API/UI coverage language, while
+  the 42 reviewed exclusions remain outside production-style output.
+- The accepted partial `unis` boundary now has a reproducible generated slice:
+  `node scripts/build_unis_slice.js` writes
+  `data/generated/unis-partial-import.json` and
+  `docker/postgres/002_unis_partial_seed.sql`, and the seeded modern DB reads
+  those 4 reviewed rows instead of placeholder university data.
+- The generated 4-row `unis` slice now also populates legacy `desc` from
+  non-personal fields in the checked-in `data/unis/partial-source-fields.json`
+  artifact, which is machine-checked to match only the accepted
+  Census-cache-backed rows.
 - The `unis` path now also records stronger federal corroboration candidates
   for institution identity and accreditation so real Puerto Rico institutions
   are not screened only through the current single auxiliary audit method.
+- The `unis` authority stack now also registers the Puerto Rico Department of
+  State ORLIE/JIP postsecondary listing as a licensure corroboration surface,
+  while documenting that its public Power BI listing is not yet a verified
+  stable bulk export or direct `unis` row source.
 - `docs/unis-alias-campus-match-policy.md` and
   `data/unis/ipeds-alias-campus-review.json` now define the reviewed
   alias/campus approval gate for unmatched `unis` rows so geocode-cache work
@@ -71,6 +92,13 @@
 - Planning-context summary/detail labels for the active fixture set now resolve against the source-backed municipality registry instead of placeholder `Municipality code ###` strings.
 - The first-page planning-context detail panel now renders disclosure-limited CBP values as masked and rounded/noise-flagged CBP values as approximate so the UI does not imply false precision from `D`/`H` source flags.
 - Planning-context CBP facts for the active fixture set now resolve deterministic source-backed `naicsTitle` labels from a Census-backed registry, and the first-page detail panel renders those labels instead of code-only fact headers.
+- The planning-context detail API now derives a `sourceProvenance` view from
+  fixture `sourceMetadata`, and the first-page detail panel renders source
+  publisher, portal, source id, and retrieval date so limitations and facts are
+  visibly tied to registered source evidence.
+- `docs/production-readiness-decision-board.md` records the MAX decision to
+  keep the partial `unis` import boundary blocked while using the existing
+  source-backed planning-context state to improve provenance visibility.
 - `npm run test:browser:start-local` now validates the host-native integrated
   `start:local` path against a seeded `baseline-read-v1` database, including
   same-origin planning-context summary/detail requests, rendered descriptive
@@ -193,9 +221,13 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Keep the stronger `unis` institution-authority stack registered and
-machine-checked before more row promotion work proceeds: preserve the federal
-NCES and U.S. Department of Education corroboration sources in the Puerto Rico
-registry, document whether the Puerto Rico Department of State ORLIE
-postsecondary listing can be operationalized as a reproducible public source,
-then revisit the 27 quarantined rows before further cache-building work.
+Use `data/unis/identity-review.json` and
+`data/unis/orlie-jip-row-review.json` to continue the narrow review for the 5
+NCES+DAPIP+ORLIE/JIP-corroborated identity-quarantined rows by determining
+whether any row can receive accepted alias/campus and reviewed public-address
+evidence without guessing. Keep `data/geocoding/unis-address-verification.json`
+as the current zero-promotion address baseline, keep API/UI coverage language
+visible, and do not expand the 4-row generated slice without updating the
+identity review, address review, cache, quarantine, boundary artifact,
+registry, generated outputs, and tests
+together.

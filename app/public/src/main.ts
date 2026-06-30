@@ -18,6 +18,10 @@ export function setVisible(element: HTMLElement, visible: boolean): void {
   element.style.display = visible ? "block" : "none";
 }
 
+export function setExpanded(element: HTMLElement, expanded: boolean): void {
+  element.setAttribute("aria-expanded", expanded ? "true" : "false");
+}
+
 export function isVisible(element: HTMLElement): boolean {
   return window.getComputedStyle(element).display !== "none";
 }
@@ -26,17 +30,34 @@ export function toggleEyeState(element: HTMLElement): void {
   const isOpen = element.classList.contains("eyeOpened");
   element.classList.toggle("eyeOpened", !isOpen);
   element.classList.toggle("eyeClosed", isOpen);
+  element.setAttribute("aria-pressed", isOpen ? "false" : "true");
 }
 
 export function bindLayerToggles(): void {
   const layers = findAllUi("layer-visibility");
 
   for (let i = 0; i < layers.length; i += 1) {
+    layers[i].setAttribute("aria-pressed", layers[i].classList.contains("eyeOpened") ? "true" : "false");
     layers[i].addEventListener("click", function(event: MouseEvent): void {
       event.preventDefault();
       toggleEyeState(event.currentTarget as HTMLElement);
     });
   }
+}
+
+export function bindLayerFilter(): void {
+  const filter = findUi("layer-filter") as HTMLInputElement;
+  const layerMenu = findUi("layer-menu");
+  const layers = layerMenu.querySelectorAll<HTMLElement>("li");
+
+  filter.addEventListener("input", function(): void {
+    const query = filter.value.trim().toLowerCase();
+
+    for (let i = 0; i < layers.length; i += 1) {
+      const label = (layers[i].textContent || "").toLowerCase();
+      layers[i].hidden = query !== "" && label.indexOf(query) === -1;
+    }
+  });
 }
 
 export function bindPanelToggles(): void {
@@ -50,17 +71,21 @@ export function bindPanelToggles(): void {
   sidebarToggle.addEventListener("click", function(): void {
     const shouldShow = !isVisible(sidebar);
     setVisible(sidebar, shouldShow);
-    sidebarToggle.innerHTML = shouldShow ? "&#9658;" : "&#9668;";
+    setExpanded(sidebarToggle, shouldShow);
+    sidebarToggle.textContent = shouldShow ? "▶" : "◀";
   });
 
   queryToggle.addEventListener("click", function(event: MouseEvent): void {
     event.preventDefault();
-    setVisible(queryList, !isVisible(queryList));
+    const shouldShow = !isVisible(queryList);
+    setVisible(queryList, shouldShow);
+    setExpanded(queryToggle, shouldShow);
   });
 }
 
 export function init(): void {
   bindLayerToggles();
+  bindLayerFilter();
   bindPanelToggles();
   planningContext.init(window, document);
 }

@@ -1,4 +1,4 @@
-import { normalizeUniversities, readMapConfig } from "./map_config.js";
+import { normalizeUniversityCoverage, normalizeUniversities, readMapConfig } from "./map_config.js";
 export function createMap(documentRef, leaflet, config) {
     const mapElement = documentRef.querySelector('[data-map="main"]');
     if (!mapElement) {
@@ -18,14 +18,35 @@ export function addUniversities(map, leaflet, universities) {
         marker.bindPopup(university.title + "<br/>" + university.position.toString()).openPopup();
     });
 }
+function renderCoverage(documentRef, coverage) {
+    const status = documentRef.querySelector('[data-ui="unis-coverage-status"]');
+    if (!status) {
+        return;
+    }
+    status.textContent = coverage ? coverage.label : "";
+}
 export function loadUniversities(windowRef, config, callback) {
-    loadUniversityUrl(windowRef, config.dataUrl, function (universities) {
-        if (universities) {
-            callback(universities);
+    loadUniversityUrl(windowRef, config.dataUrl, function (result) {
+        if (result) {
+            callback(result.universities);
             return;
         }
-        loadUniversityUrl(windowRef, config.fallbackDataUrl, function (fallbackUniversities) {
-            callback(fallbackUniversities || []);
+        loadUniversityUrl(windowRef, config.fallbackDataUrl, function (fallbackResult) {
+            callback(fallbackResult ? fallbackResult.universities : []);
+        });
+    });
+}
+export function loadUniversitiesWithCoverage(windowRef, config, callback) {
+    loadUniversityUrl(windowRef, config.dataUrl, function (result) {
+        if (result) {
+            callback(result);
+            return;
+        }
+        loadUniversityUrl(windowRef, config.fallbackDataUrl, function (fallbackResult) {
+            callback(fallbackResult || {
+                universities: [],
+                coverage: null
+            });
         });
     });
 }
@@ -42,7 +63,11 @@ function loadUniversityUrl(windowRef, dataUrl, callback) {
         return response.json();
     }).then(function (payload) {
         if (payload) {
-            callback(normalizeUniversities(payload));
+            const universityPayload = payload;
+            callback({
+                universities: normalizeUniversities(universityPayload),
+                coverage: normalizeUniversityCoverage(universityPayload)
+            });
         }
     }).catch(function () {
         callback(null);
@@ -51,8 +76,9 @@ function loadUniversityUrl(windowRef, dataUrl, callback) {
 export function init(windowRef, documentRef, leaflet) {
     const config = readMapConfig(windowRef);
     const map = createMap(documentRef, leaflet, config);
-    loadUniversities(windowRef, config, function (universities) {
-        addUniversities(map, leaflet, universities);
+    loadUniversitiesWithCoverage(windowRef, config, function (result) {
+        renderCoverage(documentRef, result.coverage);
+        addUniversities(map, leaflet, result.universities);
     });
 }
 const browserWindow = window;

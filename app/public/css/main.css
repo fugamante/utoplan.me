@@ -1,76 +1,172 @@
+:root{
+  --surface: rgba(255, 255, 255, 0.9);
+  --surface-strong: rgba(255, 255, 255, 0.97);
+  --surface-muted: rgba(246, 248, 250, 0.92);
+  --text: #111827;
+  --muted: #5f6b7a;
+  --border: rgba(17, 24, 39, 0.12);
+  --accent: #0a84ff;
+  --accent-soft: rgba(10, 132, 255, 0.12);
+  --shadow: 0 18px 48px rgba(15, 23, 42, 0.16);
+  --radius: 8px;
+}
+*{
+  box-sizing: border-box;
+}
 body {
-  font-family: Helvetica;
+  min-width: 320px;
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  letter-spacing: 0;
 }
 #mapid{
   position: fixed;
   width: 100%;
   height: 100%;
-  background: #666 url("../img/transparent-pattern.png");
+  background: #e5e7eb url("../img/transparent-pattern.png");
 }
 #layersMenu{
   position: absolute;
-  top: 12px;
-  left: 50px;
+  top: 20px;
+  left: 20px;
+  width: min(390px, calc(100vw - 40px));
   z-index: 1000;
 }
+#appHeader{
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-strong);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+}
+#appHeader h1{
+  margin: 0 0 3px;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+#appHeader p{
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.35;
+}
+#appHeader .coverageStatus{
+  margin-top: 7px;
+  font-size: 11px;
+}
+#searchForm{
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+  overflow: hidden;
+}
+#searchForm label{
+  display: block;
+  padding: 12px 14px 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.searchControl{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px 12px 14px;
+}
 #searchBar{
-  width: 300px;
-  padding: 10px;
-  border: 1px #333;
-  font-size: 18px;
+  width: 100%;
+  min-width: 0;
+  padding: 9px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-strong);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.3;
+  outline: none;
+}
+#searchBar:focus{
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 .arrowButton{
-  position: relative;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-strong);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 16px;
+  line-height: 1;
   text-decoration: none;
-  font-size: 20px;
-  padding: 10px;
-  color: #000;
 }
 .arrowGo{
-  top: 4px;
-  right: 41px;
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
 }
 .arrowHide{
   top: 9px;
   font-size: 18px;
 }
 #queryList{
-  max-height: 75vh;
+  max-height: 32vh;
   overflow-y: auto;
+  padding: 0 10px 10px;
 }
 #queryList li{
-  position: relative;
-  padding: 12px;
-  right: -42px;
-  width: 276px;
-  background: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 9px 4px 9px 12px;
+  border-top: 1px solid rgba(17, 24, 39, 0.08);
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.25;
   list-style-type: none;
+}
+#queryList li[hidden]{
+  display: none;
 }
 #queryList li.child{
-  position: relative;
-  padding-left: 26px;
-  right: -42px;
-  width: 262px;
-  background: rgba(255, 255, 255, 0.7);
-  list-style-type: none;
+  padding-left: 28px;
+  color: var(--muted);
 }
 #planningContextPanel{
-  width: 318px;
-  margin-top: 8px;
-  margin-left: 42px;
-  background: rgba(255, 255, 255, 0.78);
-  padding: 10px 12px;
+  width: 100%;
+  margin-top: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+  padding: 14px;
 }
 #planningContextPanel h2{
-  font-size: 14px;
-  margin-bottom: 6px;
+  margin: 0 0 7px;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.2;
 }
 #planningContextPanel p{
+  color: var(--muted);
   font-size: 12px;
-  margin-bottom: 6px;
+  line-height: 1.45;
+  margin-bottom: 8px;
 }
 #planningContextPanel ul{
-  max-height: 28vh;
+  max-height: 24vh;
   overflow-y: auto;
 }
 #planningContextPanel .planningContextList{
@@ -78,40 +174,53 @@ body {
 }
 #planningContextPanel .planningContextItem{
   list-style-type: none;
-  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-muted);
   margin-bottom: 6px;
-  padding: 8px;
+  padding: 0;
 }
 #planningContextPanel .planningContextButton{
   width: 100%;
   border: 0;
-  padding: 0;
+  border-radius: var(--radius);
+  padding: 10px;
   background: transparent;
+  color: inherit;
+  font: inherit;
   text-align: left;
   cursor: pointer;
 }
 #planningContextPanel .planningContextButtonSelected{
-  border-left: 3px solid #111;
-  padding-left: 6px;
+  background: var(--surface-strong);
+  box-shadow: inset 3px 0 0 var(--accent);
 }
 #planningContextPanel .planningContextTitle{
-  font-size: 13px;
-  margin-bottom: 4px;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 5px;
 }
 #planningContextPanel .planningContextMeta{
-  font-size: 11px;
-  margin-bottom: 2px;
+  font-size: 12px;
+  line-height: 1.35;
+  margin-bottom: 3px;
 }
 #planningContextPanel .planningContextDetailPanel{
-  border-top: 1px solid rgba(17, 17, 17, 0.15);
-  padding-top: 8px;
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
 }
 #planningContextPanel .planningContextSection{
-  margin-top: 8px;
+  margin-top: 10px;
 }
 #planningContextPanel .planningContextSectionTitle{
   font-size: 12px;
-  margin-bottom: 4px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 #planningContextPanel .planningContextListBody{
   max-height: none;
@@ -121,18 +230,23 @@ body {
 #planningContextPanel .planningContextListBody li{
   list-style-type: disc;
   margin-left: 16px;
-  font-size: 11px;
-  margin-bottom: 4px;
+  color: var(--text);
+  font-size: 12px;
+  line-height: 1.45;
+  margin-bottom: 5px;
 }
 a:active{
   color: #555;
 }
 .eye{
   display: inline-block;
+  margin-left: auto;
   width: 20px;
   height: 20px;
-  float: right;
   padding: 0;
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
 }
 .eyeClosed{
   background: url(../img/eyeclosed.png);
@@ -152,11 +266,15 @@ a:active{
 #sidebar{
   position: absolute;
   height: 100%;
-  width: 50%;
+  width: min(520px, 50%);
   right: 0;
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  box-shadow: -14px 0 42px rgba(15, 23, 42, 0.14);
+  backdrop-filter: blur(18px);
   overflow-x: hidden;
   overflow-y: auto;
+  z-index: 900;
 }
 #sidebar .arrowHide{
   height: 100%;
@@ -170,6 +288,7 @@ a:active{
   position: absolute;
   left: 12px;
   bottom: 12px;
+  z-index: 900;
   text-decoration: none;
   text-align: center;
 }
@@ -177,6 +296,54 @@ a:active{
   width: 62px;
 }
 #logo p{
-  color: #CCC;
-  font-size: 10pt;
+  color: rgba(17, 24, 39, 0.68);
+  font-size: 10px;
+}
+#toogle{
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  width: 40px;
+  height: 40px;
+  box-shadow: var(--shadow);
+}
+
+@media (max-width: 760px){
+  #layersMenu{
+    top: 12px;
+    left: 12px;
+    width: calc(100vw - 24px);
+    max-height: calc(100vh - 24px);
+    overflow-y: auto;
+    padding-right: 2px;
+  }
+  #appHeader{
+    padding: 13px 14px;
+  }
+  #appHeader h1{
+    font-size: 21px;
+  }
+  #queryList{
+    max-height: 22vh;
+  }
+  #planningContextPanel ul{
+    max-height: 20vh;
+  }
+  #planningContextPanel{
+    max-height: 48vh;
+    overflow-y: auto;
+  }
+  #sidebar{
+    width: 100%;
+  }
+  #toogle{
+    top: auto;
+    right: 12px;
+    bottom: 84px;
+  }
+  #logo{
+    left: 10px;
+    bottom: 10px;
+  }
 }

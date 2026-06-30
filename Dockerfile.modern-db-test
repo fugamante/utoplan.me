@@ -10,5 +10,6 @@ COPY dtoapi/modern/package.json dtoapi/modern/package-lock.json ./dtoapi/modern/
 RUN npm --prefix dtoapi/modern ci
 
 COPY dtoapi ./dtoapi/
+COPY data ./data/
 
 CMD ["npm", "--prefix", "dtoapi/modern", "run", "test:db"]

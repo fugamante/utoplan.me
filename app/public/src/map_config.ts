@@ -15,7 +15,18 @@ export interface UtoplanWindow {
 }
 
 export interface UniversityPayload {
+  meta?: {
+    coverage?: UniversityCoverage;
+  };
   data?: UniversityRecord[];
+}
+
+export interface UniversityCoverage {
+  status?: string;
+  coverageLabel?: string;
+  reviewedCacheRows?: number;
+  excludedRows?: number;
+  limitations?: string[];
 }
 
 export interface UniversityRecord {
@@ -27,6 +38,14 @@ export interface UniversityRecord {
 export interface NormalizedUniversity {
   title: string;
   position: [number, number];
+}
+
+export interface NormalizedUniversityCoverage {
+  status: "partial";
+  label: string;
+  reviewedCacheRows: number;
+  excludedRows: number;
+  limitation: string;
 }
 
 export const DEFAULT_MAP_CONFIG: MapConfig = {
@@ -58,4 +77,28 @@ export function normalizeUniversity(university: UniversityRecord): NormalizedUni
 
 export function normalizeUniversities(payload: UniversityPayload): NormalizedUniversity[] {
   return (payload.data || []).map(normalizeUniversity);
+}
+
+export function normalizeUniversityCoverage(payload: UniversityPayload): NormalizedUniversityCoverage | null {
+  const coverage = payload.meta ? payload.meta.coverage : null;
+
+  if (
+    !coverage ||
+    coverage.status !== "partial" ||
+    typeof coverage.coverageLabel !== "string" ||
+    typeof coverage.reviewedCacheRows !== "number" ||
+    typeof coverage.excludedRows !== "number" ||
+    !Array.isArray(coverage.limitations) ||
+    typeof coverage.limitations[0] !== "string"
+  ) {
+    return null;
+  }
+
+  return {
+    status: "partial",
+    label: coverage.coverageLabel,
+    reviewedCacheRows: coverage.reviewedCacheRows,
+    excludedRows: coverage.excludedRows,
+    limitation: coverage.limitations[0]
+  };
 }

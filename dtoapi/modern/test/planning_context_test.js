@@ -42,6 +42,12 @@ assert.strictEqual(detail.municipality.label, 'Aguada');
 assert(Array.isArray(detail.cbpFacts));
 assert(detail.cbpFacts.length >= 1);
 assert.strictEqual(detail.cbpFacts[0].naicsTitle, 'Full-Service Restaurants');
+assert(detail.sourceProvenance, 'detail should include source provenance');
+assert.strictEqual(detail.sourceProvenance.sourceCount, detail.sourceProvenance.sources.length);
+assert(detail.sourceProvenance.sourceCount >= 1);
+assert.strictEqual(detail.sourceProvenance.sources[0].sourceId, 'datospr-cbp-2014-municipios');
+assert.strictEqual(detail.sourceProvenance.sources[0].publisher, 'U.S. Census Bureau');
+assert.strictEqual(detail.sourceProvenance.sources[0].legacySchemaCoverage.county, 'exact');
 
 const missing = planningContext.findDetail('missing-fixture');
 assert.strictEqual(missing, null);

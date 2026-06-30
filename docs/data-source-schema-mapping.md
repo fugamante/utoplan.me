@@ -111,7 +111,7 @@ Legacy columns: `id`, `title`, `address`, `desc`, `lat`, `long`, `created_at`,
 | `id` | `generated` | derived | Generated at import time. |
 | `title` | `Nombre de la Institución` | exact | Institution name field is present. |
 | `address` | `Dirección Física`, `Dirección Física 2`, `Pueblo` | derived | Deterministic concatenation is possible. |
-| `desc` | `Unidad Académica`, `Principal Ejecutivo` | derived | Approved transform: join present fields as labeled text in source order, e.g. `Academic unit: <value>; Principal executive: <value>`. |
+| `desc` | `Unidad Académica` | derived | Approved operational transform: emit non-personal academic-unit text only, e.g. `Academic unit: <value>`. Principal-executive names and contact fields are excluded from `data/unis/partial-source-fields.json` and generated output. The operational partial slice reads only `data/unis/partial-source-fields.json`, which must match the 4 accepted cache-backed rows. |
 | `lat` | `Dirección Física`, `Dirección Física 2`, `Pueblo` | derived | Approved transform: build a normalized Puerto Rico single-line address and derive latitude from reviewed Census geocoder response field `y`. |
 | `long` | `Dirección Física`, `Dirección Física 2`, `Pueblo` | derived | Approved transform: build a normalized Puerto Rico single-line address and derive longitude from reviewed Census geocoder response field `x`. |
 | `created_at` | `generated` | derived | Generated at import time. |
@@ -119,11 +119,11 @@ Legacy columns: `id`, `title`, `address`, `desc`, `lat`, `long`, `created_at`,
 
 ### Registered `unis` Corroboration Sources
 
-The stronger `unis` institution-authority stack now has two registered Puerto
-Rico-filtered corroboration sources. They do not replace the Datos.PR row
-source and they do not justify direct import on their own, but they do provide
-field-level evidence for preserving real-institution identity decisions before
-more non-exact alias/campus promotion work proceeds.
+The stronger `unis` institution-authority stack now has registered identity,
+accreditation, and licensure corroboration sources. They do not replace the
+Datos.PR row source and they do not justify direct import on their own, but
+they do provide field-level evidence for preserving real-institution identity
+decisions before more non-exact alias/campus promotion work proceeds.
 
 #### nces-college-navigator-puerto-rico
 
@@ -147,6 +147,17 @@ Available corroboration evidence against preserved legacy columns:
 | `desc` | none | Accreditation status does not replace the preserved legacy `desc` transform. |
 | `lat` / `long` | none | DAPIP is not the approved coordinate authority in this path. Coordinates remain tied to the reviewed Census geocoder cache. |
 
+#### prdos-orlie-jip-postsecondary-listing
+
+Available corroboration evidence against preserved legacy columns:
+
+| Legacy column | Evidence role | Notes |
+| --- | --- | --- |
+| `title` | corroborates | Official Puerto Rico ORLIE/JIP postsecondary listing surface can corroborate that an institution is licensed or visible in the Puerto Rico postsecondary licensing context. |
+| `address` | operator-reviewed | The bounded Power BI query contract is checked in for the five-row ORLIE/JIP review, but visible location fields remain corroboration context only unless separately reviewed in the public-address artifact. |
+| `desc` | none | Licensure visibility does not replace the preserved legacy `desc` transform. |
+| `lat` / `long` | none | ORLIE/JIP is not the approved coordinate authority in this path. Coordinates remain tied to the reviewed Census geocoder cache. |
+
 ## Blocking Notes
 
 - `cbps`: the `total_indus -> emp` transform and the `cnaic_name` auxiliary
@@ -157,16 +168,27 @@ Available corroboration evidence against preserved legacy columns:
   `docs/unis-geocoding-policy.md`, with checked-in cache storage at
   `data/geocoding/unis-census-geocoder-cache.json` and paired quarantine
   storage at `data/geocoding/unis-import-quarantine.json`. `unis` import
-  readiness must remain blocked until the institution-authority stack keeps the
-  registered NCES identity corroboration and U.S. Department of Education
-  accreditation corroboration sources in place beyond the current
-  Datos.PR-plus-single-audit baseline, the reviewed Census cache contains
-  Puerto Rico matches for the reviewed approved rows, the quarantine artifact
-  records the remaining excluded rows, and the stricter 11-of-57 IPEDS
-  exact-match baseline at `data/unis/ipeds-geocode-audit.json` stays paired
-  with the reviewed alias/campus approval policy in
+  readiness must remain blocked until the institution-authority stack keeps
+  the registered NCES identity corroboration, U.S. Department of Education
+  accreditation corroboration, and Puerto Rico ORLIE/JIP licensure
+  corroboration sources in place beyond the current Datos.PR-plus-single-audit
+  baseline, the reviewed Census cache contains Puerto Rico matches for the
+  subset of approved alias/campus rows accepted by the pinned Census geocoder,
+  the quarantine artifact records approved rows without Census matches plus
+  identity-excluded rows, and the stricter 11-of-57 IPEDS exact-match baseline
+  at `data/unis/ipeds-geocode-audit.json` stays paired with the reviewed
+  alias/campus approval policy in
   `docs/unis-alias-campus-match-policy.md` and the row-level decision artifact
-  `data/unis/ipeds-alias-campus-review.json`.
+  `data/unis/ipeds-alias-campus-review.json`. The current boundary decision is
+  recorded in `data/geocoding/unis-import-boundary-review.json`: partial
+  production-style output is accepted only for the 4 reviewed Census-cache
+  records, while full `unis` readiness remains blocked by the remaining
+  geocoder and identity exclusions. The current identity exclusion contract is
+  `data/unis/identity-review.json`; it records all 27 identity-quarantined rows
+  as reviewed-excluded, including 5 NCES+DAPIP+ORLIE/JIP-corroborated
+  identity/campus candidates backed by `data/unis/orlie-jip-row-review.json`,
+  and 22 rows still without row-level authority corroboration. It records zero
+  identity-promoted, coordinate-eligible, or generated-output-eligible rows.
 - `cbps` fallback API: operator use is blocked until a Census API key source,
   storage path, and rotation policy are recorded.
 - `cdepts`, `businesses`, and `grade_cs` remain blocked in the source registry

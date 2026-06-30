@@ -98,6 +98,24 @@ async function main() {
       limitations: [
         'Descriptive planning context only.'
       ],
+      sourceProvenance: {
+        sourceCount: 1,
+        sources: [{
+          sourceId: 'datospr-cbp-2014-municipios',
+          publisher: 'U.S. Census Bureau',
+          portal: 'Datos.PR',
+          license: 'Creative Commons Attribution',
+          retrievedAt: '2026-05-24',
+          targetTables: [
+            'cbps',
+            'muns'
+          ],
+          legacySchemaCoverage: {
+            cnaic: 'exact',
+            county: 'exact'
+          }
+        }]
+      },
       unresolvedQuestions: [
         'What canonical display-name source should be used?'
       ],
@@ -116,6 +134,8 @@ async function main() {
   assert.strictEqual(detail.cbpFacts[0].naicsTitle, 'Residential Remodelers');
   assert.strictEqual(detail.cbpFacts[0].display.annualPayroll, 'masked (disclosure-limited)');
   assert.strictEqual(detail.cbpFacts[0].display.employment, 'masked (disclosure-limited)');
+  assert.strictEqual(detail.sourceProvenance.sourceCount, 1);
+  assert.strictEqual(detail.sourceProvenance.sources[0].sourceId, 'datospr-cbp-2014-municipios');
 
   var rendered = {
     status: '',
@@ -197,8 +217,8 @@ async function main() {
     detail: detail
   });
 
-  assert.strictEqual(rendered.detailStatus, 'Descriptive detail only (confidence, limitations, unresolved questions).');
-  assert.strictEqual(rendered.detailListCount, 4);
+  assert.strictEqual(rendered.detailStatus, 'Descriptive detail only (confidence, limitations, provenance, unresolved questions).');
+  assert.strictEqual(rendered.detailListCount, 5);
 }
 
 main().catch(function(error) {
