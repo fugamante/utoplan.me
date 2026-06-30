@@ -25,8 +25,88 @@
 - `/readyz` now verifies the `baseline-read-v1` database schema contract before the API is marked ready.
 - `db/migrations/` and `docs/database-migrations.md` now define the migration artifact format and production release checklist.
 - `db/migrations/202605211200_baseline_read_v1.md` records the existing read schema as the initial production reference.
+- `docs/data-provenance.md` records the current evidence for original hackathon data sources and tracks the unresolved organizer-provided dataset provenance gap.
+- `docs/data-intake.md` and `data/sources/puerto-rico.json` define the Puerto Rico-only source intake contract for future data replacement work.
+- `docs/data-source-schema-mapping.md` now maps the registered Puerto Rico
+  `cbps` and `unis` candidates to the preserved legacy read-schema columns in
+  `dtoapi/modern/src/resource_contract.ts` and
+  `db/migrations/202605211200_baseline_read_v1.md`.
+- The Puerto Rico source registry now records machine-readable
+  `legacySchemaMap` coverage and `importReadiness` blockers for active mapped
+  tables so import work can distinguish accepted transforms from unresolved
+  source gaps and operator decisions.
+- The approved `cbps.cnaic_name` import join now uses the checked-in
+  `data/naics/cbp-naics-titles.json` Census title registry for the full
+  registered Puerto Rico CBP code set, so the municipality-level `cbps`
+  candidate is import-ready without a live Census API key.
+- The `unis` higher-ed replacement candidate now treats the approved Census
+  geocoder cache, checked-in quarantine artifact, and accepted partial import
+  boundary as the authoritative import gate; production-style output is limited
+  to reviewed Census-cache-backed rows until coverage changes.
+- The reviewed Census geocoder cache now contains 4 Puerto Rico matches from
+  the 19 approved alias/campus rows, while 15 approved rows without Census
+  matches and the 27 identity-quarantined rows remain excluded through the
+  quarantine artifact.
+- The `unis` import boundary review now records the MAX decision board in
+  `data/geocoding/unis-import-boundary-review.json`: partial import from the 4
+  cache-backed rows is accepted with explicit API/UI coverage language, while
+  the 42 reviewed exclusions remain outside production-style output.
+- The accepted partial `unis` boundary now has a reproducible generated slice:
+  `node scripts/build_unis_slice.js` writes
+  `data/generated/unis-partial-import.json` and
+  `docker/postgres/002_unis_partial_seed.sql`, and the seeded modern DB reads
+  those 4 reviewed rows instead of placeholder university data.
+- The generated 4-row `unis` slice now also populates legacy `desc` from
+  non-personal fields in the checked-in `data/unis/partial-source-fields.json`
+  artifact, which is machine-checked to match only the accepted
+  Census-cache-backed rows.
+- The `unis` path now also records stronger federal corroboration candidates
+  for institution identity and accreditation so real Puerto Rico institutions
+  are not screened only through the current single auxiliary audit method.
+- The `unis` authority stack now also registers the Puerto Rico Department of
+  State ORLIE/JIP postsecondary listing as a licensure corroboration surface,
+  while documenting that its public Power BI listing is not yet a verified
+  stable bulk export or direct `unis` row source.
+- `docs/unis-alias-campus-match-policy.md` and
+  `data/unis/ipeds-alias-campus-review.json` now define the reviewed
+  alias/campus approval gate for unmatched `unis` rows so geocode-cache work
+  can proceed from row-level evidence rather than prose-only operator
+  decisions.
+- `docs/product-scope.md` defines the current product boundary: descriptive Puerto Rico planning context before recommendations, rankings, or automated decisions.
+- `data/mappings/puerto-rico-business-categories.json` defines the first candidate business-category to NAICS crosswalk for source-backed planning context.
+- `npm run test:data-sources` validates that registered import candidates are Puerto Rico-only or explicitly filtered to Puerto Rico.
+- `npm run test:naics-registry` validates the checked-in Census title registry
+  for the registered Puerto Rico CBP code set and the approved
+  `cbps.cnaic_name` auxiliary join path.
+- `npm run test:unis-geocode-audit` validates the checked-in higher-education
+  coordinate audit so `unis` blocker state stays tied to reproducible source
+  evidence.
+- `npm run test:business-categories` validates the candidate category crosswalk and rejects scoring-oriented contract drift.
+- `data/planning-context/mun001_construction.json` defines the first descriptive planning-context fixture for one municipality/category selection with matching CBP facts, confidence labels, and unresolved questions.
+- `data/planning-context/mun003_restaurant.json` adds a second descriptive planning-context fixture for a different municipality/category slice so confidence and unresolved-question patterns can be compared.
+- `data/municipalities/planning-context-municipalities.json` now records source-backed municipality display names for the active planning-context fixture set using the official Puerto Rico municipality boundary dataset from Datos.PR.
+- `npm run test:planning-context` validates the planning-context fixture contract and blocks scoring-oriented drift.
+- The modern API now serves read-only planning-context summaries at `GET /v1/planning-context` and fixture detail at `GET /v1/planning-context/:id`, with explicit descriptive-only guardrails in each response.
+- The first page now reads `GET /v1/planning-context` and renders descriptive municipality/category planning-context options without score/ranking/recommendation language.
+- The first page now requests `GET /v1/planning-context/:id` for the selected planning-context option and surfaces descriptive confidence, limitation, and unresolved-question detail in the same panel.
+- Planning-context summary/detail labels for the active fixture set now resolve against the source-backed municipality registry instead of placeholder `Municipality code ###` strings.
+- The first-page planning-context detail panel now renders disclosure-limited CBP values as masked and rounded/noise-flagged CBP values as approximate so the UI does not imply false precision from `D`/`H` source flags.
+- Planning-context CBP facts for the active fixture set now resolve deterministic source-backed `naicsTitle` labels from a Census-backed registry, and the first-page detail panel renders those labels instead of code-only fact headers.
+- The planning-context detail API now derives a `sourceProvenance` view from
+  fixture `sourceMetadata`, and the first-page detail panel renders source
+  publisher, portal, source id, and retrieval date so limitations and facts are
+  visibly tied to registered source evidence.
+- `docs/production-readiness-decision-board.md` records the MAX decision to
+  keep the partial `unis` import boundary blocked while using the existing
+  source-backed planning-context state to improve provenance visibility.
+- `npm run test:browser:start-local` now validates the host-native integrated
+  `start:local` path against a seeded `baseline-read-v1` database, including
+  same-origin planning-context summary/detail requests, rendered descriptive
+  detail, and fixture exclusion.
 - `npm run verify:release` wraps app/API deployment verification for release jobs, and Azure validates the wrapper in sample mode without production secrets.
+- `npm run verify:release-smoke` checks deployed app `/healthz`, public `/v1/unis`, and optional API `/readyz` from configured release URLs.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
+- `docs/standards/` now defines the active IEEE 730, 828, 829, 830, 1016, 1012, and 1058 standards corpus, with paired audit guides for keeping quality, configuration, test, requirements, design, V&V, and project-management controls current during ongoing modernization.
 
 ## Target Outcomes
 
@@ -71,6 +151,7 @@ Exit criteria:
 - Stabilize the legacy API test suite under the selected compatibility runtime. Status: complete; behavior was captured before the Nodal runtime was removed from the normal dependency graph.
 - Add smoke tests for the public read endpoints. Status: complete; database-free root, route, CORS, gzip behavior, and seeded DB endpoints are covered.
 - Document database requirements and seed/reset steps. Status: complete; Docker Compose provides a disposable Postgres test database with deterministic seed data.
+- Document original data provenance before treating seeded or recovered data as production data. Status: in progress; `docs/data-provenance.md` records verified old-branch evidence, while `docs/data-intake.md` and `data/sources/puerto-rico.json` constrain replacement candidates to Puerto Rico-only sources.
 - Record runtime compatibility constraints. Status: complete; the Node 8/Nodal compatibility path has been retired after seeded DB read behavior moved to the modern API.
 - Isolate externally observable endpoint behavior before replacement. Status: complete via API contract tests.
 
@@ -140,4 +221,13 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Continue hardening the production path by opening a focused PR for the release preflight wrapper and validating Azure before merge.
+Use `data/unis/identity-review.json` and
+`data/unis/orlie-jip-row-review.json` to continue the narrow review for the 5
+NCES+DAPIP+ORLIE/JIP-corroborated identity-quarantined rows by determining
+whether any row can receive accepted alias/campus and reviewed public-address
+evidence without guessing. Keep `data/geocoding/unis-address-verification.json`
+as the current zero-promotion address baseline, keep API/UI coverage language
+visible, and do not expand the 4-row generated slice without updating the
+identity review, address review, cache, quarantine, boundary artifact,
+registry, generated outputs, and tests
+together.

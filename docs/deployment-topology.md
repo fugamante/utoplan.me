@@ -15,6 +15,12 @@ Browser -> app:8080 -> static assets
 
 The browser should only need the app origin. The static app receives `UTOPLAN_API_ORIGIN=http://api:3001`, so `/v1/unis` remains same-origin in browser code while the server-side proxy forwards the request to the API service.
 
+Optional public-consumer flow:
+
+```text
+External client -> api:<public-port> -> PostgreSQL
+```
+
 ## Compose Baseline
 
 `docker-compose.integrated.yml` defines the app/API topology without bundling a production database. Provide the database connection through environment variables:
@@ -30,9 +36,26 @@ docker compose -f docker-compose.integrated.yml up --build
 
 The app is exposed on `http://127.0.0.1:8080` by default. The API is only exposed inside the Compose network.
 
+To host-expose the API for external consumers, add the public override:
+
+```sh
+docker compose \
+  -f docker-compose.integrated.yml \
+  -f docker-compose.public-api.yml \
+  up --build
+```
+
+`docker-compose.public-api.yml` publishes API port `3001` as
+`${UTOPLAN_API_BIND:-0.0.0.0}:${UTOPLAN_API_HOST_PORT:-3001}`.
+Set `UTOPLAN_API_BIND=127.0.0.1` when host-local only exposure is required.
+
 Both services expose `/healthz` for shallow process health. The API also exposes `/readyz`, which checks database reachability. The Compose baseline waits for API readiness before starting the app and marks the app healthy only after its own `/healthz` responds.
 
 The API container fails fast in production when neither `DATABASE_URL` nor `DATABASE_HOST`, `DATABASE_USER`, and `DATABASE_DB` are configured.
+
+When API exposure is public, deployment configuration must explicitly declare
+`UTOPLAN_API_EXPOSURE=public` and provide `UTOPLAN_PUBLIC_API_URL` so release
+verification treats that exposure as intentional.
 
 Use `docs/production-deployment.md` for the production operator runbook, including secret configuration, release checks, migration expectations, and rollback triggers.
 

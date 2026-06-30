@@ -134,8 +134,8 @@ async function main() {
   assert.strictEqual(response.statusCode, 200, 'proxied modern API request should return HTTP 200');
   assert.strictEqual(response.headers['x-powered-by'], 'utoplan-modern-api');
   assert.strictEqual(body.meta.error, null);
-  assert.strictEqual(body.meta.count, 1);
-  assert.strictEqual(body.data[0].title, 'Contract University');
+  assert.strictEqual(body.meta.count, 4);
+  assert.strictEqual(body.data[0].title, 'Atlantic University College');
   assert.notStrictEqual(body.data[0].title, 'University of Puerto Rico');
 }
 

@@ -1,0 +1,460 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "datospr-higher-ed-directory-2017-18",
+  "auxiliarySourceId": "nces-ipeds-postsecondary-2009",
+  "policyDocPath": "docs/unis-alias-campus-match-policy.md",
+  "status": "reviewed",
+  "reviewedAt": "2026-06-11",
+  "summary": {
+    "approvedMatchCount": 19,
+    "quarantinedRowCount": 27
+  },
+  "approvedMatches": [
+    {
+      "directoryInstitution": "Atlantic University College",
+      "directoryMunicipality": "GUAYNABO",
+      "directoryAddress": "Calle Colton #9",
+      "auxiliaryInstitution": "Atlantic College",
+      "auxiliaryMunicipality": "Guaynabo",
+      "auxiliaryUnitid": "241216",
+      "decisionType": "approved-alias",
+      "evidenceSummary": "Exact street-address match at Colton Street #9 in Guaynabo; name difference is a college-vs-university alias.",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Caribbean University",
+      "directoryMunicipality": "BAYAMON",
+      "directoryAddress": "Carr 167 km 21.2, Ext Forest Hills",
+      "auxiliaryInstitution": "Caribbean University-Bayamon",
+      "auxiliaryMunicipality": "Bayamon",
+      "auxiliaryUnitid": "241377",
+      "decisionType": "approved-campus",
+      "evidenceSummary": "Exact Carr. 167 Km. 21.2 address match in Bayamon; auxiliary row names the Bayamon campus explicitly.",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Columbia Central University",
+      "directoryMunicipality": "CAGUAS",
+      "directoryAddress": "Carr. 183 Km. 1.7, Salida de Caguas hacia San Lorenzo",
+      "auxiliaryInstitution": "Columbia Centro Universitario",
+      "auxiliaryMunicipality": "Caguas",
+      "auxiliaryUnitid": "241304",
+      "decisionType": "approved-alias",
+      "evidenceSummary": "Exact Carr. 183 Km. 1.7 address match in Caguas; English/Spanish institution-name variant only.",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Dewey University",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Ave. Barbosa #427",
+      "auxiliaryInstitution": "John Dewey College-University Division",
+      "auxiliaryMunicipality": "Hato Rey",
+      "auxiliaryUnitid": "443562",
+      "decisionType": "approved-alias",
+      "evidenceSummary": "Exact Barbosa Avenue #427 address match in Hato Rey; auxiliary row captures the university-division naming used by the Dewey brand.",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "EDP Universityof Puerto Rico",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "560 Ave. Ponce de León",
+      "auxiliaryInstitution": "EDP College of Puerto Rico Inc",
+      "auxiliaryMunicipality": "San Juan",
+      "auxiliaryUnitid": "243832",
+      "decisionType": "approved-alias",
+      "evidenceSummary": "Exact 560 Ponce de Leon Avenue address match in San Juan; institution name changed from college to university wording.",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Educational Technical College",
+      "directoryMunicipality": "BAYAMON",
+      "directoryAddress": "1685 Carr. #2 Km. 11.2",
+      "auxiliaryInstitution": "Educational Technical College-Bayamon",
+      "auxiliaryMunicipality": "Bayamon",
+      "auxiliaryUnitid": "240985",
+      "decisionType": "approved-campus",
+      "evidenceSummary": "Exact Carr. #2 Km. 11.2 address match in Bayamon; auxiliary row names the Bayamon campus explicitly.",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Escuela de Artes Plásticas y Diseño de Puerto Rico",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Campos del Morro, Bo. Ballajá",
+      "auxiliaryInstitution": "Escuela de Artes Plasticas de Puerto Rico",
+      "auxiliaryMunicipality": "San Juan",
+      "auxiliaryUnitid": "241951",
+      "decisionType": "approved-alias",
+      "evidenceSummary": "Same Campo del Morro/Ballaja campus in San Juan; name difference adds later design wording and accent changes only.",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Escuela de Medicina San Juan Bautista",
+      "directoryMunicipality": "CAGUAS",
+      "directoryAddress": "Turabo Gardens Road 172 Caguas to Cidra",
+      "auxiliaryInstitution": "San Juan Bautista School of Medicine",
+      "auxiliaryMunicipality": "Caguas",
+      "auxiliaryUnitid": "430670",
+      "decisionType": "approved-alias",
+      "evidenceSummary": "Same Turabo Gardens Road / Carretera 172 campus in Caguas; name difference is Spanish/English ordering only.",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Huertas College Caguas",
+      "directoryMunicipality": "CAGUAS",
+      "directoryAddress": "Calle Héctor R. Bunker #41",
+      "auxiliaryInstitution": "Huertas Junior College",
+      "auxiliaryMunicipality": "Caguas",
+      "auxiliaryUnitid": "242112",
+      "decisionType": "approved-alias",
+      "evidenceSummary": "Exact Hector R. Bunker #41 address match in Caguas; institution name difference reflects later college branding.",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Lomalinda University",
+      "directoryMunicipality": "MAYAGUEZ",
+      "directoryAddress": "(Universidad Adventista de las Antillas) Carr. #106, Km. 2.2 Interior",
+      "auxiliaryInstitution": "Universidad Adventista de las Antillas",
+      "auxiliaryMunicipality": "Mayaguez",
+      "auxiliaryUnitid": "241191",
+      "decisionType": "approved-alias",
+      "evidenceSummary": "Directory row embeds the auxiliary institution name in parentheses and matches the Carr. 106 Km. 2.2 address in Mayaguez.",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Mech Tech College",
+      "directoryMunicipality": "CAGUAS",
+      "directoryAddress": "Parque Industrial Oeste, Calle B #39-40",
+      "auxiliaryInstitution": "Mech-Tech College LLC",
+      "auxiliaryMunicipality": "Caguas",
+      "auxiliaryUnitid": "414461",
+      "decisionType": "approved-alias",
+      "evidenceSummary": "Exact Calle B #39-40 / B St. 39-40 industrial-park address match in Caguas; punctuation and LLC suffix only differ.",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "National University College",
+      "directoryMunicipality": "BAYAMON",
+      "directoryAddress": "Carr. #2, Km. 11.2, Edificio National College Plaza,Edif. #1660",
+      "auxiliaryInstitution": "National College of Business and Technology-Bayamon",
+      "auxiliaryMunicipality": "Bayamón",
+      "auxiliaryUnitid": "242972",
+      "decisionType": "approved-campus",
+      "evidenceSummary": "Same Edificio National College Plaza address on Carr. #2 in Bayamon; auxiliary row names the Bayamon campus explicitly.",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Ponce Health Sciences University",
+      "directoryMunicipality": "Ponce",
+      "directoryAddress": "388 Zona Industrial Reparada 2",
+      "auxiliaryInstitution": "Ponce School of Medicine",
+      "auxiliaryMunicipality": "Ponce",
+      "auxiliaryUnitid": "243081",
+      "decisionType": "approved-alias",
+      "evidenceSummary": "Both rows point to the Reparada industrial-zone campus in Ponce; institution appears under its earlier medical-school name in the auxiliary source.",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Pontificia Universidad Católica de PR",
+      "directoryMunicipality": "PONCE",
+      "directoryAddress": "2250 Boulevard Luis A. Ferré-Aguayo",
+      "auxiliaryInstitution": "Pontifical Catholic University of Puerto Rico-Ponce",
+      "auxiliaryMunicipality": "Ponce",
+      "auxiliaryUnitid": "241410",
+      "decisionType": "approved-alias",
+      "evidenceSummary": "Institution name is a direct Spanish/English equivalent and both rows refer to the Ponce campus of the same university.",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Trinity College",
+      "directoryMunicipality": "PONCE",
+      "directoryAddress": "#834 Avenida Hostos",
+      "auxiliaryInstitution": "Trinity College of Puerto Rico",
+      "auxiliaryMunicipality": "Ponce",
+      "auxiliaryUnitid": "431929",
+      "decisionType": "approved-alias",
+      "evidenceSummary": "Exact #834 Avenida Hostos address match in Ponce; auxiliary row adds the Puerto Rico qualifier only.",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Universidad Central de Bayamón",
+      "directoryMunicipality": "BAYAMON",
+      "directoryAddress": "Avenida Zaya Verde Reparto la Milagrosa, Hato Tejas Bayamón",
+      "auxiliaryInstitution": "Bayamon Central University",
+      "auxiliaryMunicipality": "Bayamon",
+      "auxiliaryUnitid": "241225",
+      "decisionType": "approved-alias",
+      "evidenceSummary": "Same Avenida Zaya Verde / La Milagrosa / Hato Tejas campus in Bayamon; name difference is a direct Spanish/English institution variant.",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Universidad Metropolitana",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "1399 Ave. Ana G. Méndez, Carr. 176, Km. 0.03",
+      "auxiliaryInstitution": "Universidad Metropolitana",
+      "auxiliaryMunicipality": "Cupey",
+      "auxiliaryUnitid": "241739",
+      "decisionType": "approved-campus",
+      "evidenceSummary": "Same Avenida Ana G. Mendez campus; auxiliary city label Cupey is a San Juan sector rather than a different municipality.",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Universidad Politécnica de Puerto Rico",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Ave. Ponce de León 377, Hato Rey",
+      "auxiliaryInstitution": "Universidad Politecnica de Puerto Rico",
+      "auxiliaryMunicipality": "Hato Rey",
+      "auxiliaryUnitid": "243577",
+      "decisionType": "approved-campus",
+      "evidenceSummary": "Exact 377 Ponce de Leon Avenue campus match; auxiliary city label Hato Rey is a San Juan sector rather than a different municipality.",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "University of Phoenix",
+      "directoryMunicipality": "GUAYNABO",
+      "directoryAddress": "Santander Tower at San Patricio, Calle Tabonuco B-7, suite 400",
+      "auxiliaryInstitution": "University of Phoenix-Puerto Rico Campus",
+      "auxiliaryMunicipality": "Guaynabo",
+      "auxiliaryUnitid": "382063",
+      "decisionType": "approved-campus",
+      "evidenceSummary": "Same Santander Tower at San Patricio campus in Guaynabo; auxiliary row adds the Puerto Rico campus qualifier.",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    }
+  ],
+  "quarantinedRows": [
+    {
+      "directoryInstitution": "Cambridge College",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "268 Ponce de Leon Avenue, Suite 1400",
+      "quarantineReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Centro de Estudios Avanzados de PR y el Caribe",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Calle del Cristo #52 Viejo San Juan",
+      "quarantineReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Colegio de Cinematografía, Artes y Televisión",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Ave. Gautier Benitez Esq. Monsenñor, Esq. Monseños Berrios",
+      "quarantineReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Conservatorio de Música de Puerto Rico",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "951 Ave. Ponce de León",
+      "quarantineReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Dublin Institute of Technology",
+      "directoryMunicipality": "GUAYNABO",
+      "directoryAddress": "Metro Parque #7, Metro Office Park Suite 204",
+      "quarantineReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Escuela de Enfermeros/as Anestesistas de PR",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "728 Avda. Ponce de León, Oficina 201, Hato Rey",
+      "quarantineReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Herbert Fletcher University",
+      "directoryMunicipality": "MAYAGUEZ",
+      "directoryAddress": "Carr. #2 Km. 158.2 Avenida Hosto #74 Bo. Guanajibo",
+      "quarantineReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Industrial Biotechnological Institute IBI",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Carretera 871 Barrio Arenas",
+      "quarantineReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Instituto Comercial de PR Junior College",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Munoz Rivera 558, Hato Rey",
+      "quarantineReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Instituto de Banca y Comercio",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Ave. Ponce de Leon # 61, Barrio Hato Rey",
+      "quarantineReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Instituto para el Desarrollo Humano",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Roosevelt 242 Esq Calle Unión Piso 4, Hato Rey",
+      "quarantineReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Instituto Sexológico, Educativo y Psicológico de PR",
+      "directoryMunicipality": "CAROLINA",
+      "directoryAddress": "Avda. Sánchez Osorio 5H-5, Villa Fontana",
+      "quarantineReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Instituto Tecnológico de Puerto Rico",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Calle Federico Costa #150, Urb. Industrial Tres Monjitas, Hato Rey",
+      "quarantineReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Monteclaro: Escuela de Hotelería y Artes Culinarias",
+      "directoryMunicipality": "PALMER",
+      "directoryAddress": "Carretera 955 km 4.8",
+      "quarantineReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Nova Southeastern University",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "997 Calle San Roberto, Professional Offices Park IV",
+      "quarantineReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Ponce Paramedical College",
+      "directoryMunicipality": "Coto Laurel",
+      "directoryAddress": "Bo. Sábalos #410 Carretera #2",
+      "quarantineReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Rutgers University",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Calle Gonzalez #1012, Urb. Santa Rita, Río Piedras",
+      "quarantineReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Universal Technology College",
+      "directoryMunicipality": "CAMUY",
+      "directoryAddress": "Calle Muñoz Rivera #167",
+      "quarantineReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Universidad Ana G. Méndez",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Avda. Ponce de León #1552, Urb. Reparto Seín, Sector El Cinco, Cupey",
+      "quarantineReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Universidad Carlos Albizu",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "151 Calle Tanca",
+      "quarantineReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Universidad Complutense de Madrid",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "(Universidad Interamericana, Escuela de Derecho), Calle Federico Costa #84, Ubr. Industrial Tres Monjitas, Hato Rey",
+      "quarantineReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Universidad de Puerto Rico",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Calle Flamboyán, Jardín Botánico Sur, Río Piedras",
+      "quarantineReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Universidad del Sagrado Corazón",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Calle Rosales, Esq. San Antonio, Parada 26 1/2",
+      "quarantineReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Universidad Interamericana de PR",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Calle Galileo Final #399, Urb. Villa Nevares, Río Piedras",
+      "quarantineReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Universidad Internacional Iberoamericana",
+      "directoryMunicipality": "ARECIBO",
+      "directoryAddress": "Carr. 658 Km. 1.3  Bo. Arenalejos Sector Palache",
+      "quarantineReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "Universidad Universal",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Calle Méjico #16, Hato Rey",
+      "quarantineReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    },
+    {
+      "directoryInstitution": "University of Miami",
+      "directoryMunicipality": "GUAYNABO",
+      "directoryAddress": "Carretera 165 #50, Sector Buchanan, Parque Industrial Amelia",
+      "quarantineReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "reviewer": "Modernization Maintainer",
+      "reviewedAt": "2026-06-11"
+    }
+  ]
+}

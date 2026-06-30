@@ -44,7 +44,7 @@ assert.deepStrictEqual(records.payload(null, uni), {
   data: []
 });
 
-assert.deepStrictEqual(records.collectionPayload([{
+const collection = records.collectionPayload([{
   id: 1,
   title: 'Contract University',
   address: '100 Contract Ave',
@@ -52,4 +52,19 @@ assert.deepStrictEqual(records.collectionPayload([{
   lat: 18.42,
   long: -66.06,
   ignored: 'not public'
-}], uni), payload);
+}], uni);
+
+assert.deepStrictEqual(collection.data, payload.data);
+assert.strictEqual(collection.meta.total, 1);
+assert.strictEqual(collection.meta.count, 1);
+assert.strictEqual(collection.meta.offset, 0);
+assert.strictEqual(collection.meta.error, null);
+assert(collection.meta.coverage, 'unis collection should include accepted partial-boundary coverage metadata');
+assert.strictEqual(collection.meta.coverage.status, 'partial');
+assert.strictEqual(collection.meta.coverage.boundaryDecision, 'accept-partial-import');
+assert.strictEqual(collection.meta.coverage.reviewedCacheRows, 4);
+assert.strictEqual(collection.meta.coverage.excludedRows, 42);
+assert(
+  collection.meta.coverage.limitations[0].indexOf('not complete Puerto Rico higher-education coverage') !== -1,
+  'unis collection coverage should state incomplete coverage'
+);

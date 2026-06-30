@@ -57,6 +57,28 @@ async function main() {
   ]);
 
   assert.deepStrictEqual(mapConfig.normalizeUniversities({}), []);
+
+  assert.deepStrictEqual(mapConfig.normalizeUniversityCoverage({
+    meta: {
+      coverage: {
+        status: 'partial',
+        coverageLabel: 'Partial reviewed Census-cache coverage: 4 included rows, 42 reviewed exclusions.',
+        reviewedCacheRows: 4,
+        excludedRows: 42,
+        limitations: [
+          'The /v1/unis collection is not complete Puerto Rico higher-education coverage.'
+        ]
+      }
+    }
+  }), {
+    status: 'partial',
+    label: 'Partial reviewed Census-cache coverage: 4 included rows, 42 reviewed exclusions.',
+    reviewedCacheRows: 4,
+    excludedRows: 42,
+    limitation: 'The /v1/unis collection is not complete Puerto Rico higher-education coverage.'
+  });
+
+  assert.strictEqual(mapConfig.normalizeUniversityCoverage({}), null);
 }
 
 main().catch(function(error) {

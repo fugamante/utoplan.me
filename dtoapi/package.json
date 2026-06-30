@@ -5,9 +5,15 @@
   "author": "mysterious author",
   "main": "modern/lib/server.js",
   "engines": {
-    "node": ">=18"
+    "node": ">=22 <23"
   },
   "scripts": {
+    "verify:node": "node ../scripts/verify_node_runtime.js",
+    "preinstall": "npm run verify:node",
+    "prestart": "npm run verify:node",
+    "prestart:modern": "npm run verify:node",
+    "pretest": "npm run verify:node",
+    "pretest:modern": "npm run verify:node",
     "test": "npm --prefix modern run build && node ./test/modern_root_contract_test.js",
     "test:modern": "npm --prefix modern run build && node ./test/modern_root_contract_test.js",
     "start": "npm --prefix modern run build && node modern/lib/server.js",

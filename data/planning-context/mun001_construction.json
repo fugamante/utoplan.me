@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "scope": "puerto-rico-planning-candidate",
+  "status": "candidate-needs-review",
+  "updatedAt": "2026-05-29",
+  "municipality": {
+    "code": "001",
+    "codeSystem": "fipscty",
+    "label": "Adjuntas",
+    "confidence": "high",
+    "notes": "Display name is mapped from the official Puerto Rico municipality boundary dataset in Datos.PR using countyfp to municipio."
+  },
+  "businessCategory": {
+    "id": "construction-service",
+    "displayName": "Construction service",
+    "naicsYear": 2012,
+    "naicsCodes": [
+      "236118",
+      "238110",
+      "238210",
+      "238990"
+    ],
+    "confidence": "medium",
+    "status": "candidate"
+  },
+  "selection": {
+    "sourceId": "datospr-cbp-2014-municipios",
+    "municipalityCode": "001",
+    "municipalityCodeField": "fipscty",
+    "selectedNaicsCodes": [
+      "236118"
+    ],
+    "matchRule": "exact-naics-and-municipality",
+    "selectionBasis": "Filter municipality-level CBP facts by one category NAICS code and one municipality code."
+  },
+  "cbpFacts": [
+    {
+      "sourceRow": {
+        "fipstate": "72",
+        "fipscty": "1",
+        "naics": "236118",
+        "empflag": "A",
+        "emp_nf": "D",
+        "emp": "0",
+        "qp1_nf": "D",
+        "qp1": "0",
+        "ap_nf": "D",
+        "ap": "0",
+        "est": "2",
+        "censtate": "6",
+        "cencty": "1"
+      },
+      "municipalityCode": "001",
+      "naics": "236118",
+      "naicsTitle": "Residential Remodelers",
+      "establishments": 2,
+      "annualPayroll": 0,
+      "employment": 0,
+      "confidence": "low",
+      "notes": "Payroll and employment values are disclosure-limited in this row and should be interpreted as constrained context."
+    }
+  ],
+  "sourceMetadata": [
+    {
+      "sourceId": "datospr-cbp-2014-municipios",
+      "publisher": "U.S. Census Bureau",
+      "portal": "Datos.PR",
+      "license": "Creative Commons Attribution",
+      "resourceId": "4828e082-6c0d-4d3f-be12-ab6aeb34eb59",
+      "resourceUrl": "https://datos.estadisticas.pr/dataset/b0e448f9-d41a-4064-8536-a1b8b2b9f04b/resource/4828e082-6c0d-4d3f-be12-ab6aeb34eb59/download/cbp14pr_mun.csv",
+      "targetTables": [
+        "cbps",
+        "muns"
+      ],
+      "retrievedAt": "2026-05-24",
+      "legacySchemaCoverage": {
+        "cnaic": "exact",
+        "total_anual": "exact",
+        "num_est": "exact",
+        "county": "exact",
+        "total_indus": "derived",
+        "cnaic_name": "missing"
+      }
+    }
+  ],
+  "confidence": {
+    "category": "medium",
+    "factSelection": "medium",
+    "factValues": "low",
+    "overall": "low",
+    "rationale": [
+      "Category mapping is candidate-grade and requires human review before production use.",
+      "The selected fact row matches municipality code and NAICS code deterministically.",
+      "Disclosure-limited payroll and employment values reduce confidence for planning interpretation."
+    ]
+  },
+  "limitations": [
+    "This fixture is descriptive planning context only and is not a site recommendation.",
+    "The municipality CBP row does not include NAICS title text, so this fixture enriches the fact label from a separate Census-backed NAICS title registry.",
+    "A single row is not enough for demand, viability, profitability, or permitting conclusions."
+  ],
+  "unresolvedQuestions": [
+    "Should the planning-context municipality registry expand to every Puerto Rico fipscty code before additional fixtures are added?",
+    "Should establishment counts inherit a visible qualifier when payroll and employment stay disclosure-limited in the same row?",
+    "Should the NAICS title registry expand to every mapped business-category code before additional fixtures are added?"
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "scope": "puerto-rico-planning-candidate",
+  "status": "candidate-needs-review",
+  "sourceBasis": "Curated product planning categories mapped to 2012 NAICS codes so Puerto Rico County Business Patterns rows can be filtered without creating scores or recommendations.",
+  "updatedAt": "2026-05-26",
+  "rules": {
+    "noScores": true,
+    "noRankings": true,
+    "requiresHumanReviewBeforeProduction": true,
+    "requiresSourceBackedFacts": true
+  },
+  "categories": [
+    {
+      "id": "restaurant-cafe",
+      "displayName": "Restaurant or cafe",
+      "description": "Food service concept for prepared meals, snacks, coffee, or similar customer-facing dining service.",
+      "naicsYear": 2012,
+      "naicsCodes": [
+        "722511",
+        "722513",
+        "722515"
+      ],
+      "assumptions": [
+        "Treats establishments, payroll, and employment as descriptive local context only.",
+        "Does not infer demand, profitability, zoning compatibility, or site suitability."
+      ],
+      "confidence": "medium",
+      "status": "candidate",
+      "notes": "Initial mapping uses common food-service NAICS categories; review before expanding into finer dining formats."
+    },
+    {
+      "id": "small-grocery",
+      "displayName": "Small grocery",
+      "description": "Neighborhood food retail concept for groceries, specialty food, or convenience-oriented food sales.",
+      "naicsYear": 2012,
+      "naicsCodes": [
+        "445110",
+        "445120",
+        "445299"
+      ],
+      "assumptions": [
+        "Treats existing food retail establishments as context, not saturation proof.",
+        "Requires later trade-area, parcel, and licensing checks before operational conclusions."
+      ],
+      "confidence": "medium",
+      "status": "candidate",
+      "notes": "Convenience and specialty food categories are included because small grocery concepts often overlap these local formats."
+    },
+    {
+      "id": "clinic-health-service",
+      "displayName": "Clinic or health service",
+      "description": "Outpatient health-service concept such as ambulatory care, physician office, or diagnostic support.",
+      "naicsYear": 2012,
+      "naicsCodes": [
+        "621111",
+        "621112",
+        "621493",
+        "621511"
+      ],
+      "assumptions": [
+        "Uses CBP data only as a local health-service activity baseline.",
+        "Does not replace licensing, certificate, insurance, or facility compliance review."
+      ],
+      "confidence": "low",
+      "status": "candidate",
+      "notes": "Health-service categories are broad; later product work should split clinical, diagnostic, and specialized service use cases."
+    },
+    {
+      "id": "software-service-office",
+      "displayName": "Software or service office",
+      "description": "Office-based software, digital service, consulting, or professional service concept.",
+      "naicsYear": 2012,
+      "naicsCodes": [
+        "541511",
+        "541512",
+        "541611",
+        "541618"
+      ],
+      "assumptions": [
+        "Treats office-based establishment counts as industry context only.",
+        "Requires later broadband, labor, lease, and customer-market evidence for planning conclusions."
+      ],
+      "confidence": "medium",
+      "status": "candidate",
+      "notes": "Combines software and selected management consulting codes for the first planning slice."
+    },
+    {
+      "id": "lodging-tourism",
+      "displayName": "Lodging or tourism service",
+      "description": "Visitor-facing lodging or tourism support concept.",
+      "naicsYear": 2012,
+      "naicsCodes": [
+        "721110",
+        "721191",
+        "561510",
+        "561520"
+      ],
+      "assumptions": [
+        "Uses establishment and payroll data as descriptive tourism-sector context.",
+        "Does not infer occupancy, visitor demand, permits, short-term-rental legality, or profitability."
+      ],
+      "confidence": "low",
+      "status": "candidate",
+      "notes": "Tourism planning needs later source-backed demand and regulatory data before recommendations."
+    },
+    {
+      "id": "construction-service",
+      "displayName": "Construction service",
+      "description": "Construction, remodeling, specialty trade, or contractor service concept.",
+      "naicsYear": 2012,
+      "naicsCodes": [
+        "236118",
+        "238110",
+        "238210",
+        "238990"
+      ],
+      "assumptions": [
+        "Treats existing contractor establishments as context for local industry presence.",
+        "Does not infer demand, licensing status, procurement access, or disaster-recovery opportunity."
+      ],
+      "confidence": "medium",
+      "status": "candidate",
+      "notes": "Specialty trades are sampled to keep the first crosswalk small."
+    },
+    {
+      "id": "professional-services",
+      "displayName": "Professional services",
+      "description": "Office-based professional service concept such as accounting, legal, design, or administrative consulting.",
+      "naicsYear": 2012,
+      "naicsCodes": [
+        "541110",
+        "541211",
+        "541310",
+        "541990"
+      ],
+      "assumptions": [
+        "Uses CBP facts to show existing professional-service activity by place and industry.",
+        "Does not infer client demand, professional licensure, or market viability."
+      ],
+      "confidence": "medium",
+      "status": "candidate",
+      "notes": "Includes a small set of recognizable professional-service categories for first-pass planning context."
+    },
+    {
+      "id": "education-training",
+      "displayName": "Education or training center",
+      "description": "Private education, tutoring, training, or skill-development concept.",
+      "naicsYear": 2012,
+      "naicsCodes": [
+        "611210",
+        "611310",
+        "611420",
+        "611691"
+      ],
+      "assumptions": [
+        "Treats education establishments and nearby institutions as context only.",
+        "Does not infer enrollment demand, accreditation, workforce outcomes, or regulatory approval."
+      ],
+      "confidence": "low",
+      "status": "candidate",
+      "notes": "Higher education institution data may enrich this category later, but institution presence alone is not a workforce signal."
+    }
+  ]
+}

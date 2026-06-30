@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "datospr-higher-ed-directory-2017-18",
+  "sourceUrl": "https://datos.estadisticas.pr/dataset/directorio-de-instituciones-de-educacion-superior-puerto-rico",
+  "resourceUrl": "https://datos.estadisticas.pr/dataset/ccf64cca-d0d6-4539-a803-70aeba73ea12/resource/818869e2-82c6-4189-bff8-40616e5d3010/download/directorio_de_instituciones_de_educaci_n_superior__puerto_rico__a_o_acad_mico_2017-18.csv",
+  "resourceId": "818869e2-82c6-4189-bff8-40616e5d3010",
+  "reviewedAt": "2026-06-26",
+  "reviewer": "Modernization Maintainer",
+  "scope": "partial-unis-import-source-fields",
+  "importBoundaryArtifactPath": "data/geocoding/unis-import-boundary-review.json",
+  "cacheArtifactPath": "data/geocoding/unis-census-geocoder-cache.json",
+  "includedRows": 4,
+  "fieldRule": "Only the checked-in rows that match the accepted partial Census-cache boundary may contribute non-personal legacy unis detail fields. Principal-executive names and contact fields are intentionally excluded from this artifact and from generated output.",
+  "records": [
+    {
+      "directoryInstitution": "Atlantic University College",
+      "directoryMunicipality": "GUAYNABO",
+      "directoryAddress": "Calle Colton #9",
+      "academicUnit": ""
+    },
+    {
+      "directoryInstitution": "Escuela de Medicina San Juan Bautista",
+      "directoryMunicipality": "CAGUAS",
+      "directoryAddress": "Turabo Gardens Road 172 Caguas to Cidra",
+      "academicUnit": ""
+    },
+    {
+      "directoryInstitution": "Trinity College",
+      "directoryMunicipality": "PONCE",
+      "directoryAddress": "#834 Avenida Hostos",
+      "academicUnit": ""
+    },
+    {
+      "directoryInstitution": "Universidad Politécnica de Puerto Rico",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Ave. Ponce de León 377, Hato Rey",
+      "academicUnit": "San Juan"
+    }
+  ]
+}

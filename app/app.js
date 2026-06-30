@@ -21,6 +21,12 @@ var types = {
   '.txt': 'text/plain; charset=utf-8'
 };
 
+var securityHeaders = {
+  'Referrer-Policy': 'no-referrer',
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY'
+};
+
 function contentType(filePath) {
   return types[path.extname(filePath).toLowerCase()] || 'application/octet-stream';
 }
@@ -48,7 +54,7 @@ function safePath(urlPath) {
 }
 
 function send(response, statusCode, body, headers) {
-  response.writeHead(statusCode, headers || {});
+  response.writeHead(statusCode, Object.assign({}, securityHeaders, headers || {}));
   response.end(body);
 }
 
@@ -140,11 +146,11 @@ function serve(request, response) {
       });
     }
 
-    var headers = {
+    var headers = Object.assign({}, securityHeaders, {
       'Content-Type': contentType(filePath),
       'Content-Length': stats.size,
       'Cache-Control': 'no-cache'
-    };
+    });
 
     if (request.method === 'HEAD') {
       return send(response, 200, '', headers);

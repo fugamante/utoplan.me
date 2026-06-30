@@ -25,3 +25,22 @@ export function normalizeUniversity(university) {
 export function normalizeUniversities(payload) {
     return (payload.data || []).map(normalizeUniversity);
 }
+export function normalizeUniversityCoverage(payload) {
+    const coverage = payload.meta ? payload.meta.coverage : null;
+    if (!coverage ||
+        coverage.status !== "partial" ||
+        typeof coverage.coverageLabel !== "string" ||
+        typeof coverage.reviewedCacheRows !== "number" ||
+        typeof coverage.excludedRows !== "number" ||
+        !Array.isArray(coverage.limitations) ||
+        typeof coverage.limitations[0] !== "string") {
+        return null;
+    }
+    return {
+        status: "partial",
+        label: coverage.coverageLabel,
+        reviewedCacheRows: coverage.reviewedCacheRows,
+        excludedRows: coverage.excludedRows,
+        limitation: coverage.limitations[0]
+    };
+}

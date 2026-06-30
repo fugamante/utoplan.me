@@ -5,6 +5,7 @@ import type {QueryResult} from './db';
 import * as db from './db';
 import * as resourceContract from './resource_contract';
 import * as responseContract from './response_contract';
+import * as unisBoundary from './unis_boundary';
 
 export type FindCallback = (error: Error | null, row: DatabaseRow | null, resource: Resource | null) => void;
 export type ListCallback = (error: Error | null, rows: DatabaseRow[], resource: Resource | null) => void;
@@ -19,8 +20,14 @@ export function collectionPayload(rows: DatabaseRow[], resource: Resource): resp
   const data = rows.map(function(row: DatabaseRow): resourceContract.PublicRecord {
     return resourceContract.serialize(row, resource);
   });
+  const payload = responseContract.payload(data);
+  const coverage = unisBoundary.collectionCoverage(resource.table);
 
-  return responseContract.payload(data);
+  if (coverage) {
+    payload.meta.coverage = coverage;
+  }
+
+  return payload;
 }
 
 export function find(kind: string, id: number, callback: FindCallback): void {

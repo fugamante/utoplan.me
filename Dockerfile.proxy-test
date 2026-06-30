@@ -4,6 +4,8 @@ WORKDIR /workspace
 
 ENV NODE_ENV=test
 
+COPY .node-version ./
+COPY scripts ./scripts/
 COPY dtoapi/modern/package.json dtoapi/modern/package-lock.json ./dtoapi/modern/
 RUN npm --prefix dtoapi/modern ci
 COPY app/package.json app/package-lock.json ./app/
@@ -11,7 +13,7 @@ RUN npm --prefix app ci
 
 COPY app ./app/
 COPY dtoapi ./dtoapi/
-COPY scripts ./scripts/
+COPY data ./data/
 COPY test ./test/
 COPY package.json package-lock.json ./
 

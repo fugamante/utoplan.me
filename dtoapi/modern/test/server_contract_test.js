@@ -14,10 +14,16 @@ const uniCollectionMatch = modernApi.matchCollection('/v1/unis');
 assert(uniCollectionMatch);
 assert.strictEqual(uniCollectionMatch[1], 'unis');
 
+const planningContextRecordMatch = modernApi.matchPlanningContextRecord('/v1/planning-context/mun001_construction');
+assert(planningContextRecordMatch);
+assert.strictEqual(planningContextRecordMatch[1], 'mun001_construction');
+
 assert.strictEqual(modernApi.matchRecord('/v1/unis/not-a-number'), null);
 assert.strictEqual(modernApi.matchRecord('/v1/unknown/1'), null);
 assert.strictEqual(modernApi.matchCollection('/v1/unis/1'), null);
 assert.strictEqual(modernApi.matchCollection('/v1/unknown'), null);
+assert.strictEqual(modernApi.matchPlanningContextRecord('/v1/planning-context/'), null);
+assert.strictEqual(modernApi.matchPlanningContextRecord('/v1/planning-context/invalid/id'), null);
 
 assert.strictEqual(modernApi.acceptsGzip({
   headers: {
@@ -49,6 +55,7 @@ function request(server, path, callback) {
     response.on('end', function() {
       callback(null, {
         statusCode: response.statusCode,
+        headers: response.headers,
         body: Buffer.concat(chunks).toString()
       });
     });
@@ -74,6 +81,9 @@ server.listen(0, '127.0.0.1', function() {
   request(server, '/readyz', function(error, response) {
     assert.ifError(error);
     assert.strictEqual(response.statusCode, 200);
+    assert.strictEqual(response.headers['referrer-policy'], 'no-referrer');
+    assert.strictEqual(response.headers['x-content-type-options'], 'nosniff');
+    assert.strictEqual(response.headers['x-frame-options'], 'DENY');
     assert.strictEqual(JSON.parse(response.body).database, 'ok');
     assert.strictEqual(JSON.parse(response.body).schema, 'ok');
     assert.strictEqual(JSON.parse(response.body).schemaVersion, 'baseline-read-v1');
@@ -86,6 +96,9 @@ server.listen(0, '127.0.0.1', function() {
     request(server, '/readyz', function(failedError, failedResponse) {
       assert.ifError(failedError);
       assert.strictEqual(failedResponse.statusCode, 503);
+      assert.strictEqual(failedResponse.headers['referrer-policy'], 'no-referrer');
+      assert.strictEqual(failedResponse.headers['x-content-type-options'], 'nosniff');
+      assert.strictEqual(failedResponse.headers['x-frame-options'], 'DENY');
       assert.strictEqual(JSON.parse(failedResponse.body).database, 'unavailable');
       assert.strictEqual(JSON.parse(failedResponse.body).schema, 'unknown');
 

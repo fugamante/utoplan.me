@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-23",
+  "buildCommand": "node scripts/build_unis_slice.js",
+  "sourceId": "datospr-higher-ed-directory-2017-18",
+  "status": "partial",
+  "productBoundary": "descriptive-only",
+  "coverageLabel": "Partial reviewed Census-cache coverage: 4 included rows, 42 reviewed exclusions.",
+  "includedRows": 4,
+  "excludedRows": 42,
+  "cacheArtifactPath": "data/geocoding/unis-census-geocoder-cache.json",
+  "quarantineArtifactPath": "data/geocoding/unis-import-quarantine.json",
+  "importBoundaryArtifactPath": "data/geocoding/unis-import-boundary-review.json",
+  "sourceFieldsArtifactPath": "data/unis/partial-source-fields.json",
+  "limitations": [
+    "The /v1/unis collection may contain only the reviewed Census-cache-backed subset from the accepted partial import boundary; it is not complete Puerto Rico higher-education coverage.",
+    "Excluded rows remain outside production-style unis output until corrected address evidence or row-level authority review changes their status."
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "title": "Atlantic University College",
+      "address": "Calle Colton #9, GUAYNABO, Puerto Rico",
+      "desc": null,
+      "lat": 18.357558765016,
+      "long": -66.111368701553,
+      "created_at": "2026-06-23",
+      "updated_at": "2026-06-23",
+      "provenance": {
+        "sourceId": "datospr-higher-ed-directory-2017-18",
+        "directoryInstitution": "Atlantic University College",
+        "directoryMunicipality": "GUAYNABO",
+        "directoryAddress": "Calle Colton #9",
+        "auxiliaryInstitution": "Atlantic College",
+        "auxiliaryUnitid": "241216",
+        "normalizedAddress": "Calle Colton #9, GUAYNABO, Puerto Rico",
+        "matchedAddress": "9 CLL COLTON, GUAYNABO, PR, 00969",
+        "provider": "U.S. Census Geocoding Services API",
+        "benchmark": "Public_AR_Census2020",
+        "vintage": "Census2020_Census2020",
+        "countyGEOID": "72061",
+        "countyName": "Guaynabo Municipio",
+        "reviewStatus": "reviewed",
+        "reviewedAt": "2026-06-23",
+        "reviewer": "Modernization Maintainer"
+      },
+      "sourceFields": {
+        "artifactPath": "data/unis/partial-source-fields.json",
+        "academicUnit": ""
+      }
+    },
+    {
+      "id": 2,
+      "title": "Escuela de Medicina San Juan Bautista",
+      "address": "Luis A. Ferre Highway Exit #21, Road 172 Caguas to Cidra, Turabo Gardens, Caguas, PR 00725",
+      "desc": null,
+      "lat": 18.207869913262,
+      "long": -66.10592814177,
+      "created_at": "2026-06-23",
+      "updated_at": "2026-06-23",
+      "provenance": {
+        "sourceId": "datospr-higher-ed-directory-2017-18",
+        "directoryInstitution": "Escuela de Medicina San Juan Bautista",
+        "directoryMunicipality": "CAGUAS",
+        "directoryAddress": "Turabo Gardens Road 172 Caguas to Cidra",
+        "auxiliaryInstitution": "San Juan Bautista School of Medicine",
+        "auxiliaryUnitid": "430670",
+        "normalizedAddress": "Luis A. Ferre Highway Exit #21, Road 172 Caguas to Cidra, Turabo Gardens, Caguas, PR 00725",
+        "matchedAddress": "21 PR- 172, CAGUAS, PR, 00727",
+        "provider": "U.S. Census Geocoding Services API",
+        "benchmark": "Public_AR_Census2020",
+        "vintage": "Census2020_Census2020",
+        "countyGEOID": "72025",
+        "countyName": "Caguas Municipio",
+        "reviewStatus": "reviewed",
+        "reviewedAt": "2026-06-23",
+        "reviewer": "Modernization Maintainer"
+      },
+      "sourceFields": {
+        "artifactPath": "data/unis/partial-source-fields.json",
+        "academicUnit": ""
+      }
+    },
+    {
+      "id": 3,
+      "title": "Trinity College",
+      "address": "#834 Avenida Hostos, PONCE, Puerto Rico",
+      "desc": null,
+      "lat": 17.984663508186,
+      "long": -66.619028663773,
+      "created_at": "2026-06-23",
+      "updated_at": "2026-06-23",
+      "provenance": {
+        "sourceId": "datospr-higher-ed-directory-2017-18",
+        "directoryInstitution": "Trinity College",
+        "directoryMunicipality": "PONCE",
+        "directoryAddress": "#834 Avenida Hostos",
+        "auxiliaryInstitution": "Trinity College of Puerto Rico",
+        "auxiliaryUnitid": "431929",
+        "normalizedAddress": "#834 Avenida Hostos, PONCE, Puerto Rico",
+        "matchedAddress": "834 AVE HOSTOS, PONCE, PR, 00716",
+        "provider": "U.S. Census Geocoding Services API",
+        "benchmark": "Public_AR_Census2020",
+        "vintage": "Census2020_Census2020",
+        "countyGEOID": "72113",
+        "countyName": "Ponce Municipio",
+        "reviewStatus": "reviewed",
+        "reviewedAt": "2026-06-23",
+        "reviewer": "Modernization Maintainer"
+      },
+      "sourceFields": {
+        "artifactPath": "data/unis/partial-source-fields.json",
+        "academicUnit": ""
+      }
+    },
+    {
+      "id": 4,
+      "title": "Universidad Politécnica de Puerto Rico",
+      "address": "Ave. Ponce de León 377, Hato Rey, SAN JUAN, Puerto Rico",
+      "desc": "Academic unit: San Juan",
+      "lat": 18.465156173786,
+      "long": -66.097033809568,
+      "created_at": "2026-06-23",
+      "updated_at": "2026-06-23",
+      "provenance": {
+        "sourceId": "datospr-higher-ed-directory-2017-18",
+        "directoryInstitution": "Universidad Politécnica de Puerto Rico",
+        "directoryMunicipality": "SAN JUAN",
+        "directoryAddress": "Ave. Ponce de León 377, Hato Rey",
+        "auxiliaryInstitution": "Universidad Politecnica de Puerto Rico",
+        "auxiliaryUnitid": "243577",
+        "normalizedAddress": "Ave. Ponce de León 377, Hato Rey, SAN JUAN, Puerto Rico",
+        "matchedAddress": "377 AVE PONCE DE LEON, SAN JUAN, PR, 00901",
+        "provider": "U.S. Census Geocoding Services API",
+        "benchmark": "Public_AR_Census2020",
+        "vintage": "Census2020_Census2020",
+        "countyGEOID": "72127",
+        "countyName": "San Juan Municipio",
+        "reviewStatus": "reviewed",
+        "reviewedAt": "2026-06-23",
+        "reviewer": "Modernization Maintainer"
+      },
+      "sourceFields": {
+        "artifactPath": "data/unis/partial-source-fields.json",
+        "academicUnit": "San Juan"
+      }
+    }
+  ]
+}

@@ -4,6 +4,7 @@ import http, {type IncomingMessage, type OutgoingHttpHeaders, type Server, type 
 import {URL} from 'url';
 import zlib from 'zlib';
 import * as db from './db';
+import * as planningContext from './planning_context';
 import * as records from './records';
 import * as responseContract from './response_contract';
 import * as rootContract from './root_contract';
@@ -12,6 +13,12 @@ export const CORS_HEADERS: OutgoingHttpHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
+};
+
+export const SECURITY_HEADERS: OutgoingHttpHeaders = {
+  'Referrer-Policy': 'no-referrer',
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY'
 };
 
 export function acceptsGzip(request: IncomingMessage): boolean {
@@ -26,6 +33,10 @@ export function matchCollection(pathname: string): RegExpMatchArray | null {
   return pathname.match(/^\/v1\/(unis|muns|cdepts|cbps|busines|grace_cs)$/);
 }
 
+export function matchPlanningContextRecord(pathname: string): RegExpMatchArray | null {
+  return pathname.match(/^\/v1\/planning-context\/([a-z0-9_-]+)$/);
+}
+
 function sendJson(
   request: IncomingMessage,
   response: ServerResponse,
@@ -35,6 +46,7 @@ function sendJson(
 ): void {
   const headers = Object.assign({}, CORS_HEADERS, extraHeaders || {}, {
     'Content-Type': 'application/json; charset=utf-8',
+    ...SECURITY_HEADERS,
     'X-Powered-By': 'utoplan-modern-api'
   });
 
@@ -134,6 +146,41 @@ function handleCollection(request: IncomingMessage, response: ServerResponse, ki
   });
 }
 
+function handlePlanningContextCollection(request: IncomingMessage, response: ServerResponse): void {
+  try {
+    sendJson(request, response, 200, responseContract.serialize(
+      responseContract.payload(planningContext.listSummaries())
+    ));
+  } catch (error) {
+    const serverError = error as Error;
+
+    console.error(serverError.stack || serverError.message);
+    sendJson(request, response, 500, responseContract.serialize(
+      responseContract.errorPayload('Internal Server Error')
+    ));
+  }
+}
+
+function handlePlanningContextRecord(request: IncomingMessage, response: ServerResponse, id: string): void {
+  try {
+    const detail = planningContext.findDetail(id);
+
+    if (!detail) {
+      handleNotFound(request, response);
+      return;
+    }
+
+    sendJson(request, response, 200, responseContract.serialize(responseContract.payload([detail])));
+  } catch (error) {
+    const serverError = error as Error;
+
+    console.error(serverError.stack || serverError.message);
+    sendJson(request, response, 500, responseContract.serialize(
+      responseContract.errorPayload('Internal Server Error')
+    ));
+  }
+}
+
 function handleMethodNotAllowed(request: IncomingMessage, response: ServerResponse): void {
   sendJson(request, response, 405, responseContract.serialize(
     responseContract.errorPayload('Method Not Allowed')
@@ -153,7 +200,7 @@ export function createServer(): Server {
     const pathname = new URL(request.url || '/', 'http://127.0.0.1').pathname;
 
     if (request.method === 'OPTIONS') {
-      response.writeHead(204, CORS_HEADERS);
+      response.writeHead(204, Object.assign({}, CORS_HEADERS, SECURITY_HEADERS));
       response.end();
       return;
     }
@@ -175,6 +222,8 @@ export function createServer(): Server {
 
     const recordMatch = matchRecord(pathname);
     const collectionMatch = matchCollection(pathname);
+    const planningContextRecordMatch = matchPlanningContextRecord(pathname);
+    const isPlanningContextCollection = pathname === '/v1/planning-context';
 
     if (request.method === 'GET' && collectionMatch) {
       handleCollection(request, response, collectionMatch[1]);
@@ -186,7 +235,17 @@ export function createServer(): Server {
       return;
     }
 
-    if (recordMatch || collectionMatch) {
+    if (request.method === 'GET' && isPlanningContextCollection) {
+      handlePlanningContextCollection(request, response);
+      return;
+    }
+
+    if (request.method === 'GET' && planningContextRecordMatch) {
+      handlePlanningContextRecord(request, response, planningContextRecordMatch[1]);
+      return;
+    }
+
+    if (recordMatch || collectionMatch || isPlanningContextCollection || planningContextRecordMatch) {
       handleMethodNotAllowed(request, response);
       return;
     }

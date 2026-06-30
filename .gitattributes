@@ -1,0 +1,7 @@
+* text=auto
+
+app/public/vendor/leaflet/*.css text eol=lf
+app/public/vendor/leaflet/*.js text eol=lf
+app/public/vendor/leaflet/*.json text eol=lf
+app/public/vendor/leaflet/*.map -text
+app/public/vendor/leaflet/images/*.png -text

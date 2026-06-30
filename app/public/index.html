@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Utoplan.me - Modular data visualizer for strategic planning.</title>
-  <meta name="viewport" content="initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="utf-8">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="css/reset.css">
@@ -16,25 +16,42 @@
   <script type="module" src="js/map.js"></script>
 
   <!-- Search and list of layers. -->
-  <div id="layersMenu">
-    <form id="searchForm">
-      <input type="text" id="searchBar" name="searchBar" value="" placeholder="Type your search.">
-      <a class="arrowButton arrowGo" href="#" id="dropDownButton" data-ui="layer-menu-toggle">&#9660;</a>
+  <div id="layersMenu" aria-label="Map controls">
+    <header id="appHeader">
+      <h1>utoplan.Me</h1>
+      <p>Puerto Rico planning context</p>
+      <p class="coverageStatus" data-ui="unis-coverage-status"></p>
+    </header>
+    <form id="searchForm" role="search">
+      <label for="searchBar">Layers</label>
+      <div class="searchControl">
+        <input type="search" id="searchBar" name="searchBar" value="" placeholder="Filter map layers" data-ui="layer-filter" autocomplete="off">
+        <button class="arrowButton arrowGo" type="button" id="dropDownButton" data-ui="layer-menu-toggle" aria-controls="queryList" aria-expanded="true">⌄</button>
+      </div>
       <ul id="queryList" data-ui="layer-menu">
         <!-- Dynamic content -->
-        <li class="">Municipalities<a class="eye eyeClosed" data-ui="layer-visibility"></a></li>
-        <li class="">Education<a class="eye eyeClosed" data-ui="layer-visibility"></a></li>
-        <li class="child">Public Schools<a class="eye eyeClosed" data-ui="layer-visibility"></a></li>
-        <li class="child">Private Schools<a class="eye eyeClosed" data-ui="layer-visibility"></a></li>
-        <li class="child">Specialized Schools<a class="eye eyeClosed" data-ui="layer-visibility"></a></li>
-        <li class="child">Universities<a class="eye eyeOpened" data-ui="layer-visibility"></a></li>
-        <li class="">Business<a class="eye eyeClosed" data-ui="layer-visibility"></a></li>
-        <li class="child">Hoteles<a class="eye eyeClosed" data-ui="layer-visibility"></a></li>
-        <li class="child">Medicina<a class="eye eyeClosed" data-ui="layer-visibility"></a></li>
-        <li class="child">Software<a class="eye eyeClosed" data-ui="layer-visibility"></a></li>
+        <li class="">Municipalities<button class="eye eyeClosed" type="button" aria-label="Toggle Municipalities layer" data-ui="layer-visibility"></button></li>
+        <li class="">Education<button class="eye eyeClosed" type="button" aria-label="Toggle Education layer" data-ui="layer-visibility"></button></li>
+        <li class="child">Public Schools<button class="eye eyeClosed" type="button" aria-label="Toggle Public Schools layer" data-ui="layer-visibility"></button></li>
+        <li class="child">Private Schools<button class="eye eyeClosed" type="button" aria-label="Toggle Private Schools layer" data-ui="layer-visibility"></button></li>
+        <li class="child">Specialized Schools<button class="eye eyeClosed" type="button" aria-label="Toggle Specialized Schools layer" data-ui="layer-visibility"></button></li>
+        <li class="child">Universities<button class="eye eyeOpened" type="button" aria-label="Toggle Universities layer" data-ui="layer-visibility"></button></li>
+        <li class="">Business<button class="eye eyeClosed" type="button" aria-label="Toggle Business layer" data-ui="layer-visibility"></button></li>
+        <li class="child">Hoteles<button class="eye eyeClosed" type="button" aria-label="Toggle Hoteles layer" data-ui="layer-visibility"></button></li>
+        <li class="child">Medicina<button class="eye eyeClosed" type="button" aria-label="Toggle Medicina layer" data-ui="layer-visibility"></button></li>
+        <li class="child">Software<button class="eye eyeClosed" type="button" aria-label="Toggle Software layer" data-ui="layer-visibility"></button></li>
         <!-- End dynamic content -->
       </ul>
     </form>
+    <section id="planningContextPanel" data-ui="planning-context-panel">
+      <h2>Planning context</h2>
+      <p data-ui="planning-context-status">Loading planning context...</p>
+      <ul data-ui="planning-context-list"></ul>
+      <section class="planningContextDetailPanel" data-ui="planning-context-detail-panel">
+        <p data-ui="planning-context-detail-status">Select a planning-context option to view descriptive detail.</p>
+        <div data-ui="planning-context-detail"></div>
+      </section>
+    </section>
   </div>
   <!-- Related -->
   <div id="sidebar" data-ui="sidebar">
@@ -52,7 +69,7 @@
       <!-- End dynamic content -->
     </ul>
   </div>
-  <button class="arrowButton" id="toogle" data-ui="sidebar-toggle" style="left:96.5%;">&#9658;</button>
+  <button class="arrowButton" id="toogle" data-ui="sidebar-toggle" aria-controls="sidebar" aria-expanded="false">◀</button>
 
   <!-- Logo -->
   <a id="logo" href="http://imaginary.tech">

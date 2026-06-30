@@ -2,9 +2,10 @@ FROM node:22-bookworm-slim
 
 WORKDIR /workspace
 
-ENV NODE_ENV=development
 ENV PORT=8080
 
+COPY .node-version ./
+COPY scripts ./scripts/
 COPY package.json package-lock.json ./
 COPY app/package.json app/package-lock.json ./app/
 COPY dtoapi/package.json dtoapi/package-lock.json ./dtoapi/
@@ -15,6 +16,8 @@ RUN npm run install:all
 COPY . .
 
 RUN npm run build
+
+ENV NODE_ENV=production
 
 EXPOSE 8080
 

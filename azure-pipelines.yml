@@ -16,25 +16,57 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    npm run install:all
-    npm run build
-  displayName: 'npm install and build'
+    set -Eeuo pipefail
+    trap 'echo "##vso[task.logissue type=error]Report tool versions failed at line ${LINENO}."; exit 1' ERR
+    node --version
+    npm --version
+    if command -v docker >/dev/null 2>&1; then
+      docker --version
+    else
+      echo "Docker CLI not available before Docker validation steps."
+    fi
+  displayName: 'Report tool versions'
 
 - script: |
+    set -Eeuo pipefail
+    trap 'echo "##vso[task.logissue type=error]Install workspace dependencies failed at line ${LINENO}."; exit 1' ERR
+    npm run install:all
+  displayName: 'Install workspace dependencies'
+
+- script: |
+    set -Eeuo pipefail
+    trap 'echo "##vso[task.logissue type=error]Build and contract tests failed at line ${LINENO}."; exit 1' ERR
+    npm run build
+  displayName: 'Build and run contract tests'
+
+- script: |
+    set -Eeuo pipefail
+    trap 'echo "##vso[task.logissue type=error]Install Chromium browser dependencies failed at line ${LINENO}."; exit 1' ERR
     npx playwright install --with-deps chromium
+  displayName: 'Install Chromium browser dependencies'
+
+- script: |
+    set -Eeuo pipefail
+    trap 'echo "##vso[task.logissue type=error]Browser smoke tests failed at line ${LINENO}."; exit 1' ERR
     npm run test:browser
   displayName: 'Browser smoke tests'
 
 - script: |
+    set -Eeuo pipefail
+    trap 'echo "##vso[task.logissue type=error]Release preflight failed at line ${LINENO}."; exit 1' ERR
     npm run verify:release
   displayName: 'Release preflight configuration contract'
   env:
     UTOPLAN_RELEASE_SAMPLE: '1'
 
 - script: |
+    set -Eeuo pipefail
+    trap 'echo "##vso[task.logissue type=error]Docker DB contract tests failed at line ${LINENO}."; exit 1' ERR
     npm run docker:test:db
   displayName: 'Docker DB contract tests'
 
 - script: |
+    set -Eeuo pipefail
+    trap 'echo "##vso[task.logissue type=error]Docker start:local browser smoke test failed at line ${LINENO}."; exit 1' ERR
     npm run docker:test:start-local-browser
   displayName: 'Docker start:local browser smoke test'

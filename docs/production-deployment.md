@@ -5,7 +5,8 @@ This runbook describes the current production deployment contract for the integr
 ## Runtime Contract
 
 - Deploy two Node services: `app` for static assets and the same-origin `/v1/*` proxy, and `api` for the modern TypeScript API.
-- Keep the API private to the service network. Browser traffic should reach only the app origin.
+- Default to keeping the API private to the service network so browser traffic reaches only the app origin.
+- If external consumers require direct API access, expose the API intentionally and treat it as a public surface.
 - Configure the app with `UTOPLAN_API_ORIGIN` pointing at the private API origin.
 - Do not enable `UTOPLAN_DEMO_FIXTURE` in production. Fixture mode is only for explicit offline demos and tests.
 - Run the API with `NODE_ENV=production` and an explicit PostgreSQL connection.
@@ -40,6 +41,15 @@ PORT=3001
 UTOPLAN_API_ORIGIN=http://api:3001
 ```
 
+For public API exposure, set:
+
+```sh
+UTOPLAN_API_EXPOSURE=public
+UTOPLAN_PUBLIC_API_URL=https://api.example.com
+```
+
+If the API remains private, `UTOPLAN_API_EXPOSURE` may be omitted or set to `private`.
+
 Secrets must come from the deployment platform secret store. Do not commit production credentials, generated `.env` files, or exported environment dumps.
 
 ## Preflight Checklist
@@ -51,6 +61,7 @@ npm run install:all
 npm run build
 npm run verify:deployment
 npm run verify:release
+npm run verify:release-smoke
 npm run test:browser
 npm run docker:test:db
 npm run docker:test:proxy
@@ -67,7 +78,12 @@ Run Docker compatibility checks when Docker is available, because the production
 
 `docker-compose.integrated.yml` runs the verifier before each service process starts. The modern API Docker image also runs `--service=api` before starting `dtoapi/modern/lib/server.js`.
 
+Public API mode is accepted only when `UTOPLAN_API_EXPOSURE=public` and
+`UTOPLAN_PUBLIC_API_URL` is set to a valid HTTP(S) URL.
+
 `npm run verify:release` wraps the app and API deployment verifiers for release jobs. CI runs it with `UTOPLAN_RELEASE_SAMPLE=1` to validate wiring without production secrets; production release jobs must omit sample mode and provide real platform environment values.
+
+After deploying a candidate release, run `npm run verify:release-smoke` with `UTOPLAN_APP_URL` set to the public app origin. Set `UTOPLAN_API_URL` only when the API readiness URL is reachable from the release job network.
 
 Confirm these release facts before deployment:
 
@@ -77,6 +93,7 @@ Confirm these release facts before deployment:
 - API `/readyz` is part of the platform readiness policy.
 - App `/healthz` is part of the platform readiness or load balancer health policy.
 - `UTOPLAN_DEMO_FIXTURE` is unset.
+- If the API is public, API edge controls (auth policy, rate limiting, WAF, and request logging) are enabled and verified.
 
 ## Migration And Seed Policy
 
@@ -105,12 +122,22 @@ Do not add startup-time schema mutation to either service. Production startup sh
 6. Deploy the app with `UTOPLAN_API_ORIGIN` pointing at the API service.
 7. Wait for `GET /healthz` on the app to return `200`.
 8. Smoke test the public app origin and verify `/v1/unis` is served through the app origin.
+9. If the API is public, smoke test the public API URL (`/healthz` and `/readyz`) from an external client path.
 
 Example smoke checks:
 
 ```sh
-curl -fsS https://app.example.com/healthz
-curl -fsS https://app.example.com/v1/unis
+UTOPLAN_APP_URL=https://app.example.com \
+UTOPLAN_API_URL=https://api.example.internal \
+npm run verify:release-smoke
+```
+
+Public API example:
+
+```sh
+UTOPLAN_APP_URL=https://app.example.com \
+UTOPLAN_API_URL=https://api.example.com \
+npm run verify:release-smoke
 ```
 
 The `/healthz` response reports service identity and app proxy state. Use it to verify the deployed app is in proxy mode, not fixture mode.
@@ -126,6 +153,7 @@ Rollback immediately when:
 - Either service fails readiness checks after deployment.
 - The app health response shows fixture mode enabled.
 - `/v1/unis` fails through the public app origin.
+- If public, direct API `/healthz` or `/readyz` fails from the external client path.
 - The API logs database connection or query failures after rollout.
 - Browser smoke checks show missing map data or uncaught page errors.
 
