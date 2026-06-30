@@ -228,6 +228,10 @@ npm run docker:test:start-local-browser
 The Docker build runs `npm run install:all` and `npm run build`, so it validates
 clean installs and the API test baseline before producing an image.
 
+CI policy lives in `docs/ci-platform-policy.md`. GitHub Actions is the required
+transparent PR readiness gate; Azure Pipelines is advisory unless its logs are
+available to the reviewer or release operator.
+
 `npm run docker:test:db` builds a disposable seeded Postgres image from
 `Dockerfile.postgres-test`, runs the DB-backed modern API contract tests in a
 current Node container, and tears the Compose stack down afterward.
