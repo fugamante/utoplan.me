@@ -1,0 +1,4 @@
+services:
+  api:
+    ports:
+      - "${UTOPLAN_API_BIND:-0.0.0.0}:${UTOPLAN_API_HOST_PORT:-3001}:3001"

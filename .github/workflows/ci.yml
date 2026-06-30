@@ -1,0 +1,52 @@
+name: PR validation
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+jobs:
+  validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Report tool versions
+        run: |
+          node --version
+          npm --version
+          docker --version
+
+      - name: Install workspace dependencies
+        run: npm run install:all
+
+      - name: Build and run contract tests
+        run: npm run build
+
+      - name: Install Chromium browser dependencies
+        run: npx playwright install --with-deps chromium
+
+      - name: Browser smoke tests
+        run: npm run test:browser
+
+      - name: Release preflight configuration contract
+        run: npm run verify:release
+        env:
+          UTOPLAN_RELEASE_SAMPLE: '1'
+
+      - name: Docker DB contract tests
+        run: npm run docker:test:db
+
+      - name: Docker start:local browser smoke test
+        run: npm run docker:test:start-local-browser

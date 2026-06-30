@@ -1,0 +1,631 @@
+{
+  "schemaVersion": 1,
+  "scope": "puerto-rico-only",
+  "retrievedAt": "2026-06-11",
+  "sources": [
+    {
+      "id": "datospr-cbp-2014-puerto-rico",
+      "status": "candidate",
+      "targetTables": [
+        "cbps"
+      ],
+      "publisher": "U.S. Census Bureau",
+      "portal": "Datos.PR",
+      "license": "Creative Commons Attribution",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://datos.estadisticas.pr/dataset/county_business_patterns",
+      "resourceUrl": "https://datos.estadisticas.pr/dataset/b0e448f9-d41a-4064-8536-a1b8b2b9f04b/resource/4503472e-77a7-4b29-b4aa-8945cfa7664c/download/cbp14pr.csv",
+      "resourceId": "4503472e-77a7-4b29-b4aa-8945cfa7664c",
+      "sourceBasis": "Repository evidence points the legacy cbps endpoint at 2014 Census business-pattern data. This resource is already scoped to Puerto Rico.",
+      "notes": "Candidate replacement for the legacy cbps table; confirm transform decisions before import.",
+      "importReadiness": {
+        "status": "blocked",
+        "reviewedAt": "2026-06-10",
+        "blockers": [
+          {
+            "id": "cbps-aggregate-county-gap",
+            "kind": "source-gap",
+            "legacyColumns": [
+              "county"
+            ],
+            "summary": "Puerto Rico aggregate CBP file does not include municipality or county-equivalent codes required by the preserved schema.",
+            "resolutionEvidence": "Use a source variant with county coverage or explicitly retire this candidate for county-backed imports."
+          }
+        ]
+      },
+      "legacySchemaMap": {
+        "table": "cbps",
+        "evidenceDate": "2026-06-10",
+        "evidenceType": "resource-header",
+        "columnStrategies": [
+          {
+            "legacyColumn": "cnaic_name",
+            "status": "approved",
+            "kind": "auxiliary-source-join",
+            "sourceId": "census-cbp-2014-state-72-fallback",
+            "sourceField": "NAICS2012_TTL",
+            "joinKey": {
+              "sourceField": "naics",
+              "referenceField": "NAICS2012",
+              "normalizer": "trimmed exact NAICS 2012 code text"
+            },
+            "localArtifactPath": "data/naics/cbp-naics-titles.json",
+            "notes": "Approved title-source strategy for Datos.PR CBP CSV imports: join each source naics value to the checked-in cbp-naics-titles registry derived from the fallback Census CBP title reference by exact NAICS 2012 code and populate cnaic_name from the cached NAICS2012_TTL title text. The planning-context NAICS title registry is fixture-only and must not be used as import evidence or the production title source."
+          }
+        ],
+        "columnCoverage": [
+          {
+            "legacyColumn": "id",
+            "sourceFields": [
+              "generated"
+            ],
+            "coverage": "derived",
+            "notes": "Primary key must be generated at import time."
+          },
+          {
+            "legacyColumn": "cnaic",
+            "sourceFields": [
+              "naics"
+            ],
+            "coverage": "exact"
+          },
+          {
+            "legacyColumn": "total_anual",
+            "sourceFields": [
+              "ap"
+            ],
+            "coverage": "exact"
+          },
+          {
+            "legacyColumn": "num_est",
+            "sourceFields": [
+              "est"
+            ],
+            "coverage": "exact"
+          },
+          {
+            "legacyColumn": "total_indus",
+            "sourceFields": [
+              "emp"
+            ],
+            "coverage": "derived",
+            "notes": "Approved transform: preserve legacy total_indus as the CBP employee count from emp. This is an evidence-backed inference from the preserved schema plus Census EMP semantics."
+          },
+          {
+            "legacyColumn": "county",
+            "sourceFields": [],
+            "coverage": "missing",
+            "notes": "Puerto Rico aggregate file does not include county or municipality code."
+          },
+          {
+            "legacyColumn": "cnaic_name",
+            "sourceFields": [],
+            "coverage": "missing",
+            "notes": "NAICS title text is not present in this CSV header."
+          },
+          {
+            "legacyColumn": "created_at",
+            "sourceFields": [
+              "generated"
+            ],
+            "coverage": "derived",
+            "notes": "Import timestamp must be generated outside the source file."
+          },
+          {
+            "legacyColumn": "updated_at",
+            "sourceFields": [
+              "generated"
+            ],
+            "coverage": "derived",
+            "notes": "Import timestamp must be generated outside the source file."
+          }
+        ]
+      }
+    },
+    {
+      "id": "datospr-cbp-2014-municipios",
+      "status": "candidate",
+      "targetTables": [
+        "cbps",
+        "muns"
+      ],
+      "publisher": "U.S. Census Bureau",
+      "portal": "Datos.PR",
+      "license": "Creative Commons Attribution",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://datos.estadisticas.pr/dataset/county_business_patterns",
+      "resourceUrl": "https://datos.estadisticas.pr/dataset/b0e448f9-d41a-4064-8536-a1b8b2b9f04b/resource/4828e082-6c0d-4d3f-be12-ab6aeb34eb59/download/cbp14pr_mun.csv",
+      "resourceId": "4828e082-6c0d-4d3f-be12-ab6aeb34eb59",
+      "sourceBasis": "Municipality-level 2014 County Business Patterns data for Puerto Rico.",
+      "notes": "Use as the preferred municipality-level CBP source if it preserves the legacy county/municipality join shape.",
+      "importReadiness": {
+        "status": "ready",
+        "reviewedAt": "2026-06-10",
+        "blockers": []
+      },
+      "legacySchemaMap": {
+        "table": "cbps",
+        "evidenceDate": "2026-06-10",
+        "evidenceType": "resource-header",
+        "columnStrategies": [
+          {
+            "legacyColumn": "cnaic_name",
+            "status": "approved",
+            "kind": "auxiliary-source-join",
+            "sourceId": "census-cbp-2014-state-72-fallback",
+            "sourceField": "NAICS2012_TTL",
+            "joinKey": {
+              "sourceField": "naics",
+              "referenceField": "NAICS2012",
+              "normalizer": "trimmed exact NAICS 2012 code text"
+            },
+            "localArtifactPath": "data/naics/cbp-naics-titles.json",
+            "notes": "Approved title-source strategy for Datos.PR CBP CSV imports: join each source naics value to the checked-in cbp-naics-titles registry derived from the fallback Census CBP title reference by exact NAICS 2012 code and populate cnaic_name from the cached NAICS2012_TTL title text. The planning-context NAICS title registry is fixture-only and must not be used as import evidence or the production title source."
+          }
+        ],
+        "columnCoverage": [
+          {
+            "legacyColumn": "id",
+            "sourceFields": [
+              "generated"
+            ],
+            "coverage": "derived",
+            "notes": "Primary key must be generated at import time."
+          },
+          {
+            "legacyColumn": "cnaic",
+            "sourceFields": [
+              "naics"
+            ],
+            "coverage": "exact"
+          },
+          {
+            "legacyColumn": "total_anual",
+            "sourceFields": [
+              "ap"
+            ],
+            "coverage": "exact"
+          },
+          {
+            "legacyColumn": "num_est",
+            "sourceFields": [
+              "est"
+            ],
+            "coverage": "exact"
+          },
+          {
+            "legacyColumn": "county",
+            "sourceFields": [
+              "fipscty"
+            ],
+            "coverage": "exact"
+          },
+          {
+            "legacyColumn": "total_indus",
+            "sourceFields": [
+              "emp"
+            ],
+            "coverage": "derived",
+            "notes": "Approved transform: preserve legacy total_indus as the CBP employee count from emp. This is an evidence-backed inference from the preserved schema plus Census EMP semantics."
+          },
+          {
+            "legacyColumn": "cnaic_name",
+            "sourceFields": [],
+            "coverage": "missing",
+            "notes": "NAICS title text is not present in this CSV header."
+          },
+          {
+            "legacyColumn": "created_at",
+            "sourceFields": [
+              "generated"
+            ],
+            "coverage": "derived",
+            "notes": "Import timestamp must be generated outside the source file."
+          },
+          {
+            "legacyColumn": "updated_at",
+            "sourceFields": [
+              "generated"
+            ],
+            "coverage": "derived",
+            "notes": "Import timestamp must be generated outside the source file."
+          }
+        ]
+      }
+    },
+    {
+      "id": "datospr-higher-ed-directory-2017-18",
+      "status": "candidate",
+      "targetTables": [
+        "unis"
+      ],
+      "publisher": "Departamento de Estado, Plataforma de Educacion Superior",
+      "portal": "Datos.PR",
+      "license": "Other (Public Domain)",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://datos.estadisticas.pr/dataset/directorio-de-instituciones-de-educacion-superior-puerto-rico",
+      "resourceUrl": "https://datos.estadisticas.pr/dataset/ccf64cca-d0d6-4539-a803-70aeba73ea12/resource/818869e2-82c6-4189-bff8-40616e5d3010/download/directorio_de_instituciones_de_educaci_n_superior__puerto_rico__a_o_acad_mico_2017-18.csv",
+      "resourceId": "818869e2-82c6-4189-bff8-40616e5d3010",
+      "sourceBasis": "Puerto Rico higher education institution directory that can replace or refresh the legacy unis endpoint after field mapping.",
+      "notes": "This resource was published after the 2016 hackathon, so it is not confirmed original input.",
+      "geocodingPolicy": {
+        "status": "approved",
+        "providerName": "U.S. Census Geocoding Services API",
+        "providerType": "external-geocoder",
+        "policyDocPath": "docs/unis-geocoding-policy.md",
+        "cacheArtifactPath": "data/geocoding/unis-census-geocoder-cache.json",
+        "quarantineArtifactPath": "data/geocoding/unis-import-quarantine.json",
+        "importBoundaryArtifactPath": "data/geocoding/unis-import-boundary-review.json",
+        "addressReviewArtifactPath": "data/geocoding/unis-public-address-review.json",
+        "addressVerificationArtifactPath": "data/geocoding/unis-address-verification.json",
+        "matchReviewPolicyDocPath": "docs/unis-alias-campus-match-policy.md",
+        "matchReviewArtifactPath": "data/unis/ipeds-alias-campus-review.json",
+        "servicePath": "geographies/onelineaddress",
+        "benchmark": "Public_AR_Census2020",
+        "vintage": "Census2020_Census2020",
+        "addressFields": [
+          "Dirección Física",
+          "Dirección Física 2",
+          "Pueblo"
+        ],
+        "addressSuffix": "Puerto Rico",
+        "coordinateFields": {
+          "lat": "y",
+          "long": "x"
+        },
+        "scopeGuard": "Accept only matched results that resolve within Puerto Rico geography.",
+        "reviewRule": "Rows without reviewed Puerto Rico matches remain excluded from production-style import.",
+        "quarantineRule": "Write unmatched, out-of-scope, or unreviewed rows to the checked-in quarantine artifact and keep them excluded from import output until reviewed evidence changes."
+      },
+      "identityAuthorityPolicy": {
+        "status": "reviewed-excluded",
+        "reviewArtifactPath": "data/unis/identity-review.json",
+        "matchReviewArtifactPath": "data/unis/ipeds-alias-campus-review.json",
+        "quarantineArtifactPath": "data/geocoding/unis-import-quarantine.json",
+        "authoritySourceIds": [
+          "nces-college-navigator-puerto-rico",
+          "usdoe-dapip-puerto-rico",
+          "prdos-orlie-jip-postsecondary-listing"
+        ],
+        "scopeRule": "Use registered authority sources only as row-level corroboration for identity, accreditation, or licensure review.",
+        "importRule": "Identity corroboration does not replace the primary Datos.PR row source, does not provide coordinate authority, and does not make a row import-ready without accepted alias/campus, public-address, and reviewed Census-cache evidence."
+      },
+      "importReadiness": {
+        "status": "partial",
+        "reviewedAt": "2026-06-26",
+        "coverage": {
+          "status": "partial",
+          "includedRows": 4,
+          "excludedRows": 42,
+          "coverageLabel": "Partial reviewed Census-cache coverage: 4 included rows, 42 reviewed exclusions.",
+          "apiCoverageLanguage": "The /v1/unis collection may contain only the reviewed Census-cache-backed subset from the accepted partial import boundary; it is not complete Puerto Rico higher-education coverage.",
+          "uiCoverageLanguage": "University layer uses partial reviewed source coverage: 4 included rows, with 42 reviewed exclusions still outside the layer.",
+          "importBoundaryArtifactPath": "data/geocoding/unis-import-boundary-review.json",
+          "sourceFieldsArtifactPath": "data/unis/partial-source-fields.json",
+          "descCoverage": "source-backed-for-included-rows-only",
+          "generatedArtifactPath": "data/generated/unis-partial-import.json",
+          "generatedSeedPath": "docker/postgres/002_unis_partial_seed.sql",
+          "buildCommand": "node scripts/build_unis_slice.js"
+        },
+        "blockers": [
+          {
+            "id": "stronger-unis-identity-authority-required",
+            "kind": "operator-dependency",
+            "legacyColumns": [
+              "title",
+              "address",
+              "lat",
+              "long"
+            ],
+            "summary": "The current Datos.PR directory plus single auxiliary audit path is not a strong enough institution authority for all real Puerto Rico institutions; the row-level identity review keeps all 27 identity-quarantined rows excluded, including 5 NCES+DAPIP+ORLIE/JIP-corroborated rows that remain not import-ready.",
+            "resolutionEvidence": "Use data/unis/identity-review.json as the current exclusion contract. It records 5 NCES College Navigator corroborations, 5 DAPIP accreditation corroborations, 5 ORLIE/JIP row-level licensure-listing corroborations from data/unis/orlie-jip-row-review.json, and 22 rows still without row-level authority corroboration, with zero identity-promoted, coordinate-eligible, or generated-output-eligible rows. Future review may use the registered NCES College Navigator Puerto Rico CSV export, U.S. Department of Education DAPIP Puerto Rico accreditation search, and Puerto Rico Department of State ORLIE/JIP public postsecondary listing as corroboration inputs for identity, accreditation, and licensure review. Do not treat any of them as a direct replacement row source, and keep this blocker open until all row-level authority, alias/campus, public-address, and Census-cache evidence gates are recorded for any row reconsidered for import."
+          },
+          {
+            "id": "reviewed-census-geocode-cache-required",
+            "kind": "operator-dependency",
+            "legacyColumns": [
+              "lat",
+              "long"
+            ],
+            "summary": "Reviewed Census geocoder cache entries now exist for 4 of the 19 approved alias/campus rows, and the accepted partial import boundary allows only those cache-backed rows. The remaining 15 approved rows are explicitly quarantined after corrected-address verification found zero promotion-eligible rows, so full unis readiness remains blocked.",
+            "resolutionEvidence": "Use the reviewed cache records in data/geocoding/unis-census-geocoder-cache.json only for rows with Puerto Rico Census matches, keep approved rows without promotion-eligible verification in data/geocoding/unis-import-quarantine.json, preserve row-level address reasoning in data/geocoding/unis-public-address-review.json, preserve the pinned verification result in data/geocoding/unis-address-verification.json, populate desc only from data/unis/partial-source-fields.json for included rows, and keep partial coverage language in API/UI contracts until corrected evidence changes the boundary."
+          }
+        ]
+      },
+      "legacySchemaMap": {
+        "table": "unis",
+        "evidenceDate": "2026-06-10",
+        "evidenceType": "resource-header",
+        "columnStrategies": [
+          {
+            "legacyColumn": "lat",
+            "status": "approved",
+            "kind": "geocode-from-address",
+            "sourceField": "y",
+            "joinKey": {
+              "sourceFields": [
+                "Dirección Física",
+                "Dirección Física 2",
+                "Pueblo"
+              ],
+              "normalizer": "trimmed non-empty fields joined with ', ' and suffixed with 'Puerto Rico'"
+            },
+            "localArtifactPath": "data/geocoding/unis-census-geocoder-cache.json",
+            "notes": "Approved geocoding strategy: derive latitude from the reviewed Census geocoder cache built from the normalized Puerto Rico single-line address under docs/unis-geocoding-policy.md. Rows without a reviewed cache match remain excluded through the quarantine artifact."
+          },
+          {
+            "legacyColumn": "long",
+            "status": "approved",
+            "kind": "geocode-from-address",
+            "sourceField": "x",
+            "joinKey": {
+              "sourceFields": [
+                "Dirección Física",
+                "Dirección Física 2",
+                "Pueblo"
+              ],
+              "normalizer": "trimmed non-empty fields joined with ', ' and suffixed with 'Puerto Rico'"
+            },
+            "localArtifactPath": "data/geocoding/unis-census-geocoder-cache.json",
+            "notes": "Approved geocoding strategy: derive longitude from the reviewed Census geocoder cache built from the normalized Puerto Rico single-line address under docs/unis-geocoding-policy.md. Rows without a reviewed cache match remain excluded through the quarantine artifact."
+          }
+        ],
+        "columnCoverage": [
+          {
+            "legacyColumn": "id",
+            "sourceFields": [
+              "generated"
+            ],
+            "coverage": "derived",
+            "notes": "Primary key must be generated at import time."
+          },
+          {
+            "legacyColumn": "title",
+            "sourceFields": [
+              "Nombre de la Institución"
+            ],
+            "coverage": "exact"
+          },
+          {
+            "legacyColumn": "address",
+            "sourceFields": [
+              "Dirección Física",
+              "Dirección Física 2",
+              "Pueblo"
+            ],
+            "coverage": "derived",
+            "notes": "Deterministic concatenation is possible."
+          },
+          {
+            "legacyColumn": "desc",
+            "sourceFields": [
+              "Unidad Académica"
+            ],
+            "coverage": "derived",
+            "notes": "Approved operational transform: emit non-personal academic-unit text only, e.g. \"Academic unit: <Unidad Académica>\". Principal-executive names and contact fields are excluded from data/unis/partial-source-fields.json and generated output. The operational partial slice may populate this field only from data/unis/partial-source-fields.json for rows that exactly match the accepted Census-cache boundary."
+          },
+          {
+            "legacyColumn": "lat",
+            "sourceFields": [
+              "Dirección Física",
+              "Dirección Física 2",
+              "Pueblo"
+            ],
+            "coverage": "derived",
+            "notes": "Approved transform: derive latitude from the reviewed Census geocoder cache using the normalized Puerto Rico single-line address."
+          },
+          {
+            "legacyColumn": "long",
+            "sourceFields": [
+              "Dirección Física",
+              "Dirección Física 2",
+              "Pueblo"
+            ],
+            "coverage": "derived",
+            "notes": "Approved transform: derive longitude from the reviewed Census geocoder cache using the normalized Puerto Rico single-line address."
+          },
+          {
+            "legacyColumn": "created_at",
+            "sourceFields": [
+              "generated"
+            ],
+            "coverage": "derived",
+            "notes": "Import timestamp must be generated outside the source file."
+          },
+          {
+            "legacyColumn": "updated_at",
+            "sourceFields": [
+              "generated"
+            ],
+            "coverage": "derived",
+            "notes": "Import timestamp must be generated outside the source file."
+          }
+        ]
+      }
+    },
+    {
+      "id": "nces-college-navigator-puerto-rico",
+      "status": "candidate",
+      "targetTables": [
+        "unis-identity"
+      ],
+      "publisher": "National Center for Education Statistics",
+      "portal": "College Navigator",
+      "license": "U.S. Government public data",
+      "scope": "puerto-rico-filtered",
+      "scopeFilter": "state:PR",
+      "sourceUrl": "https://nces.ed.gov/collegenavigator/",
+      "resourceUrl": "https://nces.ed.gov/collegenavigator/default.aspx?s=PR&xp=2",
+      "sourceBasis": "Federal higher-education institution directory with Puerto Rico state filtering and spreadsheet export; candidate corroboration source for institution identity, campus labels, and address review.",
+      "notes": "Use only with the Puerto Rico state filter. The CSV export path returns current Puerto Rico College Navigator search results with institution names, addresses, IPEDS IDs, OPE IDs, and basic institutional descriptors. This source is stronger for institution identity review than the current single auxiliary exact-match audit, but it is not a direct replacement row source for the preserved unis table."
+    },
+    {
+      "id": "usdoe-dapip-puerto-rico",
+      "status": "candidate",
+      "targetTables": [
+        "unis-accreditation"
+      ],
+      "publisher": "U.S. Department of Education",
+      "portal": "Database of Accredited Postsecondary Institutions and Programs",
+      "license": "U.S. Government public data",
+      "scope": "puerto-rico-filtered",
+      "scopeFilter": "state:Puerto Rico",
+      "sourceUrl": "https://ope.ed.gov/accreditation/Search.aspx/",
+      "resourceUrl": "https://ope.ed.gov/accreditation/Search.aspx/",
+      "sourceBasis": "Federal accreditation search with a Puerto Rico state filter; candidate corroboration source for whether a postsecondary institution is accredited and in-scope for higher-ed review.",
+      "notes": "Use only with the Puerto Rico state filter. Treat this as accreditation corroboration, not as a direct legacy unis import source."
+    },
+    {
+      "id": "prdos-orlie-jip-postsecondary-listing",
+      "status": "candidate",
+      "targetTables": [
+        "unis-licensure"
+      ],
+      "publisher": "Puerto Rico Department of State, Office of Registration and Licensing of Educational Institutions",
+      "portal": "Puerto Rico Department of State ORLIE / JIP",
+      "license": "Puerto Rico government public information",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.estado.pr.gov/instituciones-educativas",
+      "resourceUrl": "https://app.powerbigov.us/view?r=eyJrIjoiMjM5M2U5NTItYWU0My00MDFjLTljMDMtZmJhZTlmZjIwYjVmIiwidCI6IjYzNmFkYzFhLTkyOTEtNGJlOC1hYjFiLTgzMDc2NWMzYjc0ZCJ9",
+      "sourceBasis": "Official Puerto Rico Department of State ORLIE/JIP public listing surface for postsecondary institutions; candidate corroboration source for Puerto Rico licensure review.",
+      "notes": "The Department of State page identifies ORLIE/JIP as responsible for postsecondary licensing and links a public Power BI listing for postsecondary institutions. The bounded row review in data/unis/orlie-jip-row-review.json records the report resource key, public query endpoint, reviewed fields, and five matched rows for licensure corroboration only. Use it as an operator-reviewed licensure corroboration surface, not as a direct legacy unis import source."
+    },
+    {
+      "id": "datospr-official-municipality-boundaries",
+      "status": "candidate",
+      "targetTables": [
+        "muns"
+      ],
+      "publisher": "Junta de Planificacion",
+      "portal": "Datos.PR",
+      "license": "Creative Commons Attribution",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://datos.estadisticas.pr/dataset/municipios-de-puerto-rico",
+      "resourceUrl": "https://datos.estadisticas.pr/dataset/93ada8d3-ef83-4c78-bd22-8805de601f26/resource/974f57b4-c5fd-4317-a4d8-dc13cdcf8372/download/mapa-oficial-municipios.zip",
+      "resourceId": "974f57b4-c5fd-4317-a4d8-dc13cdcf8372",
+      "sourceBasis": "Official Puerto Rico municipality boundary data.",
+      "notes": "Candidate for municipality reference data and future map geometry work; do not import geometry into the read API until the target schema is designed."
+    },
+    {
+      "id": "census-cbp-2014-state-72-fallback",
+      "status": "fallback-candidate",
+      "targetTables": [
+        "cbps"
+      ],
+      "publisher": "U.S. Census Bureau",
+      "portal": "Census API",
+      "license": "U.S. Government public data",
+      "scope": "puerto-rico-filtered",
+      "scopeFilter": "state:72",
+      "sourceUrl": "https://www.census.gov/data/developers/data-sets/cbp-zbp/cbp-api.2014.html",
+      "apiUrl": "https://api.census.gov/data/2014/cbp?get=ESTAB,PAYANN,NAICS2012,NAICS2012_TTL&for=county:*&in=state:72",
+      "sourceBasis": "Direct Census API fallback for 2014 CBP data, constrained to Puerto Rico by FIPS state code 72.",
+      "notes": "Use only if the Datos.PR CBP files are unavailable or insufficient. Live verification on 2026-06-04 returned a Missing Key response, so this fallback is operator-blocked until a Census API key path is recorded.",
+      "importReadiness": {
+        "status": "blocked",
+        "reviewedAt": "2026-06-04",
+        "blockers": [
+          {
+            "id": "census-cbp-api-key",
+            "kind": "operator-dependency",
+            "legacyColumns": [],
+            "summary": "Live Census fallback access now requires an API key, but no approved key source, storage path, or rotation policy is recorded.",
+            "resolutionEvidence": "Document the Census API key path and operator handling policy before relying on this fallback."
+          },
+          {
+            "id": "census-cbp-total-indus-definition",
+            "kind": "source-gap",
+            "legacyColumns": [
+              "total_indus"
+            ],
+            "summary": "The fallback query does not expose an unambiguous total_indus field for the preserved legacy schema.",
+            "resolutionEvidence": "Record an approved field expansion or transform rule before import."
+          }
+        ]
+      },
+      "legacySchemaMap": {
+        "table": "cbps",
+        "evidenceDate": "2026-06-04",
+        "evidenceType": "api-fields",
+        "columnCoverage": [
+          {
+            "legacyColumn": "id",
+            "sourceFields": [
+              "generated"
+            ],
+            "coverage": "derived",
+            "notes": "Primary key must be generated at import time."
+          },
+          {
+            "legacyColumn": "num_est",
+            "sourceFields": [
+              "ESTAB"
+            ],
+            "coverage": "exact"
+          },
+          {
+            "legacyColumn": "total_anual",
+            "sourceFields": [
+              "PAYANN"
+            ],
+            "coverage": "exact"
+          },
+          {
+            "legacyColumn": "cnaic",
+            "sourceFields": [
+              "NAICS2012"
+            ],
+            "coverage": "exact"
+          },
+          {
+            "legacyColumn": "cnaic_name",
+            "sourceFields": [
+              "NAICS2012_TTL"
+            ],
+            "coverage": "exact"
+          },
+          {
+            "legacyColumn": "county",
+            "sourceFields": [
+              "for=county:*"
+            ],
+            "coverage": "exact"
+          },
+          {
+            "legacyColumn": "total_indus",
+            "sourceFields": [],
+            "coverage": "missing",
+            "notes": "Fallback query does not include an unambiguous total_indus field."
+          },
+          {
+            "legacyColumn": "created_at",
+            "sourceFields": [
+              "generated"
+            ],
+            "coverage": "derived",
+            "notes": "Import timestamp must be generated outside the API response."
+          },
+          {
+            "legacyColumn": "updated_at",
+            "sourceFields": [
+              "generated"
+            ],
+            "coverage": "derived",
+            "notes": "Import timestamp must be generated outside the API response."
+          }
+        ]
+      }
+    }
+  ],
+  "unresolvedTargets": [
+    {
+      "targetTables": [
+        "cdepts",
+        "businesses",
+        "grade_cs"
+      ],
+      "status": "blocked",
+      "reason": "No Puerto Rico-only public source has been confirmed for the legacy transformed career, department, business, or grade relationship tables."
+    }
+  ]
+}

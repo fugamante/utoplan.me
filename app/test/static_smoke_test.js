@@ -82,10 +82,16 @@ async function main() {
 
   var index = await request('/');
   assert.strictEqual(index.statusCode, 200, 'index should return HTTP 200');
+  assert.strictEqual(index.headers['referrer-policy'], 'no-referrer');
+  assert.strictEqual(index.headers['x-content-type-options'], 'nosniff');
+  assert.strictEqual(index.headers['x-frame-options'], 'DENY');
 
   var health = await request('/healthz');
   var healthBody = JSON.parse(health.body.toString('utf8'));
   assert.strictEqual(health.statusCode, 200, 'health check should return HTTP 200');
+  assert.strictEqual(health.headers['referrer-policy'], 'no-referrer');
+  assert.strictEqual(health.headers['x-content-type-options'], 'nosniff');
+  assert.strictEqual(health.headers['x-frame-options'], 'DENY');
   assert.strictEqual(healthBody.status, 'ok');
   assert.strictEqual(healthBody.service, 'utoplan-static-app');
   assert.strictEqual(healthBody.apiProxy, false);
@@ -96,12 +102,19 @@ async function main() {
     'data-map="main"',
     'data-ui="layer-menu-toggle"',
     'data-ui="layer-menu"',
+    'data-ui="layer-filter"',
     'data-ui="layer-visibility"',
     'data-ui="sidebar"',
     'data-ui="sidebar-toggle"',
+    'aria-controls="queryList"',
+    'aria-controls="sidebar"',
     'id="layersMenu"',
+    'id="appHeader"',
     'id="searchBar"',
     'id="queryList"',
+    'id="planningContextPanel"',
+    'data-ui="planning-context-status"',
+    'data-ui="planning-context-list"',
     'id="sidebar"',
     'id="logo"',
     '<script type="module" src="js/map.js"></script>',
@@ -116,7 +129,9 @@ async function main() {
   [
     'vendor/jquery/jquery.min.js',
     '$(document).ready',
-    'PLUGIN REF'
+    'PLUGIN REF',
+    'vendor/require/require.js',
+    'vendor/xml2json/xml2json.js'
   ].forEach(function(fragment) {
     assert(
       html.indexOf(fragment) === -1,
@@ -129,19 +144,20 @@ async function main() {
     '/css/reset.css',
     '/data/unis.json',
     '/js/main.js',
+    '/js/planning_context.js',
     '/js/map_config.js',
     '/js/map.js',
-    '/vendor/jquery/jquery.min.js',
     '/vendor/leaflet/leaflet.css',
     '/vendor/leaflet/leaflet.js',
-    '/vendor/require/require.js',
-    '/vendor/xml2json/xml2json.js',
     '/img/imaginary-logo.png'
   ];
 
   for (var i = 0; i < assets.length; i++) {
     var asset = await request(assets[i]);
     assert.strictEqual(asset.statusCode, 200, assets[i] + ' should return HTTP 200');
+    assert.strictEqual(asset.headers['referrer-policy'], 'no-referrer');
+    assert.strictEqual(asset.headers['x-content-type-options'], 'nosniff');
+    assert.strictEqual(asset.headers['x-frame-options'], 'DENY');
     assert(asset.body.length > 0, assets[i] + ' should not be empty');
   }
 
@@ -157,6 +173,17 @@ async function main() {
 
   var missing = await request('/missing-file.css');
   assert.strictEqual(missing.statusCode, 404, 'missing assets should return HTTP 404');
+
+  var removedAssets = [
+    '/vendor/jquery/jquery.min.js',
+    '/vendor/require/require.js',
+    '/vendor/xml2json/xml2json.js'
+  ];
+
+  for (var j = 0; j < removedAssets.length; j++) {
+    var removedAsset = await request(removedAssets[j]);
+    assert.strictEqual(removedAsset.statusCode, 404, removedAssets[j] + ' should return HTTP 404');
+  }
 
   var traversal = await request('/../package.json');
   assert.strictEqual(traversal.statusCode, 400, 'path traversal should be rejected');

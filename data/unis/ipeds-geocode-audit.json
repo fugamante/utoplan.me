@@ -1,0 +1,470 @@
+{
+  "schemaVersion": 1,
+  "status": "blocked",
+  "reviewedAt": "2026-06-11",
+  "buildCommand": "node scripts/audit_unis_geocode_candidates.js",
+  "matchRule": "normalized exact institution name + municipality only; no alias expansion, no fuzzy matching, no manual overrides",
+  "summary": {
+    "totalDirectoryInstitutions": 57,
+    "exactMatchCount": 11,
+    "unmatchedCount": 46
+  },
+  "sources": [
+    {
+      "id": "datospr-higher-ed-directory-2017-18",
+      "url": "https://datos.estadisticas.pr/dataset/ccf64cca-d0d6-4539-a803-70aeba73ea12/resource/818869e2-82c6-4189-bff8-40616e5d3010/download/directorio_de_instituciones_de_educaci_n_superior__puerto_rico__a_o_acad_mico_2017-18.csv"
+    },
+    {
+      "id": "nces-ipeds-postsecondary-2009",
+      "url": "https://datos.estadisticas.pr/dataset/e85bd998-dbfd-4385-aed5-8e5ce4439ed2/resource/15512525-1839-4636-8eb1-db08d09894d5/download/ipeds_prhd2009.csv"
+    }
+  ],
+  "exactMatches": [
+    {
+      "directoryInstitution": "American University of Puerto Rico",
+      "directoryMunicipality": "BAYAMON",
+      "directoryAddress": "Carr # 2 KM 14.0, Barrio Hato Tejas",
+      "coordinateInstitution": "American University of Puerto Rico",
+      "coordinateMunicipality": "Bayamon",
+      "latitude": "18.405857",
+      "longitude": "-66.19127",
+      "unitid": "241100",
+      "matchRule": "normalized exact institution name + municipality"
+    },
+    {
+      "directoryInstitution": "Atenas College",
+      "directoryMunicipality": "MANATI",
+      "directoryAddress": "Paseo Las Atenas #101, Manati",
+      "coordinateInstitution": "Atenas College",
+      "coordinateMunicipality": "Manati",
+      "latitude": "18.430607",
+      "longitude": "-66.484543",
+      "unitid": "440651",
+      "matchRule": "normalized exact institution name + municipality"
+    },
+    {
+      "directoryInstitution": "Centro de Estudios Multidisciplinarios",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Calle 13 # 1206, Ext. San Agustín",
+      "coordinateInstitution": "Centro de Estudios Multidisciplinarios",
+      "coordinateMunicipality": "San Juan",
+      "latitude": "18.390308",
+      "longitude": "-66.010911",
+      "unitid": "241517",
+      "matchRule": "normalized exact institution name + municipality"
+    },
+    {
+      "directoryInstitution": "Colegio Universitario de San Juan",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Urb. Ind. Tres Monjitas, 180 ave. José Oliver",
+      "coordinateInstitution": "Colegio Universitario de San Juan",
+      "coordinateMunicipality": "San Juan",
+      "latitude": "18.426838",
+      "longitude": "-66.065232",
+      "unitid": "241720",
+      "matchRule": "normalized exact institution name + municipality"
+    },
+    {
+      "directoryInstitution": "EDIC College",
+      "directoryMunicipality": "CAGUAS",
+      "directoryAddress": "Génova #8 Urb. Caguas Norte",
+      "coordinateInstitution": "EDIC College",
+      "coordinateMunicipality": "Caguas",
+      "latitude": "18.24242",
+      "longitude": "-66.025254",
+      "unitid": "376321",
+      "matchRule": "normalized exact institution name + municipality"
+    },
+    {
+      "directoryInstitution": "Humacao Community College",
+      "directoryMunicipality": "HUMACAO",
+      "directoryAddress": "Ave. Cruz Ortiz Stella #68",
+      "coordinateInstitution": "Humacao Community College",
+      "coordinateMunicipality": "Humacao",
+      "latitude": "18.148899",
+      "longitude": "-65.826584",
+      "unitid": "242121",
+      "matchRule": "normalized exact institution name + municipality"
+    },
+    {
+      "directoryInstitution": "Seminario Evangélico de Puerto Rico",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Avenida Ponce de León 776",
+      "coordinateInstitution": "Seminario Evangelico de Puerto Rico",
+      "coordinateMunicipality": "San Juan",
+      "latitude": "18.406986",
+      "longitude": "-66.052354",
+      "unitid": "243498",
+      "matchRule": "normalized exact institution name + municipality"
+    },
+    {
+      "directoryInstitution": "Universidad Adventista de las Antillas",
+      "directoryMunicipality": "MAYAGUEZ",
+      "directoryAddress": "Carr. #106 Km. 2.2 Interior",
+      "coordinateInstitution": "Universidad Adventista de las Antillas",
+      "coordinateMunicipality": "Mayaguez",
+      "latitude": "18.205296",
+      "longitude": "-67.112656",
+      "unitid": "241191",
+      "matchRule": "normalized exact institution name + municipality"
+    },
+    {
+      "directoryInstitution": "Universidad Central del Caribe",
+      "directoryMunicipality": "BAYAMON",
+      "directoryAddress": "Avda. Laurel #100, Urb. Santa Juanita",
+      "coordinateInstitution": "Universidad Central Del Caribe",
+      "coordinateMunicipality": "Bayamon",
+      "latitude": "18.370136",
+      "longitude": "-66.15532",
+      "unitid": "243568",
+      "matchRule": "normalized exact institution name + municipality"
+    },
+    {
+      "directoryInstitution": "Universidad del Este",
+      "directoryMunicipality": "CAROLINA",
+      "directoryAddress": "Carr # 190 Ave. Principal Sabana",
+      "coordinateInstitution": "Universidad Del Este",
+      "coordinateMunicipality": "Carolina",
+      "latitude": "18.415028",
+      "longitude": "-65.983445",
+      "unitid": "243346",
+      "matchRule": "normalized exact institution name + municipality"
+    },
+    {
+      "directoryInstitution": "Universidad del Turabo",
+      "directoryMunicipality": "GURABO",
+      "directoryAddress": "Carr. 189, Km. 3.3",
+      "coordinateInstitution": "Universidad Del Turabo",
+      "coordinateMunicipality": "Gurabo",
+      "latitude": "18.251408",
+      "longitude": "-65.979478",
+      "unitid": "243601",
+      "matchRule": "normalized exact institution name + municipality"
+    }
+  ],
+  "unmatchedInstitutions": [
+    {
+      "directoryInstitution": "Atlantic University College",
+      "directoryMunicipality": "GUAYNABO",
+      "directoryAddress": "Calle Colton #9",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Cambridge College",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "268 Ponce de Leon Avenue, Suite 1400",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Caribbean University",
+      "directoryMunicipality": "BAYAMON",
+      "directoryAddress": "Carr 167 km 21.2, Ext Forest Hills",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Centro de Estudios Avanzados de PR y el Caribe",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Calle del Cristo #52 Viejo San Juan",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Colegio de Cinematografía, Artes y Televisión",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Ave. Gautier Benitez Esq. Monsenñor, Esq. Monseños Berrios",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Columbia Central University",
+      "directoryMunicipality": "CAGUAS",
+      "directoryAddress": "Carr. 183 Km. 1.7, Salida de Caguas hacia San Lorenzo",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Conservatorio de Música de Puerto Rico",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "951 Ave. Ponce de León",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Dewey University",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Ave. Barbosa #427",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Dublin Institute of Technology",
+      "directoryMunicipality": "GUAYNABO",
+      "directoryAddress": "Metro Parque #7, Metro Office Park Suite 204",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "EDP Universityof Puerto Rico",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "560 Ave. Ponce de León",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Educational Technical College",
+      "directoryMunicipality": "BAYAMON",
+      "directoryAddress": "1685 Carr. #2 Km. 11.2",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Escuela de Artes Plásticas y Diseño de Puerto Rico",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Campos del Morro, Bo. Ballajá",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Escuela de Enfermeros/as Anestesistas de PR",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "728 Avda. Ponce de León, Oficina 201, Hato Rey",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Escuela de Medicina San Juan Bautista",
+      "directoryMunicipality": "CAGUAS",
+      "directoryAddress": "Turabo Gardens Road 172 Caguas to Cidra",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Herbert Fletcher University",
+      "directoryMunicipality": "MAYAGUEZ",
+      "directoryAddress": "Carr. #2 Km. 158.2 Avenida Hosto #74 Bo. Guanajibo",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Huertas College Caguas",
+      "directoryMunicipality": "CAGUAS",
+      "directoryAddress": "Calle Héctor R. Bunker #41",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Industrial Biotechnological Institute IBI",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Carretera 871 Barrio Arenas",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Instituto Comercial de PR Junior College",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Munoz Rivera 558, Hato Rey",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Instituto de Banca y Comercio",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Ave. Ponce de Leon # 61, Barrio Hato Rey",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Instituto para el Desarrollo Humano",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Roosevelt 242 Esq Calle Unión Piso 4, Hato Rey",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Instituto Sexológico, Educativo y Psicológico de PR",
+      "directoryMunicipality": "CAROLINA",
+      "directoryAddress": "Avda. Sánchez Osorio 5H-5, Villa Fontana",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Instituto Tecnológico de Puerto Rico",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Calle Federico Costa #150, Urb. Industrial Tres Monjitas, Hato Rey",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Lomalinda University",
+      "directoryMunicipality": "MAYAGUEZ",
+      "directoryAddress": "(Universidad Adventista de las Antillas) Carr. #106, Km. 2.2 Interior",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Mech Tech College",
+      "directoryMunicipality": "CAGUAS",
+      "directoryAddress": "Parque Industrial Oeste, Calle B #39-40",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Monteclaro: Escuela de Hotelería y Artes Culinarias",
+      "directoryMunicipality": "PALMER",
+      "directoryAddress": "Carretera 955 km 4.8",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "National University College",
+      "directoryMunicipality": "BAYAMON",
+      "directoryAddress": "Carr. #2, Km. 11.2, Edificio National College Plaza,Edif. #1660",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Nova Southeastern University",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "997 Calle San Roberto, Professional Offices Park IV",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Ponce Health Sciences University",
+      "directoryMunicipality": "Ponce",
+      "directoryAddress": "388 Zona Industrial Reparada 2",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Ponce Paramedical College",
+      "directoryMunicipality": "Coto Laurel",
+      "directoryAddress": "Bo. Sábalos #410 Carretera #2",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Pontificia Universidad Católica de PR",
+      "directoryMunicipality": "PONCE",
+      "directoryAddress": "2250 Boulevard Luis A. Ferré-Aguayo",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Rutgers University",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Calle Gonzalez #1012, Urb. Santa Rita, Río Piedras",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Trinity College",
+      "directoryMunicipality": "PONCE",
+      "directoryAddress": "#834 Avenida Hostos",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Universal Technology College",
+      "directoryMunicipality": "CAMUY",
+      "directoryAddress": "Calle Muñoz Rivera #167",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Universidad Ana G. Méndez",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Avda. Ponce de León #1552, Urb. Reparto Seín, Sector El Cinco, Cupey",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Universidad Carlos Albizu",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "151 Calle Tanca",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Universidad Central de Bayamón",
+      "directoryMunicipality": "BAYAMON",
+      "directoryAddress": "Avenida Zaya Verde Reparto la Milagrosa, Hato Tejas Bayamón",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Universidad Complutense de Madrid",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "(Universidad Interamericana, Escuela de Derecho), Calle Federico Costa #84, Ubr. Industrial Tres Monjitas, Hato Rey",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Universidad de Puerto Rico",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Calle Flamboyán, Jardín Botánico Sur, Río Piedras",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Universidad del Sagrado Corazón",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Calle Rosales, Esq. San Antonio, Parada 26 1/2",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Universidad Interamericana de PR",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Calle Galileo Final #399, Urb. Villa Nevares, Río Piedras",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Universidad Internacional Iberoamericana",
+      "directoryMunicipality": "ARECIBO",
+      "directoryAddress": "Carr. 658 Km. 1.3  Bo. Arenalejos Sector Palache",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Universidad Metropolitana",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "1399 Ave. Ana G. Méndez, Carr. 176, Km. 0.03",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Universidad Politécnica de Puerto Rico",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Ave. Ponce de León 377, Hato Rey",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "Universidad Universal",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Calle Méjico #16, Hato Rey",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "University of Miami",
+      "directoryMunicipality": "GUAYNABO",
+      "directoryAddress": "Carretera 165 #50, Sector Buchanan, Parque Industrial Amelia",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    },
+    {
+      "directoryInstitution": "University of Phoenix",
+      "directoryMunicipality": "GUAYNABO",
+      "directoryAddress": "Santander Tower at San Patricio, Calle Tabonuco B-7, suite 400",
+      "candidateCount": 0,
+      "reason": "no exact normalized institution-name + municipality match in auxiliary source"
+    }
+  ],
+  "nextDecision": "Use the reviewed narrow alias/campus decisions in data/unis/ipeds-alias-campus-review.json to build the Census geocoder cache for approved rows and keep the quarantine artifact aligned for excluded rows before marking unis import-ready."
+}

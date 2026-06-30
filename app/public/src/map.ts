@@ -1,7 +1,9 @@
 import {
   type MapConfig,
   type NormalizedUniversity,
+  type NormalizedUniversityCoverage,
   type UniversityPayload,
+  normalizeUniversityCoverage,
   normalizeUniversities,
   readMapConfig
 } from "./map_config.js";
@@ -66,20 +68,55 @@ export function addUniversities(map: LeafletMap, leaflet: LeafletApi, universiti
   });
 }
 
+function renderCoverage(documentRef: Document, coverage: NormalizedUniversityCoverage | null): void {
+  const status = documentRef.querySelector<HTMLElement>('[data-ui="unis-coverage-status"]');
+
+  if (!status) {
+    return;
+  }
+
+  status.textContent = coverage ? coverage.label : "";
+}
+
 export function loadUniversities(windowRef: RequestWindow, config: MapConfig, callback: UniversityCallback): void {
-  loadUniversityUrl(windowRef, config.dataUrl, function(universities: NormalizedUniversity[] | null): void {
-    if (universities) {
-      callback(universities);
+  loadUniversityUrl(windowRef, config.dataUrl, function(result: UniversityLoadResult | null): void {
+    if (result) {
+      callback(result.universities);
       return;
     }
 
-    loadUniversityUrl(windowRef, config.fallbackDataUrl, function(fallbackUniversities: NormalizedUniversity[] | null): void {
-      callback(fallbackUniversities || []);
+    loadUniversityUrl(windowRef, config.fallbackDataUrl, function(fallbackResult: UniversityLoadResult | null): void {
+      callback(fallbackResult ? fallbackResult.universities : []);
     });
   });
 }
 
-function loadUniversityUrl(windowRef: RequestWindow, dataUrl: string, callback: (universities: NormalizedUniversity[] | null) => void): void {
+interface UniversityLoadResult {
+  universities: NormalizedUniversity[];
+  coverage: NormalizedUniversityCoverage | null;
+}
+
+export function loadUniversitiesWithCoverage(
+  windowRef: RequestWindow,
+  config: MapConfig,
+  callback: (result: UniversityLoadResult) => void
+): void {
+  loadUniversityUrl(windowRef, config.dataUrl, function(result: UniversityLoadResult | null): void {
+    if (result) {
+      callback(result);
+      return;
+    }
+
+    loadUniversityUrl(windowRef, config.fallbackDataUrl, function(fallbackResult: UniversityLoadResult | null): void {
+      callback(fallbackResult || {
+        universities: [],
+        coverage: null
+      });
+    });
+  });
+}
+
+function loadUniversityUrl(windowRef: RequestWindow, dataUrl: string, callback: (result: UniversityLoadResult | null) => void): void {
   windowRef.fetch(dataUrl, {
     headers: {
       "Content-Type": "application/json"
@@ -93,7 +130,11 @@ function loadUniversityUrl(windowRef: RequestWindow, dataUrl: string, callback: 
     return response.json();
   }).then(function(payload: unknown): void {
     if (payload) {
-      callback(normalizeUniversities(payload as UniversityPayload));
+      const universityPayload = payload as UniversityPayload;
+      callback({
+        universities: normalizeUniversities(universityPayload),
+        coverage: normalizeUniversityCoverage(universityPayload)
+      });
     }
   }).catch(function(): void {
     callback(null);
@@ -104,8 +145,9 @@ export function init(windowRef: UtoplanWindow, documentRef: Document, leaflet: L
   const config = readMapConfig(windowRef);
   const map = createMap(documentRef, leaflet, config);
 
-  loadUniversities(windowRef, config, function(universities: NormalizedUniversity[]): void {
-    addUniversities(map, leaflet, universities);
+  loadUniversitiesWithCoverage(windowRef, config, function(result: UniversityLoadResult): void {
+    renderCoverage(documentRef, result.coverage);
+    addUniversities(map, leaflet, result.universities);
   });
 }
 

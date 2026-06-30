@@ -1,6 +1,7 @@
 'use strict';
 
 const assert = require('assert');
+const pg = require('pg');
 const db = require('../lib/db');
 
 const keys = [
@@ -68,6 +69,60 @@ try {
     connectionString: 'postgres://example'
   });
   assert.strictEqual(db.hasExplicitConnectionConfig(), true);
+
+  const dbPath = require.resolve('../lib/db');
+  const originalPool = pg.Pool;
+  const originalError = console.error;
+  let createdPool = null;
+  const logged = [];
+
+  class FakePool {
+    constructor() {
+      this.handlers = {};
+      createdPool = this;
+    }
+
+    on(event, handler) {
+      this.handlers[event] = handler;
+    }
+
+    query(text, params, callback) {
+      callback(null, {
+        rows: []
+      });
+    }
+
+    end(callback) {
+      if (callback) {
+        callback();
+      }
+      return Promise.resolve();
+    }
+  }
+
+  delete require.cache[dbPath];
+  pg.Pool = FakePool;
+  console.error = function(message) {
+    logged.push(message);
+  };
+
+  const isolatedDb = require('../lib/db');
+  isolatedDb.query('SELECT 1', [], function(error, result) {
+    assert.ifError(error);
+    assert.deepStrictEqual(result.rows, []);
+  });
+
+  assert(createdPool, 'db module should create a pool');
+  assert.strictEqual(typeof createdPool.handlers.error, 'function', 'db pool should register an error handler');
+
+  createdPool.handlers.error(Object.assign(new Error('terminating connection due to administrator command'), {
+    code: '57P01'
+  }));
+  assert(logged.indexOf('database pool connection terminated during shutdown') !== -1);
+
+  console.error = originalError;
+  pg.Pool = originalPool;
+  delete require.cache[dbPath];
 } finally {
   restore();
 }
