@@ -16,12 +16,24 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
+    node --version
+    npm --version
+    docker --version
+  displayName: 'Report tool versions'
+
+- script: |
     npm run install:all
+  displayName: 'Install workspace dependencies'
+
+- script: |
     npm run build
-  displayName: 'npm install and build'
+  displayName: 'Build and run contract tests'
 
 - script: |
     npx playwright install --with-deps chromium
+  displayName: 'Install Chromium browser dependencies'
+
+- script: |
     npm run test:browser
   displayName: 'Browser smoke tests'
 
