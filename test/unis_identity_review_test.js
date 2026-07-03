@@ -10,6 +10,8 @@ var matchReview = JSON.parse(fs.readFileSync(path.join(root, 'data', 'unis', 'ip
 var quarantine = JSON.parse(fs.readFileSync(path.join(root, 'data', 'geocoding', 'unis-import-quarantine.json'), 'utf8'));
 var generated = JSON.parse(fs.readFileSync(path.join(root, 'data', 'generated', 'unis-partial-import.json'), 'utf8'));
 var orlieReview = JSON.parse(fs.readFileSync(path.join(root, 'data', 'unis', 'orlie-jip-row-review.json'), 'utf8'));
+var followupReview = JSON.parse(fs.readFileSync(path.join(root, 'data', 'unis', 'corroborated-identity-followup-review.json'), 'utf8'));
+var publicAddressReview = JSON.parse(fs.readFileSync(path.join(root, 'data', 'geocoding', 'unis-public-address-review.json'), 'utf8'));
 
 function isNonEmptyString(value) {
   return typeof value === 'string' && value.trim() !== '';
@@ -35,6 +37,14 @@ var generatedNames = generated.rows.reduce(function(index, record) {
   return index;
 }, {});
 var reviewByInstitution = review.records.reduce(function(index, record) {
+  index[record.directoryInstitution] = record;
+  return index;
+}, {});
+var orlieByInstitution = orlieReview.records.reduce(function(index, record) {
+  index[record.directoryInstitution] = record;
+  return index;
+}, {});
+var publicAddressByInstitution = publicAddressReview.records.reduce(function(index, record) {
   index[record.directoryInstitution] = record;
   return index;
 }, {});
@@ -77,6 +87,31 @@ assert.strictEqual(orlieReview.sourceContract.resourceKey, '2393e952-ae43-401c-9
 assert.strictEqual(orlieReview.sourceContract.tableEntity, 'Instituciones');
 assert(orlieReview.sourceContract.queryEndpoint.indexOf('/public/reports/querydata') !== -1, 'ORLIE/JIP query endpoint must be recorded');
 assert(orlieReview.sourceContract.excludedFields.indexOf('E-Mail') !== -1, 'ORLIE/JIP artifact must exclude personal contact fields');
+assert.strictEqual(followupReview.schemaVersion, 1);
+assert.strictEqual(followupReview.sourceId, 'datospr-higher-ed-directory-2017-18');
+assert.strictEqual(followupReview.status, 'reviewed-no-promotion');
+assert.strictEqual(followupReview.decision, 'retain-identity-quarantine-for-corroborated-subset');
+assert.strictEqual(followupReview.productBoundary, 'descriptive-only');
+assert.strictEqual(followupReview.inputArtifacts.identityReviewArtifactPath, 'data/unis/identity-review.json');
+assert.strictEqual(followupReview.inputArtifacts.orlieJipReviewArtifactPath, 'data/unis/orlie-jip-row-review.json');
+assert.strictEqual(followupReview.inputArtifacts.aliasCampusReviewArtifactPath, 'data/unis/ipeds-alias-campus-review.json');
+assert.strictEqual(followupReview.inputArtifacts.publicAddressReviewArtifactPath, 'data/geocoding/unis-public-address-review.json');
+assert.strictEqual(followupReview.inputArtifacts.addressVerificationArtifactPath, 'data/geocoding/unis-address-verification.json');
+assert.strictEqual(followupReview.inputArtifacts.importBoundaryArtifactPath, 'data/geocoding/unis-import-boundary-review.json');
+assert.strictEqual(followupReview.inputArtifacts.quarantineArtifactPath, 'data/geocoding/unis-import-quarantine.json');
+assert.strictEqual(followupReview.inputArtifacts.generatedArtifactPath, 'data/generated/unis-partial-import.json');
+assert.strictEqual(followupReview.summary.reviewedRows, 5);
+assert.strictEqual(followupReview.summary.identityCorroboratedRows, 5);
+assert.strictEqual(followupReview.summary.acceptedAliasCampusRows, 0);
+assert.strictEqual(followupReview.summary.reviewedPublicAddressRows, 0);
+assert.strictEqual(followupReview.summary.censusCacheEligibleRows, 0);
+assert.strictEqual(followupReview.summary.importEligibleRows, 0);
+assert.strictEqual(followupReview.summary.coordinateEligibleRows, 0);
+assert.strictEqual(followupReview.summary.generatedOutputEligibleRows, 0);
+assert.strictEqual(followupReview.records.length, 5);
+assert(followupReview.invariants.some(function(invariant) {
+  return invariant.indexOf('ORLIE/JIP licensure-listing evidence remains corroboration context only') !== -1;
+}), 'follow-up review must keep ORLIE/JIP evidence corroboration-only');
 assert(Array.isArray(review.authoritySourceReviewNotes), 'authoritySourceReviewNotes must be an array');
 assert(review.authoritySourceReviewNotes.some(function(note) {
   return note.sourceId === 'usdoe-dapip-puerto-rico' &&
@@ -128,7 +163,11 @@ review.records.forEach(function(record) {
   'Universidad Interamericana de PR'
 ].forEach(function(name) {
   var record = reviewByInstitution[name];
+  var followupRecord = followupReview.records.filter(function(candidate) {
+    return candidate.directoryInstitution === name;
+  })[0];
   assert(record, 'expected NCES-reviewed row: ' + name);
+  assert(followupRecord, 'expected follow-up reviewed row: ' + name);
   assert(record.classification.indexOf('nces-') === 0, 'classification must record NCES corroboration: ' + name);
   assert(record.classification.indexOf('dapip') !== -1, 'classification must record DAPIP corroboration: ' + name);
   assert(record.classification.indexOf('orlie') !== -1, 'classification must record ORLIE/JIP corroboration: ' + name);
@@ -159,6 +198,22 @@ review.records.forEach(function(record) {
   assert.strictEqual(record.importEligible, false, 'ORLIE/JIP corroboration must not create import eligibility: ' + name);
   assert.strictEqual(record.coordinateEligible, false, 'ORLIE/JIP corroboration must not create coordinate eligibility: ' + name);
   assert.strictEqual(record.generatedOutputEligible, false, 'ORLIE/JIP corroboration must not create generated output eligibility: ' + name);
+  assert.strictEqual(followupRecord.normalizedAddress, record.normalizedAddress, 'follow-up normalized address must come from identity review: ' + name);
+  assert.strictEqual(followupRecord.identityClassification, record.classification, 'follow-up classification must mirror identity review: ' + name);
+  assert.strictEqual(followupRecord.corroborationStatus, record.corroborationStatus, 'follow-up corroborationStatus must mirror identity review: ' + name);
+  assert.strictEqual(followupRecord.orlieJipMatchType, orlieByInstitution[name].matchType, 'follow-up ORLIE/JIP matchType must mirror ORLIE review: ' + name);
+  assert.strictEqual(followupRecord.aliasCampusDecision, 'not-accepted', 'follow-up must keep alias/campus not accepted: ' + name);
+  assert.strictEqual(followupRecord.publicAddressDecision, 'not-reviewed-for-identity-quarantined-row', 'follow-up must not imply public-address review coverage: ' + name);
+  assert.strictEqual(followupRecord.censusCacheDecision, 'not-eligible-without-accepted-alias-campus-and-public-address-evidence', 'follow-up must not imply Census-cache eligibility: ' + name);
+  assert.strictEqual(followupRecord.promotionDecision, 'retain-identity-quarantine', 'follow-up must retain identity quarantine: ' + name);
+  assert(followupRecord.promotionBlockers.indexOf('missing accepted alias/campus decision') !== -1, 'follow-up must record alias/campus blocker: ' + name);
+  assert(followupRecord.promotionBlockers.indexOf('missing reviewed public-address evidence') !== -1, 'follow-up must record public-address blocker: ' + name);
+  assert(followupRecord.promotionBlockers.indexOf('missing reviewed Puerto Rico Census geocoder cache match') !== -1, 'follow-up must record Census-cache blocker: ' + name);
+  assert.strictEqual(followupRecord.importEligible, false, 'follow-up must not create import eligibility: ' + name);
+  assert.strictEqual(followupRecord.coordinateEligible, false, 'follow-up must not create coordinate eligibility: ' + name);
+  assert.strictEqual(followupRecord.generatedOutputEligible, false, 'follow-up must not create generated output eligibility: ' + name);
+  assert.strictEqual(publicAddressByInstitution[name], undefined, 'identity follow-up row must not be misread as public-address-reviewed: ' + name);
+  assert(!generatedNames[name], 'identity follow-up row must not appear in generated output: ' + name);
 });
 
 review.records.filter(function(record) {

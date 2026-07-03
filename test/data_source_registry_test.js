@@ -562,6 +562,7 @@ function validateUnisAuthorityStack(source) {
   assert(source.identityAuthorityPolicy && typeof source.identityAuthorityPolicy === 'object', source.id + ' stronger authority blocker requires identityAuthorityPolicy');
   assert.strictEqual(source.identityAuthorityPolicy.status, 'reviewed-excluded', source.id + ' identityAuthorityPolicy status must keep rows excluded');
   assert.strictEqual(source.identityAuthorityPolicy.reviewArtifactPath, 'data/unis/identity-review.json', source.id + ' identity review artifact path mismatch');
+  assert.strictEqual(source.identityAuthorityPolicy.followupReviewArtifactPath, 'data/unis/corroborated-identity-followup-review.json', source.id + ' identity follow-up artifact path mismatch');
   assert.strictEqual(source.identityAuthorityPolicy.matchReviewArtifactPath, source.geocodingPolicy.matchReviewArtifactPath, source.id + ' identity policy match review path must match geocodingPolicy');
   assert.strictEqual(source.identityAuthorityPolicy.quarantineArtifactPath, source.geocodingPolicy.quarantineArtifactPath, source.id + ' identity policy quarantine path must match geocodingPolicy');
   assert(Array.isArray(source.identityAuthorityPolicy.authoritySourceIds), source.id + ' identityAuthorityPolicy authoritySourceIds must be an array');
@@ -569,6 +570,7 @@ function validateUnisAuthorityStack(source) {
   assert(isNonEmptyString(source.identityAuthorityPolicy.importRule), source.id + ' identityAuthorityPolicy importRule is required');
   assert(source.identityAuthorityPolicy.importRule.indexOf('does not provide coordinate authority') !== -1, source.id + ' identityAuthorityPolicy importRule must block coordinate overclaiming');
   assert(fs.existsSync(resolveRepoPath(source.identityAuthorityPolicy.reviewArtifactPath)), source.id + ' identity review artifact must exist');
+  assert(fs.existsSync(resolveRepoPath(source.identityAuthorityPolicy.followupReviewArtifactPath)), source.id + ' identity follow-up review artifact must exist');
 
   var identitySource = findSourceById('nces-college-navigator-puerto-rico');
   assert(identitySource, source.id + ' stronger authority blocker requires the NCES corroboration source to be registered');
@@ -612,6 +614,7 @@ function validateUnisAuthorityStack(source) {
 
 function validateUnisIdentityReview(source, identitySource, accreditationSource, licensureSource) {
   var identityReview = JSON.parse(fs.readFileSync(resolveRepoPath(source.identityAuthorityPolicy.reviewArtifactPath), 'utf8'));
+  var followupReview = JSON.parse(fs.readFileSync(resolveRepoPath(source.identityAuthorityPolicy.followupReviewArtifactPath), 'utf8'));
   var matchReview = JSON.parse(fs.readFileSync(resolveRepoPath(source.identityAuthorityPolicy.matchReviewArtifactPath), 'utf8'));
   var quarantine = JSON.parse(fs.readFileSync(resolveRepoPath(source.identityAuthorityPolicy.quarantineArtifactPath), 'utf8'));
   var generated = JSON.parse(fs.readFileSync(resolveRepoPath('data/generated/unis-partial-import.json'), 'utf8'));
@@ -657,6 +660,15 @@ function validateUnisIdentityReview(source, identitySource, accreditationSource,
   assert.strictEqual(identityReview.summary.rowsWithoutRowLevelAuthorityCorroboration, 22, source.id + ' identity review must keep unreviewed authority rows explicit');
   assert.strictEqual(identityReview.summary.rowsStillMissingOrlieJipCorroboration, 22, source.id + ' identity review must keep remaining ORLIE/JIP gaps explicit');
   assert.strictEqual(identityReview.records.length, identityReview.summary.identityQuarantinedRows, source.id + ' identity review record count must match summary');
+  assert.strictEqual(followupReview.schemaVersion, 1, source.id + ' identity follow-up schemaVersion must be 1');
+  assert.strictEqual(followupReview.sourceId, source.id, source.id + ' identity follow-up sourceId must match');
+  assert.strictEqual(followupReview.status, 'reviewed-no-promotion', source.id + ' identity follow-up must remain reviewed-no-promotion');
+  assert.strictEqual(followupReview.decision, 'retain-identity-quarantine-for-corroborated-subset', source.id + ' identity follow-up decision mismatch');
+  assert.strictEqual(followupReview.summary.reviewedRows, 5, source.id + ' identity follow-up must cover five rows');
+  assert.strictEqual(followupReview.summary.acceptedAliasCampusRows, 0, source.id + ' identity follow-up must not accept alias/campus rows');
+  assert.strictEqual(followupReview.summary.reviewedPublicAddressRows, 0, source.id + ' identity follow-up must not imply public-address review coverage');
+  assert.strictEqual(followupReview.summary.censusCacheEligibleRows, 0, source.id + ' identity follow-up must not imply Census-cache eligibility');
+  assert.strictEqual(followupReview.summary.generatedOutputEligibleRows, 0, source.id + ' identity follow-up must not expose generated output eligibility');
   assert.strictEqual(orlieReview.schemaVersion, 1, source.id + ' ORLIE/JIP row review schemaVersion must be 1');
   assert.strictEqual(orlieReview.sourceId, licensureSource.id, source.id + ' ORLIE/JIP row review sourceId must match registered source');
   assert.strictEqual(orlieReview.status, 'row-level-query-reviewed', source.id + ' ORLIE/JIP row review status mismatch');

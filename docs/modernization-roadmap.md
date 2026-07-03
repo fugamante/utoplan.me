@@ -221,13 +221,14 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Use `data/unis/identity-review.json` and
-`data/unis/orlie-jip-row-review.json` to continue the narrow review for the 5
-NCES+DAPIP+ORLIE/JIP-corroborated identity-quarantined rows by determining
-whether any row can receive accepted alias/campus and reviewed public-address
-evidence without guessing. Keep `data/geocoding/unis-address-verification.json`
-as the current zero-promotion address baseline, keep API/UI coverage language
-visible, and do not expand the 4-row generated slice without updating the
-identity review, address review, cache, quarantine, boundary artifact,
-registry, generated outputs, and tests
+Use `data/unis/corroborated-identity-followup-review.json` as the current
+five-row no-promotion decision for the NCES+DAPIP+ORLIE/JIP-corroborated
+identity-quarantined rows. The next useful step is to find source-backed,
+row-level alias/campus and public-address evidence for exactly one candidate
+row, then rerun the Census-cache and import-boundary chain only if that
+evidence clears the policy gates. Keep
+`data/geocoding/unis-address-verification.json` as the current zero-promotion
+address baseline, keep API/UI coverage language visible, and do not expand the
+4-row generated slice without updating the identity review, address review,
+cache, quarantine, boundary artifact, registry, generated outputs, and tests
 together.
