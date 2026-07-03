@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "datospr-higher-ed-directory-2017-18",
+  "reviewedAt": "2026-07-02",
+  "reviewer": "Modernization Maintainer",
+  "status": "reviewed-no-promotion",
+  "decision": "retain-identity-quarantine-for-corroborated-subset",
+  "decisionSummary": "The five NCES+DAPIP+ORLIE/JIP-corroborated identity rows remain outside generated/imported unis output. Existing evidence corroborates identity, alias, campus, accreditation, or licensure-listing context, but no row has the accepted alias/campus, reviewed public-address, and reviewed Census-cache chain required for import readiness.",
+  "productBoundary": "descriptive-only",
+  "inputArtifacts": {
+    "identityReviewArtifactPath": "data/unis/identity-review.json",
+    "orlieJipReviewArtifactPath": "data/unis/orlie-jip-row-review.json",
+    "aliasCampusReviewArtifactPath": "data/unis/ipeds-alias-campus-review.json",
+    "publicAddressReviewArtifactPath": "data/geocoding/unis-public-address-review.json",
+    "addressVerificationArtifactPath": "data/geocoding/unis-address-verification.json",
+    "importBoundaryArtifactPath": "data/geocoding/unis-import-boundary-review.json",
+    "quarantineArtifactPath": "data/geocoding/unis-import-quarantine.json",
+    "generatedArtifactPath": "data/generated/unis-partial-import.json"
+  },
+  "summary": {
+    "reviewedRows": 5,
+    "identityCorroboratedRows": 5,
+    "acceptedAliasCampusRows": 0,
+    "reviewedPublicAddressRows": 0,
+    "censusCacheEligibleRows": 0,
+    "importEligibleRows": 0,
+    "coordinateEligibleRows": 0,
+    "generatedOutputEligibleRows": 0
+  },
+  "invariants": [
+    "ORLIE/JIP licensure-listing evidence remains corroboration context only and is not a direct row source, coordinate authority, or public-address correction workflow.",
+    "No generated output, database seed, registry boundary, API contract, or UI coverage changes are made from this follow-up review.",
+    "Identity-quarantined rows require accepted alias/campus, reviewed public-address, and reviewed Puerto Rico Census geocoder cache evidence before import eligibility can change.",
+    "No personal contact fields, rankings, recommendations, scores, suitability claims, or invented coordinates are introduced."
+  ],
+  "records": [
+    {
+      "directoryInstitution": "Universidad Ana G. Méndez",
+      "directoryMunicipality": "SAN JUAN",
+      "normalizedAddress": "Avda. Ponce de León #1552, Urb. Reparto Seín, Sector El Cinco, Cupey, SAN JUAN, Puerto Rico",
+      "identityClassification": "nces-dapip-orlie-campus-corroborated-not-import-ready",
+      "corroborationStatus": "nces-dapip-orlie-row-reviewed",
+      "orlieJipMatchType": "identity-campus-corroboration",
+      "aliasCampusDecision": "not-accepted",
+      "publicAddressDecision": "not-reviewed-for-identity-quarantined-row",
+      "censusCacheDecision": "not-eligible-without-accepted-alias-campus-and-public-address-evidence",
+      "promotionDecision": "retain-identity-quarantine",
+      "promotionBlockers": [
+        "missing accepted alias/campus decision",
+        "missing reviewed public-address evidence",
+        "missing reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false
+    },
+    {
+      "directoryInstitution": "Universidad Carlos Albizu",
+      "directoryMunicipality": "SAN JUAN",
+      "normalizedAddress": "151 Calle Tanca, SAN JUAN, Puerto Rico",
+      "identityClassification": "nces-dapip-orlie-alias-corroborated-not-import-ready",
+      "corroborationStatus": "nces-dapip-orlie-row-reviewed",
+      "orlieJipMatchType": "identity-alias-corroboration",
+      "aliasCampusDecision": "not-accepted",
+      "publicAddressDecision": "not-reviewed-for-identity-quarantined-row",
+      "censusCacheDecision": "not-eligible-without-accepted-alias-campus-and-public-address-evidence",
+      "promotionDecision": "retain-identity-quarantine",
+      "promotionBlockers": [
+        "missing accepted alias/campus decision",
+        "missing reviewed public-address evidence",
+        "missing reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false
+    },
+    {
+      "directoryInstitution": "Universidad de Puerto Rico",
+      "directoryMunicipality": "SAN JUAN",
+      "normalizedAddress": "Calle Flamboyán, Jardín Botánico Sur, Río Piedras, SAN JUAN, Puerto Rico",
+      "identityClassification": "nces-dapip-orlie-campus-corroborated-not-import-ready",
+      "corroborationStatus": "nces-dapip-orlie-row-reviewed",
+      "orlieJipMatchType": "identity-campus-corroboration",
+      "aliasCampusDecision": "not-accepted",
+      "publicAddressDecision": "not-reviewed-for-identity-quarantined-row",
+      "censusCacheDecision": "not-eligible-without-accepted-alias-campus-and-public-address-evidence",
+      "promotionDecision": "retain-identity-quarantine",
+      "promotionBlockers": [
+        "missing accepted alias/campus decision",
+        "missing reviewed public-address evidence",
+        "missing reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false
+    },
+    {
+      "directoryInstitution": "Universidad del Sagrado Corazón",
+      "directoryMunicipality": "SAN JUAN",
+      "normalizedAddress": "Calle Rosales, Esq. San Antonio, Parada 26 1/2, SAN JUAN, Puerto Rico",
+      "identityClassification": "nces-dapip-orlie-identity-corroborated-not-import-ready",
+      "corroborationStatus": "nces-dapip-orlie-row-reviewed",
+      "orlieJipMatchType": "identity-corroboration",
+      "aliasCampusDecision": "not-accepted",
+      "publicAddressDecision": "not-reviewed-for-identity-quarantined-row",
+      "censusCacheDecision": "not-eligible-without-accepted-alias-campus-and-public-address-evidence",
+      "promotionDecision": "retain-identity-quarantine",
+      "promotionBlockers": [
+        "missing accepted alias/campus decision",
+        "missing reviewed public-address evidence",
+        "missing reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false
+    },
+    {
+      "directoryInstitution": "Universidad Interamericana de PR",
+      "directoryMunicipality": "SAN JUAN",
+      "normalizedAddress": "Calle Galileo Final #399, Urb. Villa Nevares, Río Piedras, SAN JUAN, Puerto Rico",
+      "identityClassification": "nces-dapip-orlie-campus-corroborated-not-import-ready",
+      "corroborationStatus": "nces-dapip-orlie-row-reviewed",
+      "orlieJipMatchType": "identity-campus-corroboration",
+      "aliasCampusDecision": "not-accepted",
+      "publicAddressDecision": "not-reviewed-for-identity-quarantined-row",
+      "censusCacheDecision": "not-eligible-without-accepted-alias-campus-and-public-address-evidence",
+      "promotionDecision": "retain-identity-quarantine",
+      "promotionBlockers": [
+        "missing accepted alias/campus decision",
+        "missing reviewed public-address evidence",
+        "missing reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false
+    }
+  ]
+}
