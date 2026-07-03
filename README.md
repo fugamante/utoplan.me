@@ -22,7 +22,7 @@ PostgreSQL-backed Node and TypeScript system with explicit data provenance.
 
 ## Quick Start
 
-Use Node 22.x. Install the root workspace and both nested packages:
+Use Node 24.x. Install the root workspace and both nested packages:
 
 ```sh
 npm run install:all
@@ -229,8 +229,8 @@ The Docker build runs `npm run install:all` and `npm run build`, so it validates
 clean installs and the API test baseline before producing an image.
 
 CI policy lives in `docs/ci-platform-policy.md`. GitHub Actions is the required
-transparent PR readiness gate; Azure Pipelines is advisory unless its logs are
-available to the reviewer or release operator.
+transparent PR readiness gate and the only CI platform in the modernization
+path.
 
 `npm run docker:test:db` builds a disposable seeded Postgres image from
 `Dockerfile.postgres-test`, runs the DB-backed modern API contract tests in a

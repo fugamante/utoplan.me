@@ -120,7 +120,7 @@ Audits should use repository evidence first:
   `scripts/verify_deployment_config.js`, `scripts/release_preflight.js`, and
   `scripts/release_smoke_check.js`
 - Dockerfiles, Compose files, and CI configuration such as
-  `docker-compose.public-api.yml` and `azure-pipelines.yml`
+  `docker-compose.public-api.yml` and `.github/workflows/ci.yml`
 - Tests under `app/test/`, `dtoapi/test/`, `dtoapi/modern/test/`, and `test/`
 
 External standards references may inform structure, but repository behavior is

@@ -99,7 +99,7 @@ Runtime baselines are named by contract, not by environment accident. The curren
 The development baseline is the current modernization branch plus all committed lockfiles and tests. A development baseline is acceptable when:
 
 - Root installation can be reproduced from lockfiles.
-- `npm run test:node-runtime` passes against the pinned Node 22 major from
+- `npm run test:node-runtime` passes against the pinned Node 24 major from
   `.node-version` and `.nvmrc`.
 - `npm run build` has defined behavior.
 - Affected contract tests pass or failures are documented.
@@ -194,7 +194,7 @@ Local development uses the root scripts documented in `README.md`. Developers ma
 npm run start:local
 ```
 
-Local install, build, and test workflows are pinned to the reviewed Node 22
+Local install, build, and test workflows are pinned to the reviewed Node 24
 major declared in `.node-version` and `.nvmrc`. `scripts/verify_node_runtime.js`
 enforces that pin before install, test, build, and start commands run.
 

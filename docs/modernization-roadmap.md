@@ -6,7 +6,8 @@
 - `dtoapi/` serves the modern API entrypoint; obsolete Nodal source has been removed from the normal project tree.
 - Root workspace scripts install, test, build, and start both services from lockfiles.
 - Generated dependency folders are ignored and removed from source control.
-- Azure Pipelines installs Node 22, runs the DB-free API contract baseline, and runs the modern DB-backed contract suite through Docker Compose.
+- GitHub Actions installs Node 24, runs the contract-test baseline, and runs
+  the modern Docker-backed validation surface.
 - Docker validation builds from lockfiles, runs the API test baseline, and serves the static app by default.
 - Docker DB validation builds a seeded Postgres test image instead of bind-mounting seed SQL, avoiding host file-sharing instability during database initialization.
 - DB-backed API contracts run in a current Node container against the modern API, including missing-record behavior.
@@ -103,7 +104,9 @@
   `start:local` path against a seeded `baseline-read-v1` database, including
   same-origin planning-context summary/detail requests, rendered descriptive
   detail, and fixture exclusion.
-- `npm run verify:release` wraps app/API deployment verification for release jobs, and Azure validates the wrapper in sample mode without production secrets.
+- `npm run verify:release` wraps app/API deployment verification for release
+  jobs, and GitHub Actions validates the wrapper in sample mode without
+  production secrets.
 - `npm run verify:release-smoke` checks deployed app `/healthz`, public `/v1/unis`, and optional API `/readyz` from configured release URLs.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
 - `docs/standards/` now defines the active IEEE 730, 828, 829, 830, 1016, 1012, and 1058 standards corpus, with paired audit guides for keeping quality, configuration, test, requirements, design, V&V, and project-management controls current during ongoing modernization.
