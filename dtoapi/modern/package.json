@@ -5,7 +5,7 @@
   "description": "Modern API compatibility slice for utoplan.me.",
   "main": "lib/server.js",
   "engines": {
-    "node": ">=22 <23"
+    "node": ">=24 <25"
   },
   "dependencies": {
     "pg": "^8.16.3"

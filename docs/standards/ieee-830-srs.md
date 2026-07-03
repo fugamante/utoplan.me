@@ -113,7 +113,7 @@ contracts working while rebuilding the data and technical foundation.
 - The static app must preserve same-origin `/v1/*` browser requests for active
   API data in integrated deployments.
 - Production deployments must keep `UTOPLAN_DEMO_FIXTURE` unset.
-- The modern API must run on the pinned Node 22 major declared in
+- The modern API must run on the pinned Node 24 major declared in
   `.node-version` and `.nvmrc`, and compile TypeScript sources before runtime
   or tests use generated CommonJS output.
 - The modern API must retain typed response, resource, schema, root, routing,
