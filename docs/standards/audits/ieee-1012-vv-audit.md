@@ -73,7 +73,7 @@ Review these artifacts during each IEEE 1012 audit:
 | `data/mappings/puerto-rico-business-categories.json`, `data/municipalities/planning-context-municipalities.json`, `data/naics/planning-context-naics-titles.json`, and `data/planning-context/` | descriptive planning-context validation evidence | Do category mappings, municipality labels, NAICS title labels, and planning-context fixtures remain descriptive, traceable, and confidence-bounded? |
 | `package.json` and service manifests | executable V&V surface | Do scripts, audits, and dependencies match documented gates? |
 | `app/test/`, `dtoapi/test/`, `dtoapi/modern/test/`, and `test/` | verification implementation | Do tests prove requirements and design contracts rather than only implementation details? |
-| Dockerfiles, Compose files, CI definitions such as `azure-pipelines.yml`, and verification scripts | environment validation | Do container and CI paths exercise the intended release topology? |
+| Dockerfiles, Compose files, CI definitions such as `.github/workflows/ci.yml`, and verification scripts | environment validation | Do container and CI paths exercise the intended release topology? |
 
 The formal IEEE 1012 V&V plan baseline is
 `docs/standards/ieee-1012-vv-plan.md`. If that artifact is temporarily

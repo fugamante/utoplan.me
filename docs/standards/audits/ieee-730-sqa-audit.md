@@ -64,7 +64,7 @@ Review these artifacts during each IEEE 730 audit:
 - `package.json`, `app/package.json`, `dtoapi/package.json`, and
   `dtoapi/modern/package.json`: authoritative scripts, dependencies, and audit
   surfaces.
-- CI configuration and Docker files, including `azure-pipelines.yml` and
+- CI configuration and Docker files, including `.github/workflows/ci.yml` and
   `docker-compose.public-api.yml`: validation parity with documented release
   and compatibility checks.
 - Test suites under `app/test/`, `dtoapi/test/`, `dtoapi/modern/test/`, and

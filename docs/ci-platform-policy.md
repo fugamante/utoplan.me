@@ -8,9 +8,8 @@ make failures inspectable from the repository tools used for review.
 ## Current Gates
 
 - GitHub Actions workflow: `.github/workflows/ci.yml`
-- Azure Pipelines workflow: `azure-pipelines.yml`
 
-Both workflows run the same validation surface:
+The workflow runs the required validation surface:
 
 - install workspace dependencies
 - run the root build and contract-test stack
@@ -22,7 +21,8 @@ Both workflows run the same validation surface:
 
 ## Required Readiness Gate
 
-GitHub Actions is the required transparent PR readiness gate.
+GitHub Actions is the required transparent PR readiness gate and the only
+CI platform in the modernization path.
 
 Reasons:
 
@@ -38,22 +38,18 @@ commit.
 
 ## Azure Status
 
-Azure Pipelines may continue to run as an advisory compatibility signal.
+Azure Pipelines is removed from the repository modernization path. Do not add
+or require Azure checks for PR readiness unless the project explicitly adopts
+Azure deployment, environment governance, or release promotion later.
 
-Azure is not the authoritative readiness gate unless its logs are accessible to
-the reviewer or operator performing the readiness pass. If Azure fails and only
-reports a generic Bash exit annotation without step logs, do not guess. Use the
-transparent GitHub Actions result and the local validation surface to decide
-whether the failure is actionable or platform-specific.
-
-If Azure is kept as a required merge gate, the project must first make Azure
-logs inspectable from the normal review workflow.
+If an external Azure DevOps integration still posts checks, treat those checks
+as stale external configuration until the integration is disabled outside this
+repository. Do not block readiness on Azure when GitHub Actions `validation`
+passes.
 
 ## Branch Protection Recommendation
 
 `master` should require the GitHub Actions `validation` check before merge.
-Azure should not be required until its logs are available to operators who are
-expected to fix failures.
 
 Recommended protection shape:
 
@@ -62,7 +58,8 @@ Recommended protection shape:
 - require status checks to pass before merge
 - require the GitHub Actions `validation` check
 - keep branches up to date when practical for the current contributor model
-- do not require Azure as a blocking check unless log access is fixed
+- do not add external CI status checks unless they are transparent and
+  intentionally adopted by the project
 
 ## Failure Handling
 
@@ -72,5 +69,6 @@ When a CI run fails:
 2. Reproduce the failing command locally when the failure is code-related.
 3. Fix the underlying repo issue and push a normal commit.
 4. Treat rerun-only or empty commits as a last resort.
-5. If Azure fails but GitHub Actions passes, record Azure as advisory unless
-   its logs identify a repo-owned failure.
+5. If stale external checks appear while GitHub Actions passes, verify branch
+   protection still requires only `validation` and handle the external
+   integration outside the repository.
