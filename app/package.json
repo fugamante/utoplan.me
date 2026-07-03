@@ -6,7 +6,7 @@
   "contributors": "Victor Ortiz, Javier Cordero, Moises Marcon, Pablo Pinna, Rafael Sierra",
   "main": "app.js",
   "engines": {
-    "node": ">=22 <23"
+    "node": ">=24 <25"
   },
   "scripts": {
     "verify:node": "node ../scripts/verify_node_runtime.js",

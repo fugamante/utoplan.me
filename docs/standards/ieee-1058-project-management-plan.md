@@ -192,7 +192,7 @@ can be tested before merge or release.
 Project resources:
 
 - Source repository and Modernization fork.
-- Pinned Node 22 runtime control through `.node-version`, `.nvmrc`, and
+- Pinned Node 24 runtime control through `.node-version`, `.nvmrc`, and
   `scripts/verify_node_runtime.js`, plus npm lockfiles across root, `app`,
   `dtoapi`, and `dtoapi/modern`.
 - Docker and Compose for seeded database, proxy, integrated, and browser
