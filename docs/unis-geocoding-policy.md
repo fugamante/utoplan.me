@@ -48,6 +48,26 @@ Accept a geocoding result only when all of these checks pass:
 Rows that fail any check remain excluded from production-style import until
 their address is corrected or a reviewed exception path is added.
 
+## ZIP Variance Rule
+
+For Puerto Rico university rows, ZIP codes are supporting address evidence, not
+the primary identity discriminator. Large campuses and San Juan neighborhoods
+may span or border nearby ZIP areas, and official or authority pages may show
+minor ZIP variation for the same street/campus location.
+
+Do not block an alias/campus or public-address staged decision only because of
+nearby ZIP variance when all of these are true:
+
+- official or recognized authority sources corroborate the same institution;
+- the street/campus address aligns materially across sources;
+- the municipality or documented neighborhood remains consistent; and
+- the row remains outside Census cache, coordinates, and generated output until
+  a later pass selects one reviewed geocoder candidate address.
+
+Record the variance in the review artifact, but do not spend additional passes
+trying to prove a single exact ZIP unless the street/campus identity is
+ambiguous or the ZIP points to a materially different location.
+
 ## Cache And Review Control
 
 - Checked-in cache artifact:
