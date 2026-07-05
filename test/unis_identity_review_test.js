@@ -11,6 +11,7 @@ var quarantine = JSON.parse(fs.readFileSync(path.join(root, 'data', 'geocoding',
 var generated = JSON.parse(fs.readFileSync(path.join(root, 'data', 'generated', 'unis-partial-import.json'), 'utf8'));
 var orlieReview = JSON.parse(fs.readFileSync(path.join(root, 'data', 'unis', 'orlie-jip-row-review.json'), 'utf8'));
 var followupReview = JSON.parse(fs.readFileSync(path.join(root, 'data', 'unis', 'corroborated-identity-followup-review.json'), 'utf8'));
+var sagradoStagedReview = JSON.parse(fs.readFileSync(path.join(root, 'data', 'unis', 'sagrado-staged-review.json'), 'utf8'));
 var publicAddressReview = JSON.parse(fs.readFileSync(path.join(root, 'data', 'geocoding', 'unis-public-address-review.json'), 'utf8'));
 
 function isNonEmptyString(value) {
@@ -96,14 +97,15 @@ assert.strictEqual(followupReview.inputArtifacts.identityReviewArtifactPath, 'da
 assert.strictEqual(followupReview.inputArtifacts.orlieJipReviewArtifactPath, 'data/unis/orlie-jip-row-review.json');
 assert.strictEqual(followupReview.inputArtifacts.aliasCampusReviewArtifactPath, 'data/unis/ipeds-alias-campus-review.json');
 assert.strictEqual(followupReview.inputArtifacts.publicAddressReviewArtifactPath, 'data/geocoding/unis-public-address-review.json');
+assert.strictEqual(followupReview.inputArtifacts.sagradoStagedReviewArtifactPath, 'data/unis/sagrado-staged-review.json');
 assert.strictEqual(followupReview.inputArtifacts.addressVerificationArtifactPath, 'data/geocoding/unis-address-verification.json');
 assert.strictEqual(followupReview.inputArtifacts.importBoundaryArtifactPath, 'data/geocoding/unis-import-boundary-review.json');
 assert.strictEqual(followupReview.inputArtifacts.quarantineArtifactPath, 'data/geocoding/unis-import-quarantine.json');
 assert.strictEqual(followupReview.inputArtifacts.generatedArtifactPath, 'data/generated/unis-partial-import.json');
 assert.strictEqual(followupReview.summary.reviewedRows, 5);
 assert.strictEqual(followupReview.summary.identityCorroboratedRows, 5);
-assert.strictEqual(followupReview.summary.acceptedAliasCampusRows, 0);
-assert.strictEqual(followupReview.summary.reviewedPublicAddressRows, 0);
+assert.strictEqual(followupReview.summary.acceptedAliasCampusRows, 1);
+assert.strictEqual(followupReview.summary.reviewedPublicAddressRows, 1);
 assert.strictEqual(followupReview.summary.censusCacheEligibleRows, 0);
 assert.strictEqual(followupReview.summary.importEligibleRows, 0);
 assert.strictEqual(followupReview.summary.coordinateEligibleRows, 0);
@@ -112,6 +114,44 @@ assert.strictEqual(followupReview.records.length, 5);
 assert(followupReview.invariants.some(function(invariant) {
   return invariant.indexOf('ORLIE/JIP licensure-listing evidence remains corroboration context only') !== -1;
 }), 'follow-up review must keep ORLIE/JIP evidence corroboration-only');
+assert.strictEqual(sagradoStagedReview.schemaVersion, 1);
+assert.strictEqual(sagradoStagedReview.sourceId, 'datospr-higher-ed-directory-2017-18');
+assert(isIsoDate(sagradoStagedReview.reviewedAt), 'Sagrado staged review reviewedAt must be ISO YYYY-MM-DD');
+assert.strictEqual(sagradoStagedReview.status, 'staged-no-cache');
+assert.strictEqual(sagradoStagedReview.decision, 'accept-sagrado-alias-public-address-stage');
+assert.strictEqual(sagradoStagedReview.productBoundary, 'descriptive-only');
+assert.strictEqual(sagradoStagedReview.inputArtifacts.identityFollowupReviewArtifactPath, 'data/unis/corroborated-identity-followup-review.json');
+assert.strictEqual(sagradoStagedReview.inputArtifacts.censusCacheArtifactPath, 'data/geocoding/unis-census-geocoder-cache.json');
+assert.strictEqual(sagradoStagedReview.summary.reviewedRows, 1);
+assert.strictEqual(sagradoStagedReview.summary.acceptedAliasCampusRows, 1);
+assert.strictEqual(sagradoStagedReview.summary.reviewedPublicAddressRows, 1);
+assert.strictEqual(sagradoStagedReview.summary.censusCacheEligibleRows, 0);
+assert.strictEqual(sagradoStagedReview.summary.importEligibleRows, 0);
+assert.strictEqual(sagradoStagedReview.summary.coordinateEligibleRows, 0);
+assert.strictEqual(sagradoStagedReview.summary.generatedOutputEligibleRows, 0);
+assert.strictEqual(sagradoStagedReview.records.length, 1);
+assert.strictEqual(sagradoStagedReview.records[0].directoryInstitution, 'Universidad del Sagrado Corazón');
+assert.strictEqual(sagradoStagedReview.records[0].aliasCampusDecision, 'accepted-alias-evidence-staged');
+assert.strictEqual(sagradoStagedReview.records[0].publicAddressDecision, 'reviewed-public-address-evidence-staged');
+assert.strictEqual(sagradoStagedReview.records[0].censusCacheDecision, 'not-run-staged-before-cache-review');
+assert.strictEqual(sagradoStagedReview.records[0].useForGeocoder, false);
+assert.strictEqual(sagradoStagedReview.records[0].censusResult.attemptedAddress, null);
+assert.strictEqual(sagradoStagedReview.records[0].importEligible, false);
+assert.strictEqual(sagradoStagedReview.records[0].coordinateEligible, false);
+assert.strictEqual(sagradoStagedReview.records[0].generatedOutputEligible, false);
+assert(sagradoStagedReview.records[0].officialEvidence.some(function(evidence) {
+  return evidence.sourceId === 'sagrado-contact' &&
+    evidence.url === 'https://www.sagrado.edu/en/contact-us-2/' &&
+    evidence.evidenceRole === 'public-address-and-institution-identity';
+}), 'Sagrado staged review must cite official Sagrado public address evidence');
+assert(sagradoStagedReview.records[0].officialEvidence.some(function(evidence) {
+  return evidence.sourceId === 'msche-sagrado' &&
+    evidence.url === 'https://www.msche.org/institution/0604/' &&
+    evidence.evidenceRole === 'main-campus-and-accreditation-corroboration';
+}), 'Sagrado staged review must cite MSCHE main-campus evidence');
+assert(sagradoStagedReview.invariants.some(function(invariant) {
+  return invariant.indexOf('does not authorize a Census geocoder attempt') !== -1;
+}), 'Sagrado staged review must block cache/geocoder overclaiming');
 assert(Array.isArray(review.authoritySourceReviewNotes), 'authoritySourceReviewNotes must be an array');
 assert(review.authoritySourceReviewNotes.some(function(note) {
   return note.sourceId === 'usdoe-dapip-puerto-rico' &&
@@ -202,12 +242,20 @@ review.records.forEach(function(record) {
   assert.strictEqual(followupRecord.identityClassification, record.classification, 'follow-up classification must mirror identity review: ' + name);
   assert.strictEqual(followupRecord.corroborationStatus, record.corroborationStatus, 'follow-up corroborationStatus must mirror identity review: ' + name);
   assert.strictEqual(followupRecord.orlieJipMatchType, orlieByInstitution[name].matchType, 'follow-up ORLIE/JIP matchType must mirror ORLIE review: ' + name);
-  assert.strictEqual(followupRecord.aliasCampusDecision, 'not-accepted', 'follow-up must keep alias/campus not accepted: ' + name);
-  assert.strictEqual(followupRecord.publicAddressDecision, 'not-reviewed-for-identity-quarantined-row', 'follow-up must not imply public-address review coverage: ' + name);
-  assert.strictEqual(followupRecord.censusCacheDecision, 'not-eligible-without-accepted-alias-campus-and-public-address-evidence', 'follow-up must not imply Census-cache eligibility: ' + name);
-  assert.strictEqual(followupRecord.promotionDecision, 'retain-identity-quarantine', 'follow-up must retain identity quarantine: ' + name);
-  assert(followupRecord.promotionBlockers.indexOf('missing accepted alias/campus decision') !== -1, 'follow-up must record alias/campus blocker: ' + name);
-  assert(followupRecord.promotionBlockers.indexOf('missing reviewed public-address evidence') !== -1, 'follow-up must record public-address blocker: ' + name);
+  if (name === 'Universidad del Sagrado Corazón') {
+    assert.strictEqual(followupRecord.aliasCampusDecision, 'accepted-alias-evidence-staged', 'Sagrado follow-up must record staged alias evidence');
+    assert.strictEqual(followupRecord.publicAddressDecision, 'reviewed-public-address-evidence-staged', 'Sagrado follow-up must record staged public-address evidence');
+    assert.strictEqual(followupRecord.sagradoStagedReviewArtifactPath, 'data/unis/sagrado-staged-review.json', 'Sagrado follow-up must point to staged artifact');
+    assert.strictEqual(followupRecord.censusCacheDecision, 'not-run-staged-before-cache-review', 'Sagrado follow-up must not imply Census-cache eligibility');
+    assert.strictEqual(followupRecord.promotionDecision, 'retain-quarantine-before-census-cache', 'Sagrado follow-up must retain quarantine before cache review');
+  } else {
+    assert.strictEqual(followupRecord.aliasCampusDecision, 'not-accepted', 'follow-up must keep alias/campus not accepted: ' + name);
+    assert.strictEqual(followupRecord.publicAddressDecision, 'not-reviewed-for-identity-quarantined-row', 'follow-up must not imply public-address review coverage: ' + name);
+    assert.strictEqual(followupRecord.censusCacheDecision, 'not-eligible-without-accepted-alias-campus-and-public-address-evidence', 'follow-up must not imply Census-cache eligibility: ' + name);
+    assert.strictEqual(followupRecord.promotionDecision, 'retain-identity-quarantine', 'follow-up must retain identity quarantine: ' + name);
+    assert(followupRecord.promotionBlockers.indexOf('missing accepted alias/campus decision') !== -1, 'follow-up must record alias/campus blocker: ' + name);
+    assert(followupRecord.promotionBlockers.indexOf('missing reviewed public-address evidence') !== -1, 'follow-up must record public-address blocker: ' + name);
+  }
   assert(followupRecord.promotionBlockers.indexOf('missing reviewed Puerto Rico Census geocoder cache match') !== -1, 'follow-up must record Census-cache blocker: ' + name);
   assert.strictEqual(followupRecord.importEligible, false, 'follow-up must not create import eligibility: ' + name);
   assert.strictEqual(followupRecord.coordinateEligible, false, 'follow-up must not create coordinate eligibility: ' + name);

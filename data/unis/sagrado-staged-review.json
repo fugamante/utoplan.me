@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "datospr-higher-ed-directory-2017-18",
+  "reviewedAt": "2026-07-04",
+  "reviewer": "Modernization Maintainer",
+  "status": "staged-no-cache",
+  "decision": "accept-sagrado-alias-public-address-stage",
+  "decisionSummary": "Universidad del Sagrado Corazón has source-backed alias/campus and public-address evidence for a staged review decision only. It remains excluded from Census cache, coordinates, DB seed, generated output, API coverage, and UI coverage until the full cache, quarantine, boundary, registry, generated-output, and test chain is updated together.",
+  "productBoundary": "descriptive-only",
+  "inputArtifacts": {
+    "identityReviewArtifactPath": "data/unis/identity-review.json",
+    "orlieJipReviewArtifactPath": "data/unis/orlie-jip-row-review.json",
+    "identityFollowupReviewArtifactPath": "data/unis/corroborated-identity-followup-review.json",
+    "aliasCampusReviewArtifactPath": "data/unis/ipeds-alias-campus-review.json",
+    "publicAddressReviewArtifactPath": "data/geocoding/unis-public-address-review.json",
+    "addressVerificationArtifactPath": "data/geocoding/unis-address-verification.json",
+    "censusCacheArtifactPath": "data/geocoding/unis-census-geocoder-cache.json",
+    "quarantineArtifactPath": "data/geocoding/unis-import-quarantine.json",
+    "importBoundaryArtifactPath": "data/geocoding/unis-import-boundary-review.json",
+    "generatedArtifactPath": "data/generated/unis-partial-import.json",
+    "generatedSeedPath": "docker/postgres/002_unis_partial_seed.sql"
+  },
+  "summary": {
+    "reviewedRows": 1,
+    "acceptedAliasCampusRows": 1,
+    "reviewedPublicAddressRows": 1,
+    "censusCacheEligibleRows": 0,
+    "importEligibleRows": 0,
+    "coordinateEligibleRows": 0,
+    "generatedOutputEligibleRows": 0
+  },
+  "invariants": [
+    "This staged review does not move Sagrado into the approved alias/campus artifact partition used by the Census cache builder.",
+    "This staged review records public-address evidence but does not authorize a Census geocoder attempt, cache record, coordinate, DB seed row, generated output row, API coverage change, or UI coverage change.",
+    "Nearby ZIP variance does not block this staged decision because official sources corroborate the same institution and materially aligned Rosales/San Antonio campus address.",
+    "NCES, DAPIP, ORLIE/JIP, Sagrado, and MSCHE evidence remain review evidence only; they do not replace the primary Datos.PR row source.",
+    "No personal contact fields, rankings, recommendations, scores, suitability claims, inferred coordinates, or invented coordinates are introduced."
+  ],
+  "records": [
+    {
+      "directoryInstitution": "Universidad del Sagrado Corazón",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Calle Rosales, Esq. San Antonio, Parada 26 1/2",
+      "normalizedAddress": "Calle Rosales, Esq. San Antonio, Parada 26 1/2, SAN JUAN, Puerto Rico",
+      "identityClassification": "nces-dapip-orlie-identity-corroborated-not-import-ready",
+      "corroborationStatus": "nces-dapip-orlie-row-reviewed",
+      "orlieJipMatchType": "identity-corroboration",
+      "aliasCampusDecision": "accepted-alias-evidence-staged",
+      "aliasCampusEvidenceSummary": "The Datos.PR row name differs from NCES only by accent normalization, DAPIP lists University of the Sacred Heart with Spanish alias Universidad del Sagrado Corazon, and official Sagrado/MSCHE pages corroborate the Rosales/San Antonio main campus in Santurce/San Juan. Santurce is treated as a documented San Juan neighborhood for the alias/campus policy path.",
+      "publicAddressDecision": "reviewed-public-address-evidence-staged",
+      "reviewedPublicAddress": "Rosales Street, Corner of San Antonio, PDA 26 1/2, Santurce PR 00914",
+      "publicAddressEvidenceSummary": "Sagrado's official contact page lists the physical address at Rosales Street, corner of San Antonio, PDA 26 1/2, Santurce PR 00914. MSCHE lists the main campus at Calle Rosales, Esq. San Antonio Parada 26, San Juan, PR 00914. The legacy Datos.PR address and ORLIE/JIP address align on Calle Rosales, Esquina/Esq. San Antonio, Parada 26 1/2.",
+      "addressVarianceNotes": [
+        "Sagrado's contact page footer also lists Rosales Street, Corner of San Antonio, Stop 26 1/2, San Juan, PR 00909.",
+        "NCES identity evidence lists Santurce, Puerto Rico 00907.",
+        "The staged decision accepts the institution-operated physical-address block with ZIP 00914 as the reviewed public-address evidence; nearby ZIP variance is recorded but does not block alias/campus or public-address staging.",
+        "A future Census-cache pass must still select one reviewed geocoder candidate address before any cache, coordinate, DB seed, or generated-output expansion."
+      ],
+      "officialEvidence": [
+        {
+          "authority": "official-institution-site",
+          "sourceId": "sagrado-contact",
+          "url": "https://www.sagrado.edu/en/contact-us-2/",
+          "retrievedAt": "2026-07-04",
+          "evidenceRole": "public-address-and-institution-identity",
+          "summary": "Official Sagrado contact page lists the physical address at Rosales Street, Corner of San Antonio, PDA 26 1/2, Santurce PR 00914."
+        },
+        {
+          "authority": "official-accreditor-site",
+          "sourceId": "msche-sagrado",
+          "url": "https://www.msche.org/institution/0604/",
+          "retrievedAt": "2026-07-04",
+          "evidenceRole": "main-campus-and-accreditation-corroboration",
+          "summary": "MSCHE lists Universidad del Sagrado Corazon as accredited and records the main campus at Calle Rosales, Esq. San Antonio Parada 26, San Juan, PR 00914."
+        },
+        {
+          "authority": "registered-corroboration-source",
+          "sourceId": "nces-college-navigator-puerto-rico",
+          "url": "https://nces.ed.gov/collegenavigator/?id=243443",
+          "retrievedAt": "2026-06-26",
+          "evidenceRole": "identity-corroboration",
+          "summary": "NCES College Navigator lists Universidad del Sagrado Corazon in Santurce, Puerto Rico."
+        },
+        {
+          "authority": "registered-corroboration-source",
+          "sourceId": "usdoe-dapip-puerto-rico",
+          "url": "https://ope.ed.gov/dapip/#/institution-profile/151537",
+          "retrievedAt": "2026-06-26",
+          "evidenceRole": "alias-and-accreditation-corroboration",
+          "summary": "DAPIP lists University of the Sacred Heart with Spanish alias Universidad del Sagrado Corazon and active institutional accreditation."
+        },
+        {
+          "authority": "registered-corroboration-source",
+          "sourceId": "prdos-orlie-jip-postsecondary-listing",
+          "reviewArtifactPath": "data/unis/orlie-jip-row-review.json",
+          "retrievedAt": "2026-06-26",
+          "evidenceRole": "licensure-listing-corroboration",
+          "summary": "The checked-in ORLIE/JIP review lists Universidad del Sagrado Corazón at Calle Rosales, Esquina San Antonio Parada 26 1/2, San Juan."
+        }
+      ],
+      "censusCacheDecision": "not-run-staged-before-cache-review",
+      "promotionDecision": "retain-quarantine-before-census-cache",
+      "promotionBlockers": [
+        "missing reviewed Puerto Rico Census geocoder cache match",
+        "staged decision not yet integrated into cache, quarantine, boundary, registry, generated output, DB seed, and tests as an import expansion"
+      ],
+      "useForGeocoder": false,
+      "censusResult": {
+        "status": "not-run",
+        "attemptedAddress": null
+      },
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false
+    }
+  ]
+}

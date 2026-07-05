@@ -5,13 +5,14 @@
   "reviewer": "Modernization Maintainer",
   "status": "reviewed-no-promotion",
   "decision": "retain-identity-quarantine-for-corroborated-subset",
-  "decisionSummary": "The five NCES+DAPIP+ORLIE/JIP-corroborated identity rows remain outside generated/imported unis output. Existing evidence corroborates identity, alias, campus, accreditation, or licensure-listing context, but no row has the accepted alias/campus, reviewed public-address, and reviewed Census-cache chain required for import readiness.",
+  "decisionSummary": "The five NCES+DAPIP+ORLIE/JIP-corroborated identity rows remain outside generated/imported unis output. Existing evidence corroborates identity, alias, campus, accreditation, or licensure-listing context. Sagrado now has a staged source-backed alias/campus and public-address decision, but no row has the reviewed Census-cache chain required for import readiness.",
   "productBoundary": "descriptive-only",
   "inputArtifacts": {
     "identityReviewArtifactPath": "data/unis/identity-review.json",
     "orlieJipReviewArtifactPath": "data/unis/orlie-jip-row-review.json",
     "aliasCampusReviewArtifactPath": "data/unis/ipeds-alias-campus-review.json",
     "publicAddressReviewArtifactPath": "data/geocoding/unis-public-address-review.json",
+    "sagradoStagedReviewArtifactPath": "data/unis/sagrado-staged-review.json",
     "addressVerificationArtifactPath": "data/geocoding/unis-address-verification.json",
     "importBoundaryArtifactPath": "data/geocoding/unis-import-boundary-review.json",
     "quarantineArtifactPath": "data/geocoding/unis-import-quarantine.json",
@@ -20,8 +21,8 @@
   "summary": {
     "reviewedRows": 5,
     "identityCorroboratedRows": 5,
-    "acceptedAliasCampusRows": 0,
-    "reviewedPublicAddressRows": 0,
+    "acceptedAliasCampusRows": 1,
+    "reviewedPublicAddressRows": 1,
     "censusCacheEligibleRows": 0,
     "importEligibleRows": 0,
     "coordinateEligibleRows": 0,
@@ -29,7 +30,7 @@
   },
   "invariants": [
     "ORLIE/JIP licensure-listing evidence remains corroboration context only and is not a direct row source, coordinate authority, or public-address correction workflow.",
-    "No generated output, database seed, registry boundary, API contract, or UI coverage changes are made from this follow-up review.",
+    "No generated output, database seed, Census cache, API contract, or UI coverage changes are made from this follow-up review.",
     "Identity-quarantined rows require accepted alias/campus, reviewed public-address, and reviewed Puerto Rico Census geocoder cache evidence before import eligibility can change.",
     "No personal contact fields, rankings, recommendations, scores, suitability claims, or invented coordinates are introduced."
   ],
@@ -101,14 +102,14 @@
       "identityClassification": "nces-dapip-orlie-identity-corroborated-not-import-ready",
       "corroborationStatus": "nces-dapip-orlie-row-reviewed",
       "orlieJipMatchType": "identity-corroboration",
-      "aliasCampusDecision": "not-accepted",
-      "publicAddressDecision": "not-reviewed-for-identity-quarantined-row",
-      "censusCacheDecision": "not-eligible-without-accepted-alias-campus-and-public-address-evidence",
-      "promotionDecision": "retain-identity-quarantine",
+      "aliasCampusDecision": "accepted-alias-evidence-staged",
+      "publicAddressDecision": "reviewed-public-address-evidence-staged",
+      "sagradoStagedReviewArtifactPath": "data/unis/sagrado-staged-review.json",
+      "censusCacheDecision": "not-run-staged-before-cache-review",
+      "promotionDecision": "retain-quarantine-before-census-cache",
       "promotionBlockers": [
-        "missing accepted alias/campus decision",
-        "missing reviewed public-address evidence",
-        "missing reviewed Puerto Rico Census geocoder cache match"
+        "missing reviewed Puerto Rico Census geocoder cache match",
+        "staged decision not yet integrated into cache, quarantine, boundary, registry, generated output, DB seed, and tests as an import expansion"
       ],
       "importEligible": false,
       "coordinateEligible": false,
