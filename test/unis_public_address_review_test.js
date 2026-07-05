@@ -8,11 +8,13 @@ var reviewPath = path.join(__dirname, '..', 'data', 'geocoding', 'unis-public-ad
 var verificationPath = path.join(__dirname, '..', 'data', 'geocoding', 'unis-address-verification.json');
 var cachePath = path.join(__dirname, '..', 'data', 'geocoding', 'unis-census-geocoder-cache.json');
 var quarantinePath = path.join(__dirname, '..', 'data', 'geocoding', 'unis-import-quarantine.json');
+var sagradoStagedReviewPath = path.join(__dirname, '..', 'data', 'unis', 'sagrado-staged-review.json');
 
 var review = JSON.parse(fs.readFileSync(reviewPath, 'utf8'));
 var verification = JSON.parse(fs.readFileSync(verificationPath, 'utf8'));
 var cache = JSON.parse(fs.readFileSync(cachePath, 'utf8'));
 var quarantine = JSON.parse(fs.readFileSync(quarantinePath, 'utf8'));
+var sagradoStagedReview = JSON.parse(fs.readFileSync(sagradoStagedReviewPath, 'utf8'));
 
 function isIsoDate(value) {
   return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value);
@@ -99,3 +101,22 @@ assert.strictEqual(
   'matched-address-conflicts-with-reviewed-public-address',
   'Columbia must stay blocked by reviewed-address conflict'
 );
+
+assert(!review.records.some(function(record) {
+  return record.directoryInstitution === 'Universidad del Sagrado Corazón';
+}), 'Sagrado staged address evidence must not be inserted into the Census verification address board');
+assert.strictEqual(sagradoStagedReview.status, 'staged-no-cache', 'Sagrado staged review must stay outside Census cache');
+assert.strictEqual(sagradoStagedReview.summary.reviewedPublicAddressRows, 1, 'Sagrado staged review must record one public-address evidence decision');
+assert.strictEqual(sagradoStagedReview.summary.coordinateEligibleRows, 0, 'Sagrado staged review must not create coordinate eligibility');
+assert.strictEqual(sagradoStagedReview.records[0].directoryInstitution, 'Universidad del Sagrado Corazón');
+assert.strictEqual(sagradoStagedReview.records[0].publicAddressDecision, 'reviewed-public-address-evidence-staged');
+assert.strictEqual(sagradoStagedReview.records[0].useForGeocoder, false);
+assert.strictEqual(sagradoStagedReview.records[0].censusResult.attemptedAddress, null);
+assert(sagradoStagedReview.records[0].officialEvidence.some(function(evidence) {
+  return evidence.sourceId === 'sagrado-contact' &&
+    evidence.url === 'https://www.sagrado.edu/en/contact-us-2/';
+}), 'Sagrado staged review must cite the official Sagrado contact page');
+assert(sagradoStagedReview.records[0].officialEvidence.some(function(evidence) {
+  return evidence.sourceId === 'msche-sagrado' &&
+    evidence.url === 'https://www.msche.org/institution/0604/';
+}), 'Sagrado staged review must cite the MSCHE institution page');
