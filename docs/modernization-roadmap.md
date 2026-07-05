@@ -68,6 +68,10 @@
   State ORLIE/JIP postsecondary listing as a licensure corroboration surface,
   while documenting that its public Power BI listing is not yet a verified
   stable bulk export or direct `unis` row source.
+- `data/unis/sagrado-staged-review.json` records Universidad del Sagrado
+  Corazón as the single source-backed staged alias/campus and public-address
+  evidence decision, using official Sagrado and MSCHE pages while keeping the
+  row blocked before Census cache, coordinates, DB seed, and generated output.
 - `docs/unis-alias-campus-match-policy.md` and
   `data/unis/ipeds-alias-campus-review.json` now define the reviewed
   alias/campus approval gate for unmatched `unis` rows so geocode-cache work
@@ -224,12 +228,12 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Use `data/unis/corroborated-identity-followup-review.json` as the current
-five-row no-promotion decision for the NCES+DAPIP+ORLIE/JIP-corroborated
-identity-quarantined rows. The next useful step is to find source-backed,
-row-level alias/campus and public-address evidence for exactly one candidate
-row, then rerun the Census-cache and import-boundary chain only if that
-evidence clears the policy gates. Keep
+Use `data/unis/corroborated-identity-followup-review.json` and
+`data/unis/sagrado-staged-review.json` as the current five-row follow-up
+decision for the NCES+DAPIP+ORLIE/JIP-corroborated identity-quarantined rows.
+Sagrado is the only row with staged alias/campus and public-address evidence;
+the next useful step is to decide whether to run a full Sagrado cache-boundary
+pass or keep gathering evidence for another single row. Keep
 `data/geocoding/unis-address-verification.json` as the current zero-promotion
 address baseline, keep API/UI coverage language visible, and do not expand the
 4-row generated slice without updating the identity review, address review,
