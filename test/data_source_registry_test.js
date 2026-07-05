@@ -6,6 +6,7 @@ var path = require('path');
 
 var registryPath = path.join(__dirname, '..', 'data', 'sources', 'puerto-rico.json');
 var registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+var unisGeocodingPolicy = fs.readFileSync(path.join(__dirname, '..', 'docs', 'unis-geocoding-policy.md'), 'utf8');
 
 function isNonEmptyString(value) {
   return typeof value === 'string' && value.trim() !== '';
@@ -689,10 +690,16 @@ function validateUnisIdentityReview(source, identitySource, accreditationSource,
   assert.strictEqual(sagradoStagedReview.summary.generatedOutputEligibleRows, 0, source.id + ' Sagrado staged review must not create generated output eligibility');
   assert.strictEqual(sagradoStagedReview.records.length, 1, source.id + ' Sagrado staged review must contain one row');
   assert.strictEqual(sagradoStagedReview.records[0].directoryInstitution, 'Universidad del Sagrado Corazón', source.id + ' Sagrado staged review row mismatch');
+  assert(sagradoStagedReview.records[0].reviewedPublicAddress.indexOf('00914') !== -1, source.id + ' Sagrado staged public address must keep official ZIP 00914');
+  assert(sagradoStagedReview.records[0].addressVarianceNotes.some(function(note) {
+    return note.indexOf('nearby ZIP variance is recorded but does not block') !== -1;
+  }), source.id + ' Sagrado staged review must record ZIP variance as non-blocking');
   assert.strictEqual(sagradoStagedReview.records[0].useForGeocoder, false, source.id + ' Sagrado staged review must not authorize geocoding');
   assert.strictEqual(sagradoStagedReview.records[0].censusResult.attemptedAddress, null, source.id + ' Sagrado staged review must not store a geocoder attempt');
   assert.strictEqual(sagradoStagedReview.records[0].coordinateEligible, false, source.id + ' Sagrado staged review must not expose coordinates');
   assert.strictEqual(sagradoStagedReview.records[0].generatedOutputEligible, false, source.id + ' Sagrado staged review must not expose generated output');
+  assert(unisGeocodingPolicy.indexOf('## ZIP Variance Rule') !== -1, source.id + ' geocoding policy must include ZIP variance rule');
+  assert(unisGeocodingPolicy.indexOf('ZIP codes are supporting address evidence, not') !== -1, source.id + ' geocoding policy must treat ZIP as supporting evidence');
   assert.strictEqual(orlieReview.schemaVersion, 1, source.id + ' ORLIE/JIP row review schemaVersion must be 1');
   assert.strictEqual(orlieReview.sourceId, licensureSource.id, source.id + ' ORLIE/JIP row review sourceId must match registered source');
   assert.strictEqual(orlieReview.status, 'row-level-query-reviewed', source.id + ' ORLIE/JIP row review status mismatch');

@@ -32,6 +32,7 @@
   "invariants": [
     "This staged review does not move Sagrado into the approved alias/campus artifact partition used by the Census cache builder.",
     "This staged review records public-address evidence but does not authorize a Census geocoder attempt, cache record, coordinate, DB seed row, generated output row, API coverage change, or UI coverage change.",
+    "Nearby ZIP variance does not block this staged decision because official sources corroborate the same institution and materially aligned Rosales/San Antonio campus address.",
     "NCES, DAPIP, ORLIE/JIP, Sagrado, and MSCHE evidence remain review evidence only; they do not replace the primary Datos.PR row source.",
     "No personal contact fields, rankings, recommendations, scores, suitability claims, inferred coordinates, or invented coordinates are introduced."
   ],
@@ -52,7 +53,8 @@
       "addressVarianceNotes": [
         "Sagrado's contact page footer also lists Rosales Street, Corner of San Antonio, Stop 26 1/2, San Juan, PR 00909.",
         "NCES identity evidence lists Santurce, Puerto Rico 00907.",
-        "The staged decision accepts the institution-operated physical-address block as the reviewed public-address evidence and keeps ZIP variance out of Census cache until a dedicated cache pass."
+        "The staged decision accepts the institution-operated physical-address block with ZIP 00914 as the reviewed public-address evidence; nearby ZIP variance is recorded but does not block alias/campus or public-address staging.",
+        "A future Census-cache pass must still select one reviewed geocoder candidate address before any cache, coordinate, DB seed, or generated-output expansion."
       ],
       "officialEvidence": [
         {
