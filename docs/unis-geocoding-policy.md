@@ -78,6 +78,10 @@ ambiguous or the ZIP points to a materially different location.
   `data/geocoding/unis-import-boundary-review.json`
 - Checked-in public-address review artifact:
   `data/geocoding/unis-public-address-review.json`
+- Checked-in staged Sagrado alias/public-address review artifact:
+  `data/unis/sagrado-staged-review.json`
+- Checked-in read-only Sagrado geocoder candidate review artifact:
+  `data/geocoding/sagrado-geocoder-candidate-review.json`
 - Checked-in alias/campus review artifact:
   `data/unis/ipeds-alias-campus-review.json`
 - Alias/campus review policy:
@@ -152,6 +156,11 @@ Current reviewed baseline on 2026-06-11:
   records 5 NCES+DAPIP+ORLIE/JIP-corroborated identity/campus candidates, 22
   rows without row-level authority corroboration, and zero coordinate-eligible
   or generated-output-eligible identity-quarantined rows.
+- Sagrado has staged alias/campus and public-address evidence in
+  `data/unis/sagrado-staged-review.json`; the read-only candidate review in
+  `data/geocoding/sagrado-geocoder-candidate-review.json` records zero Puerto
+  Rico Census matches and does not create cache rows, coordinates, generated
+  output, API coverage, or UI coverage.
 
 Current cache baseline on 2026-06-23:
 

@@ -15,6 +15,7 @@
     "matchReviewArtifactPath": "data/unis/ipeds-alias-campus-review.json",
     "identityReviewArtifactPath": "data/unis/identity-review.json",
     "sagradoStagedReviewArtifactPath": "data/unis/sagrado-staged-review.json",
+    "sagradoGeocoderCandidateReviewArtifactPath": "data/geocoding/sagrado-geocoder-candidate-review.json",
     "geocodeAuditArtifactPath": "data/unis/ipeds-geocode-audit.json",
     "policyDocPath": "docs/unis-geocoding-policy.md"
   },
@@ -99,9 +100,9 @@
     {
       "id": "sagrado-staged-alias-address-review",
       "candidate": "Record Sagrado as a source-backed staged alias/campus and public-address decision without expanding the import boundary.",
-      "evidence": "data/unis/sagrado-staged-review.json records official Sagrado and MSCHE public-address evidence for Universidad del Sagrado Corazón and keeps Census cache, coordinates, generated output, DB seed, API coverage, and UI coverage unchanged.",
+      "evidence": "data/unis/sagrado-staged-review.json records official Sagrado and MSCHE public-address evidence for Universidad del Sagrado Corazón. data/geocoding/sagrado-geocoder-candidate-review.json records read-only Census candidate attempts with zero Puerto Rico matches. Census cache, coordinates, generated output, DB seed, API coverage, and UI coverage remain unchanged.",
       "impact": "Moves one identity-corroborated row closer to a future cache review while preserving the accepted 4-row production-style slice.",
-      "risk": "The staged decision could be mistaken for import readiness unless cache and generated-output eligibility remain explicitly false.",
+      "risk": "The staged decision or read-only Census probe could be mistaken for import readiness unless cache and generated-output eligibility remain explicitly false.",
       "decision": "accept-staged-evidence-retain-cache-blocker",
       "status": "staged-no-cache"
     },

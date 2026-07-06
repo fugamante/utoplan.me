@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "datospr-higher-ed-directory-2017-18",
+  "reviewedAt": "2026-07-05",
+  "reviewer": "Modernization Maintainer",
+  "status": "reviewed-no-cache",
+  "decision": "retain-sagrado-staged-no-cache",
+  "decisionSummary": "Three official-source Sagrado address forms were tested against the pinned Census geocoder as read-only candidate evidence. None returned a Puerto Rico Census match, so Sagrado remains staged and outside Census cache, coordinates, DB seed, generated output, API coverage, and UI coverage.",
+  "productBoundary": "descriptive-only",
+  "provider": "U.S. Census Geocoding Services API",
+  "servicePath": "geographies/onelineaddress",
+  "benchmark": "Public_AR_Census2020",
+  "vintage": "Census2020_Census2020",
+  "policyDocPath": "docs/unis-geocoding-policy.md",
+  "inputArtifacts": {
+    "sagradoStagedReviewArtifactPath": "data/unis/sagrado-staged-review.json",
+    "censusCacheArtifactPath": "data/geocoding/unis-census-geocoder-cache.json",
+    "quarantineArtifactPath": "data/geocoding/unis-import-quarantine.json",
+    "importBoundaryArtifactPath": "data/geocoding/unis-import-boundary-review.json",
+    "generatedArtifactPath": "data/generated/unis-partial-import.json",
+    "generatedSeedPath": "docker/postgres/002_unis_partial_seed.sql"
+  },
+  "summary": {
+    "candidateAddressCount": 3,
+    "censusAttemptRows": 3,
+    "candidateAddressesWithMatches": 0,
+    "candidateAddressesWithPuertoRicoMatches": 0,
+    "promotionEligibleRows": 0,
+    "cacheRecordsAdded": 0,
+    "coordinateEligibleRows": 0,
+    "generatedOutputEligibleRows": 0
+  },
+  "invariants": [
+    "This artifact records read-only Census geocoder candidate results and is not a cache artifact.",
+    "Zero-match candidate results do not create coordinates, cache records, DB seed rows, generated output, API coverage, or UI coverage.",
+    "ZIP variance remains non-blocking for staged alias/campus and public-address evidence; the blocker is the absence of a reviewed Puerto Rico Census geocoder match.",
+    "Google Earth, Google Maps, and other place/geospatial sources are not used in this review."
+  ],
+  "records": [
+    {
+      "directoryInstitution": "Universidad del Sagrado Corazón",
+      "directoryMunicipality": "SAN JUAN",
+      "reviewedPublicAddress": "Rosales Street, Corner of San Antonio, PDA 26 1/2, Santurce PR 00914",
+      "candidateTests": [
+        {
+          "sourceBasis": "official-sagrado-contact-page",
+          "attemptedAddress": "Rosales Street, Corner of San Antonio, PDA 26 1/2, Santurce PR 00914",
+          "matchCount": 0,
+          "puertoRicoMatchCount": 0,
+          "matchedAddresses": []
+        },
+        {
+          "sourceBasis": "official-msche-main-campus-page",
+          "attemptedAddress": "Calle Rosales, Esq. San Antonio Parada 26, San Juan, PR 00914",
+          "matchCount": 0,
+          "puertoRicoMatchCount": 0,
+          "matchedAddresses": []
+        },
+        {
+          "sourceBasis": "orlie-jip-address-form-with-official-zip",
+          "attemptedAddress": "Calle Rosales, Esquina San Antonio Parada 26 1/2, San Juan, PR 00914",
+          "matchCount": 0,
+          "puertoRicoMatchCount": 0,
+          "matchedAddresses": []
+        }
+      ],
+      "promotionDecision": "retain-staged-no-cache",
+      "promotionBlockers": [
+        "no reviewed Puerto Rico Census geocoder match for tested official-source address candidates",
+        "read-only candidate review is not integrated into cache, quarantine, boundary, registry import coverage, generated output, or DB seed"
+      ],
+      "cacheEligible": false,
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false
+    }
+  ]
+}

@@ -72,6 +72,10 @@
   Corazón as the single source-backed staged alias/campus and public-address
   evidence decision, using official Sagrado and MSCHE pages while keeping the
   row blocked before Census cache, coordinates, DB seed, and generated output.
+- `data/geocoding/sagrado-geocoder-candidate-review.json` records read-only
+  Census candidate attempts for official-source Sagrado address forms; the
+  tested forms returned zero Puerto Rico matches and do not change cache,
+  coordinates, DB seed, generated output, API coverage, or UI coverage.
 - `docs/unis-alias-campus-match-policy.md` and
   `data/unis/ipeds-alias-campus-review.json` now define the reviewed
   alias/campus approval gate for unmatched `unis` rows so geocode-cache work
@@ -232,8 +236,10 @@ Use `data/unis/corroborated-identity-followup-review.json` and
 `data/unis/sagrado-staged-review.json` as the current five-row follow-up
 decision for the NCES+DAPIP+ORLIE/JIP-corroborated identity-quarantined rows.
 Sagrado is the only row with staged alias/campus and public-address evidence;
-the next useful step is to decide whether to run a full Sagrado cache-boundary
-pass or keep gathering evidence for another single row. Keep
+the read-only Sagrado geocoder candidate review found no Puerto Rico Census
+match for the official-source address forms. The next useful step is to decide
+whether to normalize another Sagrado candidate form or select another single
+row for read-only candidate review. Keep
 `data/geocoding/unis-address-verification.json` as the current zero-promotion
 address baseline, keep API/UI coverage language visible, and do not expand the
 4-row generated slice without updating the identity review, address review,
