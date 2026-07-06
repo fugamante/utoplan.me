@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "sourceId": "datospr-higher-ed-directory-2017-18",
-  "reviewedAt": "2026-07-02",
+  "reviewedAt": "2026-07-05",
   "reviewer": "Modernization Maintainer",
   "status": "reviewed-no-promotion",
   "decision": "retain-identity-quarantine-for-corroborated-subset",
-  "decisionSummary": "The five NCES+DAPIP+ORLIE/JIP-corroborated identity rows remain outside generated/imported unis output. Existing evidence corroborates identity, alias, campus, accreditation, or licensure-listing context. Sagrado now has a staged source-backed alias/campus and public-address decision, but no row has the reviewed Census-cache chain required for import readiness.",
+  "decisionSummary": "The five NCES+DAPIP+ORLIE/JIP-corroborated identity rows remain outside generated/imported unis output. Existing evidence corroborates identity, alias, campus, accreditation, or licensure-listing context. Sagrado has staged source-backed alias/campus and public-address decisions plus a read-only Census candidate review with no Puerto Rico match, but no row has the reviewed Census-cache chain required for import readiness.",
   "productBoundary": "descriptive-only",
   "inputArtifacts": {
     "identityReviewArtifactPath": "data/unis/identity-review.json",
@@ -105,10 +105,10 @@
       "aliasCampusDecision": "accepted-alias-evidence-staged",
       "publicAddressDecision": "reviewed-public-address-evidence-staged",
       "sagradoStagedReviewArtifactPath": "data/unis/sagrado-staged-review.json",
-      "censusCacheDecision": "not-run-staged-before-cache-review",
+      "censusCacheDecision": "read-only-candidate-review-no-cache-match",
       "promotionDecision": "retain-quarantine-before-census-cache",
       "promotionBlockers": [
-        "missing reviewed Puerto Rico Census geocoder cache match",
+        "no reviewed Puerto Rico Census geocoder match for tested official-source address candidates",
         "staged decision not yet integrated into cache, quarantine, boundary, registry, generated output, DB seed, and tests as an import expansion"
       ],
       "importEligible": false,

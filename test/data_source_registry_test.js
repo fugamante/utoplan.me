@@ -565,6 +565,7 @@ function validateUnisAuthorityStack(source) {
   assert.strictEqual(source.identityAuthorityPolicy.reviewArtifactPath, 'data/unis/identity-review.json', source.id + ' identity review artifact path mismatch');
   assert.strictEqual(source.identityAuthorityPolicy.followupReviewArtifactPath, 'data/unis/corroborated-identity-followup-review.json', source.id + ' identity follow-up artifact path mismatch');
   assert.strictEqual(source.identityAuthorityPolicy.sagradoStagedReviewArtifactPath, 'data/unis/sagrado-staged-review.json', source.id + ' Sagrado staged review artifact path mismatch');
+  assert.strictEqual(source.identityAuthorityPolicy.sagradoGeocoderCandidateReviewArtifactPath, 'data/geocoding/sagrado-geocoder-candidate-review.json', source.id + ' Sagrado geocoder candidate review artifact path mismatch');
   assert.strictEqual(source.identityAuthorityPolicy.matchReviewArtifactPath, source.geocodingPolicy.matchReviewArtifactPath, source.id + ' identity policy match review path must match geocodingPolicy');
   assert.strictEqual(source.identityAuthorityPolicy.quarantineArtifactPath, source.geocodingPolicy.quarantineArtifactPath, source.id + ' identity policy quarantine path must match geocodingPolicy');
   assert(Array.isArray(source.identityAuthorityPolicy.authoritySourceIds), source.id + ' identityAuthorityPolicy authoritySourceIds must be an array');
@@ -574,6 +575,7 @@ function validateUnisAuthorityStack(source) {
   assert(fs.existsSync(resolveRepoPath(source.identityAuthorityPolicy.reviewArtifactPath)), source.id + ' identity review artifact must exist');
   assert(fs.existsSync(resolveRepoPath(source.identityAuthorityPolicy.followupReviewArtifactPath)), source.id + ' identity follow-up review artifact must exist');
   assert(fs.existsSync(resolveRepoPath(source.identityAuthorityPolicy.sagradoStagedReviewArtifactPath)), source.id + ' Sagrado staged review artifact must exist');
+  assert(fs.existsSync(resolveRepoPath(source.identityAuthorityPolicy.sagradoGeocoderCandidateReviewArtifactPath)), source.id + ' Sagrado geocoder candidate review artifact must exist');
 
   var identitySource = findSourceById('nces-college-navigator-puerto-rico');
   assert(identitySource, source.id + ' stronger authority blocker requires the NCES corroboration source to be registered');
@@ -619,6 +621,7 @@ function validateUnisIdentityReview(source, identitySource, accreditationSource,
   var identityReview = JSON.parse(fs.readFileSync(resolveRepoPath(source.identityAuthorityPolicy.reviewArtifactPath), 'utf8'));
   var followupReview = JSON.parse(fs.readFileSync(resolveRepoPath(source.identityAuthorityPolicy.followupReviewArtifactPath), 'utf8'));
   var sagradoStagedReview = JSON.parse(fs.readFileSync(resolveRepoPath(source.identityAuthorityPolicy.sagradoStagedReviewArtifactPath), 'utf8'));
+  var sagradoGeocoderCandidateReview = JSON.parse(fs.readFileSync(resolveRepoPath(source.identityAuthorityPolicy.sagradoGeocoderCandidateReviewArtifactPath), 'utf8'));
   var matchReview = JSON.parse(fs.readFileSync(resolveRepoPath(source.identityAuthorityPolicy.matchReviewArtifactPath), 'utf8'));
   var quarantine = JSON.parse(fs.readFileSync(resolveRepoPath(source.identityAuthorityPolicy.quarantineArtifactPath), 'utf8'));
   var generated = JSON.parse(fs.readFileSync(resolveRepoPath('data/generated/unis-partial-import.json'), 'utf8'));
@@ -680,6 +683,7 @@ function validateUnisIdentityReview(source, identitySource, accreditationSource,
   assert.strictEqual(sagradoStagedReview.decision, 'accept-sagrado-alias-public-address-stage', source.id + ' Sagrado staged review decision mismatch');
   assert.strictEqual(sagradoStagedReview.productBoundary, 'descriptive-only', source.id + ' Sagrado staged review productBoundary must be descriptive-only');
   assert.strictEqual(sagradoStagedReview.inputArtifacts.censusCacheArtifactPath, source.geocodingPolicy.cacheArtifactPath, source.id + ' Sagrado staged cache path must match geocoding policy');
+  assert.strictEqual(sagradoStagedReview.inputArtifacts.geocoderCandidateReviewArtifactPath, source.identityAuthorityPolicy.sagradoGeocoderCandidateReviewArtifactPath, source.id + ' Sagrado staged review must reference candidate review');
   assert.strictEqual(sagradoStagedReview.inputArtifacts.quarantineArtifactPath, source.geocodingPolicy.quarantineArtifactPath, source.id + ' Sagrado staged quarantine path must match geocoding policy');
   assert.strictEqual(sagradoStagedReview.inputArtifacts.importBoundaryArtifactPath, source.geocodingPolicy.importBoundaryArtifactPath, source.id + ' Sagrado staged boundary path must match geocoding policy');
   assert.strictEqual(sagradoStagedReview.summary.acceptedAliasCampusRows, 1, source.id + ' Sagrado staged review must record one alias/campus decision');
@@ -690,6 +694,8 @@ function validateUnisIdentityReview(source, identitySource, accreditationSource,
   assert.strictEqual(sagradoStagedReview.summary.generatedOutputEligibleRows, 0, source.id + ' Sagrado staged review must not create generated output eligibility');
   assert.strictEqual(sagradoStagedReview.records.length, 1, source.id + ' Sagrado staged review must contain one row');
   assert.strictEqual(sagradoStagedReview.records[0].directoryInstitution, 'Universidad del Sagrado Corazón', source.id + ' Sagrado staged review row mismatch');
+  assert.strictEqual(sagradoStagedReview.records[0].geocoderCandidateReviewArtifactPath, source.identityAuthorityPolicy.sagradoGeocoderCandidateReviewArtifactPath, source.id + ' Sagrado staged row must reference candidate review');
+  assert.strictEqual(sagradoStagedReview.records[0].censusCacheDecision, 'read-only-candidate-review-no-cache-match', source.id + ' Sagrado staged review must record read-only no-cache result');
   assert(sagradoStagedReview.records[0].reviewedPublicAddress.indexOf('00914') !== -1, source.id + ' Sagrado staged public address must keep official ZIP 00914');
   assert(sagradoStagedReview.records[0].addressVarianceNotes.some(function(note) {
     return note.indexOf('nearby ZIP variance is recorded but does not block') !== -1;
@@ -698,6 +704,23 @@ function validateUnisIdentityReview(source, identitySource, accreditationSource,
   assert.strictEqual(sagradoStagedReview.records[0].censusResult.attemptedAddress, null, source.id + ' Sagrado staged review must not store a geocoder attempt');
   assert.strictEqual(sagradoStagedReview.records[0].coordinateEligible, false, source.id + ' Sagrado staged review must not expose coordinates');
   assert.strictEqual(sagradoStagedReview.records[0].generatedOutputEligible, false, source.id + ' Sagrado staged review must not expose generated output');
+  assert.strictEqual(sagradoGeocoderCandidateReview.schemaVersion, 1, source.id + ' Sagrado geocoder candidate review schemaVersion must be 1');
+  assert.strictEqual(sagradoGeocoderCandidateReview.sourceId, source.id, source.id + ' Sagrado geocoder candidate review sourceId must match');
+  assert.strictEqual(sagradoGeocoderCandidateReview.status, 'reviewed-no-cache', source.id + ' Sagrado geocoder candidate review must stay non-cache');
+  assert.strictEqual(sagradoGeocoderCandidateReview.decision, 'retain-sagrado-staged-no-cache', source.id + ' Sagrado geocoder candidate review decision mismatch');
+  assert.strictEqual(sagradoGeocoderCandidateReview.benchmark, source.geocodingPolicy.benchmark, source.id + ' Sagrado candidate benchmark must match policy');
+  assert.strictEqual(sagradoGeocoderCandidateReview.vintage, source.geocodingPolicy.vintage, source.id + ' Sagrado candidate vintage must match policy');
+  assert.strictEqual(sagradoGeocoderCandidateReview.summary.candidateAddressCount, 3, source.id + ' Sagrado candidate review must record three address forms');
+  assert.strictEqual(sagradoGeocoderCandidateReview.summary.candidateAddressesWithPuertoRicoMatches, 0, source.id + ' Sagrado candidate review must record zero Puerto Rico matches');
+  assert.strictEqual(sagradoGeocoderCandidateReview.summary.cacheRecordsAdded, 0, source.id + ' Sagrado candidate review must not add cache records');
+  assert.strictEqual(sagradoGeocoderCandidateReview.summary.coordinateEligibleRows, 0, source.id + ' Sagrado candidate review must not create coordinate eligibility');
+  assert.strictEqual(sagradoGeocoderCandidateReview.summary.generatedOutputEligibleRows, 0, source.id + ' Sagrado candidate review must not create generated output eligibility');
+  assert.strictEqual(sagradoGeocoderCandidateReview.records[0].candidateTests.length, 3, source.id + ' Sagrado candidate review must include the tested address forms');
+  sagradoGeocoderCandidateReview.records[0].candidateTests.forEach(function(candidate) {
+    assert(candidate.attemptedAddress.indexOf('00914') !== -1, source.id + ' Sagrado candidate address must use official ZIP 00914');
+    assert.strictEqual(candidate.matchCount, 0, source.id + ' Sagrado candidate must record zero matches');
+    assert.strictEqual(candidate.puertoRicoMatchCount, 0, source.id + ' Sagrado candidate must record zero Puerto Rico matches');
+  });
   assert(unisGeocodingPolicy.indexOf('## ZIP Variance Rule') !== -1, source.id + ' geocoding policy must include ZIP variance rule');
   assert(unisGeocodingPolicy.indexOf('ZIP codes are supporting address evidence, not') !== -1, source.id + ' geocoding policy must treat ZIP as supporting evidence');
   assert.strictEqual(orlieReview.schemaVersion, 1, source.id + ' ORLIE/JIP row review schemaVersion must be 1');

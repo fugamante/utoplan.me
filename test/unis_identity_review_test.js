@@ -122,6 +122,7 @@ assert.strictEqual(sagradoStagedReview.decision, 'accept-sagrado-alias-public-ad
 assert.strictEqual(sagradoStagedReview.productBoundary, 'descriptive-only');
 assert.strictEqual(sagradoStagedReview.inputArtifacts.identityFollowupReviewArtifactPath, 'data/unis/corroborated-identity-followup-review.json');
 assert.strictEqual(sagradoStagedReview.inputArtifacts.censusCacheArtifactPath, 'data/geocoding/unis-census-geocoder-cache.json');
+assert.strictEqual(sagradoStagedReview.inputArtifacts.geocoderCandidateReviewArtifactPath, 'data/geocoding/sagrado-geocoder-candidate-review.json');
 assert.strictEqual(sagradoStagedReview.summary.reviewedRows, 1);
 assert.strictEqual(sagradoStagedReview.summary.acceptedAliasCampusRows, 1);
 assert.strictEqual(sagradoStagedReview.summary.reviewedPublicAddressRows, 1);
@@ -133,7 +134,8 @@ assert.strictEqual(sagradoStagedReview.records.length, 1);
 assert.strictEqual(sagradoStagedReview.records[0].directoryInstitution, 'Universidad del Sagrado Corazón');
 assert.strictEqual(sagradoStagedReview.records[0].aliasCampusDecision, 'accepted-alias-evidence-staged');
 assert.strictEqual(sagradoStagedReview.records[0].publicAddressDecision, 'reviewed-public-address-evidence-staged');
-assert.strictEqual(sagradoStagedReview.records[0].censusCacheDecision, 'not-run-staged-before-cache-review');
+assert.strictEqual(sagradoStagedReview.records[0].geocoderCandidateReviewArtifactPath, 'data/geocoding/sagrado-geocoder-candidate-review.json');
+assert.strictEqual(sagradoStagedReview.records[0].censusCacheDecision, 'read-only-candidate-review-no-cache-match');
 assert.strictEqual(sagradoStagedReview.records[0].useForGeocoder, false);
 assert.strictEqual(sagradoStagedReview.records[0].censusResult.attemptedAddress, null);
 assert.strictEqual(sagradoStagedReview.records[0].importEligible, false);
@@ -246,7 +248,7 @@ review.records.forEach(function(record) {
     assert.strictEqual(followupRecord.aliasCampusDecision, 'accepted-alias-evidence-staged', 'Sagrado follow-up must record staged alias evidence');
     assert.strictEqual(followupRecord.publicAddressDecision, 'reviewed-public-address-evidence-staged', 'Sagrado follow-up must record staged public-address evidence');
     assert.strictEqual(followupRecord.sagradoStagedReviewArtifactPath, 'data/unis/sagrado-staged-review.json', 'Sagrado follow-up must point to staged artifact');
-    assert.strictEqual(followupRecord.censusCacheDecision, 'not-run-staged-before-cache-review', 'Sagrado follow-up must not imply Census-cache eligibility');
+    assert.strictEqual(followupRecord.censusCacheDecision, 'read-only-candidate-review-no-cache-match', 'Sagrado follow-up must not imply Census-cache eligibility');
     assert.strictEqual(followupRecord.promotionDecision, 'retain-quarantine-before-census-cache', 'Sagrado follow-up must retain quarantine before cache review');
   } else {
     assert.strictEqual(followupRecord.aliasCampusDecision, 'not-accepted', 'follow-up must keep alias/campus not accepted: ' + name);
@@ -256,7 +258,11 @@ review.records.forEach(function(record) {
     assert(followupRecord.promotionBlockers.indexOf('missing accepted alias/campus decision') !== -1, 'follow-up must record alias/campus blocker: ' + name);
     assert(followupRecord.promotionBlockers.indexOf('missing reviewed public-address evidence') !== -1, 'follow-up must record public-address blocker: ' + name);
   }
-  assert(followupRecord.promotionBlockers.indexOf('missing reviewed Puerto Rico Census geocoder cache match') !== -1, 'follow-up must record Census-cache blocker: ' + name);
+  if (name === 'Universidad del Sagrado Corazón') {
+    assert(followupRecord.promotionBlockers.indexOf('no reviewed Puerto Rico Census geocoder match for tested official-source address candidates') !== -1, 'Sagrado follow-up must record read-only Census candidate blocker');
+  } else {
+    assert(followupRecord.promotionBlockers.indexOf('missing reviewed Puerto Rico Census geocoder cache match') !== -1, 'follow-up must record Census-cache blocker: ' + name);
+  }
   assert.strictEqual(followupRecord.importEligible, false, 'follow-up must not create import eligibility: ' + name);
   assert.strictEqual(followupRecord.coordinateEligible, false, 'follow-up must not create coordinate eligibility: ' + name);
   assert.strictEqual(followupRecord.generatedOutputEligible, false, 'follow-up must not create generated output eligibility: ' + name);
