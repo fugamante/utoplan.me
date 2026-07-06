@@ -154,7 +154,7 @@ Available corroboration evidence against preserved legacy columns:
 | Legacy column | Evidence role | Notes |
 | --- | --- | --- |
 | `title` | corroborates | Official Puerto Rico ORLIE/JIP postsecondary listing surface can corroborate that an institution is licensed or visible in the Puerto Rico postsecondary licensing context. |
-| `address` | operator-reviewed | The bounded Power BI query contract is checked in for the five-row ORLIE/JIP review, but visible location fields remain corroboration context only unless separately reviewed in the public-address artifact. |
+| `address` | operator-reviewed | The bounded Power BI query contract is checked in for the five-row ORLIE/JIP review, but visible location fields remain corroboration context only unless separately reviewed in the public-address or staged-review artifacts. |
 | `desc` | none | Licensure visibility does not replace the preserved legacy `desc` transform. |
 | `lat` / `long` | none | ORLIE/JIP is not the approved coordinate authority in this path. Coordinates remain tied to the reviewed Census geocoder cache. |
 
@@ -187,8 +187,10 @@ Available corroboration evidence against preserved legacy columns:
   `data/unis/identity-review.json`; it records all 27 identity-quarantined rows
   as reviewed-excluded, including 5 NCES+DAPIP+ORLIE/JIP-corroborated
   identity/campus candidates backed by `data/unis/orlie-jip-row-review.json`,
-  and 22 rows still without row-level authority corroboration. It records zero
-  identity-promoted, coordinate-eligible, or generated-output-eligible rows.
+  and 22 rows still without row-level authority corroboration. The follow-up
+  contract records Albizu and Sagrado as staged alias/campus and
+  public-address rows, but it records zero identity-promoted,
+  coordinate-eligible, or generated-output-eligible rows.
 - `cbps` fallback API: operator use is blocked until a Census API key source,
   storage path, and rotation policy are recorded.
 - `cdepts`, `businesses`, and `grade_cs` remain blocked in the source registry

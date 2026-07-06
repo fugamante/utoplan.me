@@ -39,6 +39,7 @@ export interface PlanningContextSummary {
   scope: string;
   status: string;
   updatedAt: string;
+  sourceCount: number;
   municipality: {
     code: string;
     label: string;
@@ -114,6 +115,7 @@ export interface PlanningContextSourceProvenance {
 
 export interface PlanningContextDetail extends PlanningContextFixture {
   id: string;
+  sourceCount: number;
   guardrails: Guardrails;
   sourceProvenance: PlanningContextSourceProvenance;
 }
@@ -587,6 +589,7 @@ export function listSummaries(): PlanningContextSummary[] {
       scope: entry.fixture.scope,
       status: entry.fixture.status,
       updatedAt: entry.fixture.updatedAt,
+      sourceCount: entry.fixture.sourceMetadata.length,
       municipality: {
         code: entry.fixture.municipality.code,
         label: entry.fixture.municipality.label
@@ -619,10 +622,13 @@ export function findDetail(id: string): PlanningContextDetail | null {
 
   validateDescriptiveGuardrails(fixture, id);
 
+  const sourceProvenance = buildSourceProvenance(fixture, id);
+
   return {
     id,
     ...fixture,
+    sourceCount: sourceProvenance.sourceCount,
     guardrails: guardrails(),
-    sourceProvenance: buildSourceProvenance(fixture, id)
+    sourceProvenance
   };
 }

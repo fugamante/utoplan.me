@@ -16,6 +16,9 @@ assert.strictEqual(summaries.length, ids.length);
 summaries.forEach(function(summary) {
   assert.strictEqual(summary.schemaVersion, 1);
   assert.strictEqual(summary.scope, 'puerto-rico-planning-candidate');
+  assert.strictEqual(summary.status, 'candidate-needs-review');
+  assert(summary.updatedAt);
+  assert(summary.sourceCount >= 1);
   assert.strictEqual(summary.guardrails.descriptiveOnly, true);
   assert.strictEqual(summary.guardrails.noScores, true);
   assert.strictEqual(summary.guardrails.noRankings, true);
@@ -31,10 +34,14 @@ const adjuntasSummary = summaries.find(function(summary) {
 });
 assert(adjuntasSummary, 'summary should exist for mun001_construction');
 assert.strictEqual(adjuntasSummary.municipality.label, 'Adjuntas');
+assert.strictEqual(adjuntasSummary.updatedAt, '2026-05-29');
+assert.strictEqual(adjuntasSummary.sourceCount, 1);
 
 const detail = planningContext.findDetail('mun003_restaurant');
 assert(detail, 'detail should exist for known fixture id');
 assert.strictEqual(detail.id, 'mun003_restaurant');
+assert.strictEqual(detail.status, 'candidate-needs-review');
+assert.strictEqual(detail.updatedAt, '2026-05-30');
 assert.strictEqual(detail.guardrails.descriptiveOnly, true);
 assert.strictEqual(detail.businessCategory.id, 'restaurant-cafe');
 assert.strictEqual(detail.selection.municipalityCode, '003');

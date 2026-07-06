@@ -121,6 +121,13 @@ The ORLIE/JIP row-level subset is bounded in
 `data/unis/orlie-jip-row-review.json`; it stores licensure-listing context only,
 excludes personal contact fields, and does not provide coordinate authority or
 public-address correction evidence.
+The current follow-up stage is bounded in
+`data/unis/corroborated-identity-followup-review.json`,
+`data/unis/albizu-staged-review.json`, and
+`data/unis/sagrado-staged-review.json`. Albizu and Sagrado have staged
+alias/campus and public-address evidence only; those artifacts are not import
+artifacts and do not create Census cache rows, coordinates, DB seed rows,
+generated output, API coverage, or UI coverage.
 
 Before broad `unis` geocoder refresh work begins, keep a checked-in exact-match
 baseline at `data/unis/ipeds-geocode-audit.json`. Use that audit to document

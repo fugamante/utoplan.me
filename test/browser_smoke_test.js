@@ -126,6 +126,9 @@ async function main() {
         },
         data: [{
           id: 'mun001_construction',
+          status: 'candidate-needs-review',
+          updatedAt: '2026-05-29',
+          sourceCount: 1,
           municipality: {
             code: '001',
             label: 'Adjuntas'
@@ -145,6 +148,9 @@ async function main() {
           }
         }, {
           id: 'mun003_restaurant',
+          status: 'candidate-needs-review',
+          updatedAt: '2026-05-30',
+          sourceCount: 1,
           municipality: {
             code: '003',
             label: 'Aguada'
@@ -180,6 +186,9 @@ async function main() {
         },
         data: [{
           id: 'mun001_construction',
+          status: 'candidate-needs-review',
+          updatedAt: '2026-05-29',
+          sourceCount: 1,
           municipality: {
             code: '001',
             label: 'Adjuntas'
@@ -249,6 +258,9 @@ async function main() {
         },
         data: [{
           id: 'mun003_restaurant',
+          status: 'candidate-needs-review',
+          updatedAt: '2026-05-30',
+          sourceCount: 1,
           municipality: {
             code: '003',
             label: 'Aguada'
@@ -359,6 +371,12 @@ async function main() {
     (await page.locator('[data-ui="planning-context-status"]').innerText()).indexOf('Descriptive planning-context options') !== -1,
     'planning-context status should describe guardrails'
   );
+  const planningListText = (await page.locator('[data-ui="planning-context-list"]').innerText()).toLowerCase();
+  assert(
+    planningListText.indexOf('candidate review required') !== -1 &&
+    planningListText.indexOf('registered sources: 1') !== -1,
+    'planning-context list should surface candidate review status and registered source count'
+  );
   await page.waitForFunction(() => {
     const detail = document.querySelector('[data-ui="planning-context-detail"]');
     return !!detail && detail.textContent.indexOf('Confidence rationale') !== -1;
@@ -385,11 +403,20 @@ async function main() {
     planningDetailText.indexOf('u.s. census bureau via datos.pr') !== -1,
     'planning-context detail should render source provenance'
   );
+  assert(
+    planningDetailText.indexOf('status: candidate review required') !== -1 &&
+    planningDetailText.indexOf('updated: 2026-05-29 | registered sources: 1') !== -1,
+    'planning-context detail should surface candidate-grade status and source count'
+  );
   assert.strictEqual(await page.locator('.leaflet-tile-pane img.leaflet-tile').count() > 0, true, 'base map tiles should render');
   assert.strictEqual(await page.locator('.leaflet-marker-icon').count(), 4, 'partial university markers should render');
   assert(
     (await page.locator('[data-ui="unis-coverage-status"]').innerText()).indexOf('Partial reviewed Census-cache coverage') !== -1,
     'university layer should render partial coverage status'
+  );
+  assert(
+    (await page.locator('[data-ui="unis-coverage-detail"]').innerText()).indexOf('not complete Puerto Rico higher-education coverage') !== -1,
+    'university layer should render the partial coverage limitation'
   );
   assert(requestedPaths.includes('/v1/unis'), 'map should try the modern API endpoint first');
   assert(requestedPaths.includes('/v1/planning-context'), 'page should load planning-context summaries from the modern API path');

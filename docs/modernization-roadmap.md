@@ -68,10 +68,11 @@
   State ORLIE/JIP postsecondary listing as a licensure corroboration surface,
   while documenting that its public Power BI listing is not yet a verified
   stable bulk export or direct `unis` row source.
-- `data/unis/sagrado-staged-review.json` records Universidad del Sagrado
-  Corazón as the single source-backed staged alias/campus and public-address
-  evidence decision, using official Sagrado and MSCHE pages while keeping the
-  row blocked before Census cache, coordinates, DB seed, and generated output.
+- `data/unis/albizu-staged-review.json` and
+  `data/unis/sagrado-staged-review.json` record Universidad Carlos Albizu and
+  Universidad del Sagrado Corazón as source-backed staged alias/campus and
+  public-address evidence decisions while keeping both rows blocked before
+  Census cache, coordinates, DB seed, and generated output.
 - `data/geocoding/sagrado-geocoder-candidate-review.json` records read-only
   Census candidate attempts for official-source Sagrado address forms; the
   tested forms returned zero Puerto Rico matches and do not change cache,
@@ -105,9 +106,15 @@
   fixture `sourceMetadata`, and the first-page detail panel renders source
   publisher, portal, source id, and retrieval date so limitations and facts are
   visibly tied to registered source evidence.
+- The first-page planning-context list and detail now also surface each
+  fixture's candidate-review status, update date, and registered-source count,
+  while the `unis` header renders both the accepted partial-coverage label and
+  its first explicit limitation so incomplete reviewed coverage is harder to
+  misread as full readiness.
 - `docs/production-readiness-decision-board.md` records the MAX decision to
-  keep the partial `unis` import boundary blocked while using the existing
-  source-backed planning-context state to improve provenance visibility.
+  keep the accepted partial `unis` boundary unchanged while making partial
+  coverage and candidate-grade planning-context state more explicit in the
+  API/UI surface.
 - `npm run test:browser:start-local` now validates the host-native integrated
   `start:local` path against a seeded `baseline-read-v1` database, including
   same-origin planning-context summary/detail requests, rendered descriptive
@@ -232,14 +239,15 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Use `data/unis/corroborated-identity-followup-review.json` and
+Use `data/unis/corroborated-identity-followup-review.json`,
+`data/unis/albizu-staged-review.json`, and
 `data/unis/sagrado-staged-review.json` as the current five-row follow-up
 decision for the NCES+DAPIP+ORLIE/JIP-corroborated identity-quarantined rows.
-Sagrado is the only row with staged alias/campus and public-address evidence;
-the read-only Sagrado geocoder candidate review found no Puerto Rico Census
-match for the official-source address forms. The next useful step is to decide
-whether to normalize another Sagrado candidate form or select another single
-row for read-only candidate review. Keep
+Albizu and Sagrado are the two rows with staged alias/campus and
+public-address evidence; the read-only Sagrado geocoder candidate review found
+no Puerto Rico Census match for the official-source address forms. The next
+useful step is a bounded read-only Census candidate review for Albizu, while
+preserving Sagrado's no-match result. Keep
 `data/geocoding/unis-address-verification.json` as the current zero-promotion
 address baseline, keep API/UI coverage language visible, and do not expand the
 4-row generated slice without updating the identity review, address review,

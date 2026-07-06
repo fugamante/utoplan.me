@@ -14,6 +14,7 @@
     "addressVerificationArtifactPath": "data/geocoding/unis-address-verification.json",
     "matchReviewArtifactPath": "data/unis/ipeds-alias-campus-review.json",
     "identityReviewArtifactPath": "data/unis/identity-review.json",
+    "albizuStagedReviewArtifactPath": "data/unis/albizu-staged-review.json",
     "sagradoStagedReviewArtifactPath": "data/unis/sagrado-staged-review.json",
     "sagradoGeocoderCandidateReviewArtifactPath": "data/geocoding/sagrado-geocoder-candidate-review.json",
     "geocodeAuditArtifactPath": "data/unis/ipeds-geocode-audit.json",
@@ -98,11 +99,11 @@
       "status": "nces-dapip-orlie-corroborated-partial"
     },
     {
-      "id": "sagrado-staged-alias-address-review",
-      "candidate": "Record Sagrado as a source-backed staged alias/campus and public-address decision without expanding the import boundary.",
-      "evidence": "data/unis/sagrado-staged-review.json records official Sagrado and MSCHE public-address evidence for Universidad del Sagrado Corazón. data/geocoding/sagrado-geocoder-candidate-review.json records read-only Census candidate attempts with zero Puerto Rico matches. Census cache, coordinates, generated output, DB seed, API coverage, and UI coverage remain unchanged.",
-      "impact": "Moves one identity-corroborated row closer to a future cache review while preserving the accepted 4-row production-style slice.",
-      "risk": "The staged decision or read-only Census probe could be mistaken for import readiness unless cache and generated-output eligibility remain explicitly false.",
+      "id": "staged-alias-address-review",
+      "candidate": "Record Albizu and Sagrado as source-backed staged alias/campus and public-address decisions without expanding the import boundary.",
+      "evidence": "data/unis/albizu-staged-review.json records official Albizu public-address evidence for Universidad Carlos Albizu. data/unis/sagrado-staged-review.json records official Sagrado and MSCHE public-address evidence for Universidad del Sagrado Corazón. data/geocoding/sagrado-geocoder-candidate-review.json records read-only Sagrado Census candidate attempts with zero Puerto Rico matches. Census cache, coordinates, generated output, DB seed, API coverage, and UI coverage remain unchanged.",
+      "impact": "Moves two identity-corroborated rows closer to future cache review while preserving the accepted 4-row production-style slice.",
+      "risk": "The staged decisions or read-only Census probe could be mistaken for import readiness unless cache and generated-output eligibility remain explicitly false.",
       "decision": "accept-staged-evidence-retain-cache-blocker",
       "status": "staged-no-cache"
     },
@@ -122,13 +123,13 @@
     "A Puerto Rico geocoder match is not sufficient for promotion when the matched Census address conflicts with the reviewed public-address evidence.",
     "Legacy detail fields such as desc may be emitted only from data/unis/partial-source-fields.json rows that exactly match the accepted cache-backed subset.",
     "Identity, accreditation, and licensure corroboration sources do not replace the primary Datos.PR row source and do not provide coordinate authority.",
-    "NCES, DAPIP, and ORLIE/JIP corroboration do not resolve alias/campus, public-address, or Census-cache gates by themselves; Sagrado's separate staged review resolves only alias/campus and public-address evidence for that single row.",
+    "NCES, DAPIP, and ORLIE/JIP corroboration do not resolve alias/campus, public-address, or Census-cache gates by themselves; Albizu and Sagrado have separate staged reviews resolving only alias/campus and public-address evidence for those two rows.",
     "Identity-quarantined rows remain excluded from generated/imported output unless data/unis/identity-review.json records all required row-level authority evidence and the full address/geocode evidence chain is updated.",
     "No rankings, recommendations, scores, legal conclusions, zoning conclusions, finance conclusions, inferred coordinates, or invented coordinates may be introduced through this boundary."
   ],
   "requiredBeforeReady": [
     "New corrected address evidence that changes data/geocoding/unis-address-verification.json from zero promotion-eligible rows, then updates cache, quarantine, boundary, registry, generated outputs, and tests together.",
-    "Row-level authority decisions in data/unis/identity-review.json for identity-quarantined rows, including DAPIP/ORLIE corroboration and the full alias/campus, address, and Census-cache evidence chain if they are ever reconsidered for future import. Sagrado's staged review still requires a future cache/quarantine/boundary/generated-output pass before import expansion.",
+    "Row-level authority decisions in data/unis/identity-review.json for identity-quarantined rows, including DAPIP/ORLIE corroboration and the full alias/campus, address, and Census-cache evidence chain if they are ever reconsidered for future import. Albizu and Sagrado staged reviews still require a future cache/quarantine/boundary/generated-output pass before import expansion.",
     "Tests that fail if uncached or identity-quarantined rows appear in production-style unis import output."
   ]
 }

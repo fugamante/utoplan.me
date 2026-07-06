@@ -131,6 +131,46 @@ function stopDockerDb() {
   dockerDbStarted = false;
 }
 
+async function readLocatorText(page, selector) {
+  try {
+    return await page.locator(selector).innerText({timeout: 1000});
+  } catch (error) {
+    return '';
+  }
+}
+
+async function waitForPlanningContextDetail(page, requestedPaths, pageErrors, consoleMessages) {
+  try {
+    await page.waitForFunction(function() {
+      var detail = document.querySelector('[data-ui="planning-context-detail"]');
+      var text = detail ? (detail.textContent || '').toLowerCase() : '';
+
+      return (
+        text.indexOf('unresolved questions') !== -1 &&
+        text.indexOf('masked (disclosure-limited)') !== -1 &&
+        text.indexOf('source provenance') !== -1 &&
+        text.indexOf('u.s. census bureau via datos.pr') !== -1 &&
+        text.indexOf('status: candidate review required') !== -1 &&
+        text.indexOf('registered sources: 1') !== -1
+      );
+    }, null, {timeout: 30000});
+  } catch (error) {
+    var statusText = await readLocatorText(page, '[data-ui="planning-context-status"]');
+    var detailStatusText = await readLocatorText(page, '[data-ui="planning-context-detail-status"]');
+    var detailText = await readLocatorText(page, '[data-ui="planning-context-detail"]');
+    throw new Error(
+      'planning-context detail did not render the expected source-backed contract text.' +
+      '\nplanning-context-status: ' + statusText +
+      '\nplanning-context-detail-status: ' + detailStatusText +
+      '\nplanning-context-detail: ' + detailText +
+      '\nrequestedPaths: ' + JSON.stringify(requestedPaths) +
+      '\npageErrors: ' + JSON.stringify(pageErrors) +
+      '\nconsoleMessages: ' + JSON.stringify(consoleMessages) +
+      '\noriginalError: ' + (error && error.message ? error.message : String(error))
+    );
+  }
+}
+
 function startLocal(apiPort, appPort) {
   const databaseEnv = ensureSeededDatabase(process.env);
   localServer = childProcess.spawn(process.platform === 'win32' ? 'npm.cmd' : 'npm', ['run', 'start:local'], {
@@ -203,7 +243,7 @@ async function main() {
     (await page.locator('[data-ui="unis-coverage-status"]').innerText()).indexOf('Partial reviewed Census-cache coverage') !== -1,
     'page should render unis partial coverage status from the real same-origin API path'
   );
-  await page.waitForSelector('[data-ui="planning-context-detail"] .planningContextSection');
+  await waitForPlanningContextDetail(page, requestedPaths, pageErrors, consoleMessages);
   const planningDetailText = (await page.locator('[data-ui="planning-context-detail"]').innerText()).toLowerCase();
   assert(
     planningDetailText.indexOf('unresolved questions') !== -1,
@@ -218,10 +258,19 @@ async function main() {
     planningDetailText.indexOf('u.s. census bureau via datos.pr') !== -1,
     'page should render planning-context source provenance from the real same-origin API path'
   );
+  assert(
+    planningDetailText.indexOf('status: candidate review required') !== -1 &&
+    planningDetailText.indexOf('registered sources: 1') !== -1,
+    'page should render candidate-grade planning-context status and registered source count from the real same-origin API path'
+  );
   assert(requestedPaths.includes('/v1/unis'), 'browser should request the same-origin modern API collection');
   assert(requestedPaths.includes('/v1/planning-context'), 'browser should request planning-context summaries');
   assert(requestedPaths.includes('/v1/planning-context/mun001_construction'), 'browser should request planning-context detail');
   assert(!requestedPaths.includes('/data/unis.json'), 'browser should not fetch the offline fixture');
+  assert(
+    (await page.locator('[data-ui="unis-coverage-detail"]').innerText()).indexOf('not complete Puerto Rico higher-education coverage') !== -1,
+    'page should render the unis partial-coverage limitation from the real same-origin API path'
+  );
   assert.deepStrictEqual(pageErrors, [], 'page should not throw runtime errors');
   assert.deepStrictEqual(consoleMessages, [], 'page should not log browser console errors or warnings');
 
