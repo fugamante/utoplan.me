@@ -11,6 +11,7 @@ var quarantine = JSON.parse(fs.readFileSync(path.join(root, 'data', 'geocoding',
 var generated = JSON.parse(fs.readFileSync(path.join(root, 'data', 'generated', 'unis-partial-import.json'), 'utf8'));
 var orlieReview = JSON.parse(fs.readFileSync(path.join(root, 'data', 'unis', 'orlie-jip-row-review.json'), 'utf8'));
 var followupReview = JSON.parse(fs.readFileSync(path.join(root, 'data', 'unis', 'corroborated-identity-followup-review.json'), 'utf8'));
+var albizuStagedReview = JSON.parse(fs.readFileSync(path.join(root, 'data', 'unis', 'albizu-staged-review.json'), 'utf8'));
 var sagradoStagedReview = JSON.parse(fs.readFileSync(path.join(root, 'data', 'unis', 'sagrado-staged-review.json'), 'utf8'));
 var publicAddressReview = JSON.parse(fs.readFileSync(path.join(root, 'data', 'geocoding', 'unis-public-address-review.json'), 'utf8'));
 
@@ -97,6 +98,7 @@ assert.strictEqual(followupReview.inputArtifacts.identityReviewArtifactPath, 'da
 assert.strictEqual(followupReview.inputArtifacts.orlieJipReviewArtifactPath, 'data/unis/orlie-jip-row-review.json');
 assert.strictEqual(followupReview.inputArtifacts.aliasCampusReviewArtifactPath, 'data/unis/ipeds-alias-campus-review.json');
 assert.strictEqual(followupReview.inputArtifacts.publicAddressReviewArtifactPath, 'data/geocoding/unis-public-address-review.json');
+assert.strictEqual(followupReview.inputArtifacts.albizuStagedReviewArtifactPath, 'data/unis/albizu-staged-review.json');
 assert.strictEqual(followupReview.inputArtifacts.sagradoStagedReviewArtifactPath, 'data/unis/sagrado-staged-review.json');
 assert.strictEqual(followupReview.inputArtifacts.addressVerificationArtifactPath, 'data/geocoding/unis-address-verification.json');
 assert.strictEqual(followupReview.inputArtifacts.importBoundaryArtifactPath, 'data/geocoding/unis-import-boundary-review.json');
@@ -104,8 +106,8 @@ assert.strictEqual(followupReview.inputArtifacts.quarantineArtifactPath, 'data/g
 assert.strictEqual(followupReview.inputArtifacts.generatedArtifactPath, 'data/generated/unis-partial-import.json');
 assert.strictEqual(followupReview.summary.reviewedRows, 5);
 assert.strictEqual(followupReview.summary.identityCorroboratedRows, 5);
-assert.strictEqual(followupReview.summary.acceptedAliasCampusRows, 1);
-assert.strictEqual(followupReview.summary.reviewedPublicAddressRows, 1);
+assert.strictEqual(followupReview.summary.acceptedAliasCampusRows, 2);
+assert.strictEqual(followupReview.summary.reviewedPublicAddressRows, 2);
 assert.strictEqual(followupReview.summary.censusCacheEligibleRows, 0);
 assert.strictEqual(followupReview.summary.importEligibleRows, 0);
 assert.strictEqual(followupReview.summary.coordinateEligibleRows, 0);
@@ -114,6 +116,44 @@ assert.strictEqual(followupReview.records.length, 5);
 assert(followupReview.invariants.some(function(invariant) {
   return invariant.indexOf('ORLIE/JIP licensure-listing evidence remains corroboration context only') !== -1;
 }), 'follow-up review must keep ORLIE/JIP evidence corroboration-only');
+assert.strictEqual(albizuStagedReview.schemaVersion, 1);
+assert.strictEqual(albizuStagedReview.sourceId, 'datospr-higher-ed-directory-2017-18');
+assert(isIsoDate(albizuStagedReview.reviewedAt), 'Albizu staged review reviewedAt must be ISO YYYY-MM-DD');
+assert.strictEqual(albizuStagedReview.status, 'staged-no-cache');
+assert.strictEqual(albizuStagedReview.decision, 'accept-albizu-alias-public-address-stage');
+assert.strictEqual(albizuStagedReview.productBoundary, 'descriptive-only');
+assert.strictEqual(albizuStagedReview.inputArtifacts.identityFollowupReviewArtifactPath, 'data/unis/corroborated-identity-followup-review.json');
+assert.strictEqual(albizuStagedReview.inputArtifacts.censusCacheArtifactPath, 'data/geocoding/unis-census-geocoder-cache.json');
+assert.strictEqual(albizuStagedReview.summary.reviewedRows, 1);
+assert.strictEqual(albizuStagedReview.summary.acceptedAliasCampusRows, 1);
+assert.strictEqual(albizuStagedReview.summary.reviewedPublicAddressRows, 1);
+assert.strictEqual(albizuStagedReview.summary.censusCacheEligibleRows, 0);
+assert.strictEqual(albizuStagedReview.summary.importEligibleRows, 0);
+assert.strictEqual(albizuStagedReview.summary.coordinateEligibleRows, 0);
+assert.strictEqual(albizuStagedReview.summary.generatedOutputEligibleRows, 0);
+assert.strictEqual(albizuStagedReview.records.length, 1);
+assert.strictEqual(albizuStagedReview.records[0].directoryInstitution, 'Universidad Carlos Albizu');
+assert.strictEqual(albizuStagedReview.records[0].aliasCampusDecision, 'accepted-alias-evidence-staged');
+assert.strictEqual(albizuStagedReview.records[0].publicAddressDecision, 'reviewed-public-address-evidence-staged');
+assert.strictEqual(albizuStagedReview.records[0].censusCacheDecision, 'not-run-staged-before-cache-review');
+assert.strictEqual(albizuStagedReview.records[0].useForGeocoder, false);
+assert.strictEqual(albizuStagedReview.records[0].censusResult.attemptedAddress, null);
+assert.strictEqual(albizuStagedReview.records[0].importEligible, false);
+assert.strictEqual(albizuStagedReview.records[0].coordinateEligible, false);
+assert.strictEqual(albizuStagedReview.records[0].generatedOutputEligible, false);
+assert(albizuStagedReview.records[0].officialEvidence.some(function(evidence) {
+  return evidence.sourceId === 'albizu-home' &&
+    evidence.url === 'https://www.albizu.edu/?lang=es' &&
+    evidence.evidenceRole === 'public-address-and-institution-identity';
+}), 'Albizu staged review must cite official Albizu home address evidence');
+assert(albizuStagedReview.records[0].officialEvidence.some(function(evidence) {
+  return evidence.sourceId === 'albizu-san-juan' &&
+    evidence.url === 'https://www.albizu.edu/san-juan/?lang=es' &&
+    evidence.evidenceRole === 'public-address-and-campus-context';
+}), 'Albizu staged review must cite official Albizu San Juan address evidence');
+assert(albizuStagedReview.invariants.some(function(invariant) {
+  return invariant.indexOf('does not authorize a Census geocoder attempt') !== -1;
+}), 'Albizu staged review must block cache/geocoder overclaiming');
 assert.strictEqual(sagradoStagedReview.schemaVersion, 1);
 assert.strictEqual(sagradoStagedReview.sourceId, 'datospr-higher-ed-directory-2017-18');
 assert(isIsoDate(sagradoStagedReview.reviewedAt), 'Sagrado staged review reviewedAt must be ISO YYYY-MM-DD');
@@ -122,7 +162,6 @@ assert.strictEqual(sagradoStagedReview.decision, 'accept-sagrado-alias-public-ad
 assert.strictEqual(sagradoStagedReview.productBoundary, 'descriptive-only');
 assert.strictEqual(sagradoStagedReview.inputArtifacts.identityFollowupReviewArtifactPath, 'data/unis/corroborated-identity-followup-review.json');
 assert.strictEqual(sagradoStagedReview.inputArtifacts.censusCacheArtifactPath, 'data/geocoding/unis-census-geocoder-cache.json');
-assert.strictEqual(sagradoStagedReview.inputArtifacts.geocoderCandidateReviewArtifactPath, 'data/geocoding/sagrado-geocoder-candidate-review.json');
 assert.strictEqual(sagradoStagedReview.summary.reviewedRows, 1);
 assert.strictEqual(sagradoStagedReview.summary.acceptedAliasCampusRows, 1);
 assert.strictEqual(sagradoStagedReview.summary.reviewedPublicAddressRows, 1);
@@ -134,6 +173,7 @@ assert.strictEqual(sagradoStagedReview.records.length, 1);
 assert.strictEqual(sagradoStagedReview.records[0].directoryInstitution, 'Universidad del Sagrado Corazón');
 assert.strictEqual(sagradoStagedReview.records[0].aliasCampusDecision, 'accepted-alias-evidence-staged');
 assert.strictEqual(sagradoStagedReview.records[0].publicAddressDecision, 'reviewed-public-address-evidence-staged');
+assert.strictEqual(sagradoStagedReview.inputArtifacts.geocoderCandidateReviewArtifactPath, 'data/geocoding/sagrado-geocoder-candidate-review.json');
 assert.strictEqual(sagradoStagedReview.records[0].geocoderCandidateReviewArtifactPath, 'data/geocoding/sagrado-geocoder-candidate-review.json');
 assert.strictEqual(sagradoStagedReview.records[0].censusCacheDecision, 'read-only-candidate-review-no-cache-match');
 assert.strictEqual(sagradoStagedReview.records[0].useForGeocoder, false);
@@ -244,7 +284,13 @@ review.records.forEach(function(record) {
   assert.strictEqual(followupRecord.identityClassification, record.classification, 'follow-up classification must mirror identity review: ' + name);
   assert.strictEqual(followupRecord.corroborationStatus, record.corroborationStatus, 'follow-up corroborationStatus must mirror identity review: ' + name);
   assert.strictEqual(followupRecord.orlieJipMatchType, orlieByInstitution[name].matchType, 'follow-up ORLIE/JIP matchType must mirror ORLIE review: ' + name);
-  if (name === 'Universidad del Sagrado Corazón') {
+  if (name === 'Universidad Carlos Albizu') {
+    assert.strictEqual(followupRecord.aliasCampusDecision, 'accepted-alias-evidence-staged', 'Albizu follow-up must record staged alias evidence');
+    assert.strictEqual(followupRecord.publicAddressDecision, 'reviewed-public-address-evidence-staged', 'Albizu follow-up must record staged public-address evidence');
+    assert.strictEqual(followupRecord.albizuStagedReviewArtifactPath, 'data/unis/albizu-staged-review.json', 'Albizu follow-up must point to staged artifact');
+    assert.strictEqual(followupRecord.censusCacheDecision, 'not-run-staged-before-cache-review', 'Albizu follow-up must not imply Census-cache eligibility');
+    assert.strictEqual(followupRecord.promotionDecision, 'retain-quarantine-before-census-cache', 'Albizu follow-up must retain quarantine before cache review');
+  } else if (name === 'Universidad del Sagrado Corazón') {
     assert.strictEqual(followupRecord.aliasCampusDecision, 'accepted-alias-evidence-staged', 'Sagrado follow-up must record staged alias evidence');
     assert.strictEqual(followupRecord.publicAddressDecision, 'reviewed-public-address-evidence-staged', 'Sagrado follow-up must record staged public-address evidence');
     assert.strictEqual(followupRecord.sagradoStagedReviewArtifactPath, 'data/unis/sagrado-staged-review.json', 'Sagrado follow-up must point to staged artifact');

@@ -10,6 +10,8 @@ var quarantine = JSON.parse(fs.readFileSync(path.join(root, 'data', 'geocoding',
 var boundary = JSON.parse(fs.readFileSync(path.join(root, 'data', 'geocoding', 'unis-import-boundary-review.json'), 'utf8'));
 var sourceFields = JSON.parse(fs.readFileSync(path.join(root, 'data', 'unis', 'partial-source-fields.json'), 'utf8'));
 var identityReview = JSON.parse(fs.readFileSync(path.join(root, 'data', 'unis', 'identity-review.json'), 'utf8'));
+var albizuStagedReview = JSON.parse(fs.readFileSync(path.join(root, 'data', 'unis', 'albizu-staged-review.json'), 'utf8'));
+var sagradoStagedReview = JSON.parse(fs.readFileSync(path.join(root, 'data', 'unis', 'sagrado-staged-review.json'), 'utf8'));
 var generated = JSON.parse(fs.readFileSync(path.join(root, 'data', 'generated', 'unis-partial-import.json'), 'utf8'));
 var seedSql = fs.readFileSync(path.join(root, 'docker', 'postgres', '002_unis_partial_seed.sql'), 'utf8');
 
@@ -111,6 +113,15 @@ quarantine.records.forEach(function(record) {
 identityReview.records.forEach(function(record) {
   assert.strictEqual(record.generatedOutputEligible, false, 'identity review row must not be generated: ' + record.directoryInstitution);
   assert(seedSql.indexOf("'" + record.directoryInstitution.replace(/'/g, "''") + "'") === -1, 'seed SQL must exclude identity-quarantined row: ' + record.directoryInstitution);
+});
+
+albizuStagedReview.records.concat(sagradoStagedReview.records).forEach(function(record) {
+  assert.strictEqual(record.generatedOutputEligible, false, 'staged identity row must not be generated: ' + record.directoryInstitution);
+  assert.strictEqual(record.coordinateEligible, false, 'staged identity row must not expose coordinates: ' + record.directoryInstitution);
+  assert(!generated.rows.some(function(row) {
+    return row.title === record.directoryInstitution;
+  }), 'generated partial import must exclude staged identity row: ' + record.directoryInstitution);
+  assert(seedSql.indexOf("'" + record.directoryInstitution.replace(/'/g, "''") + "'") === -1, 'seed SQL must exclude staged identity row: ' + record.directoryInstitution);
 });
 
 assert(seedSql.indexOf('Contract University') === -1, 'seed SQL must not include placeholder unis data');

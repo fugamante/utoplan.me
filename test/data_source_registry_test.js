@@ -564,6 +564,7 @@ function validateUnisAuthorityStack(source) {
   assert.strictEqual(source.identityAuthorityPolicy.status, 'reviewed-excluded', source.id + ' identityAuthorityPolicy status must keep rows excluded');
   assert.strictEqual(source.identityAuthorityPolicy.reviewArtifactPath, 'data/unis/identity-review.json', source.id + ' identity review artifact path mismatch');
   assert.strictEqual(source.identityAuthorityPolicy.followupReviewArtifactPath, 'data/unis/corroborated-identity-followup-review.json', source.id + ' identity follow-up artifact path mismatch');
+  assert.strictEqual(source.identityAuthorityPolicy.albizuStagedReviewArtifactPath, 'data/unis/albizu-staged-review.json', source.id + ' Albizu staged review artifact path mismatch');
   assert.strictEqual(source.identityAuthorityPolicy.sagradoStagedReviewArtifactPath, 'data/unis/sagrado-staged-review.json', source.id + ' Sagrado staged review artifact path mismatch');
   assert.strictEqual(source.identityAuthorityPolicy.sagradoGeocoderCandidateReviewArtifactPath, 'data/geocoding/sagrado-geocoder-candidate-review.json', source.id + ' Sagrado geocoder candidate review artifact path mismatch');
   assert.strictEqual(source.identityAuthorityPolicy.matchReviewArtifactPath, source.geocodingPolicy.matchReviewArtifactPath, source.id + ' identity policy match review path must match geocodingPolicy');
@@ -574,6 +575,7 @@ function validateUnisAuthorityStack(source) {
   assert(source.identityAuthorityPolicy.importRule.indexOf('does not provide coordinate authority') !== -1, source.id + ' identityAuthorityPolicy importRule must block coordinate overclaiming');
   assert(fs.existsSync(resolveRepoPath(source.identityAuthorityPolicy.reviewArtifactPath)), source.id + ' identity review artifact must exist');
   assert(fs.existsSync(resolveRepoPath(source.identityAuthorityPolicy.followupReviewArtifactPath)), source.id + ' identity follow-up review artifact must exist');
+  assert(fs.existsSync(resolveRepoPath(source.identityAuthorityPolicy.albizuStagedReviewArtifactPath)), source.id + ' Albizu staged review artifact must exist');
   assert(fs.existsSync(resolveRepoPath(source.identityAuthorityPolicy.sagradoStagedReviewArtifactPath)), source.id + ' Sagrado staged review artifact must exist');
   assert(fs.existsSync(resolveRepoPath(source.identityAuthorityPolicy.sagradoGeocoderCandidateReviewArtifactPath)), source.id + ' Sagrado geocoder candidate review artifact must exist');
 
@@ -620,6 +622,7 @@ function validateUnisAuthorityStack(source) {
 function validateUnisIdentityReview(source, identitySource, accreditationSource, licensureSource) {
   var identityReview = JSON.parse(fs.readFileSync(resolveRepoPath(source.identityAuthorityPolicy.reviewArtifactPath), 'utf8'));
   var followupReview = JSON.parse(fs.readFileSync(resolveRepoPath(source.identityAuthorityPolicy.followupReviewArtifactPath), 'utf8'));
+  var albizuStagedReview = JSON.parse(fs.readFileSync(resolveRepoPath(source.identityAuthorityPolicy.albizuStagedReviewArtifactPath), 'utf8'));
   var sagradoStagedReview = JSON.parse(fs.readFileSync(resolveRepoPath(source.identityAuthorityPolicy.sagradoStagedReviewArtifactPath), 'utf8'));
   var sagradoGeocoderCandidateReview = JSON.parse(fs.readFileSync(resolveRepoPath(source.identityAuthorityPolicy.sagradoGeocoderCandidateReviewArtifactPath), 'utf8'));
   var matchReview = JSON.parse(fs.readFileSync(resolveRepoPath(source.identityAuthorityPolicy.matchReviewArtifactPath), 'utf8'));
@@ -672,11 +675,41 @@ function validateUnisIdentityReview(source, identitySource, accreditationSource,
   assert.strictEqual(followupReview.status, 'reviewed-no-promotion', source.id + ' identity follow-up must remain reviewed-no-promotion');
   assert.strictEqual(followupReview.decision, 'retain-identity-quarantine-for-corroborated-subset', source.id + ' identity follow-up decision mismatch');
   assert.strictEqual(followupReview.summary.reviewedRows, 5, source.id + ' identity follow-up must cover five rows');
+  assert.strictEqual(followupReview.inputArtifacts.albizuStagedReviewArtifactPath, source.identityAuthorityPolicy.albizuStagedReviewArtifactPath, source.id + ' identity follow-up must reference Albizu staged review');
   assert.strictEqual(followupReview.inputArtifacts.sagradoStagedReviewArtifactPath, source.identityAuthorityPolicy.sagradoStagedReviewArtifactPath, source.id + ' identity follow-up must reference Sagrado staged review');
-  assert.strictEqual(followupReview.summary.acceptedAliasCampusRows, 1, source.id + ' identity follow-up must record exactly one staged alias/campus row');
-  assert.strictEqual(followupReview.summary.reviewedPublicAddressRows, 1, source.id + ' identity follow-up must record exactly one staged public-address row');
+  assert.strictEqual(followupReview.summary.acceptedAliasCampusRows, 2, source.id + ' identity follow-up must record exactly two staged alias/campus rows');
+  assert.strictEqual(followupReview.summary.reviewedPublicAddressRows, 2, source.id + ' identity follow-up must record exactly two staged public-address rows');
   assert.strictEqual(followupReview.summary.censusCacheEligibleRows, 0, source.id + ' identity follow-up must not imply Census-cache eligibility');
   assert.strictEqual(followupReview.summary.generatedOutputEligibleRows, 0, source.id + ' identity follow-up must not expose generated output eligibility');
+  assert.strictEqual(albizuStagedReview.schemaVersion, 1, source.id + ' Albizu staged review schemaVersion must be 1');
+  assert.strictEqual(albizuStagedReview.sourceId, source.id, source.id + ' Albizu staged review sourceId must match');
+  assert.strictEqual(albizuStagedReview.status, 'staged-no-cache', source.id + ' Albizu staged review must remain pre-cache');
+  assert.strictEqual(albizuStagedReview.decision, 'accept-albizu-alias-public-address-stage', source.id + ' Albizu staged review decision mismatch');
+  assert.strictEqual(albizuStagedReview.productBoundary, 'descriptive-only', source.id + ' Albizu staged review productBoundary must be descriptive-only');
+  assert.strictEqual(albizuStagedReview.inputArtifacts.censusCacheArtifactPath, source.geocodingPolicy.cacheArtifactPath, source.id + ' Albizu staged cache path must match geocoding policy');
+  assert.strictEqual(albizuStagedReview.inputArtifacts.quarantineArtifactPath, source.geocodingPolicy.quarantineArtifactPath, source.id + ' Albizu staged quarantine path must match geocoding policy');
+  assert.strictEqual(albizuStagedReview.inputArtifacts.importBoundaryArtifactPath, source.geocodingPolicy.importBoundaryArtifactPath, source.id + ' Albizu staged boundary path must match geocoding policy');
+  assert.strictEqual(albizuStagedReview.summary.acceptedAliasCampusRows, 1, source.id + ' Albizu staged review must record one alias/campus decision');
+  assert.strictEqual(albizuStagedReview.summary.reviewedPublicAddressRows, 1, source.id + ' Albizu staged review must record one public-address decision');
+  assert.strictEqual(albizuStagedReview.summary.censusCacheEligibleRows, 0, source.id + ' Albizu staged review must not create cache eligibility');
+  assert.strictEqual(albizuStagedReview.summary.importEligibleRows, 0, source.id + ' Albizu staged review must not create import eligibility');
+  assert.strictEqual(albizuStagedReview.summary.coordinateEligibleRows, 0, source.id + ' Albizu staged review must not create coordinate eligibility');
+  assert.strictEqual(albizuStagedReview.summary.generatedOutputEligibleRows, 0, source.id + ' Albizu staged review must not create generated output eligibility');
+  assert.strictEqual(albizuStagedReview.records.length, 1, source.id + ' Albizu staged review must contain one row');
+  assert.strictEqual(albizuStagedReview.records[0].directoryInstitution, 'Universidad Carlos Albizu', source.id + ' Albizu staged review row mismatch');
+  assert.strictEqual(albizuStagedReview.records[0].reviewedPublicAddress, '151 Calle Tanca, San Juan, PR 00901', source.id + ' Albizu staged public address mismatch');
+  assert.strictEqual(albizuStagedReview.records[0].useForGeocoder, false, source.id + ' Albizu staged review must not authorize geocoding');
+  assert.strictEqual(albizuStagedReview.records[0].censusResult.attemptedAddress, null, source.id + ' Albizu staged review must not store a geocoder attempt');
+  assert.strictEqual(albizuStagedReview.records[0].coordinateEligible, false, source.id + ' Albizu staged review must not expose coordinates');
+  assert.strictEqual(albizuStagedReview.records[0].generatedOutputEligible, false, source.id + ' Albizu staged review must not expose generated output');
+  assert(albizuStagedReview.records[0].officialEvidence.some(function(evidence) {
+    return evidence.sourceId === 'albizu-home' &&
+      evidence.url === 'https://www.albizu.edu/?lang=es';
+  }), source.id + ' Albizu staged review must cite official Albizu home evidence');
+  assert(albizuStagedReview.records[0].officialEvidence.some(function(evidence) {
+    return evidence.sourceId === 'albizu-san-juan' &&
+      evidence.url === 'https://www.albizu.edu/san-juan/?lang=es';
+  }), source.id + ' Albizu staged review must cite official Albizu San Juan evidence');
   assert.strictEqual(sagradoStagedReview.schemaVersion, 1, source.id + ' Sagrado staged review schemaVersion must be 1');
   assert.strictEqual(sagradoStagedReview.sourceId, source.id, source.id + ' Sagrado staged review sourceId must match');
   assert.strictEqual(sagradoStagedReview.status, 'staged-no-cache', source.id + ' Sagrado staged review must remain pre-cache');

@@ -101,6 +101,9 @@ withServer(function(server, done) {
           assert.strictEqual(planningResponse.statusCode, 200);
           assert(Array.isArray(planningBody.data));
           assert(planningBody.data.length >= 2);
+          assert.strictEqual(planningBody.data[0].status, 'candidate-needs-review');
+          assert.strictEqual(typeof planningBody.data[0].updatedAt, 'string');
+          assert.strictEqual(typeof planningBody.data[0].sourceCount, 'number');
           assert.strictEqual(planningBody.data[0].guardrails.descriptiveOnly, true);
           assert.strictEqual(planningBody.data[0].guardrails.noScores, true);
 
@@ -114,6 +117,8 @@ withServer(function(server, done) {
             assert.strictEqual(detailResponse.statusCode, 200);
             assert.strictEqual(detailBody.meta.count, 1);
             assert.strictEqual(detailBody.data[0].id, 'mun001_construction');
+            assert.strictEqual(detailBody.data[0].status, 'candidate-needs-review');
+            assert.strictEqual(detailBody.data[0].updatedAt, '2026-05-29');
             assert.strictEqual(detailBody.data[0].guardrails.noRecommendations, true);
 
             request(server, '/v1/planning-context', {method: 'POST'}, function(planningMethodError, planningMethodResponse) {

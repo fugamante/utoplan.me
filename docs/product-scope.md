@@ -50,6 +50,14 @@ municipality/category slices can surface confidence, limitations, and
 unresolved questions without adding scores, rankings, or recommendation
 claims.
 
+Those planning-context views now also surface candidate-review status, update
+date, and registered-source count so users can tell that the current slices are
+descriptive candidate context rather than production-grade decision support.
+
+The same first screen now also surfaces the explicit partial `unis` coverage
+limitation from the accepted reviewed Census-cache boundary instead of only the
+coverage label.
+
 Next, define how disclosure-limited and rounded CBP values should render in the
 planning-context panel so descriptive context does not imply false precision.
 

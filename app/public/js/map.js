@@ -20,10 +20,12 @@ export function addUniversities(map, leaflet, universities) {
 }
 function renderCoverage(documentRef, coverage) {
     const status = documentRef.querySelector('[data-ui="unis-coverage-status"]');
-    if (!status) {
+    const detail = documentRef.querySelector('[data-ui="unis-coverage-detail"]');
+    if (!status || !detail) {
         return;
     }
     status.textContent = coverage ? coverage.label : "";
+    detail.textContent = coverage ? coverage.limitation : "";
 }
 export function loadUniversities(windowRef, config, callback) {
     loadUniversityUrl(windowRef, config.dataUrl, function (result) {

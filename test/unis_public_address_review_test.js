@@ -8,6 +8,7 @@ var reviewPath = path.join(__dirname, '..', 'data', 'geocoding', 'unis-public-ad
 var verificationPath = path.join(__dirname, '..', 'data', 'geocoding', 'unis-address-verification.json');
 var cachePath = path.join(__dirname, '..', 'data', 'geocoding', 'unis-census-geocoder-cache.json');
 var quarantinePath = path.join(__dirname, '..', 'data', 'geocoding', 'unis-import-quarantine.json');
+var albizuStagedReviewPath = path.join(__dirname, '..', 'data', 'unis', 'albizu-staged-review.json');
 var sagradoStagedReviewPath = path.join(__dirname, '..', 'data', 'unis', 'sagrado-staged-review.json');
 var sagradoGeocoderCandidateReviewPath = path.join(__dirname, '..', 'data', 'geocoding', 'sagrado-geocoder-candidate-review.json');
 var policyPath = path.join(__dirname, '..', 'docs', 'unis-geocoding-policy.md');
@@ -16,6 +17,7 @@ var review = JSON.parse(fs.readFileSync(reviewPath, 'utf8'));
 var verification = JSON.parse(fs.readFileSync(verificationPath, 'utf8'));
 var cache = JSON.parse(fs.readFileSync(cachePath, 'utf8'));
 var quarantine = JSON.parse(fs.readFileSync(quarantinePath, 'utf8'));
+var albizuStagedReview = JSON.parse(fs.readFileSync(albizuStagedReviewPath, 'utf8'));
 var sagradoStagedReview = JSON.parse(fs.readFileSync(sagradoStagedReviewPath, 'utf8'));
 var sagradoGeocoderCandidateReview = JSON.parse(fs.readFileSync(sagradoGeocoderCandidateReviewPath, 'utf8'));
 var geocodingPolicy = fs.readFileSync(policyPath, 'utf8');
@@ -105,6 +107,26 @@ assert.strictEqual(
   'matched-address-conflicts-with-reviewed-public-address',
   'Columbia must stay blocked by reviewed-address conflict'
 );
+
+assert(!review.records.some(function(record) {
+  return record.directoryInstitution === 'Universidad Carlos Albizu';
+}), 'Albizu staged address evidence must not be inserted into the Census verification address board');
+assert.strictEqual(albizuStagedReview.status, 'staged-no-cache', 'Albizu staged review must stay outside Census cache');
+assert.strictEqual(albizuStagedReview.summary.reviewedPublicAddressRows, 1, 'Albizu staged review must record one public-address evidence decision');
+assert.strictEqual(albizuStagedReview.summary.coordinateEligibleRows, 0, 'Albizu staged review must not create coordinate eligibility');
+assert.strictEqual(albizuStagedReview.records[0].directoryInstitution, 'Universidad Carlos Albizu');
+assert.strictEqual(albizuStagedReview.records[0].publicAddressDecision, 'reviewed-public-address-evidence-staged');
+assert.strictEqual(albizuStagedReview.records[0].reviewedPublicAddress, '151 Calle Tanca, San Juan, PR 00901');
+assert.strictEqual(albizuStagedReview.records[0].useForGeocoder, false);
+assert.strictEqual(albizuStagedReview.records[0].censusResult.attemptedAddress, null);
+assert(albizuStagedReview.records[0].officialEvidence.some(function(evidence) {
+  return evidence.sourceId === 'albizu-home' &&
+    evidence.url === 'https://www.albizu.edu/?lang=es';
+}), 'Albizu staged review must cite the official Albizu home page');
+assert(albizuStagedReview.records[0].officialEvidence.some(function(evidence) {
+  return evidence.sourceId === 'albizu-san-juan' &&
+    evidence.url === 'https://www.albizu.edu/san-juan/?lang=es';
+}), 'Albizu staged review must cite the official Albizu San Juan page');
 
 assert(!review.records.some(function(record) {
   return record.directoryInstitution === 'Universidad del Sagrado Corazón';

@@ -113,6 +113,7 @@ async function main() {
     'id="searchBar"',
     'id="queryList"',
     'id="planningContextPanel"',
+    'data-ui="unis-coverage-detail"',
     'data-ui="planning-context-status"',
     'data-ui="planning-context-list"',
     'id="sidebar"',

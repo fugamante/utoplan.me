@@ -250,6 +250,12 @@ Current status:
   rows have NCES identity/campus, DAPIP accreditation, and ORLIE/JIP
   licensure-listing corroboration, while 22 still lack row-level authority
   corroboration.
+- `data/unis/albizu-staged-review.json` and
+  `data/unis/sagrado-staged-review.json` record the two
+  NCES+DAPIP+ORLIE/JIP-corroborated rows with staged alias/campus and
+  public-address evidence. These staged artifacts are not cache artifacts and
+  do not create coordinates, generated rows, DB seed rows, API coverage, or UI
+  coverage.
 - `data/geocoding/unis-import-boundary-review.json` records the current MAX
   decision board. The implemented boundary accepts partial import only from
   the 4 cache-backed rows; the corrected-address and identity-review artifacts
@@ -342,6 +348,12 @@ Decision board outcome:
   corroboration from `data/unis/orlie-jip-row-review.json`; 22 rows still lack
   row-level authority corroboration, and zero rows are identity-promoted or
   generated-output eligible.
+- Corroborated identity follow-up review: implemented through
+  `data/unis/corroborated-identity-followup-review.json`,
+  `data/unis/albizu-staged-review.json`, and
+  `data/unis/sagrado-staged-review.json`; Albizu and Sagrado have staged
+  alias/campus and public-address evidence but still have zero cache,
+  coordinate, import, or generated-output eligibility.
 - Contract hardening: implemented through
   `data/geocoding/unis-import-boundary-review.json` and
   `npm run test:data-sources`.

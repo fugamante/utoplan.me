@@ -167,6 +167,11 @@ The current modernization work is centered on:
 - `data/unis/orlie-jip-row-review.json`: bounded ORLIE/JIP public Power BI
   row-review artifact for the 5 identity-corroborated rows; it stores
   licensure-listing context only and excludes personal contact fields.
+- `data/unis/albizu-staged-review.json` and
+  `data/unis/sagrado-staged-review.json`: staged alias/campus and
+  public-address review artifacts for two identity-corroborated rows; neither
+  artifact creates Census cache rows, coordinates, generated output, or DB seed
+  rows.
 - `data/generated/unis-partial-import.json`: generated 4-row partial `unis`
   import slice rebuilt from the accepted Census-cache boundary by
   `node scripts/build_unis_slice.js`.
