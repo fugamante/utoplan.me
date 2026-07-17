@@ -6,3 +6,6 @@ Legacy Nodal source was removed from the normal project tree after its public
 read behavior was captured by compatibility tests and migrated to the modern
 server. New endpoint work should extend the TypeScript sources under
 `modern/src/` and the Docker-backed contracts in `modern/test/`.
+
+See [`../docs/api-reference.md`](../docs/api-reference.md) for the complete
+endpoint, payload, status, header, and runtime reference.
