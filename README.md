@@ -134,6 +134,7 @@ The current modernization work is centered on:
 
 ### Product And Architecture Docs
 
+- `docs/api-reference.md`: complete active HTTP API reference, response contracts, and static proxy behavior.
 - `docs/api-modernization.md`: modern API replacement notes.
 - `docs/database-migrations.md`: production database migration artifact strategy.
 - `docs/deployment-topology.md`: integrated app/API deployment topology.
