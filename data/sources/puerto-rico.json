@@ -461,7 +461,7 @@
       "sourceUrl": "https://nces.ed.gov/collegenavigator/",
       "resourceUrl": "https://nces.ed.gov/collegenavigator/default.aspx?s=PR&xp=2",
       "sourceBasis": "Federal higher-education institution directory with Puerto Rico state filtering and spreadsheet export; candidate corroboration source for institution identity, campus labels, and address review.",
-      "notes": "Use only with the Puerto Rico state filter. The CSV export path returns current Puerto Rico College Navigator search results with institution names, addresses, IPEDS IDs, OPE IDs, and basic institutional descriptors. This source is stronger for institution identity review than the current single auxiliary exact-match audit, but it is not a direct replacement row source for the preserved unis table."
+      "notes": "Use only with the Puerto Rico state filter. The CSV export path returns current Puerto Rico College Navigator search results with institution names, addresses, IPEDS IDs, OPE IDs, and basic institutional descriptors. This source is stronger for institution identity corroboration and campus-label review than the current single auxiliary exact-match audit, but it is not a direct replacement row source for the preserved unis table."
     },
     {
       "id": "usdoe-dapip-puerto-rico",

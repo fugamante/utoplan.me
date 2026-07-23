@@ -581,6 +581,7 @@ function validateUnisAuthorityStack(source) {
 
   var identitySource = findSourceById('nces-college-navigator-puerto-rico');
   assert(identitySource, source.id + ' stronger authority blocker requires the NCES corroboration source to be registered');
+  validateUnisCorroborationSourceBoundary(identitySource, 'unis-identity', 'state:PR', 'identity');
   assert(hasTargetTable(identitySource, 'unis-identity'), source.id + ' NCES corroboration source must target unis-identity');
   assert.strictEqual(identitySource.scope, 'puerto-rico-filtered', source.id + ' NCES corroboration source must stay Puerto Rico-filtered');
   assert.strictEqual(identitySource.scopeFilter, 'state:PR', source.id + ' NCES corroboration source must pin the Puerto Rico state filter');
@@ -591,6 +592,7 @@ function validateUnisAuthorityStack(source) {
 
   var accreditationSource = findSourceById('usdoe-dapip-puerto-rico');
   assert(accreditationSource, source.id + ' stronger authority blocker requires the U.S. Department of Education corroboration source to be registered');
+  validateUnisCorroborationSourceBoundary(accreditationSource, 'unis-accreditation', 'state:Puerto Rico', 'accreditation');
   assert(hasTargetTable(accreditationSource, 'unis-accreditation'), source.id + ' U.S. Department of Education corroboration source must target unis-accreditation');
   assert.strictEqual(accreditationSource.scope, 'puerto-rico-filtered', source.id + ' U.S. Department of Education corroboration source must stay Puerto Rico-filtered');
   assert.strictEqual(accreditationSource.scopeFilter, 'state:Puerto Rico', source.id + ' U.S. Department of Education corroboration source must pin the Puerto Rico state filter');
@@ -601,6 +603,7 @@ function validateUnisAuthorityStack(source) {
 
   var licensureSource = findSourceById('prdos-orlie-jip-postsecondary-listing');
   assert(licensureSource, source.id + ' stronger authority blocker requires the Puerto Rico ORLIE/JIP licensure source to be registered');
+  validateUnisCorroborationSourceBoundary(licensureSource, 'unis-licensure', null, 'licensure');
   assert(hasTargetTable(licensureSource, 'unis-licensure'), source.id + ' Puerto Rico ORLIE/JIP source must target unis-licensure');
   assert.strictEqual(licensureSource.scope, 'puerto-rico', source.id + ' Puerto Rico ORLIE/JIP source must stay Puerto Rico-scoped');
   assert(
@@ -617,6 +620,56 @@ function validateUnisAuthorityStack(source) {
   );
 
   validateUnisIdentityReview(source, identitySource, accreditationSource, licensureSource);
+}
+
+function validateUnisCorroborationSourceBoundary(source, expectedTargetTable, expectedScopeFilter, expectedRole) {
+  assert.strictEqual(source.targetTables.length, 1, source.id + ' corroboration source must target exactly one corroboration lane');
+  assert.strictEqual(source.targetTables[0], expectedTargetTable, source.id + ' corroboration source must stay on the expected corroboration lane');
+  assert.strictEqual(hasTargetTable(source, 'unis'), false, source.id + ' corroboration source must not target direct unis import');
+  assert.strictEqual(hasTargetTable(source, 'cbps'), false, source.id + ' corroboration source must not target direct cbps import');
+  assert.strictEqual(source.legacySchemaMap, undefined, source.id + ' corroboration source must not define legacySchemaMap before direct-source promotion');
+  assert.strictEqual(source.importReadiness, undefined, source.id + ' corroboration source must not define importReadiness before direct-source promotion');
+  assert(
+    source.sourceBasis.toLowerCase().indexOf('corroboration source') !== -1,
+    source.id + ' corroboration sourceBasis must describe the corroboration role'
+  );
+  assert(
+    source.notes.toLowerCase().indexOf('not as a direct legacy unis import source') !== -1 ||
+    source.notes.toLowerCase().indexOf('not a direct replacement row source') !== -1,
+    source.id + ' corroboration notes must keep it out of the direct unis import path'
+  );
+  assert(
+    source.notes.toLowerCase().indexOf('corroboration') !== -1,
+    source.id + ' corroboration notes must describe the limited evidence role'
+  );
+
+  if (expectedScopeFilter) {
+    assert.strictEqual(source.scopeFilter, expectedScopeFilter, source.id + ' corroboration source must keep the registered Puerto Rico filter');
+  } else {
+    assert.strictEqual(source.scope, 'puerto-rico', source.id + ' licensure corroboration source must remain Puerto Rico-scoped');
+  }
+
+  if (expectedRole === 'identity') {
+    assert(
+      source.notes.toLowerCase().indexOf('campus labels') !== -1 ||
+      source.sourceBasis.toLowerCase().indexOf('campus labels') !== -1,
+      source.id + ' identity corroboration source should document campus-label review use'
+    );
+  }
+
+  if (expectedRole === 'accreditation') {
+    assert(
+      source.portal.indexOf('Accredited Postsecondary Institutions') !== -1,
+      source.id + ' accreditation corroboration source portal should remain explicit'
+    );
+  }
+
+  if (expectedRole === 'licensure') {
+    assert(
+      source.notes.indexOf('Power BI') !== -1,
+      source.id + ' licensure corroboration source must keep the bounded Power BI note'
+    );
+  }
 }
 
 function validateUnisIdentityReview(source, identitySource, accreditationSource, licensureSource) {
