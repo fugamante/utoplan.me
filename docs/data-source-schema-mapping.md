@@ -125,6 +125,17 @@ Datos.PR row source and they do not justify direct import on their own, but
 they do provide field-level evidence for preserving real-institution identity
 decisions before more non-exact alias/campus promotion work proceeds.
 
+Control note:
+
+- These corroboration entries are intentionally not modeled as active mapped
+  import candidates in `data/sources/puerto-rico.json`.
+- They should remain outside `legacySchemaMap` and `importReadiness` until a
+  future pass accepts one as a direct replacement row source for a preserved
+  legacy table.
+- Their current role is limited to preserved-column evidence notes for
+  `title` and `address` review while `desc`, `lat`, and `long` stay bound to
+  the approved Datos.PR-plus-Census-cache path documented above.
+
 #### nces-college-navigator-puerto-rico
 
 Available corroboration evidence against preserved legacy columns:
