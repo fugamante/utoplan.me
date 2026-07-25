@@ -1,10 +1,10 @@
 # utoplan.Me
 
-`utoplan.Me` is a map-first planning tool for evaluating where a business idea
-can take root in Puerto Rico. It combines local economic, workforce, education,
-zoning, and infrastructure signals so founders, investors, planners, and local
-development teams can reason about place-based opportunity before committing
-capital, time, and people.
+`utoplan.Me` is a map-first planning tool for evaluating how and where a
+business can take root in Puerto Rico. It starts with the business's operating
+model, scale, and market reach, then examines the site, demand, infrastructure,
+workforce, logistics, execution, and resilience conditions that could enable or
+constrain it before capital, time, and people are committed.
 
 This repository is the modernization fork of the original Imaginary Films
 hackathon prototype. The current work preserves the useful public behavior of
@@ -49,10 +49,17 @@ map `/v1/unis` to `app/public/data/unis.json`. Without
 teams evaluate the economic potential of a business in Puerto Rico through
 place-based analysis.
 
-The tool is intended to correlate zoning, municipalities, education, workforce
-signals, business density, industry patterns, infrastructure, and other local
-resources so users can reason about the full lifecycle of establishing a
-business:
+The tool is intended to correlate site feasibility, demand, infrastructure,
+workforce capability, logistics, execution conditions, business density, and
+industry patterns at the reach appropriate to each business need. Municipality
+boundaries remain useful, but local catchments, regional corridors, island-wide
+access, and external connections may be more decision-relevant.
+
+Education and training are supporting workforce evidence rather than the
+organizing principle. A nearby institution matters only when its current
+programs or training capacity connect to skills the business needs.
+
+This lets users reason about the full lifecycle of establishing a business:
 
 - **Conception:** identify viable business ideas, market gaps, and promising
   locations.
@@ -135,6 +142,7 @@ The current modernization work is centered on:
 ### Product And Architecture Docs
 
 - `docs/api-modernization.md`: modern API replacement notes.
+- `docs/business-location-decision-framework.md`: business-scale, geographic-reach, and decision-lens model for product work.
 - `docs/database-migrations.md`: production database migration artifact strategy.
 - `docs/deployment-topology.md`: integrated app/API deployment topology.
 - `docs/frontend-inventory.md`: static app source and asset inventory.

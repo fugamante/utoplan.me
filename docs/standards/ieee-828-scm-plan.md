@@ -82,7 +82,8 @@ Secondary configuration evidence:
 - Test command output summarized in PRs or release notes.
 - Image tags, commit SHAs, and deployment environment identifiers.
 - Database backup identifiers and migration execution records.
-- Release smoke results for app `/healthz`, API `/readyz`, and public `/v1/unis`.
+- Release smoke results for app `/healthz`, public `/v1/unis`, public
+  `/v1/planning-context`, and optional API `/readyz`.
 
 ### 5.2 Naming And Version Identification
 
@@ -133,7 +134,8 @@ Release candidates must satisfy:
 - Production configuration verification passes.
 - API `/readyz` verifies the required database contract.
 - App `/healthz` confirms proxy mode and does not indicate fixture mode.
-- Public `/v1/unis` is served through the app origin.
+- Public `/v1/unis` and `/v1/planning-context` are served through the app
+  origin.
 - Database migration and rollback notes are present when data shape changes.
 - When API exposure is public, external API smoke checks and edge controls are verified.
 

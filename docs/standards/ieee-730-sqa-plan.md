@@ -159,7 +159,7 @@ validation stack before release or PR publication.
 | Planning-context fixture | `npm run test:planning-context` | Planning-context fixture, summary/detail, or descriptive-guardrail changes. |
 | Migration contract | `npm run test:migration-artifacts` | Migration template or artifact changes. |
 | Deployment config | `npm run verify:deployment` and `npm run verify:release` | Release, environment, container, or operator workflow changes. |
-| Release smoke | `npm run verify:release-smoke` | Candidate deployed environment. |
+| Release smoke | `npm run verify:release-smoke` | Candidate deployed environment; `UTOPLAN_RELEASE_SMOKE_JSON=1` emits sanitized structured evidence when needed. |
 | Security audit | Root, `app`, `dtoapi`, and `dtoapi/modern` npm audits | Dependency or release changes. |
 
 If Docker is unavailable, record the skipped Docker gate and the reason in the
@@ -204,7 +204,8 @@ Before release promotion, verify:
   source control.
 - API `/readyz` enforces the current database baseline.
 - App `/healthz` confirms proxy mode and not fixture mode.
-- Public `/v1/unis` smoke path works through the app origin.
+- Public `/v1/unis` and `/v1/planning-context` smoke paths work through the
+  app origin.
 - Rollback artifact pair and database rollback note are known.
 
 ### 9.3 Data Audit

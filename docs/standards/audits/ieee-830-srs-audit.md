@@ -160,7 +160,8 @@ the current project surface.
 - Production API startup fails fast when required database configuration is
   missing.
 - Release requirements include app `/healthz`, API `/healthz`, API `/readyz`,
-  public `/v1/unis`, and rollback trigger checks.
+  public `/v1/unis`, public `/v1/planning-context`, and rollback trigger
+  checks.
 - Required environment variables are documented and verifiable before service
   startup.
 
