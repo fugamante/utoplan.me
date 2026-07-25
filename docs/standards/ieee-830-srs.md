@@ -201,7 +201,7 @@ contracts working while rebuilding the data and technical foundation.
 | FR-006 | The API shall expose shallow health and database-backed readiness endpoints. | `GET /healthz` returns process health; `GET /readyz` returns ready only when DB and schema checks pass. |
 | FR-007 | Known unsupported API methods shall fail explicitly. | Known record routes return `405` for unsupported methods. |
 | FR-008 | Production startup shall fail on missing API database configuration. | Deployment verification and production API startup reject missing DB config. |
-| FR-009 | The release flow shall smoke test the public app origin and data path. | `npm run verify:release-smoke` checks app `/healthz`, public `/v1/unis`, and optional API `/readyz`. |
+| FR-009 | The release flow shall smoke test the public app origin and data path. | `npm run verify:release-smoke` checks app `/healthz`, public `/v1/unis`, public `/v1/planning-context`, and optional API `/readyz`. |
 | FR-010 | Database schema changes shall be handled as explicit migration artifacts. | New schema work includes artifact sections for preflight, apply, verify, rollback, and readiness impact. |
 | FR-011 | New production-style data sources shall be registered before import. | `npm run test:data-sources` passes and registry entries include required source metadata plus legacy mapping evidence for active mapped tables. |
 | FR-012 | Unresolved legacy tables shall remain blocked for production import. | `cdepts`, `businesses`, and `grade_cs` imports are blocked until source, license, and transform path are recorded. |
@@ -297,7 +297,7 @@ an explicit accepted risk:
 - Release smoke passes against the candidate app origin.
 - API `/readyz` reports the expected schema baseline.
 - App `/healthz` reports proxy mode and no production fixture mode.
-- Public `/v1/unis` returns through the app origin.
+- Public `/v1/unis` and `/v1/planning-context` return through the app origin.
 - Required standards, roadmap, API, deployment, migration, and provenance docs
   are updated for changed behavior.
 - Skipped checks, accepted risks, and rollback notes are recorded.
@@ -329,10 +329,6 @@ an explicit accepted risk:
   are still missing.
 - The original organizer-provided dataset name, license, files, and transform
   path remain unresolved.
-- Deployed release smoke still validates app `/healthz`, public `/v1/unis`,
-  and optional API `/readyz`, but it does not yet exercise the same-origin
-  `/v1/planning-context` summary/detail path that the first page now uses for
-  descriptive planning-context rendering.
 - The approved `cbps.cnaic_name` auxiliary join now depends on the checked-in
   `data/naics/cbp-naics-titles.json` Census title artifact staying aligned with
   the registered Puerto Rico CBP source snapshot and its documented rebuild

@@ -6,13 +6,20 @@ product attempts recommendations, rankings, or automated decisions.
 
 ## Active Product Question
 
-The first product slice should help a user inspect:
+The first product slice should help a user answer:
 
-- what municipality or place they are considering;
-- what type of business they are exploring;
-- which source-backed facts describe nearby industry and education context;
-- which facts are candidate-grade, blocked, or unresolved;
-- which follow-up checks are still needed before acting.
+> Given this business model, scale, and intended market reach, what conditions
+> in Puerto Rico could enable, constrain, delay, or materially change the
+> investment?
+
+The product should first capture the business's operating needs, then inspect
+source-backed evidence at the geographic reach that governs each need. A
+municipality is one useful boundary, not the default boundary for every signal.
+The product should distinguish site-bound, local-catchment, regional-corridor,
+island-wide, and external-connection evidence.
+
+The decision model and sequencing are defined in
+`docs/business-location-decision-framework.md`.
 
 ## Current Product Boundary
 
@@ -42,6 +49,12 @@ The business-category crosswalk is intentionally candidate-grade. It only maps
 user-facing categories to 2012 NAICS codes so future planning context can
 select relevant CBP facts without turning those facts into opaque scores.
 
+University or training-provider presence is supporting evidence inside the
+workforce-capability lens. It must not lead the result or stand in for labor
+availability. Education evidence becomes decision-relevant only when it can be
+connected to required skills or occupations, defensible program output or
+capacity, recency, and realistic travel or island-wide reach.
+
 ## Next Product Work
 
 The first page now reads planning-context summaries and detail through
@@ -58,10 +71,8 @@ The same first screen now also surfaces the explicit partial `unis` coverage
 limitation from the accepted reviewed Census-cache boundary instead of only the
 coverage label.
 
-Next, define how disclosure-limited and rounded CBP values should render in the
-planning-context panel so descriptive context does not imply false precision.
-
-That rendering policy is now:
+Disclosure-limited and rounded CBP values now render under this policy so the
+planning-context panel does not imply false precision:
 
 - disclosure-limited `D` payroll or employment values render as `masked (disclosure-limited)`;
 - rounded/noise-flagged `H` payroll or employment values render as `approx. <value>`;
@@ -71,8 +82,16 @@ That contract now includes source-backed NAICS title text for the active
 planning-context fixture codes so the detail panel can show industry labels
 more clearly without inventing new decision logic.
 
-Next, expand the NAICS title registry to additional mapped category codes
-before adding more planning-context fixtures.
+Next, add explicit business-profile and geographic-reach contracts before
+expanding planning-context fixtures. The next fixture set should keep business
+category and place constant while varying small/local, medium/regional, and
+large/strategic operating assumptions so the product proves that evidence
+relevance and criticality change with scale.
+
+Pause university-directory expansion beyond maintenance of the accepted
+partial boundary. Resume education-data work only when a workforce question
+requires program, skill, completion or capacity evidence that the current
+institution directory cannot answer.
 
 Keep fixtures descriptive. Do not add a score, rank, or recommendation until
 the underlying facts, confidence labels, and limitations are visible and

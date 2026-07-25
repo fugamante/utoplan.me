@@ -22,6 +22,20 @@ function joinUrl(origin, path) {
   return new URL(path.replace(/^\//, ''), base).toString();
 }
 
+function sanitizeUrl(url) {
+  var parsed = new URL(url);
+  parsed.username = '';
+  parsed.password = '';
+  parsed.search = '';
+  parsed.hash = '';
+  return parsed.toString();
+}
+
+function sanitizeRequestError(error, url) {
+  var message = error && error.message ? error.message : 'request failed';
+  return message.split(url).join(sanitizeUrl(url));
+}
+
 function requestJson(url, callback) {
   var parsed = new URL(url);
   var client = parsed.protocol === 'https:' ? https : http;
@@ -79,6 +93,37 @@ function checkUnis(result) {
   }
 }
 
+function checkPlanningContext(result) {
+  checkStatus(result, 200, 'app /v1/planning-context');
+  if (
+    !result.body ||
+    !result.body.meta ||
+    result.body.meta.error !== null ||
+    !Array.isArray(result.body.data)
+  ) {
+    throw new Error('app /v1/planning-context returned an unexpected payload');
+  }
+
+  if (result.body.data.length === 0) {
+    throw new Error('app /v1/planning-context returned no summaries');
+  }
+
+  result.body.data.forEach(function(summary, index) {
+    if (!summary || !summary.guardrails) {
+      throw new Error('app /v1/planning-context summary ' + index + ' is missing guardrails');
+    }
+
+    if (
+      summary.guardrails.descriptiveOnly !== true ||
+      summary.guardrails.noScores !== true ||
+      summary.guardrails.noRankings !== true ||
+      summary.guardrails.noRecommendations !== true
+    ) {
+      throw new Error('app /v1/planning-context summary ' + index + ' returned unexpected guardrails');
+    }
+  });
+}
+
 function checkApiReady(result) {
   checkStatus(result, 200, 'api /readyz');
   if (!result.body || result.body.status !== 'ok' || result.body.database !== 'ok' || result.body.schema !== 'ok') {
@@ -90,12 +135,18 @@ function runChecks(env, requester, callback) {
   var appUrl;
   var apiUrl;
   var checks;
+  var results = [];
 
   try {
     appUrl = parseUrl(env.UTOPLAN_APP_URL, 'UTOPLAN_APP_URL').toString();
     apiUrl = env.UTOPLAN_API_URL ? parseUrl(env.UTOPLAN_API_URL, 'UTOPLAN_API_URL').toString() : null;
   } catch (error) {
-    callback(error);
+    callback(error, [], {
+      schemaVersion: 1,
+      status: 'failed',
+      checks: [],
+      error: error.message
+    });
     return;
   }
 
@@ -109,6 +160,11 @@ function runChecks(env, requester, callback) {
       label: 'app /v1/unis',
       url: joinUrl(appUrl, '/v1/unis'),
       validate: checkUnis
+    },
+    {
+      label: 'app /v1/planning-context',
+      url: joinUrl(appUrl, '/v1/planning-context'),
+      validate: checkPlanningContext
     }
   ];
 
@@ -124,23 +180,62 @@ function runChecks(env, requester, callback) {
     if (index >= checks.length) {
       callback(null, checks.map(function(check) {
         return check.label;
-      }));
+      }), {
+        schemaVersion: 1,
+        status: 'passed',
+        checks: results
+      });
       return;
     }
 
     requester(checks[index].url, function(error, result) {
       if (error) {
-        callback(error);
+        var safeError = new Error(sanitizeRequestError(error, checks[index].url));
+        results.push({
+          label: checks[index].label,
+          url: sanitizeUrl(checks[index].url),
+          statusCode: null,
+          outcome: 'failed',
+          error: safeError.message
+        });
+        callback(safeError, checks.slice(0, index).map(function(check) {
+          return check.label;
+        }), {
+          schemaVersion: 1,
+          status: 'failed',
+          checks: results,
+          error: safeError.message
+        });
         return;
       }
 
       try {
         checks[index].validate(result);
       } catch (validationError) {
-        callback(validationError);
+        results.push({
+          label: checks[index].label,
+          url: sanitizeUrl(checks[index].url),
+          statusCode: result && typeof result.statusCode === 'number' ? result.statusCode : null,
+          outcome: 'failed',
+          error: validationError.message
+        });
+        callback(validationError, checks.slice(0, index).map(function(check) {
+          return check.label;
+        }), {
+          schemaVersion: 1,
+          status: 'failed',
+          checks: results,
+          error: validationError.message
+        });
         return;
       }
 
+      results.push({
+        label: checks[index].label,
+        url: sanitizeUrl(checks[index].url),
+        statusCode: result && typeof result.statusCode === 'number' ? result.statusCode : null,
+        outcome: 'passed'
+      });
       next(index + 1);
     });
   }
@@ -149,13 +244,21 @@ function runChecks(env, requester, callback) {
 }
 
 function main() {
-  runChecks(process.env, requestJson, function(error, labels) {
+  var jsonOutput = process.env.UTOPLAN_RELEASE_SMOKE_JSON === '1';
+
+  runChecks(process.env, requestJson, function(error, labels, evidence) {
     if (error) {
+      if (jsonOutput && evidence) {
+        console.log(JSON.stringify(evidence, null, 2));
+      }
       console.error('Release smoke check failed: ' + error.message);
       process.exit(1);
       return;
     }
 
+    if (jsonOutput) {
+      console.log(JSON.stringify(evidence, null, 2));
+    }
     console.error('Release smoke check passed: ' + labels.join(', '));
   });
 }
@@ -167,7 +270,10 @@ if (require.main === module) {
 module.exports = {
   checkApiReady: checkApiReady,
   checkAppHealth: checkAppHealth,
+  checkPlanningContext: checkPlanningContext,
   checkUnis: checkUnis,
   joinUrl: joinUrl,
-  runChecks: runChecks
+  runChecks: runChecks,
+  sanitizeRequestError: sanitizeRequestError,
+  sanitizeUrl: sanitizeUrl
 };

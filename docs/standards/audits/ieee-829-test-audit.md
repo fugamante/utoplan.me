@@ -175,7 +175,8 @@ fails when the required schema or database connection is unavailable.
 
 Acceptance: production configuration fails closed when required values are
 missing, app `/healthz` and API `/readyz` are covered by deployment policy, and
-the public app origin serves `/v1/unis` through the app/API topology.
+the public app origin serves `/v1/unis` and `/v1/planning-context` through the
+app/API topology.
 
 ## Hardening And Optimization Recommendation Rules
 
@@ -277,10 +278,10 @@ Release decision:
 ### RECO-829-2026-06-01-01
 
 - Class: required hardening
-- Finding: deployed release smoke currently validates app `/healthz`,
+- Finding: deployed release smoke previously validated app `/healthz`,
   `/v1/unis`, and optional API `/readyz`, but not the same-origin
-  `/v1/planning-context` summary/detail path that the current first page now
-  uses for descriptive planning-context rendering.
+  `/v1/planning-context` summary path that the current first page now uses for
+  descriptive planning-context rendering.
 - Acceptance evidence:
   - `scripts/release_smoke_check.js` validates a successful
     `GET /v1/planning-context` response from `UTOPLAN_APP_URL`.
@@ -289,10 +290,11 @@ Release decision:
   - `docs/production-deployment.md`, the IEEE 829 test document, and this audit
     corpus describe the expanded deployed smoke scope.
 - Revisit trigger:
-  - Before the next production-style release candidate from the current
-    first-page planning-context baseline, or sooner if release, rollback, or
-    smoke decisions need to rely on planning-context availability.
-- Status: proposed
+  - Next time the release smoke script, first-page planning-context route, or
+    release-smoke evidence contract changes.
+- Status: implemented; `scripts/release_smoke_check.js` now validates the
+  public app-origin `/v1/planning-context` envelope and descriptive guardrail
+  flags, with coverage in `test/release_smoke_check_test.js`.
 
 ### RECO-829-2026-06-08-01
 

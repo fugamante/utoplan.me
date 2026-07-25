@@ -212,7 +212,7 @@ weakening reproducibility, provenance, or release confidence.
 | Integration tests | Exercise app/API/PostgreSQL and same-origin proxy behavior. |
 | Browser smoke tests | Verify visible map behavior, markers, toggles, tile rendering, and clean console/page errors. |
 | Docker compatibility tests | Verify clean container builds, seeded DB contracts, proxy wiring, and integrated browser behavior. |
-| Release smoke tests | Verify deployed app health, public `/v1/unis`, and optional API readiness from release URLs. |
+| Release smoke tests | Verify deployed app health, public `/v1/unis`, public `/v1/planning-context`, and optional API readiness from release URLs. |
 | Audit review | Confirms evidence, skipped checks, accepted risks, anomalies, and standards updates. |
 
 ## 8. Acceptance Gates
@@ -238,7 +238,7 @@ stack before PR publication or release promotion.
 | Planning-context fixture | `npm run test:planning-context` | Planning-context fixture, summary/detail, or descriptive-guardrail changes. |
 | Migration artifact | `npm run test:migration-artifacts` | Migration template, artifact, readiness schema, or rollback changes. |
 | Deployment verification | `npm run verify:deployment` and `npm run verify:release` | Release, container, environment, or operator workflow changes. |
-| Release smoke | `UTOPLAN_APP_URL=<url> npm run verify:release-smoke` | Candidate deployed environment. |
+| Release smoke | `UTOPLAN_APP_URL=<url> npm run verify:release-smoke` | Candidate deployed environment; set `UTOPLAN_RELEASE_SMOKE_JSON=1` when sanitized structured release evidence is required. |
 | Security audit | Root, `app`, `dtoapi`, and `dtoapi/modern` npm audits | Dependency or release changes. |
 
 If Docker is unavailable, record the skipped Docker gate and reason in the
@@ -340,7 +340,8 @@ A release candidate is ready only when:
   app, API, database, or deployment changes when Docker is available.
 - API `/readyz` validates the current read baseline.
 - App `/healthz` reports expected proxy state and no production fixture mode.
-- Public `/v1/unis` smoke passes through the app origin.
+- Public `/v1/unis` and `/v1/planning-context` smoke checks pass through the
+  app origin.
 - Source registry and migration artifact checks pass when data or schema are
   affected.
 - Security audit status is known across root, `app`, `dtoapi`, and
@@ -378,7 +379,7 @@ traceability, or strengthen release confidence.
 
 Current recommendations to track:
 
-- Add structured JSON output to deployment and release smoke verifiers.
+- Add structured JSON output to deployment verifiers.
 - Add CI artifacts for V&V records, test logs, and release summaries.
 - Add explicit accessibility and performance gates when product criteria are
   defined.

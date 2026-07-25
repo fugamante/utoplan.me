@@ -107,7 +107,7 @@ PostgreSQL
 | Static app server | `app/app.js` | Serve static assets, gate fixture mode, proxy `/v1/*`, expose app health. |
 | Browser UI | `app/public/index.html`, `app/public/css/`, `app/public/src/` | Render the first-page map, UI toggles, and data-backed markers. |
 | Browser compiled assets | `app/public/js/` | Committed JavaScript produced from first-party TypeScript for static serving. |
-| Vendored browser assets | `app/public/vendor/`, `app/public/Untitled/` | Preserve Leaflet, RequireJS, XML tools, Unity artifacts, and other external/static assets. |
+| Vendored browser assets | `app/public/vendor/`, `app/public/Untitled/` | Preserve Leaflet, Unity artifacts, and other current external/static assets. |
 | Modern API runtime | `dtoapi/modern/src/server.ts` | Own HTTP routing, CORS, gzip handling, method handling, health, readiness, and response dispatch. |
 | Planning-context API module | `dtoapi/modern/src/planning_context.ts` | Own planning-context fixture discovery, descriptive guardrail checks, and read-only summary/detail shaping. |
 | API response contracts | `dtoapi/modern/src/response_contract.ts`, `root_contract.ts`, `records.ts` | Own typed public response shapes and compatibility wrapping. |
@@ -370,7 +370,8 @@ Required release design controls:
 - `UTOPLAN_DEMO_FIXTURE` remains unset in production.
 - Database changes are applied separately from service startup.
 - `/readyz` must pass before app traffic depends on a new API release.
-- Public `/v1/unis` must be smoke-tested through the app origin.
+- Public `/v1/unis` and `/v1/planning-context` must be smoke-tested through
+  the app origin.
 - Rollback restores the last known-good app/API artifact pair and follows any
   database rollback note from the release artifact.
 
@@ -514,7 +515,7 @@ Use these rules when modifying the design:
 | App/API proxy | `npm run docker:test:proxy` |
 | Browser map behavior | `npm run test:browser`, `npm run test:browser:start-local`, `npm run docker:test:start-local-browser` |
 | Deployment config | `npm run verify:deployment`, `npm run verify:release` |
-| Release smoke | `npm run verify:release-smoke` |
+| Release smoke | `npm run verify:release-smoke`; set `UTOPLAN_RELEASE_SMOKE_JSON=1` when sanitized structured evidence is required. |
 | Data source scope | `npm run test:data-sources` |
 | Migration artifacts | `npm run test:migration-artifacts` |
 

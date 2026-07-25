@@ -268,10 +268,10 @@ work, but specific enough that the next auditor can reproduce the conclusion.
 ### RECO-730-2026-06-08-01
 
 - Class: required hardening
-- Finding: deployed release smoke currently validates app `/healthz`,
-  `/v1/unis`, and optional API `/readyz`, but it does not validate the
-  same-origin `/v1/planning-context` path that the first page now depends on
-  for descriptive planning-context rendering.
+- Finding: deployed release smoke previously validated app `/healthz`,
+  `/v1/unis`, and optional API `/readyz`, but did not validate the same-origin
+  `/v1/planning-context` path that the first page now depends on for
+  descriptive planning-context rendering.
 - Acceptance evidence:
   - `scripts/release_smoke_check.js` validates a successful
     `GET /v1/planning-context` response from `UTOPLAN_APP_URL`.
@@ -280,7 +280,8 @@ work, but specific enough that the next auditor can reproduce the conclusion.
   - `docs/production-deployment.md`, `docs/standards/ieee-829-test-document.md`,
     and this audit corpus describe the expanded deployed smoke scope.
 - Revisit trigger:
-  - Before the next production-style release candidate that relies on the
-    first-page planning-context baseline, or sooner if release, rollback, or
-    smoke decisions need to rely on planning-context availability.
-- Status: proposed
+  - Next time the release smoke script, first-page planning-context route, or
+    release-smoke evidence contract changes.
+- Status: implemented; `scripts/release_smoke_check.js` now validates the
+  public app-origin `/v1/planning-context` envelope and descriptive guardrail
+  flags, with coverage in `test/release_smoke_check_test.js`.

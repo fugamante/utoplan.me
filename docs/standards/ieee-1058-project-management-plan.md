@@ -364,7 +364,8 @@ Release promotion is acceptable when:
 - App `/healthz` and API `/healthz` behave as expected.
 - API `/readyz` verifies database reachability and the required schema
   baseline.
-- Public app origin serves `/v1/unis` through the app path.
+- Public app origin serves `/v1/unis` and `/v1/planning-context` through the
+  app path.
 - Production fixture mode is disabled.
 - Rollback artifact pair and database rollback note are known.
 - Release evidence is recorded.

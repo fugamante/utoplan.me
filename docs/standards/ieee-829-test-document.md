@@ -65,7 +65,7 @@ data provenance controls, release validation, and ongoing audit duties.
 | Planning-context fixture | `data/planning-context/*.json` | Category context hides uncertainty or drifts into recommendation language |
 | Migration artifacts | `db/migrations/` | Missing rollback, unsafe schema change, readiness drift |
 | Deployment verification | `scripts/verify_*.js` | Production starts with missing config or wrong mode |
-| Release smoke checks | `scripts/release_smoke_check.js` | Public app cannot serve API-backed map data |
+| Release smoke checks | `scripts/release_smoke_check.js` | Public app cannot serve API-backed map or planning-context data |
 | Docker topology | `Dockerfile*`, `docker-compose*.yml` | Container-only regressions, network wiring failures |
 
 ## 4. Test Plan
@@ -129,6 +129,8 @@ A change is test-acceptable when:
   fixture mode.
 - `/v1/unis` is served through the same-origin app path in integrated and
   release smoke checks.
+- `/v1/planning-context` is served through the same-origin app path in release
+  smoke checks.
 - `/v1/planning-context` and `/v1/planning-context/:id` remain read-only and
   include explicit descriptive guardrails in API contracts.
 - Data source changes pass `npm run test:data-sources` and preserve
@@ -286,6 +288,8 @@ Release validation checks that the intended commit can be operated safely:
 - `UTOPLAN_DEMO_FIXTURE` is unset in production.
 - App and API artifacts come from the same release commit.
 - Public app origin can serve `/v1/unis`.
+- Public app origin can serve `/v1/planning-context` with descriptive
+  guardrails.
 - Optional API readiness URL returns healthy status from the release job
   network.
 
@@ -308,8 +312,8 @@ Release validation checks that the intended commit can be operated safely:
 | TC-012 | Deployment config | `npm run test:deployment-config` | App/API environment verifier contracts pass |
 | TC-013 | Deployment containers | `npm run test:deployment-containers` | Container startup verifier contracts pass |
 | TC-014 | Release preflight | `npm run test:release-preflight` | Release verifier wrapper contracts pass |
-| TC-015 | Release smoke script | `npm run test:release-smoke` | Smoke-check script contracts pass |
-| TC-016 | Live release smoke | `UTOPLAN_APP_URL=<url> npm run verify:release-smoke` | Public app health and `/v1/unis` smoke pass |
+| TC-015 | Release smoke script | `npm run test:release-smoke` | Smoke-check script contracts pass, including optional structured JSON evidence |
+| TC-016 | Live release smoke | `UTOPLAN_APP_URL=<url> npm run verify:release-smoke` | Public app health, `/v1/unis`, and descriptive `/v1/planning-context` smoke pass; `UTOPLAN_RELEASE_SMOKE_JSON=1` may be used to emit sanitized machine-readable evidence |
 | TC-017 | API readiness | `curl -fsS <api-origin>/readyz` | API reports ready only with DB and schema available |
 | TC-018 | App health | `curl -fsS <app-origin>/healthz` | App reports expected service, proxy state, and no fixture leakage |
 | TC-019 | Source registry | `npm run test:data-sources` | Registered sources are Puerto Rico-only or explicitly filtered, `cbps`/`unis` entries include full preserved-column `legacySchemaMap` coverage, active `unis` geocoding policy/cache/quarantine/import-boundary plus reviewed alias/campus decision controls are pinned when coordinates are derived, and stronger-authority-blocked `unis` intake retains the registered NCES identity, U.S. Department of Education accreditation, and Puerto Rico ORLIE/JIP licensure corroboration sources as review inputs rather than direct row-import sources |
@@ -530,7 +534,7 @@ At least two reviewers or agents should evaluate updates to this document:
 Recommended improvements to consider and implement when scoped:
 
 - Add CI artifacts for test logs and release summaries.
-- Add structured JSON output to deployment and release smoke verifiers.
+- Add structured JSON output to deployment verifiers.
 - Add explicit accessibility checks for the map-first UI.
 - Add API negative tests for malformed IDs and unsupported collection routes.
 - Add performance budgets for first page load and `/v1/unis` response time.

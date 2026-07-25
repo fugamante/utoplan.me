@@ -83,6 +83,9 @@
   can proceed from row-level evidence rather than prose-only operator
   decisions.
 - `docs/product-scope.md` defines the current product boundary: descriptive Puerto Rico planning context before recommendations, rankings, or automated decisions.
+- `docs/business-location-decision-framework.md` refocuses product sequencing
+  around business operating profile, scale, and geographic reach. University
+  presence is subordinate workforce evidence, not a primary location signal.
 - `data/mappings/puerto-rico-business-categories.json` defines the first candidate business-category to NAICS crosswalk for source-backed planning context.
 - `npm run test:data-sources` validates that registered import candidates are Puerto Rico-only or explicitly filtered to Puerto Rico.
 - `npm run test:naics-registry` validates the checked-in Census title registry
@@ -122,7 +125,9 @@
 - `npm run verify:release` wraps app/API deployment verification for release
   jobs, and GitHub Actions validates the wrapper in sample mode without
   production secrets.
-- `npm run verify:release-smoke` checks deployed app `/healthz`, public `/v1/unis`, and optional API `/readyz` from configured release URLs.
+- `npm run verify:release-smoke` checks deployed app `/healthz`, public
+  `/v1/unis`, public `/v1/planning-context`, and optional API `/readyz` from
+  configured release URLs.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
 - `docs/standards/` now defines the active IEEE 730, 828, 829, 830, 1016, 1012, and 1058 standards corpus, with paired audit guides for keeping quality, configuration, test, requirements, design, V&V, and project-management controls current during ongoing modernization.
 
@@ -239,17 +244,16 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Use `data/unis/corroborated-identity-followup-review.json`,
-`data/unis/albizu-staged-review.json`, and
-`data/unis/sagrado-staged-review.json` as the current five-row follow-up
-decision for the NCES+DAPIP+ORLIE/JIP-corroborated identity-quarantined rows.
-Albizu and Sagrado are the two rows with staged alias/campus and
-public-address evidence; the read-only Sagrado geocoder candidate review found
-no Puerto Rico Census match for the official-source address forms. The next
-useful step is a bounded read-only Census candidate review for Albizu, while
-preserving Sagrado's no-match result. Keep
-`data/geocoding/unis-address-verification.json` as the current zero-promotion
-address baseline, keep API/UI coverage language visible, and do not expand the
-4-row generated slice without updating the identity review, address review,
-cache, quarantine, boundary artifact, registry, generated outputs, and tests
-together.
+Define a versioned business-profile contract and geographic-reach contract,
+then add a fixture set that holds category and place constant while varying
+small/local, medium/regional, and large/strategic operating assumptions. The
+fixture must show which decision lenses are relevant, the geographic reach of
+each fact, profile-dependent criticality, confidence, limitations, and the next
+validation check without producing a composite score or municipality rank.
+
+Treat the current 4-row generated `unis` slice and its review artifacts as a
+maintenance boundary, not the next product lane. Do not spend the next pass on
+additional university identity or geocoding promotion unless a concrete
+occupation-to-skill or training-capacity question requires it. Preserve the
+existing university provenance, quarantine, API coverage language, and tests
+while product effort shifts to business-critical evidence.

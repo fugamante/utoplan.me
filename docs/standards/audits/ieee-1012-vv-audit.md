@@ -382,9 +382,9 @@ Next trigger:
 ### RECO-1012-2026-06-08-01
 
 - Class: required validation
-- Finding: deployed release smoke proves app `/healthz`, `/v1/unis`, and
-  optional API `/readyz`, but it does not yet validate the same-origin
-  planning-context summary path that the first page now uses. That leaves a
+- Finding: deployed release smoke previously proved app `/healthz`,
+  `/v1/unis`, and optional API `/readyz`, but did not validate the same-origin
+  planning-context summary path that the first page now uses. That left a
   release decision gap between validated browser behavior in pre-release
   environments and deployed-path validation after rollout.
 - Acceptance evidence:
@@ -395,10 +395,11 @@ Next trigger:
   - `docs/production-deployment.md` and the IEEE 829 test document reflect the
     expanded deployed smoke expectation.
 - Revisit trigger:
-  - Before the next production-style release candidate that depends on the
-    current first-page planning-context flow, or sooner if rollback or release
-    decisions must rely on deployed planning-context availability.
-- Status: proposed
+  - Next time the release smoke script, first-page planning-context route, or
+    release-smoke evidence contract changes.
+- Status: implemented; `scripts/release_smoke_check.js` now validates the
+  public app-origin `/v1/planning-context` envelope and descriptive guardrail
+  flags, with coverage in `test/release_smoke_check_test.js`.
 
 ## Current Control Expectations
 
