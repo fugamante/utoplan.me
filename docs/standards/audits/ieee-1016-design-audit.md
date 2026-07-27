@@ -46,6 +46,7 @@ Review these artifacts during each IEEE 1016 audit:
 | `docs/api-modernization.md` | API component design and compatibility boundary | Are typed API modules, generated output, and compatibility rules still aligned? |
 | `docs/frontend-inventory.md` | frontend component design and asset ownership | Are served assets, TypeScript boundaries, data hooks, and fixture rules current? |
 | `docs/product-scope.md` | product-boundary design | Does the design keep planning-context behavior descriptive and inside the approved non-recommendation scope? |
+| `docs/business-location-decision-framework.md` | planned domain-contract design | Does future context start from operating needs and assign evidence reach before place comparison? |
 | `docs/deployment-topology.md` | runtime topology and request flow | Does deployment design still match app/API/database service responsibilities? |
 | `docs/production-deployment.md` | operator design and release controls | Are health, readiness, secret, migration, rollback, and smoke-check responsibilities covered? |
 | `docs/database-migrations.md` | database evolution design | Are schema contracts, migration artifacts, rollback notes, and readiness baselines current? |
@@ -170,6 +171,9 @@ changes:
 - Compare `docs/product-scope.md`, category mappings, and planning-context
   fixtures against frontend and API behavior so descriptive-only guardrails do
   not drift silently.
+- Compare the decision framework and roadmap immediate next step against the
+  SDD planned profile/reach boundary; do not accept implementation claims until
+  a versioned schema and executable three-scenario matrix exist.
 - Confirm active mapped tables (`cbps`, `unis`) have consistent full
   preserved-column `legacySchemaMap` coverage in the registry and
   `docs/data-source-schema-mapping.md`.

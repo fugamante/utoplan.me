@@ -47,6 +47,8 @@ Out of scope unless explicitly approved:
 - `docs/api-modernization.md`
 - `docs/frontend-inventory.md`
 - `docs/product-scope.md`
+- `docs/business-location-decision-framework.md`
+- `docs/production-readiness-decision-board.md`
 - `docs/deployment-topology.md`
 - `docs/production-deployment.md`
 - `docs/database-migrations.md`
@@ -182,10 +184,14 @@ re-baselined when phase exit criteria change.
 | TypeScript adoption | Active API and first-party browser boundaries compile from typed source. |
 | Deployment hardening | App/API topology, health, readiness, production config checks, and rollback triggers are documented and tested. |
 | Data replacement readiness | Puerto Rico source registry entries map to preserved schemas with license, scope, retrieval, and transform evidence. |
+| Profile/reach contract | A versioned contract and three-scenario fixture matrix hold category and place constant while verifying profile-dependent relevance, criticality, geographic reach, confidence, limitations, and next validation checks without scores or municipality ranks. Status: planned. |
 | Release candidate | Required validation stack passes or skipped checks are explicitly justified; release and rollback records are complete. |
 
 Schedule risk is managed by limiting each bundle to a validation surface that
 can be tested before merge or release.
+
+Additional university-directory promotion is a maintenance-only lane unless a
+concrete occupation-to-skill or training-capacity question reopens it.
 
 ## 9. Resource Management
 

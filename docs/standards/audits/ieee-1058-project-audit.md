@@ -50,6 +50,10 @@ Inspect these artifacts during each IEEE 1058 audit:
   fixture constraints, browser smoke coverage, and first-party asset ownership.
 - `docs/product-scope.md`: descriptive planning-context scope boundary and next
   product-work guardrails.
+- `docs/business-location-decision-framework.md`: active business-profile,
+  decision-lens, geographic-reach, and scale-scenario milestone authority.
+- `docs/production-readiness-decision-board.md`: latest recorded bundle
+  classification, accepted invariants, and release-readiness decisions.
 - `docs/data-intake.md`: data intake scope, registry controls, accepted
   candidates, and blocked source classes.
 - `docs/data-provenance.md`: verified source evidence, unresolved gaps, and
@@ -102,6 +106,8 @@ Inspect these artifacts during each IEEE 1058 audit:
   coherent implementation bundle.
 - Phase exit criteria remain measurable through commands, tests, docs, or
   release artifacts.
+- The profile/reach milestone remains planned until a versioned contract and
+  executable three-scenario fixture matrix meet the documented exit criteria.
 - Completed phase claims have supporting repository evidence.
 - In-progress items distinguish blocked provenance work, active implementation
   work, hardening requirements, and optimization opportunities.

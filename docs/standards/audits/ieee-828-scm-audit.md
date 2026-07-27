@@ -35,6 +35,8 @@ Audit these configuration item classes on every SCM review:
 - Data provenance assets: `data/sources/puerto-rico.json`,
   `docs/data-intake.md`, `docs/data-provenance.md`, and fixture/test data.
 - Product-boundary and planning-context assets: `docs/product-scope.md`,
+  `docs/business-location-decision-framework.md`,
+  `docs/production-readiness-decision-board.md`,
   `data/mappings/puerto-rico-business-categories.json`,
   `data/municipalities/planning-context-municipalities.json`,
   `data/naics/planning-context-naics-titles.json`, and
@@ -117,6 +119,8 @@ Collect or inspect this evidence before issuing an IEEE 828 audit finding:
   production data separately.
 - Product-scope status identifies whether planning-context behavior is still
   descriptive and backed by visible confidence and limitation evidence.
+- Planned profile/reach status distinguishes canonical requirements and design
+  evidence from schemas, fixtures, and tests that do not exist yet.
 - Open provenance gaps remain visible until evidence is found or replacement
   sources are formally accepted.
 - Audit findings record recommendation state: proposed, accepted, implemented,

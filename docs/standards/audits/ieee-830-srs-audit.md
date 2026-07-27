@@ -53,6 +53,8 @@ Inspect these artifacts during each IEEE 830 audit:
   data URL policy, fixture constraints, and browser smoke expectations.
 - `docs/product-scope.md`: descriptive product boundary for planning-context
   behavior and non-recommendation constraints.
+- `docs/business-location-decision-framework.md`: authoritative operating
+  profile, decision-lens, geographic-reach, and scale-scenario direction.
 - `docs/data-intake.md`: Puerto Rico-only source acceptance requirements,
   registry fields, current candidates, and blocked legacy tables.
 - `docs/data-provenance.md`: verified legacy evidence, unresolved source gaps,
@@ -147,6 +149,9 @@ the current project surface.
   separate requirement classes.
 - Candidate business-category mappings and planning-context fixtures remain
   descriptive and traceable, not implicit scoring logic.
+- Planned profile-dependent context starts from operating needs, assigns each
+  fact a decision-relevant reach, and remains explicitly unimplemented until a
+  versioned contract and executable three-scenario matrix exist.
 - Active planning-context municipality labels remain source-backed and do not
   regress to placeholder naming in API or browser-visible responses.
 - Requirements identify provenance gaps as blockers, not as implementation
@@ -343,6 +348,26 @@ Review date:
 ```
 
 ## Active Recommendations
+
+### RECO-830-2026-07-27-01
+
+- Class: required documentation
+- Finding: the roadmap and product scope made the versioned business-profile
+  and geographic-reach contracts the next product milestone, but the SRS and
+  peer standards still treated future planning-context work as
+  municipality/category expansion without the new operating-profile boundary.
+- Acceptance evidence:
+  - `docs/standards/ieee-830-srs.md` records FR-016 as planned, names all five
+    reach classes, and does not claim executable implementation.
+  - The IEEE 1016, 1058, 730, 828, 829, and 1012 documents and audit corpuses
+    identify the same canonical framework and planned acceptance boundary.
+  - Standards consistency checks confirm the framework path and FR-016/TC-027
+    trace remain present.
+- Revisit trigger:
+  - The first implementation of a business-profile schema, reach schema, or
+    profile-dependent planning-context fixture.
+- Status: implemented (2026-07-27); documentation now distinguishes the
+  approved next contract from current runtime behavior.
 
 ### RECO-830-2026-06-08-01
 

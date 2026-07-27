@@ -43,6 +43,7 @@ Out of scope unless explicitly revived:
 - `docs/frontend-inventory.md`
 - `docs/modernization-roadmap.md`
 - `docs/product-scope.md`
+- `docs/business-location-decision-framework.md`
 - `docs/production-deployment.md`
 - `data/mappings/puerto-rico-business-categories.json`
 - `data/municipalities/planning-context-municipalities.json`
@@ -62,6 +63,12 @@ evaluate location-specific business conditions through a map-first interface
 that can correlate universities, municipalities, workforce, zoning,
 infrastructure, business density, industry patterns, and other local resources
 as the data model matures.
+
+The approved next design direction begins with a versioned operating profile,
+then assigns each fact a site-bound, local-catchment, regional-corridor,
+island-wide, or external-connection reach. This is a planned contract boundary,
+not a claim that the current planning-context API implements profile-dependent
+evidence selection.
 
 The current implementation is intentionally conservative:
 
@@ -119,6 +126,7 @@ PostgreSQL
 | Business category mapping | `data/mappings/puerto-rico-business-categories.json` | Record candidate category-to-NAICS mappings that planning-context fixtures may reference without turning them into scores or recommendations. |
 | Municipality display-name registry | `data/municipalities/planning-context-municipalities.json` | Record source-backed municipality labels for the active planning-context fixture set. |
 | Planning-context fixtures | `data/planning-context/` | Record descriptive municipality/category slices with confidence, limitations, and unresolved questions. |
+| Planned business-profile and reach contracts | Not yet implemented | Future owner for operating assumptions, decision-lens relevance, geographic reach, profile-dependent criticality, confidence, limitations, and next validation checks. |
 | Release scripts | `scripts/`, `test/` | Verify deployment configuration, release smoke behavior, and integration contracts. |
 
 ### 5.3 Runtime Modes
@@ -483,6 +491,14 @@ step is explicitly documented.
   until source, license, scope, and transform assumptions are recorded.
 
 ## 13. Evolution Rules
+
+- Implement the planned business-profile and geographic-reach boundary as
+  versioned contracts before expanding planning-context fixtures by scale.
+- Keep category and place constant in the first scenario matrix so verification
+  can attribute changed relevance or criticality to operating profile rather
+  than unrelated data drift.
+- Do not encode a composite score, municipality rank, or recommendation in the
+  profile/reach contracts.
 
 Use these rules when modifying the design:
 
