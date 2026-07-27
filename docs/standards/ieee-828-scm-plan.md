@@ -75,7 +75,9 @@ Primary configuration items:
   `data/naics/planning-context-naics-titles.json`.
 - Candidate business-category mappings and planning-context fixtures under
   `data/`.
-- Product, deployment, provenance, and standards documentation.
+- Product, deployment, provenance, and standards documentation, including the
+  canonical business-location decision framework and production-readiness
+  decision board.
 
 Secondary configuration evidence:
 

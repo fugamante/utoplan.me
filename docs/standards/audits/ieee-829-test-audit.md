@@ -47,6 +47,7 @@ evidence and must record restoration of the formal baseline as an action item.
 | `docs/modernization-roadmap.md` phase gates | Test plan, summary | Are active phase exit criteria covered by tests? |
 | `docs/api-modernization.md` | Test design, case traceability | Are API contracts pinned before endpoint changes? |
 | `docs/frontend-inventory.md` | Test design, item scope | Are browser and fixture boundaries represented in tests? |
+| `docs/business-location-decision-framework.md` | Planned test design | Does the future profile/reach matrix have explicit fields and a no-score/no-rank oracle before fixture expansion? |
 | `docs/database-migrations.md` | Procedure, incident, release gate | Are schema changes independently reviewable and rollbackable? |
 | `docs/deployment-topology.md` | Test design, item transmittal | Does test coverage exercise the app/API/private API topology? |
 | `docs/production-deployment.md` | Procedure, summary, release gate | Are deployment checks runnable and release blocking? |
@@ -103,6 +104,9 @@ release branch, production deployment, or merge that changes app/API behavior.
 - Confirm planning-context fixtures pass the contract test and remain
   descriptive with explicit confidence labels, source metadata, and unresolved
   questions.
+- Confirm profile-dependent fixtures are not accepted before TC-027 has a
+  focused executable test covering reach, relevance, criticality, confidence,
+  limitations, and next validation checks.
 - Confirm exposed planning-context municipality labels resolve from
   `data/municipalities/planning-context-municipalities.json` for the active
   fixture set.

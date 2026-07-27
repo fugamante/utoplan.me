@@ -96,6 +96,7 @@ Audits should use repository evidence first:
 - `docs/api-modernization.md`
 - `docs/frontend-inventory.md`
 - `docs/product-scope.md`
+- `docs/business-location-decision-framework.md`
 - `docs/data-intake.md`
 - `docs/unis-geocoding-policy.md`
 - `docs/data-provenance.md`
@@ -103,6 +104,7 @@ Audits should use repository evidence first:
 - `docs/database-migrations.md`
 - `docs/deployment-topology.md`
 - `docs/production-deployment.md`
+- `docs/production-readiness-decision-board.md`
 - `.node-version`
 - `.nvmrc`
 - `db/migrations/`

@@ -36,6 +36,8 @@ Review these artifacts during each IEEE 730 audit:
   fixture policy, TypeScript boundary, and browser smoke coverage.
 - `docs/product-scope.md`: current descriptive product boundary for planning
   context and non-recommendation constraints.
+- `docs/business-location-decision-framework.md`: planned operating-profile,
+  decision-lens, geographic-reach, and scale-scenario quality boundary.
 - `docs/database-migrations.md`: migration artifact format, release policy, and
   database review checklist.
 - `docs/data-provenance.md`: verified source evidence, unresolved provenance
@@ -163,6 +165,9 @@ Review these artifacts during each IEEE 730 audit:
   kept visibly separate?
 - Do candidate business-category mappings and planning-context fixtures remain
   descriptive and free of score, ranking, or recommendation drift?
+- Does planned profile/reach work remain blocked from fixture expansion until
+  a versioned contract and focused executable test prove the three-scenario
+  acceptance matrix?
 - Do exposed planning-context municipality labels remain source-backed instead
   of falling back to placeholder names?
 

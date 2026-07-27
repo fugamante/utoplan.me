@@ -34,6 +34,8 @@ data provenance controls, release validation, and ongoing audit duties.
   planning context uses CBP facts.
 - Planning-context fixture validation for municipality/category fact selection,
   confidence labels, and unresolved-question visibility.
+- Future business-profile and geographic-reach contract validation before
+  profile-dependent planning-context fixtures are accepted.
 - Production deployment preflight, smoke checks, rollback triggers, and release
   summary reporting.
 
@@ -63,6 +65,7 @@ data provenance controls, release validation, and ongoing audit duties.
 | Data source registry | `data/sources/puerto-rico.json` | Non-Puerto Rico or unlicensed source intake |
 | Business category mapping | `data/mappings/puerto-rico-business-categories.json` | Category-specific planning context turns descriptive CBP facts into unsupported scores or recommendations |
 | Planning-context fixture | `data/planning-context/*.json` | Category context hides uncertainty or drifts into recommendation language |
+| Planned profile/reach contracts | Not yet implemented; requirements live in `docs/business-location-decision-framework.md` | Scale scenarios change evidence relevance without explicit reach, criticality, confidence, limitations, or a next validation check |
 | Migration artifacts | `db/migrations/` | Missing rollback, unsafe schema change, readiness drift |
 | Deployment verification | `scripts/verify_*.js` | Production starts with missing config or wrong mode |
 | Release smoke checks | `scripts/release_smoke_check.js` | Public app cannot serve API-backed map or planning-context data |
@@ -324,6 +327,7 @@ Release validation checks that the intended commit can be operated safely:
 | TC-024 | Planning-context API contract | `npm run test:api` | `GET /v1/planning-context` and `GET /v1/planning-context/:id` return read-only descriptive payloads with guardrails and reject unsupported methods with `405` |
 | TC-025 | Planning-context summary/detail UI | `npm run test:browser` | First page requests `/v1/planning-context`, loads selected detail from `/v1/planning-context/:id`, and renders descriptive municipality/category, confidence, CBP fact-value masking/approximation, limitation, and unresolved-question content without score/ranking/recommendation language |
 | TC-026 | Integrated planning-context browser path | `npm run test:browser:start-local` | Browser renders seeded same-origin `/v1/unis` and `/v1/planning-context` data through `start:local`, loads descriptive detail from the real API path, avoids the offline fixture, and does not depend on an ambient host database schema |
+| TC-027 | Business-profile and geographic-reach contract | Future focused contract test | Before fixture expansion, one category/place matrix varies small/local, medium/regional, and large/strategic assumptions and verifies reach, relevance, criticality, confidence, limitations, and next validation checks without scores or ranks. Status: planned. |
 
 ## 7. Test Procedure Specification
 
@@ -427,6 +431,9 @@ Release validation checks that the intended commit can be operated safely:
    ```sh
    npm run test:planning-context
    ```
+
+Do not add profile-dependent fixture variants until TC-027 has an executable
+contract test and the versioned profile/reach schema is documented.
 
 ## 8. Test Log
 

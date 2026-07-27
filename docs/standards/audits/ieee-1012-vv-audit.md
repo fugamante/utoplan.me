@@ -65,6 +65,7 @@ Review these artifacts during each IEEE 1012 audit:
 | `docs/api-modernization.md` | API verification evidence | Are compatibility contracts and typed API boundaries verified before changes are accepted? |
 | `docs/frontend-inventory.md` | frontend verification evidence | Are served assets, map behavior, fixtures, and browser hooks represented in checks? |
 | `docs/product-scope.md` | product-boundary validation evidence | Do planning-context features remain descriptive and within the approved non-recommendation scope? |
+| `docs/business-location-decision-framework.md` | planned domain validation evidence | Are operating-profile and geographic-reach claims separated from current runtime behavior and tied to future executable acceptance evidence? |
 | `docs/deployment-topology.md` | operational validation evidence | Does runtime topology match the validated request flow and API visibility assumptions? |
 | `docs/production-deployment.md` | release validation evidence | Are preflight, smoke, rollback, secret, and readiness checks sufficient for promotion decisions? |
 | `docs/database-migrations.md` and `db/migrations/` | database verification evidence | Do migration artifacts include preflight, apply, read-only verify, rollback, and readiness impact? |
@@ -156,6 +157,8 @@ product and operational purpose.
   authoritative legal, permitting, investment, or labor-market advice.
 - User-visible changes preserve or intentionally revise the documented product
   scope, target users, and acceptance criteria.
+- Planned profile/reach behavior remains unvalidated until the versioned
+  contracts and three-scenario fixture matrix have focused executable evidence.
 - Future recommendation, scoring, zoning, workforce, infrastructure, or
   lifecycle-planning features expose source, timestamp, transform, and known
   limitation metadata before being treated as decision-support outputs.

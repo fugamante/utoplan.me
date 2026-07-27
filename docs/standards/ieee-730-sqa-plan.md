@@ -57,6 +57,7 @@ Out of scope unless explicitly reintroduced:
 - `docs/modernization-roadmap.md`
 - `docs/api-modernization.md`
 - `docs/product-scope.md`
+- `docs/business-location-decision-framework.md`
 - `docs/database-migrations.md`
 - `docs/data-intake.md`
 - `docs/data-provenance.md`
@@ -136,6 +137,8 @@ Required documentation records:
   `data/naics/planning-context-naics-titles.json`, and
   `data/planning-context/`.
 - Product-boundary changes in `docs/product-scope.md`.
+- Business-profile, decision-lens, or geographic-reach changes in
+  `docs/business-location-decision-framework.md`.
 - Release operations in `docs/production-deployment.md`.
 - Quality evidence, audits, and update cadence in this plan.
 
@@ -157,6 +160,7 @@ validation stack before release or PR publication.
 | Data registry | `npm run test:data-sources` | Source registry, provenance, import, or data-scope changes. |
 | Business category mapping | `npm run test:business-categories` | Category crosswalk, planning-context selection, or descriptive-scope changes. |
 | Planning-context fixture | `npm run test:planning-context` | Planning-context fixture, summary/detail, or descriptive-guardrail changes. |
+| Planned profile/reach contract | Future focused contract test plus `npm run test:planning-context` | Business-profile schema, decision-lens relevance, reach, or scale-scenario changes; no executable gate exists until implementation. |
 | Migration contract | `npm run test:migration-artifacts` | Migration template or artifact changes. |
 | Deployment config | `npm run verify:deployment` and `npm run verify:release` | Release, environment, container, or operator workflow changes. |
 | Release smoke | `npm run verify:release-smoke` | Candidate deployed environment; `UTOPLAN_RELEASE_SMOKE_JSON=1` emits sanitized structured evidence when needed. |
