@@ -96,6 +96,7 @@ npm run test
 The release preflight stack is:
 
 ```sh
+npm run verify:node
 npm run test:node-runtime
 npm run install:all
 npm run build
@@ -122,8 +123,9 @@ Postgres validation, and the app/API proxy topology.
 A change is test-acceptable when:
 
 - `npm run test` passes from the repository root.
-- `npm run test:node-runtime` passes against the pinned Node 24 major before
-  local, CI, or Docker workflows are accepted as comparable evidence.
+- `npm run verify:node` confirms the active process uses the pinned Node 24
+  major, and `npm run test:node-runtime` passes the verifier unit contract,
+  before local, CI, or Docker workflows are accepted as comparable evidence.
 - TypeScript-generated browser and API outputs are current after source edits.
 - Docker DB, proxy, and browser compatibility checks pass for release-impacting
   app, API, database, or deployment changes.
@@ -301,7 +303,7 @@ Release validation checks that the intended commit can be operated safely:
 | ID | Name | Procedure | Expected Result |
 | --- | --- | --- | --- |
 | TC-001 | Root test baseline | `npm run test` | All host contract and verification tests pass |
-| TC-001A | Node runtime pin | `npm run test:node-runtime` | Local validation runs on the pinned Node 24 major |
+| TC-001A | Node runtime pin | `npm run verify:node && npm run test:node-runtime` | The active process uses Node 24 and the verifier unit contract passes, even when npm lifecycle hooks are disabled |
 | TC-002 | Clean install | `npm run install:all` | Root, app, API, and modern API install from lockfiles |
 | TC-003 | Build baseline | `npm run build` | Build delegates to test baseline and passes |
 | TC-004 | API contracts | `npm run test:api` | Root, response, resource, route, and DB-free contracts pass |
@@ -336,6 +338,7 @@ Release validation checks that the intended commit can be operated safely:
 1. Install dependencies:
 
    ```sh
+   npm run verify:node
    npm run test:node-runtime
    npm run install:all
    ```

@@ -149,7 +149,7 @@ validation stack before release or PR publication.
 
 | Gate | Command or evidence | Required when |
 | --- | --- | --- |
-| Node runtime | `npm run test:node-runtime` | Runtime pin, engines, install hook, CI, Docker, or toolchain changes. |
+| Node runtime | `npm run verify:node && npm run test:node-runtime` | Runtime pin, engines, install hook, CI, Docker, npm lifecycle configuration, or toolchain changes. The first command verifies the active process; the second unit-tests the verifier contract. |
 | Clean install | `npm run install:all` | Dependency, lockfile, CI, Docker, or release changes. |
 | Build baseline | `npm run build` | Any code or validation-script change. |
 | Root tests | `npm run test` | Normal pre-merge validation. |
