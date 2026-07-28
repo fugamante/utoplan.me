@@ -102,8 +102,9 @@ Runtime baselines are named by contract, not by environment accident. The curren
 The development baseline is the current modernization branch plus all committed lockfiles and tests. A development baseline is acceptable when:
 
 - Root installation can be reproduced from lockfiles.
-- `npm run test:node-runtime` passes against the pinned Node 24 major from
-  `.node-version` and `.nvmrc`.
+- `npm run verify:node` confirms the active process uses the Node 24 major from
+  `.node-version` and `.nvmrc`, and `npm run test:node-runtime` passes the
+  verifier's unit contract.
 - `npm run build` has defined behavior.
 - Affected contract tests pass or failures are documented.
 - Documentation changed by the work reflects the actual behavior.

@@ -92,8 +92,10 @@ Review these artifacts during each IEEE 730 audit:
 ### Process And Standards
 
 - Are root commands in `README.md` still valid and aligned with package scripts?
-- Do `.node-version`, `.nvmrc`, package `engines`, and `npm run test:node-runtime`
-  still agree on the reviewed Node major?
+- Do `.node-version`, `.nvmrc`, package `engines`, and
+  `npm run test:node-runtime` still agree on the reviewed Node major, and does
+  `npm run verify:node` independently confirm the active process when npm
+  lifecycle hooks are disabled?
 - Does the modernization roadmap record current status and next action without
   stale phase claims?
 - Do code changes preserve the documented boundary between dependency-free app

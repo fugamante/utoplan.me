@@ -73,6 +73,8 @@ release branch, production deployment, or merge that changes app/API behavior.
   not list obsolete test commands.
 - Confirm `.node-version`, `.nvmrc`, package `engines`, CI, and
   `npm run test:node-runtime` still agree on the reviewed Node major.
+- Confirm `npm run verify:node` checks the active process independently of npm
+  lifecycle-hook execution.
 - Confirm every active roadmap exit criterion has executable or documented test
   evidence.
 - Confirm new or changed `/v1/*`, `/healthz`, or `/readyz` behavior has API
@@ -260,6 +262,29 @@ Release decision:
   candidates so command evidence is retained without committing transient logs.
 
 ## Active Recommendations
+
+### RECO-829-2026-07-27-01
+
+- Class: required hardening
+- Finding: `npm run test` can complete on an unsupported Node major when the
+  operator has npm `ignore-scripts=true`, because that setting suppresses the
+  root `pretest` hook. `npm run test:node-runtime` unit-tests the verifier with
+  synthetic version values but does not validate the active process.
+- Acceptance evidence:
+  - Root install, build, and test entrypoints invoke the active-runtime verifier
+    in their explicit script chains rather than relying only on `pre*`
+    lifecycle hooks.
+  - A focused contract test runs the root entrypoint with lifecycle scripts
+    disabled and an unsupported synthetic runtime, then proves the entrypoint
+    fails before substantive validation begins.
+  - `npm run verify:node && npm run test:node-runtime` passes on the reviewed
+    Node 24 runtime.
+- Revisit trigger:
+  - Any change to root install/build/test scripts, Node version pins, npm
+    lifecycle policy, or runtime-verifier behavior.
+- Status: proposed; the standards now distinguish active-process verification
+  from the verifier unit contract, but the root scripts still rely on lifecycle
+  hooks for automatic enforcement.
 
 ### RECO-829-2026-05-24-01
 
