@@ -213,6 +213,7 @@ municipality or available dataset as the default unit of analysis.
 | FR-014 | The API shall expose read-only planning-context summary/detail routes with explicit descriptive-only guardrails. | `GET /v1/planning-context` and `GET /v1/planning-context/:id` return descriptive fixture payloads with guardrail flags and reject unsupported methods with `405`. |
 | FR-015 | The first page shall render planning-context summary options from same-origin `/v1/planning-context` and load selected descriptive detail from `/v1/planning-context/:id` without score/ranking/recommendation language. | Browser smoke verifies the summary/detail request paths and rendered descriptive options, source-backed municipality names, confidence, limitations, unresolved questions, and CBP fact-value masking/approximation rules. |
 | FR-016 | Before planning-context expansion, the product shall define a versioned business-profile contract and geographic-reach contract covering site-bound, local-catchment, regional-corridor, island-wide, and external-connection evidence. | `data/profile-reach/business-profile-reach-v1.json` holds `mun003_restaurant` constant across small/local, medium/regional, and large/strategic scenarios and `npm run test:profile-reach-contract` verifies profile-dependent relevance, criticality, confidence, limitations, and next validation checks without composite scores or municipality ranks. The contract is implemented as a controlled candidate artifact and is not yet exposed through the API/UI. |
+| FR-017 | The product shall maintain a decision-signal registry that links each fixed-selection profile/reach fact to either registered Puerto Rico evidence or an explicit source gap. | `data/profile-reach/decision-signal-registry-v1.json` records signal lens, scenario applicability, geographic reach, recency, interpretation limits, and linked fact ids, while `npm run test:decision-signals` verifies bidirectional linkage between the registry and `data/profile-reach/business-profile-reach-v1.json`. |
 
 ## 9. Nonfunctional Requirements
 
@@ -329,7 +330,8 @@ an explicit accepted risk:
 | FR-013 | Documentation consistency | Standards and project-doc review |
 | FR-014 | Read-only planning-context API contract | `npm run test:api`, `dtoapi/modern/test/planning_context_test.js` |
 | FR-015 | Planning-context summary UI contract | `npm run test:browser`, `npm run test:browser:start-local`, `app/test/static_smoke_test.js` with `test:browser:start-local` running against the provisioned seeded baseline database unless the operator explicitly opts into a known baseline-ready alternative |
-| FR-016 | Business profile and geographic reach direction | `docs/product-scope.md`, `docs/business-location-decision-framework.md`, `docs/modernization-roadmap.md`; executable verification is required with the future contract implementation |
+| FR-016 | Business profile and geographic reach direction | `docs/product-scope.md`, `docs/business-location-decision-framework.md`, `docs/modernization-roadmap.md`, `data/profile-reach/business-profile-reach-v1.json`, `npm run test:profile-reach-contract` |
+| FR-017 | Decision-signal registry direction | `docs/product-scope.md`, `docs/business-location-decision-framework.md`, `docs/data-intake.md`, `data/profile-reach/decision-signal-registry-v1.json`, `npm run test:decision-signals` |
 | DR-001 - DR-006, DR-002A | Trustworthy Puerto Rico data product | Registry tests, provenance docs, source-schema mapping docs, import review, future recommendation tests |
 
 ## 13. Open Requirements And Risks
@@ -337,7 +339,10 @@ an explicit accepted risk:
 - Formal performance budgets for first page load and `/v1/unis` response time
   are still missing.
 - The versioned business-profile and geographic-reach contracts in FR-016 are
-  planned but not implemented or executable yet.
+  implemented as controlled candidate artifacts and remain intentionally out of
+  the live API/UI surface.
+- The linked decision-signal registry in FR-017 is implemented as controlled
+  evidence metadata and must not drift into recommendation logic.
 - The original organizer-provided dataset name, license, files, and transform
   path remain unresolved.
 - The approved `cbps.cnaic_name` auxiliary join now depends on the checked-in

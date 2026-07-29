@@ -157,8 +157,8 @@ The current modernization work is centered on:
 - `docs/data-provenance.md`: known evidence and open gaps for the original
   hackathon dataset.
 - `data/profile-reach/`: versioned business-profile and geographic-reach
-  contract artifacts plus scenario matrices for profile-dependent planning
-  checks.
+  contract artifacts, decision-signal registry metadata, and scenario matrices
+  for profile-dependent planning checks.
 - `docs/unis-geocoding-policy.md`: approved reproducible geocoding policy for
   deriving `unis.lat` and `unis.long` from registered Puerto Rico source
   addresses.
@@ -220,6 +220,7 @@ npm run test:unis-identity-review
 npm run test:unis-import
 npm run test:unis-public-address-review
 npm run test:planning-context
+npm run test:decision-signals
 npm run test:profile-reach-contract
 ```
 

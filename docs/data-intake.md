@@ -217,6 +217,27 @@ Validate the profile/reach contract with:
 npm run test:profile-reach-contract
 ```
 
+The linked decision-signal registry now lives in
+`data/profile-reach/decision-signal-registry-v1.json`.
+
+That artifact must:
+
+- cover all seven documented decision lenses;
+- keep every signal tied to the fixed municipality/category selection;
+- record applicable business-profile scenarios and the governing geographic
+  reach for each linked scenario;
+- distinguish registered Puerto Rico evidence from explicit source gaps;
+- record recency and interpretation limits without drifting into scores, ranks,
+  or recommendations;
+- link each registry signal back to one or more facts in the
+  business-profile/reach matrix.
+
+Validate the decision-signal registry with:
+
+```sh
+npm run test:decision-signals
+```
+
 ## Current Candidate Sources
 
 - `cbps`: Datos.PR County Business Patterns 2014 Puerto Rico CSV and municipality CSV.

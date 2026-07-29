@@ -124,6 +124,14 @@
   large/strategic scenarios so profile-dependent lens relevance, criticality,
   reach, confidence, limitations, and next validation checks are explicit
   without scores, ranks, or recommendations.
+- `data/profile-reach/decision-signal-registry-v1.json` now defines the first
+  decision-signal registry for the seven documented lenses, records which
+  matrix facts are backed by registered Puerto Rico evidence versus controlled
+  source gaps, and pins applicable scenarios, geographic reach, recency, and
+  interpretation limits before any profile-dependent API/UI expansion.
+- `npm run test:decision-signals` validates the decision-signal registry and
+  its linkage back to the profile/reach matrix so fixed-selection planning
+  facts cannot drift away from their documented evidence or explicit gap state.
 - `npm run test:profile-reach-contract` validates the profile/reach contract,
   the three-scenario matrix, the fixed municipality/category boundary, and the
   expected profile-dependent reach and criticality progression.
@@ -253,11 +261,12 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Build the decision-signal registry for the seven documented lenses and start
-connecting registered Puerto Rico evidence to the new
-`data/profile-reach/business-profile-reach-v1.json` matrix. Keep category and
-place constant while replacing source-gap placeholders with source-backed
-signals for site feasibility, demand, infrastructure, workforce, logistics,
+Expand the decision-signal registry by replacing the highest-risk source-gap
+signals in the fixed-selection matrix with registered Puerto Rico evidence,
+starting with site feasibility, infrastructure, and regulatory execution.
+Keep category and place constant while upgrading
+`data/profile-reach/business-profile-reach-v1.json` from explicit gap control
+toward source-backed signals for site feasibility, demand, infrastructure, workforce, logistics,
 regulatory execution, and resilience.
 
 Treat the current 4-row generated `unis` slice and its review artifacts as a

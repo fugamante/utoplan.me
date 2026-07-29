@@ -95,9 +95,15 @@ marks each lens with explicit geographic reach, criticality, confidence,
 limitations, and next validation checks. It is a controlled candidate artifact,
 not API behavior or a recommendation engine.
 
-The next product step is to replace source-gap placeholders in that matrix with
-registered Puerto Rico evidence through the seven decision lenses before
-expanding planning-context fixtures or adding recommendation behavior.
+The linked decision-signal registry now exists at
+`data/profile-reach/decision-signal-registry-v1.json`. It records which fixed-
+selection matrix facts already map to registered Puerto Rico evidence and which
+remain controlled source gaps, along with scenario reach, recency, and
+interpretation limits.
+
+The next product step is to replace the highest-risk source-gap signals in that
+registry and matrix with registered Puerto Rico evidence before expanding
+planning-context fixtures or adding recommendation behavior.
 
 Pause university-directory expansion beyond maintenance of the accepted
 partial boundary. Resume education-data work only when a workforce question

@@ -113,6 +113,7 @@
           "facts": [
             {
               "id": "small-local-lease-readiness",
+              "signalId": "site-ready-kitchen-gap",
               "label": "Lease-ready kitchen fit and frontage conditions",
               "reachId": "site-bound",
               "sourceType": "source-gap",
@@ -133,6 +134,7 @@
           "facts": [
             {
               "id": "small-local-cbp-baseline",
+              "signalId": "municipality-restaurant-activity-baseline",
               "label": "Municipality restaurant activity baseline",
               "reachId": "local-catchment",
               "sourceType": "registered-source",
@@ -154,6 +156,7 @@
           "facts": [
             {
               "id": "small-local-basic-utilities",
+              "signalId": "basic-utility-service-gap",
               "label": "Basic power, water, and refrigeration-service continuity",
               "reachId": "local-catchment",
               "sourceType": "source-gap",
@@ -174,6 +177,7 @@
           "facts": [
             {
               "id": "small-local-shift-staffing",
+              "signalId": "routine-food-service-staffing-gap",
               "label": "Routine service-role staffing pool",
               "reachId": "local-catchment",
               "sourceType": "source-gap",
@@ -194,6 +198,7 @@
           "facts": [
             {
               "id": "small-local-local-deliveries",
+              "signalId": "local-supplier-route-gap",
               "label": "Routine local supplier and delivery access",
               "reachId": "local-catchment",
               "sourceType": "source-gap",
@@ -214,6 +219,7 @@
           "facts": [
             {
               "id": "small-local-food-permits",
+              "signalId": "food-service-permit-path-gap",
               "label": "Food-service permitting and launch sequencing",
               "reachId": "site-bound",
               "sourceType": "source-gap",
@@ -234,6 +240,7 @@
           "facts": [
             {
               "id": "small-local-local-industry-context",
+              "signalId": "local-industry-context-baseline",
               "label": "Existing local food-service activity context",
               "reachId": "local-catchment",
               "sourceType": "registered-source",
@@ -268,6 +275,7 @@
           "facts": [
             {
               "id": "medium-regional-larger-lease",
+              "signalId": "site-ready-kitchen-gap",
               "label": "Larger-format lease fit and parking/service access",
               "reachId": "site-bound",
               "sourceType": "source-gap",
@@ -288,6 +296,7 @@
           "facts": [
             {
               "id": "medium-regional-cbp-baseline",
+              "signalId": "municipality-restaurant-activity-baseline",
               "label": "Local restaurant activity baseline",
               "reachId": "local-catchment",
               "sourceType": "registered-source",
@@ -296,6 +305,7 @@
             },
             {
               "id": "medium-regional-corridor-demand-gap",
+              "signalId": "expanded-demand-proxy-gap",
               "label": "Regional travel and repeat-demand pattern",
               "reachId": "regional-corridor",
               "sourceType": "source-gap",
@@ -316,6 +326,7 @@
           "facts": [
             {
               "id": "medium-regional-shift-reliability",
+              "signalId": "utility-resilience-gap",
               "label": "Utility continuity for multi-shift operations",
               "reachId": "regional-corridor",
               "sourceType": "source-gap",
@@ -336,6 +347,7 @@
           "facts": [
             {
               "id": "medium-regional-labor-depth",
+              "signalId": "routine-food-service-staffing-gap",
               "label": "Regional staffing depth across service and kitchen roles",
               "reachId": "regional-corridor",
               "sourceType": "source-gap",
@@ -356,6 +368,7 @@
           "facts": [
             {
               "id": "medium-regional-cold-chain",
+              "signalId": "cold-chain-corridor-gap",
               "label": "Corridor-level supplier and refrigerated delivery reliability",
               "reachId": "regional-corridor",
               "sourceType": "source-gap",
@@ -376,6 +389,7 @@
           "facts": [
             {
               "id": "medium-regional-permit-scale",
+              "signalId": "food-service-permit-path-gap",
               "label": "Larger-format permit and inspection path",
               "reachId": "site-bound",
               "sourceType": "source-gap",
@@ -396,6 +410,7 @@
           "facts": [
             {
               "id": "medium-regional-corridor-partners",
+              "signalId": "growth-network-gap",
               "label": "Regional partner, service, and recovery support depth",
               "reachId": "regional-corridor",
               "sourceType": "source-gap",
@@ -429,6 +444,7 @@
           "facts": [
             {
               "id": "large-strategic-large-site-fit",
+              "signalId": "large-site-feasibility-gap",
               "label": "Large-format site readiness and hazard tolerance",
               "reachId": "site-bound",
               "sourceType": "source-gap",
@@ -449,6 +465,7 @@
           "facts": [
             {
               "id": "large-strategic-local-cbp-baseline",
+              "signalId": "municipality-restaurant-activity-baseline",
               "label": "Local restaurant activity baseline",
               "reachId": "local-catchment",
               "sourceType": "registered-source",
@@ -457,6 +474,7 @@
             },
             {
               "id": "large-strategic-island-demand-gap",
+              "signalId": "expanded-demand-proxy-gap",
               "label": "Island-wide destination and visitor demand pattern",
               "reachId": "island-wide",
               "sourceType": "source-gap",
@@ -477,6 +495,7 @@
           "facts": [
             {
               "id": "large-strategic-resilience",
+              "signalId": "utility-resilience-gap",
               "label": "Redundant power, water, and refrigeration resilience",
               "reachId": "island-wide",
               "sourceType": "source-gap",
@@ -497,6 +516,7 @@
           "facts": [
             {
               "id": "large-strategic-management-depth",
+              "signalId": "specialized-management-pipeline-gap",
               "label": "Island-wide staffing and management depth",
               "reachId": "island-wide",
               "sourceType": "source-gap",
@@ -517,6 +537,7 @@
           "facts": [
             {
               "id": "large-strategic-external-suppliers",
+              "signalId": "external-supply-chain-gap",
               "label": "External and island-wide cold-chain dependence",
               "reachId": "external-connection",
               "sourceType": "source-gap",
@@ -537,6 +558,7 @@
           "facts": [
             {
               "id": "large-strategic-multi-agency-approvals",
+              "signalId": "multi-agency-coordination-gap",
               "label": "Large-format permit coordination and opening sequence",
               "reachId": "regional-corridor",
               "sourceType": "source-gap",
@@ -557,6 +579,7 @@
           "facts": [
             {
               "id": "large-strategic-island-support-network",
+              "signalId": "growth-network-gap",
               "label": "Island-wide service, partner, and recovery support network",
               "reachId": "island-wide",
               "sourceType": "source-gap",
