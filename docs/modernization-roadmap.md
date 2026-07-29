@@ -129,9 +129,18 @@
   matrix facts are backed by registered Puerto Rico evidence versus controlled
   source gaps, and pins applicable scenarios, geographic reach, recency, and
   interpretation limits before any profile-dependent API/UI expansion.
+- `data/profile-reach/aguada-restaurant-permit-path-review.json` now records
+  the first source-backed decision-signal upgrade: official Puerto Rico OGPe,
+  Fire Bureau, Department of Health, and municipal-patent authorities now
+  establish a descriptive permit path for the fixed Aguada restaurant
+  scenario, while timing, parcel eligibility, and case outcome remain explicit
+  limits.
 - `npm run test:decision-signals` validates the decision-signal registry and
   its linkage back to the profile/reach matrix so fixed-selection planning
   facts cannot drift away from their documented evidence or explicit gap state.
+- `npm run test:regulatory-signal-review` validates the reviewed Aguada
+  restaurant permit-path artifact and its linkage to the source registry and
+  decision-signal contract.
 - `npm run test:profile-reach-contract` validates the profile/reach contract,
   the three-scenario matrix, the fixed municipality/category boundary, and the
   expected profile-dependent reach and criticality progression.
@@ -261,9 +270,9 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Expand the decision-signal registry by replacing the highest-risk source-gap
-signals in the fixed-selection matrix with registered Puerto Rico evidence,
-starting with site feasibility, infrastructure, and regulatory execution.
+Continue replacing the highest-risk source-gap signals in the fixed-selection
+matrix with registered Puerto Rico evidence, starting now with site
+feasibility and infrastructure after the first regulatory-execution upgrade.
 Keep category and place constant while upgrading
 `data/profile-reach/business-profile-reach-v1.json` from explicit gap control
 toward source-backed signals for site feasibility, demand, infrastructure, workforce, logistics,

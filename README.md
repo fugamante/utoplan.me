@@ -159,6 +159,9 @@ The current modernization work is centered on:
 - `data/profile-reach/`: versioned business-profile and geographic-reach
   contract artifacts, decision-signal registry metadata, and scenario matrices
   for profile-dependent planning checks.
+- `data/profile-reach/aguada-restaurant-permit-path-review.json`: reviewed
+  regulatory-path evidence for the fixed Aguada restaurant scenario, scoped to
+  official Puerto Rico permit, fire, health, and municipal-patent sources.
 - `docs/unis-geocoding-policy.md`: approved reproducible geocoding policy for
   deriving `unis.lat` and `unis.long` from registered Puerto Rico source
   addresses.
@@ -221,6 +224,7 @@ npm run test:unis-import
 npm run test:unis-public-address-review
 npm run test:planning-context
 npm run test:decision-signals
+npm run test:regulatory-signal-review
 npm run test:profile-reach-contract
 ```
 

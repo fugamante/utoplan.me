@@ -215,22 +215,23 @@
           "lensId": "regulatory-execution-environment",
           "relevance": "primary",
           "criticality": "blocker",
-          "confidence": "low",
+          "confidence": "medium",
           "facts": [
             {
               "id": "small-local-food-permits",
               "signalId": "food-service-permit-path-gap",
               "label": "Food-service permitting and launch sequencing",
               "reachId": "site-bound",
-              "sourceType": "source-gap",
-              "notes": "No registered permit-path or inspection-timing source is captured for this municipality."
+              "sourceType": "registered-source",
+              "sourceId": "pr-ogpe-permiso-unico-business-path",
+              "notes": "Official Puerto Rico sources now establish the OGPe/SBP permit path, fire-safety baseline, municipal-patent administration, and Department of Health transaction surface for a new restaurant, but not Aguada-specific timing or parcel eligibility."
             }
           ],
           "limitations": [
-            "Restaurant launch timing can fail on permit readiness even when other context looks favorable.",
-            "Current repo evidence does not cover municipal or Commonwealth execution timing."
+            "Restaurant launch timing can still fail on permit readiness even though the official Puerto Rico process path is now evidenced.",
+            "Current evidence does not cover Aguada-specific or Commonwealth case timing, inspection backlog, or case outcome."
           ],
-          "nextValidationCheck": "Register permit-path evidence before treating the opening sequence as predictable."
+          "nextValidationCheck": "Add municipality-specific execution or inspection timing evidence before treating the opening sequence as predictable."
         },
         {
           "lensId": "ecosystem-resilience-growth",
@@ -385,22 +386,23 @@
           "lensId": "regulatory-execution-environment",
           "relevance": "primary",
           "criticality": "material-tradeoff",
-          "confidence": "low",
+          "confidence": "medium",
           "facts": [
             {
               "id": "medium-regional-permit-scale",
               "signalId": "food-service-permit-path-gap",
               "label": "Larger-format permit and inspection path",
               "reachId": "site-bound",
-              "sourceType": "source-gap",
-              "notes": "No registered evidence distinguishes a larger-format opening path from the small/local case."
+              "sourceType": "registered-source",
+              "sourceId": "pr-ogpe-permiso-unico-business-path",
+              "notes": "Official Puerto Rico sources establish the baseline permit stack for restaurant operation, but they do not yet distinguish the added coordination burden for a larger-format fixed-selection launch."
             }
           ],
           "limitations": [
-            "A broader operating footprint can increase permit sequencing risk even in the same municipality.",
-            "Current repo evidence does not test multi-agency timing or inspection backlog."
+            "A broader operating footprint can still increase permit sequencing risk even though the baseline Puerto Rico permit path is now source-backed.",
+            "Current evidence does not test larger-format inspection sequencing, queue time, or case backlog."
           ],
-          "nextValidationCheck": "Add permitting evidence before treating regional-scale openings as a simple size-up of the local scenario."
+          "nextValidationCheck": "Add larger-format execution or inspection timing evidence before treating regional-scale openings as a simple size-up of the local scenario."
         },
         {
           "lensId": "ecosystem-resilience-growth",
