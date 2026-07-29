@@ -126,7 +126,7 @@ PostgreSQL
 | Business category mapping | `data/mappings/puerto-rico-business-categories.json` | Record candidate category-to-NAICS mappings that planning-context fixtures may reference without turning them into scores or recommendations. |
 | Municipality display-name registry | `data/municipalities/planning-context-municipalities.json` | Record source-backed municipality labels for the active planning-context fixture set. |
 | Planning-context fixtures | `data/planning-context/` | Record descriptive municipality/category slices with confidence, limitations, and unresolved questions. |
-| Planned business-profile and reach contracts | Not yet implemented | Future owner for operating assumptions, decision-lens relevance, geographic reach, profile-dependent criticality, confidence, limitations, and next validation checks. |
+| Planned business-profile and reach contracts | `data/profile-reach/business-profile-reach-v1.json` | Own versioned operating assumptions, decision-lens relevance, geographic reach, profile-dependent criticality, confidence, limitations, and next validation checks before API/UI expansion. |
 | Release scripts | `scripts/`, `test/` | Verify deployment configuration, release smoke behavior, and integration contracts. |
 
 ### 5.3 Runtime Modes
@@ -492,8 +492,9 @@ step is explicitly documented.
 
 ## 13. Evolution Rules
 
-- Implement the planned business-profile and geographic-reach boundary as
-  versioned contracts before expanding planning-context fixtures by scale.
+- Keep the business-profile and geographic-reach boundary versioned under
+  `data/profile-reach/` and validated before expanding planning-context
+  fixtures by scale.
 - Keep category and place constant in the first scenario matrix so verification
   can attribute changed relevance or criticality to operating profile rather
   than unrelated data drift.

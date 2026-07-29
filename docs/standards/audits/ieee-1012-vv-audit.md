@@ -157,8 +157,9 @@ product and operational purpose.
   authoritative legal, permitting, investment, or labor-market advice.
 - User-visible changes preserve or intentionally revise the documented product
   scope, target users, and acceptance criteria.
-- Planned profile/reach behavior remains unvalidated until the versioned
-  contracts and three-scenario fixture matrix have focused executable evidence.
+- Profile/reach behavior remains bounded to the controlled contract until the
+  versioned matrix and its focused executable evidence are updated alongside any
+  expansion.
 - Future recommendation, scoring, zoning, workforce, infrastructure, or
   lifecycle-planning features expose source, timestamp, transform, and known
   limitation metadata before being treated as decision-support outputs.

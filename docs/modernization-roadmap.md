@@ -118,6 +118,15 @@
   keep the accepted partial `unis` boundary unchanged while making partial
   coverage and candidate-grade planning-context state more explicit in the
   API/UI surface.
+- `data/profile-reach/business-profile-reach-v1.json` now defines the first
+  versioned business-profile and geographic-reach contract, holding
+  `mun003_restaurant` constant across small/local, medium/regional, and
+  large/strategic scenarios so profile-dependent lens relevance, criticality,
+  reach, confidence, limitations, and next validation checks are explicit
+  without scores, ranks, or recommendations.
+- `npm run test:profile-reach-contract` validates the profile/reach contract,
+  the three-scenario matrix, the fixed municipality/category boundary, and the
+  expected profile-dependent reach and criticality progression.
 - `npm run test:browser:start-local` now validates the host-native integrated
   `start:local` path against a seeded `baseline-read-v1` database, including
   same-origin planning-context summary/detail requests, rendered descriptive
@@ -244,12 +253,12 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Define a versioned business-profile contract and geographic-reach contract,
-then add a fixture set that holds category and place constant while varying
-small/local, medium/regional, and large/strategic operating assumptions. The
-fixture must show which decision lenses are relevant, the geographic reach of
-each fact, profile-dependent criticality, confidence, limitations, and the next
-validation check without producing a composite score or municipality rank.
+Build the decision-signal registry for the seven documented lenses and start
+connecting registered Puerto Rico evidence to the new
+`data/profile-reach/business-profile-reach-v1.json` matrix. Keep category and
+place constant while replacing source-gap placeholders with source-backed
+signals for site feasibility, demand, infrastructure, workforce, logistics,
+regulatory execution, and resilience.
 
 Treat the current 4-row generated `unis` slice and its review artifacts as a
 maintenance boundary, not the next product lane. Do not spend the next pass on

@@ -160,7 +160,7 @@ validation stack before release or PR publication.
 | Data registry | `npm run test:data-sources` | Source registry, provenance, import, or data-scope changes. |
 | Business category mapping | `npm run test:business-categories` | Category crosswalk, planning-context selection, or descriptive-scope changes. |
 | Planning-context fixture | `npm run test:planning-context` | Planning-context fixture, summary/detail, or descriptive-guardrail changes. |
-| Planned profile/reach contract | Future focused contract test plus `npm run test:planning-context` | Business-profile schema, decision-lens relevance, reach, or scale-scenario changes; no executable gate exists until implementation. |
+| Planned profile/reach contract | `npm run test:profile-reach-contract` plus `npm run test:planning-context` when fixtures expand | Business-profile schema, decision-lens relevance, reach, or scale-scenario changes. |
 | Migration contract | `npm run test:migration-artifacts` | Migration template or artifact changes. |
 | Deployment config | `npm run verify:deployment` and `npm run verify:release` | Release, environment, container, or operator workflow changes. |
 | Release smoke | `npm run verify:release-smoke` | Candidate deployed environment; `UTOPLAN_RELEASE_SMOKE_JSON=1` emits sanitized structured evidence when needed. |

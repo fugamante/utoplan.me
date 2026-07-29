@@ -329,7 +329,7 @@ Release validation checks that the intended commit can be operated safely:
 | TC-024 | Planning-context API contract | `npm run test:api` | `GET /v1/planning-context` and `GET /v1/planning-context/:id` return read-only descriptive payloads with guardrails and reject unsupported methods with `405` |
 | TC-025 | Planning-context summary/detail UI | `npm run test:browser` | First page requests `/v1/planning-context`, loads selected detail from `/v1/planning-context/:id`, and renders descriptive municipality/category, confidence, CBP fact-value masking/approximation, limitation, and unresolved-question content without score/ranking/recommendation language |
 | TC-026 | Integrated planning-context browser path | `npm run test:browser:start-local` | Browser renders seeded same-origin `/v1/unis` and `/v1/planning-context` data through `start:local`, loads descriptive detail from the real API path, avoids the offline fixture, and does not depend on an ambient host database schema |
-| TC-027 | Business-profile and geographic-reach contract | Future focused contract test | Before fixture expansion, one category/place matrix varies small/local, medium/regional, and large/strategic assumptions and verifies reach, relevance, criticality, confidence, limitations, and next validation checks without scores or ranks. Status: planned. |
+| TC-027 | Business-profile and geographic-reach contract | `npm run test:profile-reach-contract` | The versioned profile/reach contract holds one reviewed municipality/category selection constant across small/local, medium/regional, and large/strategic scenarios and verifies lens order, reach, relevance, criticality, confidence, limitations, and next validation checks without scores or ranks. |
 
 ## 7. Test Procedure Specification
 
@@ -435,8 +435,9 @@ Release validation checks that the intended commit can be operated safely:
    npm run test:planning-context
    ```
 
-Do not add profile-dependent fixture variants until TC-027 has an executable
-contract test and the versioned profile/reach schema is documented.
+Do not add profile-dependent fixture variants beyond the controlled three-scenario
+matrix until TC-027 remains green and new evidence is attached through the
+versioned profile/reach contract.
 
 ## 8. Test Log
 

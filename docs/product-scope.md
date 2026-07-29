@@ -88,6 +88,17 @@ category and place constant while varying small/local, medium/regional, and
 large/strategic operating assumptions so the product proves that evidence
 relevance and criticality change with scale.
 
+That first profile/reach boundary now exists at
+`data/profile-reach/business-profile-reach-v1.json`. It keeps
+`mun003_restaurant` fixed while varying the three scale/reach scenarios and
+marks each lens with explicit geographic reach, criticality, confidence,
+limitations, and next validation checks. It is a controlled candidate artifact,
+not API behavior or a recommendation engine.
+
+The next product step is to replace source-gap placeholders in that matrix with
+registered Puerto Rico evidence through the seven decision lenses before
+expanding planning-context fixtures or adding recommendation behavior.
+
 Pause university-directory expansion beyond maintenance of the accepted
 partial boundary. Resume education-data work only when a workforce question
 requires program, skill, completion or capacity evidence that the current

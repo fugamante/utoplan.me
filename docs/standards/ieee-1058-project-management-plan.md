@@ -184,7 +184,7 @@ re-baselined when phase exit criteria change.
 | TypeScript adoption | Active API and first-party browser boundaries compile from typed source. |
 | Deployment hardening | App/API topology, health, readiness, production config checks, and rollback triggers are documented and tested. |
 | Data replacement readiness | Puerto Rico source registry entries map to preserved schemas with license, scope, retrieval, and transform evidence. |
-| Profile/reach contract | A versioned contract and three-scenario fixture matrix hold category and place constant while verifying profile-dependent relevance, criticality, geographic reach, confidence, limitations, and next validation checks without scores or municipality ranks. Status: planned. |
+| Profile/reach contract | `data/profile-reach/business-profile-reach-v1.json` and `npm run test:profile-reach-contract` hold `mun003_restaurant` constant across small/local, medium/regional, and large/strategic scenarios while verifying profile-dependent relevance, criticality, geographic reach, confidence, limitations, and next validation checks without scores or municipality ranks. Status: implemented as a controlled candidate contract; source-backed signal expansion remains next. |
 | Release candidate | Required validation stack passes or skipped checks are explicitly justified; release and rollback records are complete. |
 
 Schedule risk is managed by limiting each bundle to a validation surface that

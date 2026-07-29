@@ -1,0 +1,631 @@
+{
+  "schemaVersion": 1,
+  "contractVersion": "business-profile-reach-v1",
+  "scope": "puerto-rico-planning-candidate",
+  "status": "candidate-needs-review",
+  "updatedAt": "2026-07-29",
+  "rules": {
+    "noScores": true,
+    "noRankings": true,
+    "noRecommendations": true,
+    "requiresProfileDependentCriticality": true,
+    "requiresVisibleLimitations": true,
+    "requiresNextValidationCheck": true
+  },
+  "fixedSelection": {
+    "fixtureId": "mun003_restaurant",
+    "municipality": {
+      "code": "003",
+      "codeSystem": "fipscty",
+      "label": "Aguada"
+    },
+    "businessCategory": {
+      "id": "restaurant-cafe",
+      "displayName": "Restaurant or cafe",
+      "naicsYear": 2012,
+      "selectedNaicsCodes": [
+        "722511"
+      ]
+    },
+    "selectionBasis": "Hold one reviewed municipality and one mapped category constant so operating assumptions, not place or category drift, explain lens relevance and criticality changes."
+  },
+  "geographicReachLevels": [
+    {
+      "id": "site-bound",
+      "label": "Site-bound",
+      "definition": "Parcel, frontage, building, hazard, utility-service, and immediate-access conditions."
+    },
+    {
+      "id": "local-catchment",
+      "label": "Local catchment",
+      "definition": "Customers, workers, and services reachable in routine local travel."
+    },
+    {
+      "id": "regional-corridor",
+      "label": "Regional corridor",
+      "definition": "Multi-municipality access for labor, suppliers, and routine operating movement."
+    },
+    {
+      "id": "island-wide",
+      "label": "Island-wide",
+      "definition": "Resources or constraints that realistically span Puerto Rico."
+    },
+    {
+      "id": "external-connection",
+      "label": "External connection",
+      "definition": "Ports, airports, remote suppliers, remote labor, and mainland or export dependencies."
+    }
+  ],
+  "decisionLenses": [
+    {
+      "id": "hard-constraints-site-feasibility",
+      "label": "Hard constraints and site feasibility",
+      "order": 1
+    },
+    {
+      "id": "demand-market-reach",
+      "label": "Demand and market reach",
+      "order": 2
+    },
+    {
+      "id": "infrastructure-reliability-cost",
+      "label": "Infrastructure, reliability, and cost",
+      "order": 3
+    },
+    {
+      "id": "workforce-capability",
+      "label": "Workforce capability",
+      "order": 4
+    },
+    {
+      "id": "logistics-supply-chain",
+      "label": "Logistics and supply chain",
+      "order": 5
+    },
+    {
+      "id": "regulatory-execution-environment",
+      "label": "Regulatory and execution environment",
+      "order": 6
+    },
+    {
+      "id": "ecosystem-resilience-growth",
+      "label": "Ecosystem, resilience, and growth",
+      "order": 7
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "small-local",
+      "label": "Small / local",
+      "businessProfile": {
+        "currentTargetScale": "One storefront with modest capital exposure and a small hiring cohort.",
+        "customerReach": "Mostly local residents plus nearby pass-through traffic.",
+        "siteNeeds": "Existing small-footprint kitchen-ready lease with basic parking and utility service.",
+        "workforcePattern": "Small shift roster with broad service roles and owner coverage.",
+        "logisticsPattern": "Frequent local food and consumables deliveries with limited cold-chain complexity."
+      },
+      "decisionLensAssessments": [
+        {
+          "lensId": "hard-constraints-site-feasibility",
+          "relevance": "primary",
+          "criticality": "material-tradeoff",
+          "confidence": "low",
+          "facts": [
+            {
+              "id": "small-local-lease-readiness",
+              "label": "Lease-ready kitchen fit and frontage conditions",
+              "reachId": "site-bound",
+              "sourceType": "source-gap",
+              "notes": "No registered parcel or building-readiness source is in the repository yet for this category."
+            }
+          ],
+          "limitations": [
+            "The current repo has no parcel, building, or hazard dataset for this scenario.",
+            "Current planning-context fixtures do not test kitchen retrofits, code compliance, or landlord constraints."
+          ],
+          "nextValidationCheck": "Register a source-backed parcel or building-feasibility input before treating site fit as more than a planning question."
+        },
+        {
+          "lensId": "demand-market-reach",
+          "relevance": "primary",
+          "criticality": "material-tradeoff",
+          "confidence": "medium",
+          "facts": [
+            {
+              "id": "small-local-cbp-baseline",
+              "label": "Municipality restaurant activity baseline",
+              "reachId": "local-catchment",
+              "sourceType": "registered-source",
+              "sourceId": "datospr-cbp-2014-municipios",
+              "notes": "Use the Aguada 722511 CBP row as descriptive local activity context only."
+            }
+          ],
+          "limitations": [
+            "The CBP row is business-activity context, not a demand or profitability signal.",
+            "No registered foot-traffic, tourism, or household-spending source is attached yet."
+          ],
+          "nextValidationCheck": "Register a defensible local demand proxy before acting on customer-volume assumptions."
+        },
+        {
+          "lensId": "infrastructure-reliability-cost",
+          "relevance": "primary",
+          "criticality": "material-tradeoff",
+          "confidence": "low",
+          "facts": [
+            {
+              "id": "small-local-basic-utilities",
+              "label": "Basic power, water, and refrigeration-service continuity",
+              "reachId": "local-catchment",
+              "sourceType": "source-gap",
+              "notes": "No registered utility-reliability or outage-cost source is available for the selected place."
+            }
+          ],
+          "limitations": [
+            "Current data does not separate routine utility service from outage recovery exposure.",
+            "Small restaurant operating margins can be sensitive to interruptions even when capital exposure is modest."
+          ],
+          "nextValidationCheck": "Add a utility-reliability evidence path before making opening-hour or spoilage assumptions."
+        },
+        {
+          "lensId": "workforce-capability",
+          "relevance": "secondary",
+          "criticality": "secondary",
+          "confidence": "low",
+          "facts": [
+            {
+              "id": "small-local-shift-staffing",
+              "label": "Routine service-role staffing pool",
+              "reachId": "local-catchment",
+              "sourceType": "source-gap",
+              "notes": "No occupation-specific labor-depth source is registered for food-service staffing in the current repo."
+            }
+          ],
+          "limitations": [
+            "Current higher-education artifacts are not workforce-capacity evidence for restaurant staffing.",
+            "No wage, commute-time, or hiring-competition source is tied to this scenario yet."
+          ],
+          "nextValidationCheck": "Identify an occupation-level labor source before treating staffing as more than a secondary planning consideration."
+        },
+        {
+          "lensId": "logistics-supply-chain",
+          "relevance": "secondary",
+          "criticality": "secondary",
+          "confidence": "low",
+          "facts": [
+            {
+              "id": "small-local-local-deliveries",
+              "label": "Routine local supplier and delivery access",
+              "reachId": "local-catchment",
+              "sourceType": "source-gap",
+              "notes": "No registered supplier, route-time, or cold-chain evidence is available yet."
+            }
+          ],
+          "limitations": [
+            "The repo does not yet distinguish local consumable deliveries from island-wide distribution dependencies.",
+            "Traffic, route reliability, and perishability constraints are still unmeasured."
+          ],
+          "nextValidationCheck": "Add a reproducible local supplier or route-access source before making perishability claims."
+        },
+        {
+          "lensId": "regulatory-execution-environment",
+          "relevance": "primary",
+          "criticality": "blocker",
+          "confidence": "low",
+          "facts": [
+            {
+              "id": "small-local-food-permits",
+              "label": "Food-service permitting and launch sequencing",
+              "reachId": "site-bound",
+              "sourceType": "source-gap",
+              "notes": "No registered permit-path or inspection-timing source is captured for this municipality."
+            }
+          ],
+          "limitations": [
+            "Restaurant launch timing can fail on permit readiness even when other context looks favorable.",
+            "Current repo evidence does not cover municipal or Commonwealth execution timing."
+          ],
+          "nextValidationCheck": "Register permit-path evidence before treating the opening sequence as predictable."
+        },
+        {
+          "lensId": "ecosystem-resilience-growth",
+          "relevance": "secondary",
+          "criticality": "informational",
+          "confidence": "medium",
+          "facts": [
+            {
+              "id": "small-local-local-industry-context",
+              "label": "Existing local food-service activity context",
+              "reachId": "local-catchment",
+              "sourceType": "registered-source",
+              "sourceId": "datospr-cbp-2014-municipios",
+              "notes": "The municipality CBP row can show that the category exists locally without implying survivability or growth."
+            }
+          ],
+          "limitations": [
+            "Current context does not measure resilience, customer loyalty, or post-disruption recovery.",
+            "Local establishment counts do not prove partnership or expansion capacity."
+          ],
+          "nextValidationCheck": "Keep resilience and growth as informational until additional evidence sources are registered."
+        }
+      ]
+    },
+    {
+      "id": "medium-regional",
+      "label": "Medium / regional",
+      "businessProfile": {
+        "currentTargetScale": "Larger dining room with multiple shifts and a wider supplier footprint.",
+        "customerReach": "Local demand plus regular pull from nearby municipalities and corridor travel.",
+        "siteNeeds": "More parking, storage, and utility resilience than the small/local default.",
+        "workforcePattern": "Broader staffing roster with supervisors, kitchen coverage, and schedule redundancy.",
+        "logisticsPattern": "Higher delivery cadence with more refrigeration exposure and corridor-level supplier dependence."
+      },
+      "decisionLensAssessments": [
+        {
+          "lensId": "hard-constraints-site-feasibility",
+          "relevance": "primary",
+          "criticality": "material-tradeoff",
+          "confidence": "low",
+          "facts": [
+            {
+              "id": "medium-regional-larger-lease",
+              "label": "Larger-format lease fit and parking/service access",
+              "reachId": "site-bound",
+              "sourceType": "source-gap",
+              "notes": "The repo still lacks parcel and building evidence for larger format food-service fit."
+            }
+          ],
+          "limitations": [
+            "Current fixtures do not measure whether the selected place can support a larger-format layout.",
+            "Parking, loading, and retrofit needs remain unsourced."
+          ],
+          "nextValidationCheck": "Add property-fit evidence before treating larger-format siting as interchangeable with the small/local case."
+        },
+        {
+          "lensId": "demand-market-reach",
+          "relevance": "primary",
+          "criticality": "material-tradeoff",
+          "confidence": "low",
+          "facts": [
+            {
+              "id": "medium-regional-cbp-baseline",
+              "label": "Local restaurant activity baseline",
+              "reachId": "local-catchment",
+              "sourceType": "registered-source",
+              "sourceId": "datospr-cbp-2014-municipios",
+              "notes": "The existing CBP row remains useful context, but it does not capture corridor pull."
+            },
+            {
+              "id": "medium-regional-corridor-demand-gap",
+              "label": "Regional travel and repeat-demand pattern",
+              "reachId": "regional-corridor",
+              "sourceType": "source-gap",
+              "notes": "No registered corridor-demand evidence exists yet."
+            }
+          ],
+          "limitations": [
+            "The current repo has local activity context only and no corridor-level demand evidence.",
+            "A medium/regional scenario cannot rely on municipality-only context as if it were the market boundary."
+          ],
+          "nextValidationCheck": "Register a corridor-scale demand or travel proxy before acting on regional-customer assumptions."
+        },
+        {
+          "lensId": "infrastructure-reliability-cost",
+          "relevance": "primary",
+          "criticality": "blocker",
+          "confidence": "low",
+          "facts": [
+            {
+              "id": "medium-regional-shift-reliability",
+              "label": "Utility continuity for multi-shift operations",
+              "reachId": "regional-corridor",
+              "sourceType": "source-gap",
+              "notes": "The repo has no registered evidence for corridor-scale utility reliability or backup-service access."
+            }
+          ],
+          "limitations": [
+            "Multiple shifts increase exposure to outage duration and recovery lag.",
+            "Current evidence does not measure whether the selected area can absorb a larger operating footprint."
+          ],
+          "nextValidationCheck": "Add corridor-level reliability evidence before treating multi-shift operations as feasible."
+        },
+        {
+          "lensId": "workforce-capability",
+          "relevance": "primary",
+          "criticality": "material-tradeoff",
+          "confidence": "low",
+          "facts": [
+            {
+              "id": "medium-regional-labor-depth",
+              "label": "Regional staffing depth across service and kitchen roles",
+              "reachId": "regional-corridor",
+              "sourceType": "source-gap",
+              "notes": "No registered labor-depth or commute-range evidence exists for this scenario."
+            }
+          ],
+          "limitations": [
+            "The current repo cannot distinguish a routine local hiring pool from corridor-level staffing depth.",
+            "Education directory artifacts do not answer service-role supply, competition, or retention."
+          ],
+          "nextValidationCheck": "Register occupation or commute evidence before asserting regional hiring resilience."
+        },
+        {
+          "lensId": "logistics-supply-chain",
+          "relevance": "primary",
+          "criticality": "material-tradeoff",
+          "confidence": "low",
+          "facts": [
+            {
+              "id": "medium-regional-cold-chain",
+              "label": "Corridor-level supplier and refrigerated delivery reliability",
+              "reachId": "regional-corridor",
+              "sourceType": "source-gap",
+              "notes": "The repo does not yet register supplier-route evidence for perishable inputs."
+            }
+          ],
+          "limitations": [
+            "Medium/regional operations face wider supplier dependence than the small/local default.",
+            "Current planning context has no route-time or disruption evidence."
+          ],
+          "nextValidationCheck": "Add supplier and route evidence before treating regional food-service logistics as routine."
+        },
+        {
+          "lensId": "regulatory-execution-environment",
+          "relevance": "primary",
+          "criticality": "material-tradeoff",
+          "confidence": "low",
+          "facts": [
+            {
+              "id": "medium-regional-permit-scale",
+              "label": "Larger-format permit and inspection path",
+              "reachId": "site-bound",
+              "sourceType": "source-gap",
+              "notes": "No registered evidence distinguishes a larger-format opening path from the small/local case."
+            }
+          ],
+          "limitations": [
+            "A broader operating footprint can increase permit sequencing risk even in the same municipality.",
+            "Current repo evidence does not test multi-agency timing or inspection backlog."
+          ],
+          "nextValidationCheck": "Add permitting evidence before treating regional-scale openings as a simple size-up of the local scenario."
+        },
+        {
+          "lensId": "ecosystem-resilience-growth",
+          "relevance": "secondary",
+          "criticality": "secondary",
+          "confidence": "low",
+          "facts": [
+            {
+              "id": "medium-regional-corridor-partners",
+              "label": "Regional partner, service, and recovery support depth",
+              "reachId": "regional-corridor",
+              "sourceType": "source-gap",
+              "notes": "No registered corridor-scale ecosystem evidence is in place yet."
+            }
+          ],
+          "limitations": [
+            "The current repo cannot show whether nearby municipalities add recovery or expansion depth.",
+            "Local establishment counts do not measure regional service-network resilience."
+          ],
+          "nextValidationCheck": "Keep ecosystem claims secondary until corridor support evidence is registered."
+        }
+      ]
+    },
+    {
+      "id": "large-strategic",
+      "label": "Large / strategic",
+      "businessProfile": {
+        "currentTargetScale": "High-capacity destination format with larger capital exposure and a longer opening horizon.",
+        "customerReach": "Island-wide draw with visitor and event dependence beyond the local corridor.",
+        "siteNeeds": "Large footprint, resilient utilities, storage, and stronger recovery posture.",
+        "workforcePattern": "Large staffing roster with specialized management depth and higher schedule redundancy.",
+        "logisticsPattern": "Island-wide or external supplier dependencies with heavier cold-chain and inventory coordination."
+      },
+      "decisionLensAssessments": [
+        {
+          "lensId": "hard-constraints-site-feasibility",
+          "relevance": "primary",
+          "criticality": "blocker",
+          "confidence": "low",
+          "facts": [
+            {
+              "id": "large-strategic-large-site-fit",
+              "label": "Large-format site readiness and hazard tolerance",
+              "reachId": "site-bound",
+              "sourceType": "source-gap",
+              "notes": "No registered parcel, hazard, or facility-readiness source can validate a large-format destination site."
+            }
+          ],
+          "limitations": [
+            "The current repo cannot show whether Aguada can support a destination-format footprint at the parcel level.",
+            "Large capital exposure makes unresolved site constraints materially riskier than in the smaller scenarios."
+          ],
+          "nextValidationCheck": "Register parcel and hazard evidence before treating site selection as comparable to smaller operating profiles."
+        },
+        {
+          "lensId": "demand-market-reach",
+          "relevance": "primary",
+          "criticality": "material-tradeoff",
+          "confidence": "low",
+          "facts": [
+            {
+              "id": "large-strategic-local-cbp-baseline",
+              "label": "Local restaurant activity baseline",
+              "reachId": "local-catchment",
+              "sourceType": "registered-source",
+              "sourceId": "datospr-cbp-2014-municipios",
+              "notes": "The existing municipality CBP row is still contextual evidence, but it is insufficient for an island-wide draw."
+            },
+            {
+              "id": "large-strategic-island-demand-gap",
+              "label": "Island-wide destination and visitor demand pattern",
+              "reachId": "island-wide",
+              "sourceType": "source-gap",
+              "notes": "No registered island-wide demand evidence exists for this category."
+            }
+          ],
+          "limitations": [
+            "Municipality context alone is not the market boundary for a destination-format scenario.",
+            "No visitor, event, or island-wide customer-mobility source is currently registered."
+          ],
+          "nextValidationCheck": "Register island-wide demand evidence before treating destination-scale volume assumptions as credible."
+        },
+        {
+          "lensId": "infrastructure-reliability-cost",
+          "relevance": "primary",
+          "criticality": "blocker",
+          "confidence": "low",
+          "facts": [
+            {
+              "id": "large-strategic-resilience",
+              "label": "Redundant power, water, and refrigeration resilience",
+              "reachId": "island-wide",
+              "sourceType": "source-gap",
+              "notes": "No registered resilience or backup-capacity source exists for large-format operations."
+            }
+          ],
+          "limitations": [
+            "Large-format food service cannot assume local utility continuity is enough.",
+            "The current repo does not capture resilience cost, backup options, or recovery lead times."
+          ],
+          "nextValidationCheck": "Add resilience and continuity evidence before treating this scenario as operationally plausible."
+        },
+        {
+          "lensId": "workforce-capability",
+          "relevance": "primary",
+          "criticality": "material-tradeoff",
+          "confidence": "low",
+          "facts": [
+            {
+              "id": "large-strategic-management-depth",
+              "label": "Island-wide staffing and management depth",
+              "reachId": "island-wide",
+              "sourceType": "source-gap",
+              "notes": "No registered evidence covers island-wide staffing reach or retention for this profile."
+            }
+          ],
+          "limitations": [
+            "A large roster changes workforce depth from a local staffing question to a broader labor-market question.",
+            "Current repo artifacts do not address management depth, retention, or shift redundancy."
+          ],
+          "nextValidationCheck": "Register island-wide labor evidence before treating staffing as a solvable local issue."
+        },
+        {
+          "lensId": "logistics-supply-chain",
+          "relevance": "primary",
+          "criticality": "blocker",
+          "confidence": "low",
+          "facts": [
+            {
+              "id": "large-strategic-external-suppliers",
+              "label": "External and island-wide cold-chain dependence",
+              "reachId": "external-connection",
+              "sourceType": "source-gap",
+              "notes": "No registered source covers mainland or island-wide supply-chain resilience for this scenario."
+            }
+          ],
+          "limitations": [
+            "Destination-scale operations can be constrained by supply dependencies that do not appear in municipality context.",
+            "Current repo evidence does not cover ports, airports, or external procurement timing."
+          ],
+          "nextValidationCheck": "Register external-connection logistics evidence before treating supply continuity as routine."
+        },
+        {
+          "lensId": "regulatory-execution-environment",
+          "relevance": "primary",
+          "criticality": "blocker",
+          "confidence": "low",
+          "facts": [
+            {
+              "id": "large-strategic-multi-agency-approvals",
+              "label": "Large-format permit coordination and opening sequence",
+              "reachId": "regional-corridor",
+              "sourceType": "source-gap",
+              "notes": "No registered evidence exists for multi-agency permit timing or execution coordination."
+            }
+          ],
+          "limitations": [
+            "The current repo does not distinguish routine food-service permitting from larger coordinated approvals.",
+            "Regulatory timing risk can dominate launch timing for a strategic-format project."
+          ],
+          "nextValidationCheck": "Register permit-path and execution-timing evidence before treating launch sequencing as manageable."
+        },
+        {
+          "lensId": "ecosystem-resilience-growth",
+          "relevance": "primary",
+          "criticality": "material-tradeoff",
+          "confidence": "low",
+          "facts": [
+            {
+              "id": "large-strategic-island-support-network",
+              "label": "Island-wide service, partner, and recovery support network",
+              "reachId": "island-wide",
+              "sourceType": "source-gap",
+              "notes": "No registered ecosystem or recovery-support source is attached to this profile yet."
+            }
+          ],
+          "limitations": [
+            "Large-format growth and resilience depend on support networks that current local context does not measure.",
+            "The repo cannot yet show whether the selected place supports expansion without major relocation or redundancy costs."
+          ],
+          "nextValidationCheck": "Keep growth and resilience conclusions provisional until support-network evidence is registered."
+        }
+      ]
+    }
+  ],
+  "expectedScenarioProgression": [
+    {
+      "lensId": "infrastructure-reliability-cost",
+      "relevanceByScenario": {
+        "small-local": "primary",
+        "medium-regional": "primary",
+        "large-strategic": "primary"
+      },
+      "criticalityByScenario": {
+        "small-local": "material-tradeoff",
+        "medium-regional": "blocker",
+        "large-strategic": "blocker"
+      },
+      "reachByScenario": {
+        "small-local": "local-catchment",
+        "medium-regional": "regional-corridor",
+        "large-strategic": "island-wide"
+      }
+    },
+    {
+      "lensId": "logistics-supply-chain",
+      "relevanceByScenario": {
+        "small-local": "secondary",
+        "medium-regional": "primary",
+        "large-strategic": "primary"
+      },
+      "criticalityByScenario": {
+        "small-local": "secondary",
+        "medium-regional": "material-tradeoff",
+        "large-strategic": "blocker"
+      },
+      "reachByScenario": {
+        "small-local": "local-catchment",
+        "medium-regional": "regional-corridor",
+        "large-strategic": "external-connection"
+      }
+    },
+    {
+      "lensId": "ecosystem-resilience-growth",
+      "relevanceByScenario": {
+        "small-local": "secondary",
+        "medium-regional": "secondary",
+        "large-strategic": "primary"
+      },
+      "criticalityByScenario": {
+        "small-local": "informational",
+        "medium-regional": "secondary",
+        "large-strategic": "material-tradeoff"
+      },
+      "reachByScenario": {
+        "small-local": "local-catchment",
+        "medium-regional": "regional-corridor",
+        "large-strategic": "island-wide"
+      }
+    }
+  ]
+}

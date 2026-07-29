@@ -67,8 +67,9 @@ The modern API must pass preserved endpoint contracts before additional endpoint
 ## Next Slice
 
 Keep new API behavior in typed sources under `dtoapi/modern/src/` and
-compatibility tests under `dtoapi/modern/test/`. The next planning-context
-data improvement should focus on expanding the NAICS title registry and fixture
-coverage beyond the current municipality registry subset, plus other
-documented fixture-quality gaps before adding decision-oriented product
-behavior.
+compatibility tests under `dtoapi/modern/test/`. The versioned business-profile
+and geographic-reach contract now lives outside the API under
+`data/profile-reach/business-profile-reach-v1.json` with focused validation in
+`npm run test:profile-reach-contract`; keep it as a controlled product/data
+artifact until the decision-signal registry and stronger source-backed evidence
+justify API exposure or planning-context fixture expansion.
