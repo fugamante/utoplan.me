@@ -193,6 +193,30 @@ Validate the fixture contract with:
 npm run test:planning-context
 ```
 
+## Profile And Reach Contract Gate
+
+Profile-dependent planning work now starts from the versioned contract in
+`data/profile-reach/business-profile-reach-v1.json`.
+
+That artifact must:
+
+- hold one reviewed municipality/category selection constant;
+- define the five geographic-reach levels from site-bound through
+  external-connection;
+- define the seven decision lenses in their documented order;
+- include exactly one small/local, one medium/regional, and one
+  large/strategic scenario;
+- show profile-dependent relevance, criticality, confidence, limitations, and
+  next validation checks without scores, ranks, or recommendations;
+- distinguish registered-source facts from explicit source gaps so scenario
+  growth does not silently invent evidence coverage.
+
+Validate the profile/reach contract with:
+
+```sh
+npm run test:profile-reach-contract
+```
+
 ## Current Candidate Sources
 
 - `cbps`: Datos.PR County Business Patterns 2014 Puerto Rico CSV and municipality CSV.

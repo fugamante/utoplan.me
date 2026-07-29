@@ -106,8 +106,8 @@ Inspect these artifacts during each IEEE 1058 audit:
   coherent implementation bundle.
 - Phase exit criteria remain measurable through commands, tests, docs, or
   release artifacts.
-- The profile/reach milestone remains planned until a versioned contract and
-  executable three-scenario fixture matrix meet the documented exit criteria.
+- The profile/reach milestone is complete only while the versioned contract and
+  executable three-scenario fixture matrix remain current and validated.
 - Completed phase claims have supporting repository evidence.
 - In-progress items distinguish blocked provenance work, active implementation
   work, hardening requirements, and optimization opportunities.

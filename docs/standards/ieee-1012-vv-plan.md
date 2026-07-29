@@ -260,7 +260,7 @@ release evidence, and audit record.
 | Deployment topology | `docs/deployment-topology.md`, production runbook | IEEE 1016 SDD | Docker proxy/browser tests, deployment verification |
 | Data provenance | `docs/data-intake.md`, `docs/data-provenance.md`, `docs/data-source-schema-mapping.md`, `docs/unis-alias-campus-match-policy.md` | Source registry, import design | `npm run test:data-sources`, data review |
 | Planning context | `docs/product-scope.md`, candidate category mapping, municipality registry, NAICS title registry, planning-context fixtures | IEEE 1016 SDD, API/frontend notes | `npm run test:business-categories`, `npm run test:planning-context`, `npm run test:browser`, `npm run test:browser:start-local` |
-| Planned profile/reach model | `docs/business-location-decision-framework.md`, `docs/product-scope.md`, roadmap immediate next step | IEEE 1016 SDD planned contract boundary | Future focused contract test proving the three-scenario matrix before profile-dependent fixture expansion |
+| Planned profile/reach model | `docs/business-location-decision-framework.md`, `docs/product-scope.md`, `data/profile-reach/business-profile-reach-v1.json` | IEEE 1016 SDD profile/reach contract boundary | `npm run test:profile-reach-contract` proving the three-scenario matrix before profile-dependent fixture expansion |
 | Release readiness | IEEE 730 SQA, IEEE 829 test document, production runbook | Release checklist | Release smoke, audit record, rollback review |
 | Standards corpus | This plan and peer IEEE documents | Audit hooks | Standards audit and document diffs |
 

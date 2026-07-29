@@ -172,8 +172,8 @@ changes:
   fixtures against frontend and API behavior so descriptive-only guardrails do
   not drift silently.
 - Compare the decision framework and roadmap immediate next step against the
-  SDD planned profile/reach boundary; do not accept implementation claims until
-  a versioned schema and executable three-scenario matrix exist.
+  versioned profile/reach contract; do not accept broader fixture or API/UI
+  expansion unless the three-scenario matrix remains current and executable.
 - Confirm active mapped tables (`cbps`, `unis`) have consistent full
   preserved-column `legacySchemaMap` coverage in the registry and
   `docs/data-source-schema-mapping.md`.

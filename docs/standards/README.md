@@ -101,6 +101,7 @@ Audits should use repository evidence first:
 - `docs/unis-geocoding-policy.md`
 - `docs/data-provenance.md`
 - `docs/data-source-schema-mapping.md`
+- `data/profile-reach/business-profile-reach-v1.json`
 - `docs/database-migrations.md`
 - `docs/deployment-topology.md`
 - `docs/production-deployment.md`
@@ -121,6 +122,7 @@ Audits should use repository evidence first:
   `scripts/verify_node_runtime.js`, `scripts/start_integrated.js`,
   `scripts/verify_deployment_config.js`, `scripts/release_preflight.js`, and
   `scripts/release_smoke_check.js`
+- Focused contract tests such as `test/profile_reach_contract_test.js`
 - Dockerfiles, Compose files, and CI configuration such as
   `docker-compose.public-api.yml` and `.github/workflows/ci.yml`
 - Tests under `app/test/`, `dtoapi/test/`, `dtoapi/modern/test/`, and `test/`

@@ -47,7 +47,7 @@ evidence and must record restoration of the formal baseline as an action item.
 | `docs/modernization-roadmap.md` phase gates | Test plan, summary | Are active phase exit criteria covered by tests? |
 | `docs/api-modernization.md` | Test design, case traceability | Are API contracts pinned before endpoint changes? |
 | `docs/frontend-inventory.md` | Test design, item scope | Are browser and fixture boundaries represented in tests? |
-| `docs/business-location-decision-framework.md` | Planned test design | Does the future profile/reach matrix have explicit fields and a no-score/no-rank oracle before fixture expansion? |
+| `docs/business-location-decision-framework.md` and `data/profile-reach/business-profile-reach-v1.json` | Planned test design | Does the profile/reach matrix keep explicit fields, a no-score/no-rank oracle, and executable coverage before fixture expansion? |
 | `docs/database-migrations.md` | Procedure, incident, release gate | Are schema changes independently reviewable and rollbackable? |
 | `docs/deployment-topology.md` | Test design, item transmittal | Does test coverage exercise the app/API/private API topology? |
 | `docs/production-deployment.md` | Procedure, summary, release gate | Are deployment checks runnable and release blocking? |

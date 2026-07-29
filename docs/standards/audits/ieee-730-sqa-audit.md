@@ -167,9 +167,9 @@ Review these artifacts during each IEEE 730 audit:
   kept visibly separate?
 - Do candidate business-category mappings and planning-context fixtures remain
   descriptive and free of score, ranking, or recommendation drift?
-- Does planned profile/reach work remain blocked from fixture expansion until
-  a versioned contract and focused executable test prove the three-scenario
-  acceptance matrix?
+- Does profile/reach work remain blocked from broader fixture expansion until
+  the versioned contract and focused executable test stay aligned with the
+  three-scenario acceptance matrix?
 - Do exposed planning-context municipality labels remain source-backed instead
   of falling back to placeholder names?
 

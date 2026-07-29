@@ -149,9 +149,9 @@ the current project surface.
   separate requirement classes.
 - Candidate business-category mappings and planning-context fixtures remain
   descriptive and traceable, not implicit scoring logic.
-- Planned profile-dependent context starts from operating needs, assigns each
-  fact a decision-relevant reach, and remains explicitly unimplemented until a
-  versioned contract and executable three-scenario matrix exist.
+- Profile-dependent context starts from operating needs, assigns each fact a
+  decision-relevant reach, and remains bounded to the versioned contract until
+  broader runtime behavior is explicitly accepted.
 - Active planning-context municipality labels remain source-backed and do not
   regress to placeholder naming in API or browser-visible responses.
 - Requirements identify provenance gaps as blockers, not as implementation
