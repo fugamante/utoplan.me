@@ -103,6 +103,7 @@ Audits should use repository evidence first:
 - `docs/data-source-schema-mapping.md`
 - `data/profile-reach/business-profile-reach-v1.json`
 - `data/profile-reach/decision-signal-registry-v1.json`
+- `data/profile-reach/aguada-restaurant-permit-path-review.json`
 - `docs/database-migrations.md`
 - `docs/deployment-topology.md`
 - `docs/production-deployment.md`

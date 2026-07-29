@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "artifactVersion": "aguada-restaurant-permit-path-review-v1",
+  "scope": "puerto-rico-planning-candidate",
+  "status": "reviewed",
+  "reviewedAt": "2026-07-29",
+  "signalId": "food-service-permit-path-gap",
+  "fixedSelection": {
+    "fixtureId": "mun003_restaurant",
+    "municipalityCode": "003",
+    "municipalityLabel": "Aguada",
+    "businessCategoryId": "restaurant-cafe",
+    "selectedNaicsCodes": [
+      "722511"
+    ]
+  },
+  "decisionSummary": "The fixed Aguada restaurant scenario no longer relies on a pure permit-path source gap. Official Puerto Rico sources now establish a descriptive permit path through OGPe/SBP, municipal patent administration, fire-code permit requirements, and Department of Health transaction infrastructure. This remains process-path evidence only: it does not prove approval timing, local site eligibility, inspection outcome, or launch readiness.",
+  "authorities": [
+    {
+      "sourceId": "pr-ogpe-permiso-unico-business-path",
+      "role": "primary-process-path",
+      "evidence": "OGPe states that a new business in an existing location that does not require construction must review whether the use is allowed, review the requirements and applicable licenses, create an SBP account, create a project profile, and file a Permiso Unico in SBP."
+    },
+    {
+      "sourceId": "pr-bomberos-commercial-permit-basics",
+      "role": "fire-safety-requirements",
+      "evidence": "The Puerto Rico Fire Bureau publishes basic permit requirements for small commercial premises and states that any commerce requiring a use permit must request a Permiso Unico through OGPe."
+    },
+    {
+      "sourceId": "pr-health-salud-digital-portal",
+      "role": "health-transaction-platform",
+      "evidence": "The Department of Health states that Salud Digital is its online platform for permits, certifications, and environmental-health transactions, which confirms an official digital path for health-related supporting transactions."
+    },
+    {
+      "sourceId": "pr-ogp-municipal-patent-2026-2027",
+      "role": "municipal-patent-governance",
+      "evidence": "The Office of Management and Budget circular for municipal patents is applicable to all Puerto Rico municipalities and states the filing rules for the business-volume declaration used in municipal patent administration."
+    }
+  ],
+  "scenarioCoverage": [
+    {
+      "scenarioId": "small-local",
+      "reachId": "site-bound",
+      "coverage": "descriptive-permit-path",
+      "notes": [
+        "The official process path is now evidenced, so the scenario is no longer blank on whether an operator must go through OGPe/SBP and related permit channels.",
+        "This evidence still does not show whether a specific Aguada location is eligible for the intended use or how long approvals will take."
+      ]
+    },
+    {
+      "scenarioId": "medium-regional",
+      "reachId": "site-bound",
+      "coverage": "descriptive-permit-path",
+      "notes": [
+        "The same Puerto Rico permit stack applies to a larger-format restaurant operation in the fixed municipality.",
+        "The evidence does not yet distinguish routine local permitting from broader inspection or coordination effort for a larger operating footprint."
+      ]
+    }
+  ],
+  "interpretationLimits": [
+    "These sources show the official permit path and some base requirements, not a guaranteed approval outcome.",
+    "The reviewed sources do not provide Aguada-specific inspection throughput, municipal backlog, or case-level execution timing.",
+    "The artifact does not resolve parcel zoning, flood, hazard, kitchen retrofit, or landlord-readiness questions for a specific location.",
+    "The artifact does not imply that a restaurant should open in Aguada or that a particular location is viable."
+  ],
+  "nextUpgradeTargets": [
+    "Register an Aguada- or region-specific permit-timing or municipal execution source if one becomes reproducible and public.",
+    "Add site-bound parcel or zoning evidence before reducing criticality for location-specific launch assumptions.",
+    "Add health or fire inspection turnaround evidence only if it can be pinned to an official Puerto Rico source and kept descriptive."
+  ]
+}

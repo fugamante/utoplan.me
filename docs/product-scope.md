@@ -101,6 +101,14 @@ selection matrix facts already map to registered Puerto Rico evidence and which
 remain controlled source gaps, along with scenario reach, recency, and
 interpretation limits.
 
+The first reviewed signal-upgrade artifact now exists at
+`data/profile-reach/aguada-restaurant-permit-path-review.json`. It upgrades the
+regulatory-execution lane for the fixed Aguada restaurant scenario from a pure
+source gap to a source-backed permit-path review grounded in official Puerto
+Rico OGPe, Fire Bureau, Department of Health, and municipal-patent authorities.
+It remains descriptive process-path evidence, not proof of approval timing,
+parcel eligibility, or launch readiness.
+
 The next product step is to replace the highest-risk source-gap signals in that
 registry and matrix with registered Puerto Rico evidence before expanding
 planning-context fixtures or adding recommendation behavior.

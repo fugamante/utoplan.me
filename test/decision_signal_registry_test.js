@@ -43,6 +43,10 @@ function isNonEmptyString(value) {
   return typeof value === 'string' && value.trim() !== '';
 }
 
+function resolveRepoPath(relativePath) {
+  return path.join(__dirname, '..', relativePath);
+}
+
 function assertNoForbiddenDecisionLanguage(value, label) {
   assert(!FORBIDDEN_DECISION_PATTERN.test(value), label + ' must stay descriptive');
 }
@@ -129,6 +133,17 @@ registry.signals.forEach(function(signal) {
     assert(sourcesById[signal.sourceId], 'registered-source signal sourceId must exist in the source registry for ' + signal.id);
     assert(Array.isArray(signal.artifactPaths) && signal.artifactPaths.length >= 1, 'registered-source signal must include artifactPaths for ' + signal.id);
     assert(isNonEmptyString(signal.recency.evidenceDate), 'registered-source signal must include recency.evidenceDate for ' + signal.id);
+    signal.artifactPaths.forEach(function(artifactPath) {
+      assert(isNonEmptyString(artifactPath), 'registered-source signal artifactPath is required for ' + signal.id);
+      assert(fs.existsSync(resolveRepoPath(artifactPath)), 'registered-source signal artifactPath must exist for ' + signal.id + ': ' + artifactPath);
+    });
+    if (signal.supportingSourceIds !== undefined) {
+      assert(Array.isArray(signal.supportingSourceIds) && signal.supportingSourceIds.length > 0, 'supportingSourceIds must be a non-empty array for ' + signal.id);
+      signal.supportingSourceIds.forEach(function(sourceId) {
+        assert(isNonEmptyString(sourceId), 'supportingSourceIds entry is required for ' + signal.id);
+        assert(sourcesById[sourceId], 'supportingSourceId must exist in the source registry for ' + signal.id + ': ' + sourceId);
+      });
+    }
   } else {
     assert(!signal.sourceId, 'source-gap signal must not include sourceId for ' + signal.id);
     assert(isNonEmptyString(signal.sourceGapBasis), 'source-gap signal must include sourceGapBasis for ' + signal.id);

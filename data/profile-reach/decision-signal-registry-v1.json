@@ -293,7 +293,13 @@
       "id": "food-service-permit-path-gap",
       "lensId": "regulatory-execution-environment",
       "label": "Food-service permitting and launch sequencing",
-      "sourceType": "source-gap",
+      "sourceType": "registered-source",
+      "sourceId": "pr-ogpe-permiso-unico-business-path",
+      "supportingSourceIds": [
+        "pr-bomberos-commercial-permit-basics",
+        "pr-health-salud-digital-portal",
+        "pr-ogp-municipal-patent-2026-2027"
+      ],
       "applicableScenarioIds": [
         "small-local",
         "medium-regional"
@@ -307,13 +313,18 @@
         "medium-regional-permit-scale"
       ],
       "recency": {
-        "status": "no-registered-source"
+        "evidenceDate": "2026-07-29",
+        "quality": "official-process-path-review"
       },
-      "interpretationLimits": [
-        "No registered permit-path or inspection-timing source is captured for the fixed municipality.",
-        "Current evidence does not cover municipal or Commonwealth execution timing."
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-permit-path-review.json",
+        "data/sources/puerto-rico.json"
       ],
-      "sourceGapBasis": "Permit and execution evidence remains blocked on a registered regulatory path source."
+      "interpretationLimits": [
+        "The reviewed authorities confirm the official permit path and baseline requirement surfaces, not approval timing or case outcome.",
+        "The current evidence still does not cover Aguada-specific queue time, inspection throughput, or parcel-level eligibility."
+      ],
+      "decisionSummary": "Official Puerto Rico permit, fire-safety, health-transaction, and municipal-patent sources now establish a descriptive launch-permit path for the fixed Aguada restaurant scenario."
     },
     {
       "id": "multi-agency-coordination-gap",

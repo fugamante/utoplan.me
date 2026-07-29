@@ -238,6 +238,26 @@ Validate the decision-signal registry with:
 npm run test:decision-signals
 ```
 
+The first reviewed signal-upgrade artifact now lives in
+`data/profile-reach/aguada-restaurant-permit-path-review.json`.
+
+That artifact must:
+
+- stay tied to the fixed municipality/category selection;
+- cite only official Puerto Rico authorities for the reviewed permit path;
+- distinguish source-backed process-path evidence from unresolved timing,
+  parcel-eligibility, and case-outcome gaps;
+- remain descriptive and avoid scores, rankings, recommendations, or launch
+  promises;
+- link back to the controlling decision-signal entry and its registered
+  Puerto Rico source ids.
+
+Validate the reviewed regulatory signal artifact with:
+
+```sh
+npm run test:regulatory-signal-review
+```
+
 ## Current Candidate Sources
 
 - `cbps`: Datos.PR County Business Patterns 2014 Puerto Rico CSV and municipality CSV.

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "scope": "puerto-rico-only",
-  "retrievedAt": "2026-06-11",
+  "retrievedAt": "2026-07-29",
   "sources": [
     {
       "id": "datospr-cbp-2014-puerto-rico",
@@ -509,6 +509,66 @@
       "resourceId": "974f57b4-c5fd-4317-a4d8-dc13cdcf8372",
       "sourceBasis": "Official Puerto Rico municipality boundary data.",
       "notes": "Candidate for municipality reference data and future map geometry work; do not import geometry into the read API until the target schema is designed."
+    },
+    {
+      "id": "pr-ogpe-permiso-unico-business-path",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-regulatory"
+      ],
+      "publisher": "Oficina de Gerencia de Permisos, Departamento de Desarrollo Economico y Comercio",
+      "portal": "PR.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.permisos.pr.gov/",
+      "resourceUrl": "https://www.permisos.pr.gov/",
+      "sourceBasis": "Official Puerto Rico OGPe guidance for obtaining business permits shows the Permiso Unico and SBP process path for a new business operating from an existing location.",
+      "notes": "Use as descriptive regulatory-path evidence for planning-profile work only. It confirms the official OGPe/SBP path and required process steps for business operation in Puerto Rico, but it does not prove case-level approval timing, local site eligibility, or launch readiness. Supporting review artifact: data/profile-reach/aguada-restaurant-permit-path-review.json."
+    },
+    {
+      "id": "pr-bomberos-commercial-permit-basics",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-regulatory"
+      ],
+      "publisher": "Negociado del Cuerpo de Bomberos de Puerto Rico",
+      "portal": "PR.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://bomberos.pr.gov/permisos",
+      "resourceUrl": "https://bomberos.pr.gov/permisos",
+      "sourceBasis": "Official Puerto Rico Fire Bureau permit guidance provides baseline commercial-premises permit requirements and links the fire-safety review path back to the Permiso Unico process.",
+      "notes": "Use as descriptive fire-safety and permit-path evidence for planning-profile work only. It confirms that commercial uses requiring a use permit must request a Permiso Unico and documents baseline small-premises fire requirements, but it does not prove inspection outcome or timing. Supporting review artifact: data/profile-reach/aguada-restaurant-permit-path-review.json."
+    },
+    {
+      "id": "pr-health-salud-digital-portal",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-regulatory"
+      ],
+      "publisher": "Departamento de Salud de Puerto Rico",
+      "portal": "PR.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.salud.pr.gov/CMS/95",
+      "resourceUrl": "https://www.salud.pr.gov/CMS/95",
+      "sourceBasis": "Official Department of Health guidance confirms Salud Digital as the online platform for permits, certifications, and environmental-health transactions in Puerto Rico.",
+      "notes": "Use as descriptive health-transaction-path evidence for planning-profile work only. It confirms an official digital path for supporting health-related transactions, but it does not prove that a specific food-service permit has been issued or how long review will take. Supporting review artifact: data/profile-reach/aguada-restaurant-permit-path-review.json."
+    },
+    {
+      "id": "pr-ogp-municipal-patent-2026-2027",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-regulatory"
+      ],
+      "publisher": "Oficina de Gerencia y Presupuesto",
+      "portal": "PR.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://docs.pr.gov/files/OGP/Website_OGP/CartasCirculares/CC2026/CC-002-2026.pdf",
+      "resourceUrl": "https://docs.pr.gov/files/OGP/Website_OGP/CartasCirculares/CC2026/CC-002-2026.pdf",
+      "sourceBasis": "Official Puerto Rico OGP circular establishes the 2026-2027 municipal-patent rules and states that the guidance applies to all municipalities in Puerto Rico.",
+      "notes": "Use as descriptive municipal-patent governance evidence for planning-profile work only. It confirms a Puerto Rico-wide municipal patent filing path relevant to the fixed Aguada scenario, but it does not prove a specific municipality's processing speed or case outcome. Supporting review artifact: data/profile-reach/aguada-restaurant-permit-path-review.json."
     },
     {
       "id": "census-cbp-2014-state-72-fallback",
