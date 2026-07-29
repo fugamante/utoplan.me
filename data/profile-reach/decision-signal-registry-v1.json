@@ -1,0 +1,396 @@
+{
+  "schemaVersion": 1,
+  "registryVersion": "decision-signal-registry-v1",
+  "scope": "puerto-rico-planning-candidate",
+  "status": "candidate-needs-review",
+  "updatedAt": "2026-07-29",
+  "fixedSelection": {
+    "fixtureId": "mun003_restaurant",
+    "municipalityCode": "003",
+    "businessCategoryId": "restaurant-cafe",
+    "selectedNaicsCodes": [
+      "722511"
+    ]
+  },
+  "signals": [
+    {
+      "id": "site-ready-kitchen-gap",
+      "lensId": "hard-constraints-site-feasibility",
+      "label": "Lease-ready kitchen fit and frontage conditions",
+      "sourceType": "source-gap",
+      "applicableScenarioIds": [
+        "small-local",
+        "medium-regional"
+      ],
+      "reachByScenario": {
+        "small-local": "site-bound",
+        "medium-regional": "site-bound"
+      },
+      "factIds": [
+        "small-local-lease-readiness",
+        "medium-regional-larger-lease"
+      ],
+      "recency": {
+        "status": "no-registered-source"
+      },
+      "interpretationLimits": [
+        "No parcel, building, or hazard dataset is registered for the fixed selection.",
+        "The registry cannot yet distinguish kitchen retrofit questions from frontage or landlord constraints."
+      ],
+      "sourceGapBasis": "The current repository has no registered site-feasibility source for parcel fit, building readiness, or hazards."
+    },
+    {
+      "id": "large-site-feasibility-gap",
+      "lensId": "hard-constraints-site-feasibility",
+      "label": "Large-site readiness, access, and hazard fit",
+      "sourceType": "source-gap",
+      "applicableScenarioIds": [
+        "large-strategic"
+      ],
+      "reachByScenario": {
+        "large-strategic": "site-bound"
+      },
+      "factIds": [
+        "large-strategic-large-site-fit"
+      ],
+      "recency": {
+        "status": "no-registered-source"
+      },
+      "interpretationLimits": [
+        "No registered parcel assembly, industrial-site, or hazard-screening source exists for the fixed selection.",
+        "The current planning-context fixtures do not test large-footprint utility staging or truck access."
+      ],
+      "sourceGapBasis": "Large-site readiness remains an explicit gap until a registered parcel or facility-readiness source is added."
+    },
+    {
+      "id": "municipality-restaurant-activity-baseline",
+      "lensId": "demand-market-reach",
+      "label": "Municipality restaurant activity baseline",
+      "sourceType": "registered-source",
+      "sourceId": "datospr-cbp-2014-municipios",
+      "applicableScenarioIds": [
+        "small-local",
+        "medium-regional",
+        "large-strategic"
+      ],
+      "reachByScenario": {
+        "small-local": "local-catchment",
+        "medium-regional": "local-catchment",
+        "large-strategic": "local-catchment"
+      },
+      "factIds": [
+        "small-local-cbp-baseline",
+        "medium-regional-cbp-baseline",
+        "large-strategic-local-cbp-baseline"
+      ],
+      "recency": {
+        "evidenceDate": "2026-05-24",
+        "quality": "historical-2014-baseline"
+      },
+      "artifactPaths": [
+        "data/planning-context/mun003_restaurant.json",
+        "data/sources/puerto-rico.json"
+      ],
+      "interpretationLimits": [
+        "The CBP row is descriptive business-activity context and not a demand, profitability, or market-size measure.",
+        "This source covers only the fixed municipality/category slice and does not prove corridor or island-wide customer pull."
+      ]
+    },
+    {
+      "id": "expanded-demand-proxy-gap",
+      "lensId": "demand-market-reach",
+      "label": "Expanded reach demand proxies beyond one municipality",
+      "sourceType": "source-gap",
+      "applicableScenarioIds": [
+        "medium-regional",
+        "large-strategic"
+      ],
+      "reachByScenario": {
+        "medium-regional": "regional-corridor",
+        "large-strategic": "island-wide"
+      },
+      "factIds": [
+        "medium-regional-corridor-demand-gap",
+        "large-strategic-island-demand-gap"
+      ],
+      "recency": {
+        "status": "no-registered-source"
+      },
+      "interpretationLimits": [
+        "No registered corridor or island-wide spending, visitor, or traffic proxy is attached to the matrix.",
+        "The current matrix cannot separate observed local category presence from broader reachable demand."
+      ],
+      "sourceGapBasis": "Demand expansion beyond the fixed municipality remains blocked on a registered Puerto Rico demand-proxy source."
+    },
+    {
+      "id": "basic-utility-service-gap",
+      "lensId": "infrastructure-reliability-cost",
+      "label": "Basic power, water, and refrigeration-service continuity",
+      "sourceType": "source-gap",
+      "applicableScenarioIds": [
+        "small-local"
+      ],
+      "reachByScenario": {
+        "small-local": "local-catchment"
+      },
+      "factIds": [
+        "small-local-basic-utilities"
+      ],
+      "recency": {
+        "status": "no-registered-source"
+      },
+      "interpretationLimits": [
+        "No registered utility reliability, outage, or service-restoration evidence exists for the fixed municipality.",
+        "The current data does not distinguish routine service adequacy from interruption cost."
+      ],
+      "sourceGapBasis": "Infrastructure coverage remains a gap until a Puerto Rico utility-reliability or service-continuity source is registered."
+    },
+    {
+      "id": "utility-resilience-gap",
+      "lensId": "infrastructure-reliability-cost",
+      "label": "Utility resilience and operating continuity at larger scales",
+      "sourceType": "source-gap",
+      "applicableScenarioIds": [
+        "medium-regional",
+        "large-strategic"
+      ],
+      "reachByScenario": {
+        "medium-regional": "regional-corridor",
+        "large-strategic": "island-wide"
+      },
+      "factIds": [
+        "medium-regional-shift-reliability",
+        "large-strategic-resilience"
+      ],
+      "recency": {
+        "status": "no-registered-source"
+      },
+      "interpretationLimits": [
+        "No registered evidence covers corridor-level or island-wide utility redundancy, outage recovery, or resilience cost.",
+        "The matrix cannot yet distinguish ordinary service adequacy from backup-power or resilience requirements."
+      ],
+      "sourceGapBasis": "Larger-scale infrastructure resilience remains an explicit source gap."
+    },
+    {
+      "id": "routine-food-service-staffing-gap",
+      "lensId": "workforce-capability",
+      "label": "Routine service-role staffing depth",
+      "sourceType": "source-gap",
+      "applicableScenarioIds": [
+        "small-local",
+        "medium-regional"
+      ],
+      "reachByScenario": {
+        "small-local": "local-catchment",
+        "medium-regional": "regional-corridor"
+      },
+      "factIds": [
+        "small-local-shift-staffing",
+        "medium-regional-labor-depth"
+      ],
+      "recency": {
+        "status": "no-registered-source"
+      },
+      "interpretationLimits": [
+        "The current higher-education artifacts are not occupation-specific labor-supply evidence for restaurant staffing.",
+        "No registered wage, commute-time, or hiring-competition source is tied to the fixed selection."
+      ],
+      "sourceGapBasis": "Workforce depth for food-service roles remains blocked on a registered occupation-level labor source."
+    },
+    {
+      "id": "specialized-management-pipeline-gap",
+      "lensId": "workforce-capability",
+      "label": "Specialized management and multi-site workforce pipeline",
+      "sourceType": "source-gap",
+      "applicableScenarioIds": [
+        "large-strategic"
+      ],
+      "reachByScenario": {
+        "large-strategic": "island-wide"
+      },
+      "factIds": [
+        "large-strategic-management-depth"
+      ],
+      "recency": {
+        "status": "no-registered-source"
+      },
+      "interpretationLimits": [
+        "No registered workforce source measures island-wide management depth, supervisory hiring competition, or retention risk.",
+        "Institution-location artifacts remain corroboration material rather than workforce-capacity evidence."
+      ],
+      "sourceGapBasis": "Strategic-scale workforce coverage remains blocked on an occupation and skill pipeline source."
+    },
+    {
+      "id": "local-supplier-route-gap",
+      "lensId": "logistics-supply-chain",
+      "label": "Routine local supplier and delivery access",
+      "sourceType": "source-gap",
+      "applicableScenarioIds": [
+        "small-local"
+      ],
+      "reachByScenario": {
+        "small-local": "local-catchment"
+      },
+      "factIds": [
+        "small-local-local-deliveries"
+      ],
+      "recency": {
+        "status": "no-registered-source"
+      },
+      "interpretationLimits": [
+        "No registered supplier, route-time, or cold-chain evidence exists for the local fixed-selection path.",
+        "Traffic and perishability constraints are still unmeasured."
+      ],
+      "sourceGapBasis": "Local supplier and route evidence is not yet registered."
+    },
+    {
+      "id": "cold-chain-corridor-gap",
+      "lensId": "logistics-supply-chain",
+      "label": "Corridor-level cold-chain and supplier reliability",
+      "sourceType": "source-gap",
+      "applicableScenarioIds": [
+        "medium-regional"
+      ],
+      "reachByScenario": {
+        "medium-regional": "regional-corridor"
+      },
+      "factIds": [
+        "medium-regional-cold-chain"
+      ],
+      "recency": {
+        "status": "no-registered-source"
+      },
+      "interpretationLimits": [
+        "No registered evidence covers corridor-level route reliability or temperature-sensitive supplier exposure.",
+        "The current matrix does not measure backup supplier depth."
+      ],
+      "sourceGapBasis": "Regional logistics evidence remains blocked on reproducible route or supplier data."
+    },
+    {
+      "id": "external-supply-chain-gap",
+      "lensId": "logistics-supply-chain",
+      "label": "External supplier dependence and port or airport exposure",
+      "sourceType": "source-gap",
+      "applicableScenarioIds": [
+        "large-strategic"
+      ],
+      "reachByScenario": {
+        "large-strategic": "external-connection"
+      },
+      "factIds": [
+        "large-strategic-external-suppliers"
+      ],
+      "recency": {
+        "status": "no-registered-source"
+      },
+      "interpretationLimits": [
+        "No registered port, airport, or freight source is tied into the current fixed-selection matrix.",
+        "The matrix cannot yet quantify external dependency risk or service recovery time."
+      ],
+      "sourceGapBasis": "Strategic external logistics remains an explicit evidence gap."
+    },
+    {
+      "id": "food-service-permit-path-gap",
+      "lensId": "regulatory-execution-environment",
+      "label": "Food-service permitting and launch sequencing",
+      "sourceType": "source-gap",
+      "applicableScenarioIds": [
+        "small-local",
+        "medium-regional"
+      ],
+      "reachByScenario": {
+        "small-local": "site-bound",
+        "medium-regional": "site-bound"
+      },
+      "factIds": [
+        "small-local-food-permits",
+        "medium-regional-permit-scale"
+      ],
+      "recency": {
+        "status": "no-registered-source"
+      },
+      "interpretationLimits": [
+        "No registered permit-path or inspection-timing source is captured for the fixed municipality.",
+        "Current evidence does not cover municipal or Commonwealth execution timing."
+      ],
+      "sourceGapBasis": "Permit and execution evidence remains blocked on a registered regulatory path source."
+    },
+    {
+      "id": "multi-agency-coordination-gap",
+      "lensId": "regulatory-execution-environment",
+      "label": "Multi-agency approvals and incentive coordination",
+      "sourceType": "source-gap",
+      "applicableScenarioIds": [
+        "large-strategic"
+      ],
+      "reachByScenario": {
+        "large-strategic": "regional-corridor"
+      },
+      "factIds": [
+        "large-strategic-multi-agency-approvals"
+      ],
+      "recency": {
+        "status": "no-registered-source"
+      },
+      "interpretationLimits": [
+        "No registered source measures multi-agency permit sequencing, incentive timing, or execution capacity.",
+        "The current matrix cannot separate ordinary local permit work from strategic-scale coordination risk."
+      ],
+      "sourceGapBasis": "Strategic regulatory coordination remains unmeasured in the repository."
+    },
+    {
+      "id": "local-industry-context-baseline",
+      "lensId": "ecosystem-resilience-growth",
+      "label": "Existing local food-service activity context",
+      "sourceType": "registered-source",
+      "sourceId": "datospr-cbp-2014-municipios",
+      "applicableScenarioIds": [
+        "small-local"
+      ],
+      "reachByScenario": {
+        "small-local": "local-catchment"
+      },
+      "factIds": [
+        "small-local-local-industry-context"
+      ],
+      "recency": {
+        "evidenceDate": "2026-05-24",
+        "quality": "historical-2014-baseline"
+      },
+      "artifactPaths": [
+        "data/planning-context/mun003_restaurant.json",
+        "data/sources/puerto-rico.json"
+      ],
+      "interpretationLimits": [
+        "Local establishment counts show category presence only and do not prove resilience, partnerships, or expansion capacity.",
+        "This signal does not measure post-disruption recovery or service network strength."
+      ]
+    },
+    {
+      "id": "growth-network-gap",
+      "lensId": "ecosystem-resilience-growth",
+      "label": "Partner, service, and resilience network depth",
+      "sourceType": "source-gap",
+      "applicableScenarioIds": [
+        "medium-regional",
+        "large-strategic"
+      ],
+      "reachByScenario": {
+        "medium-regional": "regional-corridor",
+        "large-strategic": "island-wide"
+      },
+      "factIds": [
+        "medium-regional-corridor-partners",
+        "large-strategic-island-support-network"
+      ],
+      "recency": {
+        "status": "no-registered-source"
+      },
+      "interpretationLimits": [
+        "No registered ecosystem or resilience-network source is attached to the fixed selection.",
+        "The matrix does not yet quantify partner density, professional-service availability, or expansion flexibility."
+      ],
+      "sourceGapBasis": "Growth and resilience network evidence remains a controlled gap pending additional registered Puerto Rico sources."
+    }
+  ]
+}

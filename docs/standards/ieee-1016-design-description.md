@@ -127,6 +127,7 @@ PostgreSQL
 | Municipality display-name registry | `data/municipalities/planning-context-municipalities.json` | Record source-backed municipality labels for the active planning-context fixture set. |
 | Planning-context fixtures | `data/planning-context/` | Record descriptive municipality/category slices with confidence, limitations, and unresolved questions. |
 | Planned business-profile and reach contracts | `data/profile-reach/business-profile-reach-v1.json` | Own versioned operating assumptions, decision-lens relevance, geographic reach, profile-dependent criticality, confidence, limitations, and next validation checks before API/UI expansion. |
+| Decision-signal registry | `data/profile-reach/decision-signal-registry-v1.json` | Record which fixed-selection profile/reach facts are backed by registered Puerto Rico evidence versus explicit source gaps, including scenario reach, recency, interpretation limits, and matrix linkage. |
 | Release scripts | `scripts/`, `test/` | Verify deployment configuration, release smoke behavior, and integration contracts. |
 
 ### 5.3 Runtime Modes

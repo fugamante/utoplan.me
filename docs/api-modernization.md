@@ -69,7 +69,9 @@ The modern API must pass preserved endpoint contracts before additional endpoint
 Keep new API behavior in typed sources under `dtoapi/modern/src/` and
 compatibility tests under `dtoapi/modern/test/`. The versioned business-profile
 and geographic-reach contract now lives outside the API under
-`data/profile-reach/business-profile-reach-v1.json` with focused validation in
-`npm run test:profile-reach-contract`; keep it as a controlled product/data
-artifact until the decision-signal registry and stronger source-backed evidence
-justify API exposure or planning-context fixture expansion.
+`data/profile-reach/business-profile-reach-v1.json`, and the linked
+decision-signal registry now lives alongside it under
+`data/profile-reach/decision-signal-registry-v1.json` with focused validation
+in `npm run test:decision-signals` and `npm run test:profile-reach-contract`;
+keep both as controlled product/data artifacts until stronger source-backed
+evidence justifies API exposure or planning-context fixture expansion.

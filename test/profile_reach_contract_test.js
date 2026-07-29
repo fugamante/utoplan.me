@@ -9,12 +9,14 @@ var fixturePath = path.join(__dirname, '..', 'data', 'planning-context', 'mun003
 var mappingPath = path.join(__dirname, '..', 'data', 'mappings', 'puerto-rico-business-categories.json');
 var municipalityRegistryPath = path.join(__dirname, '..', 'data', 'municipalities', 'planning-context-municipalities.json');
 var registryPath = path.join(__dirname, '..', 'data', 'sources', 'puerto-rico.json');
+var signalRegistryPath = path.join(__dirname, '..', 'data', 'profile-reach', 'decision-signal-registry-v1.json');
 
 var contract = JSON.parse(fs.readFileSync(contractPath, 'utf8'));
 var fixture = JSON.parse(fs.readFileSync(fixturePath, 'utf8'));
 var mapping = JSON.parse(fs.readFileSync(mappingPath, 'utf8'));
 var municipalityRegistry = JSON.parse(fs.readFileSync(municipalityRegistryPath, 'utf8'));
 var registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+var signalRegistry = JSON.parse(fs.readFileSync(signalRegistryPath, 'utf8'));
 
 var EXPECTED_REACH_IDS = [
   'site-bound',
@@ -81,6 +83,13 @@ function toMunicipalityNameMap(entries) {
   }, {});
 }
 
+function toSignalIdSet(signals) {
+  return signals.reduce(function(result, signal) {
+    result[signal.id] = true;
+    return result;
+  }, {});
+}
+
 function findCategory(id) {
   return mapping.categories.find(function(category) {
     return category.id === id;
@@ -101,6 +110,7 @@ function findAssessment(scenario, lensId) {
 
 var sourceIds = toSourceIdSet(registry.sources);
 var municipalityNames = toMunicipalityNameMap(municipalityRegistry.entries);
+var signalIds = toSignalIdSet(signalRegistry.signals);
 var category = findCategory(contract.fixedSelection.businessCategory.id);
 
 assert.strictEqual(contract.schemaVersion, 1, 'schemaVersion must be 1');
@@ -183,6 +193,8 @@ contract.scenarios.forEach(function(scenario) {
 
     assessment.facts.forEach(function(fact, index) {
       assert(isNonEmptyString(fact.id), 'fact id is required for ' + scenario.id + ' ' + lensId + ' at index ' + index);
+      assert(isNonEmptyString(fact.signalId), 'fact signalId is required for ' + scenario.id + ' ' + lensId + ' at index ' + index);
+      assert(signalIds[fact.signalId], 'fact signalId must exist in the decision-signal registry for ' + scenario.id + ' ' + lensId + ' at index ' + index);
       assert(isNonEmptyString(fact.label), 'fact label is required for ' + scenario.id + ' ' + lensId + ' at index ' + index);
       assert(EXPECTED_REACH_IDS.indexOf(fact.reachId) !== -1, 'fact reachId is invalid for ' + scenario.id + ' ' + lensId + ' at index ' + index);
       assert(ALLOWED_SOURCE_TYPES[fact.sourceType], 'fact sourceType is invalid for ' + scenario.id + ' ' + lensId + ' at index ' + index);

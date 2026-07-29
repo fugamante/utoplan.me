@@ -102,6 +102,7 @@ Audits should use repository evidence first:
 - `docs/data-provenance.md`
 - `docs/data-source-schema-mapping.md`
 - `data/profile-reach/business-profile-reach-v1.json`
+- `data/profile-reach/decision-signal-registry-v1.json`
 - `docs/database-migrations.md`
 - `docs/deployment-topology.md`
 - `docs/production-deployment.md`

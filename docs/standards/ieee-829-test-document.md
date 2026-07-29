@@ -65,7 +65,8 @@ data provenance controls, release validation, and ongoing audit duties.
 | Data source registry | `data/sources/puerto-rico.json` | Non-Puerto Rico or unlicensed source intake |
 | Business category mapping | `data/mappings/puerto-rico-business-categories.json` | Category-specific planning context turns descriptive CBP facts into unsupported scores or recommendations |
 | Planning-context fixture | `data/planning-context/*.json` | Category context hides uncertainty or drifts into recommendation language |
-| Planned profile/reach contracts | Not yet implemented; requirements live in `docs/business-location-decision-framework.md` | Scale scenarios change evidence relevance without explicit reach, criticality, confidence, limitations, or a next validation check |
+| Profile/reach contract | `data/profile-reach/business-profile-reach-v1.json` | Scale scenarios change evidence relevance without explicit reach, criticality, confidence, limitations, or a next validation check |
+| Decision-signal registry | `data/profile-reach/decision-signal-registry-v1.json` | Fixed-selection profile/reach facts drift away from their documented evidence or source-gap state |
 | Migration artifacts | `db/migrations/` | Missing rollback, unsafe schema change, readiness drift |
 | Deployment verification | `scripts/verify_*.js` | Production starts with missing config or wrong mode |
 | Release smoke checks | `scripts/release_smoke_check.js` | Public app cannot serve API-backed map or planning-context data |
@@ -329,7 +330,8 @@ Release validation checks that the intended commit can be operated safely:
 | TC-024 | Planning-context API contract | `npm run test:api` | `GET /v1/planning-context` and `GET /v1/planning-context/:id` return read-only descriptive payloads with guardrails and reject unsupported methods with `405` |
 | TC-025 | Planning-context summary/detail UI | `npm run test:browser` | First page requests `/v1/planning-context`, loads selected detail from `/v1/planning-context/:id`, and renders descriptive municipality/category, confidence, CBP fact-value masking/approximation, limitation, and unresolved-question content without score/ranking/recommendation language |
 | TC-026 | Integrated planning-context browser path | `npm run test:browser:start-local` | Browser renders seeded same-origin `/v1/unis` and `/v1/planning-context` data through `start:local`, loads descriptive detail from the real API path, avoids the offline fixture, and does not depend on an ambient host database schema |
-| TC-027 | Business-profile and geographic-reach contract | `npm run test:profile-reach-contract` | The versioned profile/reach contract holds one reviewed municipality/category selection constant across small/local, medium/regional, and large/strategic scenarios and verifies lens order, reach, relevance, criticality, confidence, limitations, and next validation checks without scores or ranks. |
+| TC-027 | Decision-signal registry contract | `npm run test:decision-signals` | The decision-signal registry covers all seven lenses, keeps fixed-selection signals linked to scenarios and reaches, and stays bidirectionally aligned with the profile/reach matrix. |
+| TC-028 | Business-profile and geographic-reach contract | `npm run test:profile-reach-contract` | The versioned profile/reach contract holds one reviewed municipality/category selection constant across small/local, medium/regional, and large/strategic scenarios and verifies lens order, reach, relevance, criticality, confidence, limitations, and next validation checks without scores or ranks. |
 
 ## 7. Test Procedure Specification
 
@@ -436,8 +438,8 @@ Release validation checks that the intended commit can be operated safely:
    ```
 
 Do not add profile-dependent fixture variants beyond the controlled three-scenario
-matrix until TC-027 remains green and new evidence is attached through the
-versioned profile/reach contract.
+matrix until TC-027 and TC-028 remain green and new evidence is attached through
+the versioned profile/reach contract and decision-signal registry.
 
 ## 8. Test Log
 
