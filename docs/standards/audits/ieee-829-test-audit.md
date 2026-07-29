@@ -274,17 +274,19 @@ Release decision:
   - Root install, build, and test entrypoints invoke the active-runtime verifier
     in their explicit script chains rather than relying only on `pre*`
     lifecycle hooks.
-  - A focused contract test runs the root entrypoint with lifecycle scripts
-    disabled and an unsupported synthetic runtime, then proves the entrypoint
-    fails before substantive validation begins.
+  - `test/node_runtime_test.js` runs all three root entrypoints with lifecycle
+    scripts disabled and an unsupported synthetic runtime, then proves each
+    entrypoint fails before substantive validation begins.
   - `npm run verify:node && npm run test:node-runtime` passes on the reviewed
     Node 24 runtime.
 - Revisit trigger:
   - Any change to root install/build/test scripts, Node version pins, npm
     lifecycle policy, or runtime-verifier behavior.
-- Status: proposed; the standards now distinguish active-process verification
-  from the verifier unit contract, but the root scripts still rely on lifecycle
-  hooks for automatic enforcement.
+- Status: implemented (2026-07-29); `install:all`, `build`, and `test` now begin
+  with an explicit `verify:node` command, and `test/node_runtime_test.js`
+  exercises all three entrypoints with lifecycle hooks disabled plus a
+  synthetic unsupported runtime, proving each command fails before substantive
+  validation.
 
 ### RECO-829-2026-05-24-01
 

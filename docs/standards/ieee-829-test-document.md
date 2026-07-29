@@ -303,7 +303,7 @@ Release validation checks that the intended commit can be operated safely:
 | ID | Name | Procedure | Expected Result |
 | --- | --- | --- | --- |
 | TC-001 | Root test baseline | `npm run test` | All host contract and verification tests pass |
-| TC-001A | Node runtime pin | `npm run verify:node && npm run test:node-runtime` | The active process uses Node 24 and the verifier unit contract passes, even when npm lifecycle hooks are disabled |
+| TC-001A | Node runtime pin | `npm run verify:node && npm run test:node-runtime` | The active process uses Node 24, the verifier unit contract passes, and root install/build/test entrypoints reject an unsupported synthetic runtime when npm lifecycle hooks are disabled |
 | TC-002 | Clean install | `npm run install:all` | Root, app, API, and modern API install from lockfiles |
 | TC-003 | Build baseline | `npm run build` | Build delegates to test baseline and passes |
 | TC-004 | API contracts | `npm run test:api` | Root, response, resource, route, and DB-free contracts pass |
