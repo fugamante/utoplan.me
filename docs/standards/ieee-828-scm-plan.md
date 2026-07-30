@@ -241,7 +241,8 @@ Lockfiles are controlled artifacts and must be updated only when dependency inte
 Docker assets are controlled artifacts:
 
 - `Dockerfile` validates clean install, build, and app serving.
-- `Dockerfile.modern-api` builds the modern API runtime.
+- `Dockerfile.modern-api` builds the modern API runtime and drops to the
+  unprivileged image user `node` before its verifier/server command.
 - `Dockerfile.postgres-test` and `Dockerfile.modern-db-test` support seeded DB validation.
 - `Dockerfile.proxy-test` validates same-origin proxy behavior.
 - `Dockerfile.start-local-browser-test` validates rendered map behavior against the seeded integrated path.

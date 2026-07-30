@@ -38,6 +38,14 @@ assert.deepStrictEqual(verifier.validateConfig({
 assert.deepStrictEqual(verifier.validateConfig({
   NODE_ENV: 'production',
   PORT: '3001',
+  DATABASE_URL: 'postgresql://utoplan:secret@postgres.example.internal:5432/utoplan'
+}, {
+  service: 'api'
+}), []);
+
+assert.deepStrictEqual(verifier.validateConfig({
+  NODE_ENV: 'production',
+  PORT: '3001',
   DATABASE_URL: 'postgres://utoplan:secret@postgres.example.internal:5432/utoplan',
   UTOPLAN_API_EXPOSURE: 'public',
   UTOPLAN_PUBLIC_API_URL: 'https://api.example.com'
@@ -88,6 +96,16 @@ var invalidDatabaseUrl = verifier.validateConfig({
 });
 
 assert(invalidDatabaseUrl.indexOf('DATABASE_URL must use postgres or postgresql') !== -1);
+
+var malformedDatabaseUrl = verifier.validateConfig({
+  NODE_ENV: 'production',
+  DATABASE_URL: 'not a database URL'
+}, {
+  service: 'api'
+});
+
+assert(malformedDatabaseUrl.indexOf('DATABASE_URL must be a valid URL') !== -1);
+assert(malformedDatabaseUrl.join('\n').indexOf('not a database URL') === -1);
 
 var result = childProcess.spawnSync(process.execPath, ['scripts/verify_deployment_config.js'], {
   cwd: __dirname + '/..',
