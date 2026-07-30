@@ -21,6 +21,8 @@ assert(apiDockerfile.indexOf('--service=api') !== -1);
 assert(apiDockerfile.indexOf('ci --ignore-scripts') !== -1);
 assert(apiDockerfile.indexOf('ci --omit=dev --ignore-scripts') !== -1);
 assert(apiDockerfile.indexOf('COPY data ./data/') !== -1);
+assert(apiDockerfile.indexOf('USER node') !== -1);
+assert(apiDockerfile.indexOf('USER node') < apiDockerfile.indexOf('CMD ['));
 assert(postgresDockerfile.indexOf('002_unis_partial_seed.sql') !== -1);
 assert(browserTestDockerfile.indexOf('RUN npm ci') !== -1);
 assert(browserTestDockerfile.indexOf('RUN npx playwright install --with-deps') !== -1);
