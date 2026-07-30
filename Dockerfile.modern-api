@@ -27,4 +27,6 @@ COPY data ./data/
 
 EXPOSE 3001
 
+USER node
+
 CMD ["sh", "-c", "node scripts/verify_deployment_config.js --service=api && node dtoapi/modern/lib/server.js"]

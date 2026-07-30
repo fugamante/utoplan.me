@@ -80,6 +80,15 @@ var invalidExposure = verifier.validateConfig({
 
 assert(invalidExposure.indexOf('UTOPLAN_API_EXPOSURE must be private or public') !== -1);
 
+var invalidDatabaseUrl = verifier.validateConfig({
+  NODE_ENV: 'production',
+  DATABASE_URL: 'https://postgres.example.internal/utoplan'
+}, {
+  service: 'api'
+});
+
+assert(invalidDatabaseUrl.indexOf('DATABASE_URL must use postgres or postgresql') !== -1);
+
 var result = childProcess.spawnSync(process.execPath, ['scripts/verify_deployment_config.js'], {
   cwd: __dirname + '/..',
   env: Object.assign({}, process.env, validEnv()),
