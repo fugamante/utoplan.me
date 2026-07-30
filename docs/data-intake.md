@@ -241,7 +241,8 @@ npm run test:decision-signals
 Reviewed signal-upgrade artifacts now live in
 `data/profile-reach/aguada-restaurant-permit-path-review.json` and
 `data/profile-reach/aguada-restaurant-utility-service-review.json` and
-`data/profile-reach/aguada-restaurant-site-screening-review.json`.
+`data/profile-reach/aguada-restaurant-site-screening-review.json` and
+`data/profile-reach/aguada-restaurant-large-site-screening-review.json`.
 
 Each artifact must:
 
@@ -260,6 +261,7 @@ Validate the reviewed signal-upgrade artifacts with:
 npm run test:regulatory-signal-review
 npm run test:infrastructure-signal-review
 npm run test:site-feasibility-signal-review
+npm run test:large-site-signal-review
 ```
 
 ## Current Candidate Sources

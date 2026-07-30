@@ -54,7 +54,14 @@
       "id": "large-site-feasibility-gap",
       "lensId": "hard-constraints-site-feasibility",
       "label": "Large-site readiness, access, and hazard fit",
-      "sourceType": "source-gap",
+      "sourceType": "registered-source",
+      "sourceId": "aguada-territorial-plan-order-2024",
+      "supportingSourceIds": [
+        "pr-jp-mipr-site-screening",
+        "pr-jp-flood-determination-service",
+        "aguada-hazard-mitigation-plan-2020",
+        "pr-jp-district-legend"
+      ],
       "applicableScenarioIds": [
         "large-strategic"
       ],
@@ -65,13 +72,18 @@
         "large-strategic-large-site-fit"
       ],
       "recency": {
-        "status": "no-registered-source"
+        "evidenceDate": "2026-07-30",
+        "quality": "official-aguada-territorial-plan-and-screening-baseline"
       },
-      "interpretationLimits": [
-        "No registered parcel assembly, industrial-site, or hazard-screening source exists for the fixed selection.",
-        "The current planning-context fixtures do not test large-footprint utility staging or truck access."
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-large-site-screening-review.json",
+        "data/sources/puerto-rico.json"
       ],
-      "sourceGapBasis": "Large-site readiness remains an explicit gap until a registered parcel or facility-readiness source is added."
+      "interpretationLimits": [
+        "The reviewed sources establish official territorial-plan, zoning, flood, and hazard-screening controls, not parcel-specific readiness for one large-format restaurant site.",
+        "The current baseline still does not prove parcel assembly, destination-scale parking, truck circulation, building condition, or utility staging for one property."
+      ],
+      "decisionSummary": "Official Aguada territorial-plan and Puerto Rico Planning Board sources now establish a descriptive large-site screening baseline for the fixed large-strategic restaurant scenario."
     },
     {
       "id": "municipality-restaurant-activity-baseline",

@@ -67,7 +67,7 @@ data provenance controls, release validation, and ongoing audit duties.
 | Planning-context fixture | `data/planning-context/*.json` | Category context hides uncertainty or drifts into recommendation language |
 | Profile/reach contract | `data/profile-reach/business-profile-reach-v1.json` | Scale scenarios change evidence relevance without explicit reach, criticality, confidence, limitations, or a next validation check |
 | Decision-signal registry | `data/profile-reach/decision-signal-registry-v1.json` | Fixed-selection profile/reach facts drift away from their documented evidence or source-gap state |
-| Reviewed signal-upgrade artifacts | `data/profile-reach/aguada-restaurant-permit-path-review.json`, `data/profile-reach/aguada-restaurant-utility-service-review.json`, `data/profile-reach/aguada-restaurant-site-screening-review.json` | Reviewed authority stacks drift away from the registered signals or start implying approval, readiness, measured continuity, or parcel readiness |
+| Reviewed signal-upgrade artifacts | `data/profile-reach/aguada-restaurant-permit-path-review.json`, `data/profile-reach/aguada-restaurant-utility-service-review.json`, `data/profile-reach/aguada-restaurant-site-screening-review.json`, `data/profile-reach/aguada-restaurant-large-site-screening-review.json` | Reviewed authority stacks drift away from the registered signals or start implying approval, readiness, measured continuity, parcel readiness, or large-site feasibility beyond the documented baseline |
 | Migration artifacts | `db/migrations/` | Missing rollback, unsafe schema change, readiness drift |
 | Deployment verification | `scripts/verify_*.js` | Production starts with missing config or wrong mode |
 | Release smoke checks | `scripts/release_smoke_check.js` | Public app cannot serve API-backed map or planning-context data |
@@ -305,7 +305,7 @@ Release validation checks that the intended commit can be operated safely:
 | ID | Name | Procedure | Expected Result |
 | --- | --- | --- | --- |
 | TC-001 | Root test baseline | `npm run test` | All host contract and verification tests pass |
-| TC-001A | Node runtime pin | `npm run verify:node && npm run test:node-runtime` | The active process uses Node 26, the verifier unit contract passes, and root install/build/test entrypoints reject an unsupported synthetic runtime when npm lifecycle hooks are disabled |
+| TC-001A | Node runtime pin | `npm run verify:node && npm run test:node-runtime` | The active process uses Node 24, the verifier unit contract passes, and root install/build/test entrypoints reject an unsupported synthetic runtime when npm lifecycle hooks are disabled |
 | TC-002 | Clean install | `npm run install:all` | Root, app, API, and modern API install from lockfiles |
 | TC-003 | Build baseline | `npm run build` | Build delegates to test baseline and passes |
 | TC-004 | API contracts | `npm run test:api` | Root, response, resource, route, and DB-free contracts pass |
@@ -335,7 +335,9 @@ Release validation checks that the intended commit can be operated safely:
 | TC-028 | Reviewed regulatory signal artifact | `npm run test:regulatory-signal-review` | The Aguada restaurant permit-path artifact stays linked to the registered regulatory signal, cites only the reviewed Puerto Rico authority stack, and keeps explicit descriptive limits. |
 | TC-029 | Reviewed infrastructure signal artifact | `npm run test:infrastructure-signal-review` | The Aguada restaurant utility-service artifact stays linked to the registered infrastructure signal, cites only the reviewed Puerto Rico authority stack, and keeps explicit descriptive limits. |
 | TC-030 | Reviewed site-feasibility signal artifact | `npm run test:site-feasibility-signal-review` | The Aguada restaurant site-screening artifact stays linked to the registered site-feasibility signal, cites only the reviewed Puerto Rico authority stack, and keeps explicit descriptive limits. |
-| TC-031 | Business-profile and geographic-reach contract | `npm run test:profile-reach-contract` | The versioned profile/reach contract holds one reviewed municipality/category selection constant across small/local, medium/regional, and large/strategic scenarios and verifies lens order, reach, relevance, criticality, confidence, limitations, and next validation checks without scores or ranks. |
+| TC-031 | Reviewed large-site signal artifact | `npm run test:large-site-signal-review` | The Aguada restaurant large-site screening artifact stays linked to the registered large-site signal, cites only the reviewed Puerto Rico authority stack, and keeps explicit descriptive limits. |
+| TC-032 | Business-profile and geographic-reach contract | `npm run test:profile-reach-contract` | The versioned profile/reach contract holds one reviewed municipality/category selection constant across small/local, medium/regional, and large/strategic scenarios and verifies lens order, reach, relevance, criticality, confidence, limitations, and next validation checks without scores or ranks. |
+| TC-032 | Production API startup hardening | `npm run test:deployment-config`, `npm run test:deployment-containers`, and modern API image inspection/startup | Deployment verification accepts only PostgreSQL URL schemes without echoing invalid values, and the production API verifier/server command runs as the unprivileged `node` user. |
 
 ## 7. Test Procedure Specification
 
