@@ -107,6 +107,7 @@ Audits should use repository evidence first:
 - `data/profile-reach/aguada-restaurant-utility-service-review.json`
 - `data/profile-reach/aguada-restaurant-site-screening-review.json`
 - `data/profile-reach/aguada-restaurant-large-site-screening-review.json`
+- `data/profile-reach/aguada-restaurant-workforce-pipeline-review.json`
 - `docs/database-migrations.md`
 - `docs/deployment-topology.md`
 - `docs/production-deployment.md`

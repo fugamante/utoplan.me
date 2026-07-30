@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "artifactVersion": "aguada-restaurant-workforce-pipeline-review-v1",
+  "scope": "puerto-rico-planning-candidate",
+  "status": "reviewed",
+  "reviewedAt": "2026-07-30",
+  "signalId": "specialized-management-pipeline-gap",
+  "fixedSelection": {
+    "fixtureId": "mun003_restaurant",
+    "municipalityCode": "003",
+    "municipalityLabel": "Aguada",
+    "businessCategoryId": "restaurant-cafe",
+    "selectedNaicsCodes": [
+      "722511"
+    ]
+  },
+  "decisionSummary": "The fixed Aguada restaurant matrix no longer relies on a pure strategic workforce source gap. Official Puerto Rico labor-market publications now establish a descriptive island-wide baseline for food-service supervision, frontline staffing volume, annual openings, and projected occupational growth. This remains workforce-baseline evidence only: it does not prove Aguada-specific hiring depth, commute range, retention, schedule coverage, or that one destination-format operator can assemble and keep a multi-site leadership team.",
+  "authorities": [
+    {
+      "sourceId": "pr-lmi-hospitality-food-service-profile-2026",
+      "role": "food-service-supervision-and-qualification-baseline",
+      "evidence": "The official Puerto Rico lodging and food-service labor-market profile reports direct supervisors of food-preparation and service workers at about $14.74 per hour and describes that role as typically requiring a high-school diploma or equivalent plus five or more years of experience, while also listing wage context for waitstaff and cooks."
+    },
+    {
+      "sourceId": "pr-lmi-top-occupations-2024",
+      "role": "island-wide-food-service-role-volume",
+      "evidence": "Puerto Rico's official 2024 occupational-employment publication lists 20,900 fast-food and counter workers, 14,700 waiters and waitresses, and 10,640 restaurant cooks, which establishes that food-service staffing roles remain large occupational pools island-wide."
+    },
+    {
+      "sourceId": "pr-lmi-occupation-openings-2022-2032",
+      "role": "annual-openings-context",
+      "evidence": "Puerto Rico's official 2022-2032 annual-openings publication lists large yearly openings for frontline food-service occupations, including 5,408 fast-food and counter-worker openings and 2,692 waiter and waitress openings."
+    },
+    {
+      "sourceId": "pr-lmi-occupation-projections-2024-2034",
+      "role": "long-term-growth-context",
+      "evidence": "Puerto Rico's official 2024-2034 occupation projections show restaurant cooks rising from 10,813 to 12,702 jobs, a gain of 1,889 or 17.47 percent, with 1,906 annual openings, which establishes continued island-wide staffing growth pressure in a core restaurant occupation."
+    }
+  ],
+  "scenarioCoverage": [
+    {
+      "scenarioId": "large-strategic",
+      "reachId": "island-wide",
+      "coverage": "descriptive-workforce-baseline",
+      "notes": [
+        "The fixed strategic scenario now has an official Puerto Rico-wide baseline for food-service supervision, staffing volume, and openings instead of a blank island-wide workforce lane.",
+        "The evidence still does not prove that Aguada can supply or retain a destination-format management team or a stable multi-shift roster for one operator."
+      ]
+    }
+  ],
+  "interpretationLimits": [
+    "These sources establish island-wide Puerto Rico occupation, wage, and openings context, not Aguada-specific recruiting depth or commute behavior.",
+    "The reviewed labor-market publications do not identify one employer's retention performance, shift coverage reliability, or supervisory fit for a destination-format restaurant.",
+    "The artifact does not imply that a large-format restaurant should open in Aguada or that staffing risk is solved for the fixed selection."
+  ],
+  "nextUpgradeTargets": [
+    "Register west-coast or municipality-relevant commute, labor-shed, or hiring-competition evidence if an official reproducible Puerto Rico source becomes available.",
+    "Add operator-reviewed retention or schedule-coverage evidence only if it can be tied to a documented, non-anecdotal Puerto Rico source path.",
+    "Keep local and corridor workforce gaps explicit until a source narrower than island-wide can be registered without inventing precision."
+  ]
+}
