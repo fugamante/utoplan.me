@@ -3,7 +3,7 @@
   "registryVersion": "decision-signal-registry-v1",
   "scope": "puerto-rico-planning-candidate",
   "status": "candidate-needs-review",
-  "updatedAt": "2026-07-29",
+  "updatedAt": "2026-07-30",
   "fixedSelection": {
     "fixtureId": "mun003_restaurant",
     "municipalityCode": "003",
@@ -123,10 +123,11 @@
       "sourceGapBasis": "Demand expansion beyond the fixed municipality remains blocked on a registered Puerto Rico demand-proxy source."
     },
     {
-      "id": "basic-utility-service-gap",
+      "id": "aguada-basic-utility-service-baseline",
       "lensId": "infrastructure-reliability-cost",
-      "label": "Basic power, water, and refrigeration-service continuity",
-      "sourceType": "source-gap",
+      "label": "Aguada electric and water service continuity baseline",
+      "sourceType": "registered-source",
+      "sourceId": "pr-energy-bureau-2026-electricity-rate-order",
       "applicableScenarioIds": [
         "small-local"
       ],
@@ -137,13 +138,21 @@
         "small-local-basic-utilities"
       ],
       "recency": {
-        "status": "no-registered-source"
+        "evidenceDate": "2026-07-30",
+        "quality": "current-electric-governance-with-reviewed-local-water-interruption"
       },
-      "interpretationLimits": [
-        "No registered utility reliability, outage, or service-restoration evidence exists for the fixed municipality.",
-        "The current data does not distinguish routine service adequacy from interruption cost."
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-utility-service-review.json",
+        "data/sources/puerto-rico.json"
       ],
-      "sourceGapBasis": "Infrastructure coverage remains a gap until a Puerto Rico utility-reliability or service-continuity source is registered."
+      "supportingSourceIds": [
+        "luma-outage-reporting-faq",
+        "prasa-aguada-water-service-interruption-2023"
+      ],
+      "interpretationLimits": [
+        "The reviewed sources establish official rate and interruption-handling surfaces, not measured outage frequency or restoration duration for one address.",
+        "The current baseline still does not quantify refrigeration-loss exposure, backup-power coverage, or small-business utility costs for a specific lease."
+      ]
     },
     {
       "id": "utility-resilience-gap",
