@@ -676,6 +676,21 @@
       "notes": "Use as descriptive district-reference evidence for planning-profile work only. It explains the official flood and land-use district codes that appear in Planning Board screening tools, but it does not prove a property's final allowed use or physical readiness. Supporting review artifact: data/profile-reach/aguada-restaurant-site-screening-review.json."
     },
     {
+      "id": "aguada-territorial-plan-order-2024",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-site-feasibility"
+      ],
+      "publisher": "Gobierno de Puerto Rico and Junta de Planificación de Puerto Rico",
+      "portal": "docs.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.jp.pr.gov/planificacion-fisica",
+      "resourceUrl": "https://docs.pr.gov/files/JP-Junta%20de%20Planificacion/Planes%20Territoriales/PT/Aguada/JP-PT-26-01-Orden-Ejecutiva-OE-2024-044.pdf",
+      "sourceBasis": "Official 2024 executive order approves Aguada's territorial-plan revision and states that the municipality's plan includes classification, zoning, urban-center delimitation, and road-plan documents presented as official digital geodata.",
+      "notes": "Use as descriptive large-site governance evidence for planning-profile work only. It confirms that Aguada has an official current territorial-plan control for land-use, classification, and road-plan review, but it does not prove parcel assembly, parking supply, truck access, or one property's operating readiness. Supporting review artifact: data/profile-reach/aguada-restaurant-large-site-screening-review.json."
+    },
+    {
       "id": "census-cbp-2014-state-72-fallback",
       "status": "fallback-candidate",
       "targetTables": [

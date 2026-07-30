@@ -128,7 +128,7 @@ PostgreSQL
 | Planning-context fixtures | `data/planning-context/` | Record descriptive municipality/category slices with confidence, limitations, and unresolved questions. |
 | Planned business-profile and reach contracts | `data/profile-reach/business-profile-reach-v1.json` | Own versioned operating assumptions, decision-lens relevance, geographic reach, profile-dependent criticality, confidence, limitations, and next validation checks before API/UI expansion. |
 | Decision-signal registry | `data/profile-reach/decision-signal-registry-v1.json` | Record which fixed-selection profile/reach facts are backed by registered Puerto Rico evidence versus explicit source gaps, including scenario reach, recency, interpretation limits, and matrix linkage. |
-| Reviewed signal-upgrade artifacts | `data/profile-reach/aguada-restaurant-permit-path-review.json`, `data/profile-reach/aguada-restaurant-utility-service-review.json`, `data/profile-reach/aguada-restaurant-site-screening-review.json` | Record bounded reviewed evidence upgrades for individual decision signals without expanding API/UI scope or turning process-path, continuity-baseline, or site-screening evidence into recommendations. |
+| Reviewed signal-upgrade artifacts | `data/profile-reach/aguada-restaurant-permit-path-review.json`, `data/profile-reach/aguada-restaurant-utility-service-review.json`, `data/profile-reach/aguada-restaurant-site-screening-review.json`, `data/profile-reach/aguada-restaurant-large-site-screening-review.json` | Record bounded reviewed evidence upgrades for individual decision signals without expanding API/UI scope or turning process-path, continuity-baseline, site-screening, or large-site screening evidence into recommendations. |
 | Release scripts | `scripts/`, `test/` | Verify deployment configuration, release smoke behavior, and integration contracts. |
 
 ### 5.3 Runtime Modes
@@ -265,11 +265,14 @@ database fields are configured.
 
 Supported configuration forms:
 
-- `DATABASE_URL`.
+- `DATABASE_URL` using the `postgres://` or `postgresql://` scheme.
 - `DATABASE_HOST`, `DATABASE_PORT`, `DATABASE_USER`, `DATABASE_PASSWORD`,
   `DATABASE_DB`.
 
 Test configuration may use the corresponding `TEST_DATABASE_*` variables.
+Production deployment verification rejects malformed database URLs and
+unsupported schemes before API startup without including the configured value
+in the validation error.
 
 ### 7.5 API Evolution Rules
 
@@ -377,6 +380,8 @@ as a compatible app/API artifact pair.
 Required release design controls:
 
 - Production secrets come from the platform secret store.
+- The production API image runs configuration verification and the API process
+  as the unprivileged image user `node`.
 - `UTOPLAN_DEMO_FIXTURE` remains unset in production.
 - Database changes are applied separately from service startup.
 - `/readyz` must pass before app traffic depends on a new API release.

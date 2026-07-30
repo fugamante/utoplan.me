@@ -147,6 +147,13 @@
   establish a descriptive site-screening baseline for the fixed restaurant
   scenario, while parcel readiness, kitchen retrofit condition, frontage, and
   lease fit remain explicit limits.
+- `data/profile-reach/aguada-restaurant-large-site-screening-review.json` now
+  records the next site-feasibility decision-signal upgrade: official Aguada
+  territorial-plan, Puerto Rico Planning Board zoning, flood, district, and
+  hazard sources now establish a descriptive large-site screening baseline for
+  the fixed large-strategic restaurant scenario, while parcel assembly,
+  parking, truck access, structure condition, and utility staging remain
+  explicit limits.
 - `npm run test:decision-signals` validates the decision-signal registry and
   its linkage back to the profile/reach matrix so fixed-selection planning
   facts cannot drift away from their documented evidence or explicit gap state.
@@ -159,6 +166,9 @@
 - `npm run test:site-feasibility-signal-review` validates the reviewed Aguada
   restaurant site-screening artifact and its linkage to the source registry
   and decision-signal contract.
+- `npm run test:large-site-signal-review` validates the reviewed Aguada
+  restaurant large-site screening artifact and its linkage to the source
+  registry and decision-signal contract.
 - `npm run test:profile-reach-contract` validates the profile/reach contract,
   the three-scenario matrix, the fixed municipality/category boundary, and the
   expected profile-dependent reach and criticality progression.

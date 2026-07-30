@@ -170,6 +170,10 @@ The current modernization work is centered on:
   site-screening baseline evidence for the fixed Aguada restaurant scenario,
   scoped to official Puerto Rico Planning Board zoning, flood, district, and
   Aguada hazard sources.
+- `data/profile-reach/aguada-restaurant-large-site-screening-review.json`:
+  reviewed large-site screening baseline evidence for the fixed Aguada
+  restaurant scenario, scoped to official Aguada territorial-plan, Planning
+  Board zoning, flood, district, and hazard sources.
 - `docs/unis-geocoding-policy.md`: approved reproducible geocoding policy for
   deriving `unis.lat` and `unis.long` from registered Puerto Rico source
   addresses.
@@ -235,6 +239,7 @@ npm run test:decision-signals
 npm run test:regulatory-signal-review
 npm run test:infrastructure-signal-review
 npm run test:site-feasibility-signal-review
+npm run test:large-site-signal-review
 npm run test:profile-reach-contract
 ```
 

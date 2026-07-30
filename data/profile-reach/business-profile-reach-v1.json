@@ -445,22 +445,23 @@
           "lensId": "hard-constraints-site-feasibility",
           "relevance": "primary",
           "criticality": "blocker",
-          "confidence": "low",
+          "confidence": "medium",
           "facts": [
             {
               "id": "large-strategic-large-site-fit",
               "signalId": "large-site-feasibility-gap",
               "label": "Large-format site readiness and hazard tolerance",
               "reachId": "site-bound",
-              "sourceType": "source-gap",
-              "notes": "No registered parcel, hazard, or facility-readiness source can validate a large-format destination site."
+              "sourceType": "registered-source",
+              "sourceId": "aguada-territorial-plan-order-2024",
+              "notes": "Official Aguada territorial-plan and Puerto Rico Planning Board sources now establish land-use classification, zoning, flood-screening, road-plan, and hazard-review controls for a large-format site in Aguada, but they do not prove parcel assembly, truck access, building condition, or destination-scale operating readiness for one property."
             }
           ],
           "limitations": [
-            "The current repo cannot show whether Aguada can support a destination-format footprint at the parcel level.",
-            "Large capital exposure makes unresolved site constraints materially riskier than in the smaller scenarios."
+            "The current baseline stops at official territorial-plan and screening controls and does not resolve parcel assembly, parking, loading, or retrofit readiness for one large site.",
+            "Large capital exposure makes unresolved parcel-specific access, hazard, and facility constraints materially riskier than in the smaller scenarios."
           ],
-          "nextValidationCheck": "Register parcel and hazard evidence before treating site selection as comparable to smaller operating profiles."
+          "nextValidationCheck": "Add parcel-specific classification, flood, access, or building-condition evidence before treating a destination-format site as more than a screened planning question."
         },
         {
           "lensId": "demand-market-reach",
