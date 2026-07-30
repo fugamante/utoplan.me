@@ -67,7 +67,7 @@ data provenance controls, release validation, and ongoing audit duties.
 | Planning-context fixture | `data/planning-context/*.json` | Category context hides uncertainty or drifts into recommendation language |
 | Profile/reach contract | `data/profile-reach/business-profile-reach-v1.json` | Scale scenarios change evidence relevance without explicit reach, criticality, confidence, limitations, or a next validation check |
 | Decision-signal registry | `data/profile-reach/decision-signal-registry-v1.json` | Fixed-selection profile/reach facts drift away from their documented evidence or source-gap state |
-| Reviewed signal-upgrade artifacts | `data/profile-reach/aguada-restaurant-permit-path-review.json`, `data/profile-reach/aguada-restaurant-utility-service-review.json` | Reviewed authority stacks drift away from the registered signals or start implying approval, readiness, or measured continuity |
+| Reviewed signal-upgrade artifacts | `data/profile-reach/aguada-restaurant-permit-path-review.json`, `data/profile-reach/aguada-restaurant-utility-service-review.json`, `data/profile-reach/aguada-restaurant-site-screening-review.json` | Reviewed authority stacks drift away from the registered signals or start implying approval, readiness, measured continuity, or parcel readiness |
 | Migration artifacts | `db/migrations/` | Missing rollback, unsafe schema change, readiness drift |
 | Deployment verification | `scripts/verify_*.js` | Production starts with missing config or wrong mode |
 | Release smoke checks | `scripts/release_smoke_check.js` | Public app cannot serve API-backed map or planning-context data |
@@ -334,7 +334,8 @@ Release validation checks that the intended commit can be operated safely:
 | TC-027 | Decision-signal registry contract | `npm run test:decision-signals` | The decision-signal registry covers all seven lenses, keeps fixed-selection signals linked to scenarios and reaches, and stays bidirectionally aligned with the profile/reach matrix. |
 | TC-028 | Reviewed regulatory signal artifact | `npm run test:regulatory-signal-review` | The Aguada restaurant permit-path artifact stays linked to the registered regulatory signal, cites only the reviewed Puerto Rico authority stack, and keeps explicit descriptive limits. |
 | TC-029 | Reviewed infrastructure signal artifact | `npm run test:infrastructure-signal-review` | The Aguada restaurant utility-service artifact stays linked to the registered infrastructure signal, cites only the reviewed Puerto Rico authority stack, and keeps explicit descriptive limits. |
-| TC-030 | Business-profile and geographic-reach contract | `npm run test:profile-reach-contract` | The versioned profile/reach contract holds one reviewed municipality/category selection constant across small/local, medium/regional, and large/strategic scenarios and verifies lens order, reach, relevance, criticality, confidence, limitations, and next validation checks without scores or ranks. |
+| TC-030 | Reviewed site-feasibility signal artifact | `npm run test:site-feasibility-signal-review` | The Aguada restaurant site-screening artifact stays linked to the registered site-feasibility signal, cites only the reviewed Puerto Rico authority stack, and keeps explicit descriptive limits. |
+| TC-031 | Business-profile and geographic-reach contract | `npm run test:profile-reach-contract` | The versioned profile/reach contract holds one reviewed municipality/category selection constant across small/local, medium/regional, and large/strategic scenarios and verifies lens order, reach, relevance, criticality, confidence, limitations, and next validation checks without scores or ranks. |
 
 ## 7. Test Procedure Specification
 

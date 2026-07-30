@@ -141,6 +141,12 @@
   water-service interruption evidence now establish a descriptive utility
   continuity baseline for the fixed restaurant scenario, while parcel-level
   reliability, outage duration, and spoilage risk remain explicit limits.
+- `data/profile-reach/aguada-restaurant-site-screening-review.json` now
+  records the first site-feasibility decision-signal upgrade: official Puerto
+  Rico Planning Board zoning, flood, district, and Aguada hazard sources now
+  establish a descriptive site-screening baseline for the fixed restaurant
+  scenario, while parcel readiness, kitchen retrofit condition, frontage, and
+  lease fit remain explicit limits.
 - `npm run test:decision-signals` validates the decision-signal registry and
   its linkage back to the profile/reach matrix so fixed-selection planning
   facts cannot drift away from their documented evidence or explicit gap state.
@@ -149,6 +155,9 @@
   decision-signal contract.
 - `npm run test:infrastructure-signal-review` validates the reviewed Aguada
   restaurant utility-service artifact and its linkage to the source registry
+  and decision-signal contract.
+- `npm run test:site-feasibility-signal-review` validates the reviewed Aguada
+  restaurant site-screening artifact and its linkage to the source registry
   and decision-signal contract.
 - `npm run test:profile-reach-contract` validates the profile/reach contract,
   the three-scenario matrix, the fixed municipality/category boundary, and the
