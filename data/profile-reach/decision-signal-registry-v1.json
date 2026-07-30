@@ -17,7 +17,13 @@
       "id": "site-ready-kitchen-gap",
       "lensId": "hard-constraints-site-feasibility",
       "label": "Lease-ready kitchen fit and frontage conditions",
-      "sourceType": "source-gap",
+      "sourceType": "registered-source",
+      "sourceId": "pr-jp-mipr-site-screening",
+      "supportingSourceIds": [
+        "pr-jp-flood-determination-service",
+        "aguada-hazard-mitigation-plan-2020",
+        "pr-jp-district-legend"
+      ],
       "applicableScenarioIds": [
         "small-local",
         "medium-regional"
@@ -31,13 +37,18 @@
         "medium-regional-larger-lease"
       ],
       "recency": {
-        "status": "no-registered-source"
+        "evidenceDate": "2026-07-30",
+        "quality": "official-jp-screening-and-aguada-hazard-baseline"
       },
-      "interpretationLimits": [
-        "No parcel, building, or hazard dataset is registered for the fixed selection.",
-        "The registry cannot yet distinguish kitchen retrofit questions from frontage or landlord constraints."
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-site-screening-review.json",
+        "data/sources/puerto-rico.json"
       ],
-      "sourceGapBasis": "The current repository has no registered site-feasibility source for parcel fit, building readiness, or hazards."
+      "interpretationLimits": [
+        "The reviewed sources establish official zoning, flood, and district-screening surfaces, not parcel-level readiness for one lease.",
+        "The current baseline still does not prove kitchen retrofit condition, frontage quality, parking adequacy, or landlord support for restaurant operation."
+      ],
+      "decisionSummary": "Official Puerto Rico Planning Board screening and Aguada hazard sources now establish a descriptive site-feasibility baseline for the fixed Aguada restaurant scenarios."
     },
     {
       "id": "large-site-feasibility-gap",

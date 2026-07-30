@@ -616,6 +616,66 @@
       "notes": "Use as descriptive Aguada water-service continuity evidence for planning-profile work only. It confirms that the fixed municipality can be affected by pump and filter-plant recovery conditions in the western regional system, but it does not prove current service quality, restoration time, or one parcel's water connection. Supporting review artifact: data/profile-reach/aguada-restaurant-utility-service-review.json."
     },
     {
+      "id": "pr-jp-mipr-site-screening",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-site-feasibility"
+      ],
+      "publisher": "Junta de Planificación de Puerto Rico",
+      "portal": "PR.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.jp.pr.gov/visualizadores-y-mapas",
+      "resourceUrl": "https://gis.jp.pr.gov/mipr/index.html?noTools=&orig=pDigital",
+      "sourceBasis": "Official Puerto Rico Planning Board online map services provide access to MIPR, territorial-plan viewers, and the interactive zoning catalog for land-use, regulation, and classification screening.",
+      "notes": "Use as descriptive site-screening evidence for planning-profile work only. It confirms that official Planning Board-controlled map and zoning surfaces exist for site screening in Puerto Rico, but it does not prove parcel-level readiness, legal clearance, or a specific lease condition. Supporting review artifact: data/profile-reach/aguada-restaurant-site-screening-review.json."
+    },
+    {
+      "id": "pr-jp-flood-determination-service",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-site-feasibility"
+      ],
+      "publisher": "Junta de Planificación de Puerto Rico",
+      "portal": "PR.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.jp.pr.gov/",
+      "resourceUrl": "https://portaldeinundacion.jp.pr.gov/riesgo.html",
+      "sourceBasis": "Official Puerto Rico Planning Board flood services provide standard property flood determination based on FIRM and ABFE criteria and identify the adopted flood-risk maps used for Puerto Rico screening.",
+      "notes": "Use as descriptive flood-screening evidence for planning-profile work only. It confirms official flood-determination and adopted flood-risk map access, but it does not prove one parcel's final buildability, floodproofing cost, or operating readiness. Supporting review artifact: data/profile-reach/aguada-restaurant-site-screening-review.json."
+    },
+    {
+      "id": "aguada-hazard-mitigation-plan-2020",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-site-feasibility"
+      ],
+      "publisher": "Municipio de Aguada and Junta de Planificación de Puerto Rico",
+      "portal": "docs.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.jp.pr.gov/planificacion-fisica",
+      "resourceUrl": "https://docs.pr.gov/files/JP-Junta%20de%20Planificacion/Planes%20de%20Mitigaci%C3%B3n%20Aprobados/Actualizados%20por%20los%20municipios/Agda-HMP-ExeSummary.pdf",
+      "sourceBasis": "Aguada's official 2020 hazard mitigation summary documents the municipality's hazard context, including the flood ranking and the use of geographic information system data in risk assessment.",
+      "notes": "Use as descriptive Aguada hazard-context evidence for planning-profile work only. It confirms municipality-level hazard priority and planning context, but it does not prove parcel-specific flood exposure, structure condition, or lease readiness. Supporting review artifact: data/profile-reach/aguada-restaurant-site-screening-review.json."
+    },
+    {
+      "id": "pr-jp-district-legend",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-site-feasibility"
+      ],
+      "publisher": "Junta de Planificación de Puerto Rico",
+      "portal": "gis.jp.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://gis.jp.pr.gov/mipr/index.html?noTools=&orig=pDigital",
+      "resourceUrl": "https://gis.jp.pr.gov/geolocalizadorreal/Leyenda_distritos.pdf",
+      "sourceBasis": "Official Puerto Rico Planning Board district definitions explain the flood, classification, and commercial district labels used in land-use and site-screening tools.",
+      "notes": "Use as descriptive district-reference evidence for planning-profile work only. It explains the official flood and land-use district codes that appear in Planning Board screening tools, but it does not prove a property's final allowed use or physical readiness. Supporting review artifact: data/profile-reach/aguada-restaurant-site-screening-review.json."
+    },
+    {
       "id": "census-cbp-2014-state-72-fallback",
       "status": "fallback-candidate",
       "targetTables": [

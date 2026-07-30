@@ -166,6 +166,10 @@ The current modernization work is centered on:
   utility-service baseline evidence for the fixed Aguada restaurant scenario,
   scoped to official Puerto Rico electricity-rate governance, outage-reporting,
   and Aguada water-service interruption sources.
+- `data/profile-reach/aguada-restaurant-site-screening-review.json`: reviewed
+  site-screening baseline evidence for the fixed Aguada restaurant scenario,
+  scoped to official Puerto Rico Planning Board zoning, flood, district, and
+  Aguada hazard sources.
 - `docs/unis-geocoding-policy.md`: approved reproducible geocoding policy for
   deriving `unis.lat` and `unis.long` from registered Puerto Rico source
   addresses.
@@ -230,6 +234,7 @@ npm run test:planning-context
 npm run test:decision-signals
 npm run test:regulatory-signal-review
 npm run test:infrastructure-signal-review
+npm run test:site-feasibility-signal-review
 npm run test:profile-reach-contract
 ```
 

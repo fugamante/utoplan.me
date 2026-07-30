@@ -109,22 +109,23 @@
           "lensId": "hard-constraints-site-feasibility",
           "relevance": "primary",
           "criticality": "material-tradeoff",
-          "confidence": "low",
+          "confidence": "medium",
           "facts": [
             {
               "id": "small-local-lease-readiness",
               "signalId": "site-ready-kitchen-gap",
               "label": "Lease-ready kitchen fit and frontage conditions",
               "reachId": "site-bound",
-              "sourceType": "source-gap",
-              "notes": "No registered parcel or building-readiness source is in the repository yet for this category."
+              "sourceType": "registered-source",
+              "sourceId": "pr-jp-mipr-site-screening",
+              "notes": "Official Puerto Rico Planning Board sources now establish zoning, district, and flood-screening surfaces plus Aguada hazard context for site review, but they do not prove that an existing kitchen space, frontage condition, or landlord arrangement is operationally ready."
             }
           ],
           "limitations": [
-            "The current repo has no parcel, building, or hazard dataset for this scenario.",
-            "Current planning-context fixtures do not test kitchen retrofits, code compliance, or landlord constraints."
+            "The current baseline stops at official site screening and does not resolve kitchen retrofits, code compliance, or landlord constraints.",
+            "Municipality-level hazard context does not replace parcel-specific flood, structure, or lease review."
           ],
-          "nextValidationCheck": "Register a source-backed parcel or building-feasibility input before treating site fit as more than a planning question."
+          "nextValidationCheck": "Add parcel-specific zoning, flood, or building-condition evidence before treating site fit as more than a planning question."
         },
         {
           "lensId": "demand-market-reach",
@@ -273,22 +274,23 @@
           "lensId": "hard-constraints-site-feasibility",
           "relevance": "primary",
           "criticality": "material-tradeoff",
-          "confidence": "low",
+          "confidence": "medium",
           "facts": [
             {
               "id": "medium-regional-larger-lease",
               "signalId": "site-ready-kitchen-gap",
               "label": "Larger-format lease fit and parking/service access",
               "reachId": "site-bound",
-              "sourceType": "source-gap",
-              "notes": "The repo still lacks parcel and building evidence for larger format food-service fit."
+              "sourceType": "registered-source",
+              "sourceId": "pr-jp-mipr-site-screening",
+              "notes": "Official Puerto Rico Planning Board sources now establish the same zoning, district, and flood-screening surfaces for a larger-format Aguada restaurant site, but they do not prove parking, loading, retrofit, or circulation readiness for one property."
             }
           ],
           "limitations": [
-            "Current fixtures do not measure whether the selected place can support a larger-format layout.",
-            "Parking, loading, and retrofit needs remain unsourced."
+            "Current evidence does not determine whether the selected place can support a larger-format layout at one parcel.",
+            "Parking, loading, circulation, and retrofit needs remain beyond the reviewed screening baseline."
           ],
-          "nextValidationCheck": "Add property-fit evidence before treating larger-format siting as interchangeable with the small/local case."
+          "nextValidationCheck": "Add parcel-specific access, parking, or building-condition evidence before treating larger-format siting as interchangeable with the small/local case."
         },
         {
           "lensId": "demand-market-reach",
