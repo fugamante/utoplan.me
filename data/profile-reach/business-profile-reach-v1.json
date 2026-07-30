@@ -3,7 +3,7 @@
   "contractVersion": "business-profile-reach-v1",
   "scope": "puerto-rico-planning-candidate",
   "status": "candidate-needs-review",
-  "updatedAt": "2026-07-29",
+  "updatedAt": "2026-07-30",
   "rules": {
     "noScores": true,
     "noRankings": true,
@@ -152,22 +152,23 @@
           "lensId": "infrastructure-reliability-cost",
           "relevance": "primary",
           "criticality": "material-tradeoff",
-          "confidence": "low",
+          "confidence": "medium",
           "facts": [
             {
               "id": "small-local-basic-utilities",
-              "signalId": "basic-utility-service-gap",
-              "label": "Basic power, water, and refrigeration-service continuity",
+              "signalId": "aguada-basic-utility-service-baseline",
+              "label": "Aguada electric and water service continuity baseline",
               "reachId": "local-catchment",
-              "sourceType": "source-gap",
-              "notes": "No registered utility-reliability or outage-cost source is available for the selected place."
+              "sourceType": "registered-source",
+              "sourceId": "pr-energy-bureau-2026-electricity-rate-order",
+              "notes": "Official Puerto Rico sources now establish current electric rate governance, an official outage-reporting path, and reviewed Aguada water-service interruption exposure, but they do not prove parcel-level reliability or outage duration."
             }
           ],
           "limitations": [
-            "Current data does not separate routine utility service from outage recovery exposure.",
-            "Small restaurant operating margins can be sensitive to interruptions even when capital exposure is modest."
+            "Current evidence does not quantify outage frequency, restoration speed, refrigeration loss, or parcel-specific service quality.",
+            "Small restaurant operating margins can still be sensitive to interruptions even though the utility lane now has a descriptive official baseline."
           ],
-          "nextValidationCheck": "Add a utility-reliability evidence path before making opening-hour or spoilage assumptions."
+          "nextValidationCheck": "Add municipality-level or parcel-level utility continuity evidence before treating opening-hour or spoilage assumptions as measured."
         },
         {
           "lensId": "workforce-capability",

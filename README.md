@@ -22,7 +22,7 @@ PostgreSQL-backed Node and TypeScript system with explicit data provenance.
 
 ## Quick Start
 
-Use Node 24.x. Install the root workspace and both nested packages:
+Use Node 26.x. Install the root workspace and both nested packages:
 
 ```sh
 npm run install:all
@@ -162,6 +162,10 @@ The current modernization work is centered on:
 - `data/profile-reach/aguada-restaurant-permit-path-review.json`: reviewed
   regulatory-path evidence for the fixed Aguada restaurant scenario, scoped to
   official Puerto Rico permit, fire, health, and municipal-patent sources.
+- `data/profile-reach/aguada-restaurant-utility-service-review.json`: reviewed
+  utility-service baseline evidence for the fixed Aguada restaurant scenario,
+  scoped to official Puerto Rico electricity-rate governance, outage-reporting,
+  and Aguada water-service interruption sources.
 - `docs/unis-geocoding-policy.md`: approved reproducible geocoding policy for
   deriving `unis.lat` and `unis.long` from registered Puerto Rico source
   addresses.
@@ -225,6 +229,7 @@ npm run test:unis-public-address-review
 npm run test:planning-context
 npm run test:decision-signals
 npm run test:regulatory-signal-review
+npm run test:infrastructure-signal-review
 npm run test:profile-reach-contract
 ```
 

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "scope": "puerto-rico-only",
-  "retrievedAt": "2026-07-29",
+  "retrievedAt": "2026-07-30",
   "sources": [
     {
       "id": "datospr-cbp-2014-puerto-rico",
@@ -569,6 +569,51 @@
       "resourceUrl": "https://docs.pr.gov/files/OGP/Website_OGP/CartasCirculares/CC2026/CC-002-2026.pdf",
       "sourceBasis": "Official Puerto Rico OGP circular establishes the 2026-2027 municipal-patent rules and states that the guidance applies to all municipalities in Puerto Rico.",
       "notes": "Use as descriptive municipal-patent governance evidence for planning-profile work only. It confirms a Puerto Rico-wide municipal patent filing path relevant to the fixed Aguada scenario, but it does not prove a specific municipality's processing speed or case outcome. Supporting review artifact: data/profile-reach/aguada-restaurant-permit-path-review.json."
+    },
+    {
+      "id": "pr-energy-bureau-2026-electricity-rate-order",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-infrastructure"
+      ],
+      "publisher": "Puerto Rico Energy Bureau",
+      "portal": "energia.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://energia.pr.gov/wp-content/uploads/sites/7/2026/04/20260415-AP20230003-Final-Resolution-and-Order.pdf",
+      "resourceUrl": "https://energia.pr.gov/wp-content/uploads/sites/7/2026/07/20260722-MI20260005-Resolution-and-Order.pdf",
+      "sourceBasis": "Official Puerto Rico Energy Bureau electricity-rate orders establish the approved electric rate structure and the current tariff book reflecting approved rates, riders, and charges.",
+      "notes": "Use as descriptive electric-cost-governance evidence for planning-profile work only. It confirms the current approved electricity rate structure in Puerto Rico, but it does not prove service continuity, outage frequency, or a specific small-business bill. Supporting review artifact: data/profile-reach/aguada-restaurant-utility-service-review.json."
+    },
+    {
+      "id": "luma-outage-reporting-faq",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-infrastructure"
+      ],
+      "publisher": "LUMA Energy",
+      "portal": "lumapr.com",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://lumapr.com/faq/how-can-i-report-an-outage-a-voltage-fluctuation-or-brownout/?lang=en",
+      "resourceUrl": "https://miluma.lumapr.com/view-outage-map",
+      "sourceBasis": "Official LUMA customer guidance describes how to report outages, voltage fluctuations, and brownouts through Mi LUMA or the customer phone line.",
+      "notes": "Use as descriptive electric interruption-reporting evidence for planning-profile work only. It confirms the official outage-reporting and status path for Puerto Rico electric service issues, but it does not prove outage duration, restoration speed, or business continuity readiness. Supporting review artifact: data/profile-reach/aguada-restaurant-utility-service-review.json."
+    },
+    {
+      "id": "prasa-aguada-water-service-interruption-2023",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-infrastructure"
+      ],
+      "publisher": "Autoridad de Acueductos y Alcantarillados de Puerto Rico",
+      "portal": "acueductos.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.acueductos.pr.gov/comunicados/region-oeste-3",
+      "resourceUrl": "https://www.acueductos.pr.gov/comunicados/region-oeste-3",
+      "sourceBasis": "Official Puerto Rico Aqueduct and Sewer Authority communication documents reviewed water-service interruption and low-pressure exposure affecting Aguada during regional filter-plant and pump recovery.",
+      "notes": "Use as descriptive Aguada water-service continuity evidence for planning-profile work only. It confirms that the fixed municipality can be affected by pump and filter-plant recovery conditions in the western regional system, but it does not prove current service quality, restoration time, or one parcel's water connection. Supporting review artifact: data/profile-reach/aguada-restaurant-utility-service-review.json."
     },
     {
       "id": "census-cbp-2014-state-72-fallback",

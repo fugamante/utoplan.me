@@ -6,7 +6,7 @@
 - `dtoapi/` serves the modern API entrypoint; obsolete Nodal source has been removed from the normal project tree.
 - Root workspace scripts install, test, build, and start both services from lockfiles.
 - Generated dependency folders are ignored and removed from source control.
-- GitHub Actions installs Node 24, runs the contract-test baseline, and runs
+- GitHub Actions installs Node 26, runs the contract-test baseline, and runs
   the modern Docker-backed validation surface.
 - Docker validation builds from lockfiles, runs the API test baseline, and serves the static app by default.
 - Docker DB validation builds a seeded Postgres test image instead of bind-mounting seed SQL, avoiding host file-sharing instability during database initialization.
@@ -135,12 +135,21 @@
   establish a descriptive permit path for the fixed Aguada restaurant
   scenario, while timing, parcel eligibility, and case outcome remain explicit
   limits.
+- `data/profile-reach/aguada-restaurant-utility-service-review.json` now
+  records the first infrastructure decision-signal upgrade: official Puerto
+  Rico electricity-rate governance, outage-reporting guidance, and Aguada
+  water-service interruption evidence now establish a descriptive utility
+  continuity baseline for the fixed restaurant scenario, while parcel-level
+  reliability, outage duration, and spoilage risk remain explicit limits.
 - `npm run test:decision-signals` validates the decision-signal registry and
   its linkage back to the profile/reach matrix so fixed-selection planning
   facts cannot drift away from their documented evidence or explicit gap state.
 - `npm run test:regulatory-signal-review` validates the reviewed Aguada
   restaurant permit-path artifact and its linkage to the source registry and
   decision-signal contract.
+- `npm run test:infrastructure-signal-review` validates the reviewed Aguada
+  restaurant utility-service artifact and its linkage to the source registry
+  and decision-signal contract.
 - `npm run test:profile-reach-contract` validates the profile/reach contract,
   the three-scenario matrix, the fixed municipality/category boundary, and the
   expected profile-dependent reach and criticality progression.
