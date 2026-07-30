@@ -518,22 +518,23 @@
           "lensId": "workforce-capability",
           "relevance": "primary",
           "criticality": "material-tradeoff",
-          "confidence": "low",
+          "confidence": "medium",
           "facts": [
             {
               "id": "large-strategic-management-depth",
               "signalId": "specialized-management-pipeline-gap",
-              "label": "Island-wide staffing and management depth",
+              "label": "Island-wide food-service supervision and staffing baseline",
               "reachId": "island-wide",
-              "sourceType": "source-gap",
-              "notes": "No registered evidence covers island-wide staffing reach or retention for this profile."
+              "sourceType": "registered-source",
+              "sourceId": "pr-lmi-hospitality-food-service-profile-2026",
+              "notes": "Official Puerto Rico labor-market sources now establish island-wide food-service staffing, wage, annual-openings, and direct-supervision context, but they do not prove Aguada-specific hiring depth, retention, or commute fit for one destination-format operator."
             }
           ],
           "limitations": [
-            "A large roster changes workforce depth from a local staffing question to a broader labor-market question.",
-            "Current repo artifacts do not address management depth, retention, or shift redundancy."
+            "A large roster changes workforce depth from a local staffing question to a broader labor-market question, and the current evidence now covers only that island-wide baseline.",
+            "Current repo artifacts still do not address Aguada-specific management depth, retention, commute range, or shift redundancy for one operator."
           ],
-          "nextValidationCheck": "Register island-wide labor evidence before treating staffing as a solvable local issue."
+          "nextValidationCheck": "Add region-specific or municipality-relevant hiring, commute, or retention evidence before treating staffing as a locally solved execution problem."
         },
         {
           "lensId": "logistics-supply-chain",

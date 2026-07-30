@@ -170,6 +170,10 @@ The current modernization work is centered on:
   site-screening baseline evidence for the fixed Aguada restaurant scenario,
   scoped to official Puerto Rico Planning Board zoning, flood, district, and
   Aguada hazard sources.
+- `data/profile-reach/aguada-restaurant-workforce-pipeline-review.json`:
+  reviewed island-wide workforce baseline evidence for the fixed Aguada
+  restaurant strategic scenario, scoped to official Puerto Rico labor-market
+  occupation, wage, openings, and growth publications.
 - `data/profile-reach/aguada-restaurant-large-site-screening-review.json`:
   reviewed large-site screening baseline evidence for the fixed Aguada
   restaurant scenario, scoped to official Aguada territorial-plan, Planning
@@ -240,6 +244,7 @@ npm run test:regulatory-signal-review
 npm run test:infrastructure-signal-review
 npm run test:site-feasibility-signal-review
 npm run test:large-site-signal-review
+npm run test:workforce-signal-review
 npm run test:profile-reach-contract
 ```
 

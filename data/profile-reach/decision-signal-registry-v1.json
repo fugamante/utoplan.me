@@ -232,8 +232,14 @@
     {
       "id": "specialized-management-pipeline-gap",
       "lensId": "workforce-capability",
-      "label": "Specialized management and multi-site workforce pipeline",
-      "sourceType": "source-gap",
+      "label": "Island-wide food-service supervision and staffing pipeline",
+      "sourceType": "registered-source",
+      "sourceId": "pr-lmi-hospitality-food-service-profile-2026",
+      "supportingSourceIds": [
+        "pr-lmi-top-occupations-2024",
+        "pr-lmi-occupation-openings-2022-2032",
+        "pr-lmi-occupation-projections-2024-2034"
+      ],
       "applicableScenarioIds": [
         "large-strategic"
       ],
@@ -244,13 +250,18 @@
         "large-strategic-management-depth"
       ],
       "recency": {
-        "status": "no-registered-source"
+        "evidenceDate": "2026-07-30",
+        "quality": "current-official-puerto-rico-labor-market-baseline"
       },
-      "interpretationLimits": [
-        "No registered workforce source measures island-wide management depth, supervisory hiring competition, or retention risk.",
-        "Institution-location artifacts remain corroboration material rather than workforce-capacity evidence."
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-workforce-pipeline-review.json",
+        "data/sources/puerto-rico.json"
       ],
-      "sourceGapBasis": "Strategic-scale workforce coverage remains blocked on an occupation and skill pipeline source."
+      "interpretationLimits": [
+        "The reviewed labor-market sources establish island-wide occupation, wage, and openings context, not Aguada-specific hiring depth, commute range, or retention performance.",
+        "The current baseline does not prove that one operator can hire or retain a multi-site leadership team in the fixed municipality."
+      ],
+      "decisionSummary": "Official Puerto Rico labor-market publications now establish an island-wide food-service supervision and staffing baseline for the fixed strategic restaurant scenario."
     },
     {
       "id": "local-supplier-route-gap",

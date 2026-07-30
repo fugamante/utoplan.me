@@ -154,6 +154,12 @@
   the fixed large-strategic restaurant scenario, while parcel assembly,
   parking, truck access, structure condition, and utility staging remain
   explicit limits.
+- `data/profile-reach/aguada-restaurant-workforce-pipeline-review.json` now
+  records the first workforce decision-signal upgrade for the fixed strategic
+  restaurant scenario: official Puerto Rico labor-market publications now
+  establish island-wide food-service supervision, staffing-volume, annual-
+  openings, and growth context, while Aguada-specific hiring depth, retention,
+  commute range, and one-operator staffing resilience remain explicit limits.
 - `npm run test:decision-signals` validates the decision-signal registry and
   its linkage back to the profile/reach matrix so fixed-selection planning
   facts cannot drift away from their documented evidence or explicit gap state.
@@ -169,6 +175,9 @@
 - `npm run test:large-site-signal-review` validates the reviewed Aguada
   restaurant large-site screening artifact and its linkage to the source
   registry and decision-signal contract.
+- `npm run test:workforce-signal-review` validates the reviewed Aguada
+  restaurant workforce artifact and its linkage to the source registry and
+  decision-signal contract.
 - `npm run test:profile-reach-contract` validates the profile/reach contract,
   the three-scenario matrix, the fixed municipality/category boundary, and the
   expected profile-dependent reach and criticality progression.
@@ -299,12 +308,13 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 ## Immediate Next Step
 
 Continue replacing the highest-risk source-gap signals in the fixed-selection
-matrix with registered Puerto Rico evidence, starting now with site
-feasibility and infrastructure after the first regulatory-execution upgrade.
-Keep category and place constant while upgrading
+matrix with registered Puerto Rico evidence. After the new workforce baseline,
+the next best lane is demand or logistics, provided a bounded official Puerto
+Rico mobility or market proxy can be pinned without inventing municipality-
+specific precision. Keep category and place constant while upgrading
 `data/profile-reach/business-profile-reach-v1.json` from explicit gap control
-toward source-backed signals for site feasibility, demand, infrastructure, workforce, logistics,
-regulatory execution, and resilience.
+toward source-backed signals for demand, logistics, resilience, and the
+remaining workforce gaps.
 
 Treat the current 4-row generated `unis` slice and its review artifacts as a
 maintenance boundary, not the next product lane. Do not spend the next pass on
