@@ -43,7 +43,7 @@ evidence and must record restoration of the formal baseline as an action item.
 | Evidence | IEEE 829 role | Required audit question |
 | --- | --- | --- |
 | `README.md` root commands and Docker validation | Test plan, procedure summary | Do documented commands match executable scripts? |
-| `.node-version`, `.nvmrc`, and `scripts/verify_node_runtime.js` | Test environment | Does every local, CI, and Docker test path use the reviewed Node 24 major? |
+| `.node-version`, `.nvmrc`, and `scripts/verify_node_runtime.js` | Test environment | Does every local, CI, and Docker test path use the reviewed Node 26 major? |
 | `docs/modernization-roadmap.md` phase gates | Test plan, summary | Are active phase exit criteria covered by tests? |
 | `docs/api-modernization.md` | Test design, case traceability | Are API contracts pinned before endpoint changes? |
 | `docs/frontend-inventory.md` | Test design, item scope | Are browser and fixture boundaries represented in tests? |
@@ -278,7 +278,7 @@ Release decision:
     scripts disabled and an unsupported synthetic runtime, then proves each
     entrypoint fails before substantive validation begins.
   - `npm run verify:node && npm run test:node-runtime` passes on the reviewed
-    Node 24 runtime.
+    Node 26 runtime.
 - Revisit trigger:
   - Any change to root install/build/test scripts, Node version pins, npm
     lifecycle policy, or runtime-verifier behavior.

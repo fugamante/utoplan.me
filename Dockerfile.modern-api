@@ -1,4 +1,4 @@
-FROM node:24-bookworm-slim AS build
+FROM node:26-bookworm-slim AS build
 
 WORKDIR /workspace
 
@@ -10,7 +10,7 @@ RUN npm --prefix dtoapi/modern ci --ignore-scripts
 COPY dtoapi/modern ./dtoapi/modern/
 RUN npm --prefix dtoapi/modern run build
 
-FROM node:24-bookworm-slim
+FROM node:26-bookworm-slim
 
 WORKDIR /workspace
 

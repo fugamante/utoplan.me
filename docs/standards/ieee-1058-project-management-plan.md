@@ -198,7 +198,7 @@ concrete occupation-to-skill or training-capacity question reopens it.
 Project resources:
 
 - Source repository and Modernization fork.
-- Pinned Node 24 runtime control through `.node-version`, `.nvmrc`, and
+- Pinned Node 26 runtime control through `.node-version`, `.nvmrc`, and
   `scripts/verify_node_runtime.js`, plus npm lockfiles across root, `app`,
   `dtoapi`, and `dtoapi/modern`.
 - Docker and Compose for seeded database, proxy, integrated, and browser
