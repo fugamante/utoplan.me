@@ -11,10 +11,21 @@ var apiDockerfile = fs.readFileSync(path.join(root, 'Dockerfile.modern-api'), 'u
 var dbTestDockerfile = fs.readFileSync(path.join(root, 'Dockerfile.modern-db-test'), 'utf8');
 var proxyTestDockerfile = fs.readFileSync(path.join(root, 'Dockerfile.proxy-test'), 'utf8');
 var browserTestDockerfile = fs.readFileSync(path.join(root, 'Dockerfile.start-local-browser-test'), 'utf8');
+var dockerignore = fs.readFileSync(path.join(root, '.dockerignore'), 'utf8');
 var testCompose = fs.readFileSync(path.join(root, 'docker-compose.yml'), 'utf8');
 var compose = fs.readFileSync(path.join(root, 'docker-compose.integrated.yml'), 'utf8');
 var publicCompose = fs.readFileSync(path.join(root, 'docker-compose.public-api.yml'), 'utf8');
 
+[
+  appDockerfile,
+  apiDockerfile,
+  dbTestDockerfile,
+  proxyTestDockerfile,
+  browserTestDockerfile
+].forEach(function (dockerfile) {
+  assert(dockerfile.indexOf('FROM node:26-bookworm-slim') !== -1);
+});
+assert.strictEqual((apiDockerfile.match(/^FROM node:26-bookworm-slim/gm) || []).length, 2);
 assert(appDockerfile.indexOf('ENV NODE_ENV=production') !== -1);
 assert(apiDockerfile.indexOf('scripts/verify_deployment_config.js') !== -1);
 assert(apiDockerfile.indexOf('--service=api') !== -1);
@@ -30,6 +41,7 @@ assert(browserTestDockerfile.indexOf('playwright@') === -1);
 assert(dbTestDockerfile.indexOf('COPY data ./data/') !== -1);
 assert(proxyTestDockerfile.indexOf('COPY data ./data/') !== -1);
 assert(browserTestDockerfile.indexOf('COPY data ./data/') !== -1);
+assert(dockerignore.indexOf('dtoapi/modern/node_modules') !== -1);
 assert(testCompose.indexOf('127.0.0.1::5432') !== -1);
 assert(compose.indexOf('node scripts/verify_deployment_config.js --service=app') !== -1);
 assert(compose.indexOf('node scripts/verify_deployment_config.js --service=api') !== -1);

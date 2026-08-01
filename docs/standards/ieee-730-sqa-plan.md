@@ -38,7 +38,7 @@ Out of scope unless explicitly reintroduced:
 - Preserve known legacy public behavior while replacing obsolete runtime
   components.
 - Keep local install, build, test, CI, and Docker workflows pinned to the
-  reviewed Node 24 major declared in `.node-version` and `.nvmrc`.
+  reviewed Node 26 major declared in `.node-version` and `.nvmrc`.
 - Keep root install, build, test, and deployment checks reproducible from
   lockfiles.
 - Prevent fixture data from being mistaken for production data.

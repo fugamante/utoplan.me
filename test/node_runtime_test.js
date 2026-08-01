@@ -10,15 +10,15 @@ var runtime = require('../scripts/verify_node_runtime');
 var rootDir = path.join(__dirname, '..');
 var packageJson = require('../package.json');
 
-assert.strictEqual(runtime.parseMajor('24'), 24);
-assert.strictEqual(runtime.parseMajor('v24.3.1'), 24);
+assert.strictEqual(runtime.parseMajor('26'), 26);
+assert.strictEqual(runtime.parseMajor('v26.3.1'), 26);
 assert.strictEqual(runtime.parseMajor('invalid'), null);
-assert.strictEqual(runtime.readPinnedMajor(rootDir), 24);
-assert.strictEqual(runtime.validateVersion('v24.18.0', 24), null);
-assert(runtime.validateVersion('v26.0.0', 24).indexOf('Node 24.x is required') !== -1);
+assert.strictEqual(runtime.readPinnedMajor(rootDir), 26);
+assert.strictEqual(runtime.validateVersion('v26.5.0', 26), null);
+assert(runtime.validateVersion('v24.0.0', 26).indexOf('Node 26.x is required') !== -1);
 assert.strictEqual(runtime.run({
   rootDir: rootDir,
-  currentVersion: 'v24.9.0'
+  currentVersion: 'v26.5.0'
 }), 0);
 
 var originalError = console.error;
@@ -60,7 +60,7 @@ try {
     "var target = path.resolve(process.argv[2] || '');",
     "if (target === verifier) {",
     "  var runtime = require(verifier);",
-    "  process.exit(runtime.run({ currentVersion: 'v26.0.0' }));",
+    "  process.exit(runtime.run({ currentVersion: 'v24.0.0' }));",
     "}",
     "if (path.basename(target) === 'npm' || path.basename(target) === 'npm-cli.js') {",
     "  var npmResult = childProcess.spawnSync(process.execPath, process.argv.slice(2), {",
@@ -89,9 +89,9 @@ try {
     );
     var entrypointOutput = entrypoint.stdout + entrypoint.stderr;
 
-    assert.notStrictEqual(entrypoint.status, 0, scriptName + ' must reject Node 26');
+    assert.notStrictEqual(entrypoint.status, 0, scriptName + ' must reject Node 24');
     assert(
-      entrypointOutput.indexOf('Node 24.x is required') !== -1,
+      entrypointOutput.indexOf('Node 26.x is required') !== -1,
       scriptName + ' must fail through the active runtime verifier'
     );
     assert.strictEqual(
