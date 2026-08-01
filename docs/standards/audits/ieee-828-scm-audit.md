@@ -147,6 +147,31 @@ Collect or inspect this evidence before issuing an IEEE 828 audit finding:
 - `/readyz` gates API database readiness and schema baseline compatibility.
 - Rollback instructions identify app, API, and database recovery order.
 
+## Active Recommendations
+
+### RECO-828-2026-08-01-01
+
+- Class: supply-chain reproducibility optimization
+- Finding: all Node-based Dockerfiles consistently select
+  `node:26-bookworm-slim`, but the tag is mutable. The verified release build
+  resolved it to OCI index digest
+  `sha256:9e6f9357d371591e32ab6f2d8a26d63bdd0d17c29eee3f4f3e7e454d9634bf73`,
+  so rebuilding the same commit after a tag update could produce different base
+  layers.
+- Acceptance evidence:
+  - Every Node-based `FROM` instruction uses the same reviewed
+    `node:26-bookworm-slim@sha256:<index-digest>` reference.
+  - A documented automated or scheduled refresh process updates the digest so
+    security fixes are not indefinitely excluded by reproducibility controls.
+  - Root and modern API image builds, image runtime/user inspection, the full CI
+    workflow, and DB/proxy/browser Docker checks pass after a digest refresh.
+- Revisit trigger:
+  - The next Node 26 base-image refresh, relevant base-image security advisory,
+    or release-hardening pass, whichever occurs first.
+- Status: proposed; do not pin until the refresh owner and cadence are defined,
+  because an unmanaged digest pin would trade silent base drift for silent
+  security-patch staleness.
+
 ## Hardening And Optimization Recommendation Rules
 
 Open a hardening recommendation when an SCM control weakness can create an
