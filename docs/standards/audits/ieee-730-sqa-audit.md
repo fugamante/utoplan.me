@@ -63,6 +63,10 @@ Review these artifacts during each IEEE 730 audit:
   `cnaic_name`.
 - `data/planning-context/`: descriptive municipality/category fixture slices
   with visible confidence and limitation metadata.
+- `data/profile-reach/business-profile-reach-v1.json`,
+  `data/profile-reach/decision-signal-registry-v1.json`, and reviewed signal
+  artifacts: controlled scenario matrix, evidence authority, explicit gap,
+  reach, recency, and interpretation-limit records.
 - `package.json`, `app/package.json`, `dtoapi/package.json`, and
   `dtoapi/modern/package.json`: authoritative scripts, dependencies, and audit
   surfaces.
@@ -84,6 +88,8 @@ Review these artifacts during each IEEE 730 audit:
   deployment rollback?
 - Are quality gates documented in one or more executable root commands rather
   than only described in prose?
+- Do `npm run test:decision-signals` and the applicable focused signal-review
+  tests preserve registry/fact/source linkage and descriptive-only language?
 - Are quality responsibilities clear for API contracts, frontend smoke
   behavior, database migrations, data intake, deployment, and security audits?
 - Do new or changed docs avoid weakening the current production safety

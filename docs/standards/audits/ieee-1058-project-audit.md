@@ -75,6 +75,10 @@ Inspect these artifacts during each IEEE 1058 audit:
   `data/planning-context/`: planning-context scope evidence, candidate
   category mapping inputs, controlled fact-label inputs, and descriptive
   fixture slices.
+- `data/profile-reach/business-profile-reach-v1.json`,
+  `data/profile-reach/decision-signal-registry-v1.json`, and reviewed signal
+  artifacts: controlled three-scenario milestone evidence, source-backed
+  upgrades, and explicit remaining source gaps.
 - Root and service `package.json` files, lockfiles, CI configuration,
   Dockerfiles, and Compose files: executable project control evidence.
 - Test suites under `app/test/`, `dtoapi/test/`, `dtoapi/modern/test/`, and
@@ -107,7 +111,8 @@ Inspect these artifacts during each IEEE 1058 audit:
 - Phase exit criteria remain measurable through commands, tests, docs, or
   release artifacts.
 - The profile/reach milestone is complete only while the versioned contract and
-  executable three-scenario fixture matrix remain current and validated.
+  decision-signal registry, reviewed evidence artifacts, and executable
+  three-scenario fixture matrix remain current and validated.
 - Completed phase claims have supporting repository evidence.
 - In-progress items distinguish blocked provenance work, active implementation
   work, hardening requirements, and optimization opportunities.

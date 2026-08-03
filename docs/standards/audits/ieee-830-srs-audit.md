@@ -77,6 +77,10 @@ Inspect these artifacts during each IEEE 830 audit:
   details.
 - `data/planning-context/`: descriptive planning-context fixture evidence for
   municipality/category summary and detail behavior.
+- `data/profile-reach/business-profile-reach-v1.json`,
+  `data/profile-reach/decision-signal-registry-v1.json`, and reviewed signal
+  artifacts: controlled scenario, evidence authority or gap, reach, recency,
+  interpretation-limit, and non-recommendation requirement evidence.
 - `db/migrations/`: database requirement and readiness baseline evidence.
 - `.node-version`, `.nvmrc`, and `scripts/verify_node_runtime.js`: reviewed
   runtime requirement evidence for local, CI, and Docker validation parity.
@@ -152,6 +156,10 @@ the current project surface.
 - Profile-dependent context starts from operating needs, assigns each fact a
   decision-relevant reach, and remains bounded to the versioned contract until
   broader runtime behavior is explicitly accepted.
+- Each profile/reach fact resolves through the decision-signal registry to a
+  registered Puerto Rico source or an explicit source gap; reviewed evidence
+  artifacts remain descriptive and do not imply parcel, corridor, workforce,
+  regulatory, utility, or profitability recommendations.
 - Active planning-context municipality labels remain source-backed and do not
   regress to placeholder naming in API or browser-visible responses.
 - Requirements identify provenance gaps as blockers, not as implementation

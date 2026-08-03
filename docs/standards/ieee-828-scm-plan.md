@@ -22,6 +22,8 @@ Controlled configuration domains:
 - Data source registry and provenance records under `data/` and `docs/`.
 - Candidate business-category mappings and planning-context fixtures under
   `data/`.
+- The versioned profile/reach contract, decision-signal registry, and reviewed
+  signal evidence artifacts under `data/profile-reach/`.
 - Standards documents under `docs/standards/`.
 - Production deployment, release, rollback, and readiness documentation.
 
