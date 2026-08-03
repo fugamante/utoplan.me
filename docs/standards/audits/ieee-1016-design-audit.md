@@ -57,6 +57,7 @@ Review these artifacts during each IEEE 1016 audit:
 | `data/mappings/puerto-rico-business-categories.json` | planning-context data design | Are category-to-NAICS mappings explicit and descriptive rather than implicit scoring logic? |
 | `data/municipalities/planning-context-municipalities.json` | planning-context label design | Are active municipality labels source-backed instead of placeholder UI text? |
 | `data/planning-context/` | planning-context fixture design | Do summary/detail fixtures expose confidence, limitations, and unresolved questions? |
+| `data/profile-reach/business-profile-reach-v1.json`, `data/profile-reach/decision-signal-registry-v1.json`, and reviewed signal artifacts | profile/reach evidence design | Does the versioned registry keep scenario facts, source authorities or gaps, reach, recency, and interpretation limits explicit without introducing scoring logic? |
 | `app/app.js` | app server/proxy design | Does app serving, `/healthz`, proxying, and fixture gating match documented topology? |
 | `app/public/src/` | typed browser design | Are map, UI, and configuration responsibilities separated and tested? |
 | `dtoapi/modern/src/` | typed API design | Are routing, response envelopes, records, resources, and database access separated and tested? |
@@ -117,6 +118,9 @@ Review these artifacts during each IEEE 1016 audit:
   evidence exists?
 - Do business-category mappings and planning-context fixtures remain explicit,
   descriptive, and visibly confidence-bounded?
+- Do profile/reach facts and reviewed signal artifacts remain linked through the
+  decision-signal registry, with registered authorities or explicit source gaps
+  and scenario-specific reach?
 - Do seed data and demo fixtures remain visibly separate from production data?
 - Does `/readyz` verify the database schema baseline required by the running
   API?

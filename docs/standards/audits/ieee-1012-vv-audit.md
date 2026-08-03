@@ -72,6 +72,7 @@ Review these artifacts during each IEEE 1012 audit:
 | `docs/data-intake.md` and `data/sources/puerto-rico.json` | data validation evidence | Are production-style sources Puerto Rico-scoped, licensed, dated, and target-mapped? |
 | `docs/data-provenance.md` | data trust validation | Are unresolved legacy source gaps visible and blocking where appropriate? |
 | `data/mappings/puerto-rico-business-categories.json`, `data/municipalities/planning-context-municipalities.json`, `data/naics/planning-context-naics-titles.json`, and `data/planning-context/` | descriptive planning-context validation evidence | Do category mappings, municipality labels, NAICS title labels, and planning-context fixtures remain descriptive, traceable, and confidence-bounded? |
+| `data/profile-reach/business-profile-reach-v1.json`, `data/profile-reach/decision-signal-registry-v1.json`, and reviewed signal artifacts | profile/reach validation evidence | Are scenario facts linked bidirectionally to registered sources or explicit gaps, bounded to the declared reach, and protected from score, rank, or recommendation drift? |
 | `package.json` and service manifests | executable V&V surface | Do scripts, audits, and dependencies match documented gates? |
 | `app/test/`, `dtoapi/test/`, `dtoapi/modern/test/`, and `test/` | verification implementation | Do tests prove requirements and design contracts rather than only implementation details? |
 | Dockerfiles, Compose files, CI definitions such as `.github/workflows/ci.yml`, and verification scripts | environment validation | Do container and CI paths exercise the intended release topology? |
@@ -160,6 +161,9 @@ product and operational purpose.
 - Profile/reach behavior remains bounded to the controlled contract until the
   versioned matrix and its focused executable evidence are updated alongside any
   expansion.
+- Reviewed signal upgrades retain authority linkage, evidence dates, scenario
+  reach, interpretation limits, and focused executable checks; review status is
+  not treated as production validation or a business recommendation.
 - Future recommendation, scoring, zoning, workforce, infrastructure, or
   lifecycle-planning features expose source, timestamp, transform, and known
   limitation metadata before being treated as decision-support outputs.

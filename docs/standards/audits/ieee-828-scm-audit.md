@@ -77,8 +77,9 @@ Collect or inspect this evidence before issuing an IEEE 828 audit finding:
   mutate schema.
 - Data control: source registry entries, Puerto Rico-only scope enforcement,
   license/source URLs, retrieval dates, category-mapping traceability,
-  planning-context fixture boundaries, and separation of fixture, seed, and
-  production data.
+  planning-context fixture boundaries, profile/reach contract and
+  decision-signal registry linkage, reviewed signal artifacts, and separation
+  of fixture, seed, and production data.
 - Documentation trace: README, roadmap, deployment topology, production
   deployment runbook, product scope, data intake/provenance notes, and
   database migration strategy updated when behavior changes.
@@ -135,6 +136,9 @@ Collect or inspect this evidence before issuing an IEEE 828 audit finding:
 - Security-sensitive changes include dependency audit and secret exposure
   checks.
 - Data intake changes include registry validation and source-scope review.
+- Profile/reach and signal-review changes keep the contract, signal registry,
+  source registry, reviewed artifact, focused test, and root test inventory in
+  one controlled change set.
 - SCM audit updates are committed with the standards documentation bundle or the
   change that invalidated prior controls.
 

@@ -48,6 +48,7 @@ evidence and must record restoration of the formal baseline as an action item.
 | `docs/api-modernization.md` | Test design, case traceability | Are API contracts pinned before endpoint changes? |
 | `docs/frontend-inventory.md` | Test design, item scope | Are browser and fixture boundaries represented in tests? |
 | `docs/business-location-decision-framework.md` and `data/profile-reach/business-profile-reach-v1.json` | Planned test design | Does the profile/reach matrix keep explicit fields, a no-score/no-rank oracle, and executable coverage before fixture expansion? |
+| `data/profile-reach/decision-signal-registry-v1.json` and reviewed signal artifacts | Test items and traceability data | Do registry, profile facts, source authorities or explicit gaps, scenario reach, recency, and interpretation limits remain mutually consistent under focused tests? |
 | `docs/database-migrations.md` | Procedure, incident, release gate | Are schema changes independently reviewable and rollbackable? |
 | `docs/deployment-topology.md` | Test design, item transmittal | Does test coverage exercise the app/API/private API topology? |
 | `docs/production-deployment.md` | Procedure, summary, release gate | Are deployment checks runnable and release blocking? |
@@ -109,6 +110,9 @@ release branch, production deployment, or merge that changes app/API behavior.
 - Confirm profile-dependent fixtures are not accepted before TC-027 has a
   focused executable test covering reach, relevance, criticality, confidence,
   limitations, and next validation checks.
+- Confirm decision-signal and reviewed-evidence changes run
+  `npm run test:decision-signals` plus the applicable focused signal-review
+  test, and remain included in the root `npm run test` chain.
 - Confirm exposed planning-context municipality labels resolve from
   `data/municipalities/planning-context-municipalities.json` for the active
   fixture set.
@@ -262,6 +266,29 @@ Release decision:
   candidates so command evidence is retained without committing transient logs.
 
 ## Active Recommendations
+
+### RECO-829-2026-08-03-01
+
+- Class: optimization
+- Finding: the root `npm run test` script names the decision-signal registry
+  test and five reviewed signal-artifact tests individually. That is executable
+  today, but each new signal-review lane requires another manual edit to the
+  root chain and creates a growing risk that a focused test exists without
+  being included in normal pre-merge validation.
+- Acceptance evidence:
+  - A stable aggregate command, such as `test:signal-reviews`, runs the
+    decision-signal registry contract and every checked-in reviewed
+    signal-artifact test.
+  - A contract test or deterministic discovery rule fails when a reviewed
+    signal artifact or its focused test is omitted from the aggregate command.
+  - Root `npm run test`, the IEEE 829 test document, and the IEEE 730/1012 gate
+    matrices reference the aggregate command without weakening focused-test
+    availability.
+- Revisit trigger:
+  - The next reviewed signal type or focused signal-review test, or any edit to
+    the root test orchestration.
+- Status: proposed; current focused commands and the root test chain remain
+  valid, so this is not a release blocker.
 
 ### RECO-829-2026-07-27-01
 
