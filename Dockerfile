@@ -19,6 +19,10 @@ RUN npm run build
 
 ENV NODE_ENV=production
 
+RUN chown -R node:node /workspace
+
+USER node
+
 EXPOSE 8080
 
 CMD ["npm", "run", "start:app"]
