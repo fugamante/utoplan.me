@@ -27,6 +27,8 @@ var publicCompose = fs.readFileSync(path.join(root, 'docker-compose.public-api.y
 });
 assert.strictEqual((apiDockerfile.match(/^FROM node:26-bookworm-slim/gm) || []).length, 2);
 assert(appDockerfile.indexOf('ENV NODE_ENV=production') !== -1);
+assert(appDockerfile.indexOf('USER node') !== -1);
+assert(appDockerfile.indexOf('USER node') < appDockerfile.indexOf('CMD ['));
 assert(apiDockerfile.indexOf('scripts/verify_deployment_config.js') !== -1);
 assert(apiDockerfile.indexOf('--service=api') !== -1);
 assert(apiDockerfile.indexOf('ci --ignore-scripts') !== -1);
