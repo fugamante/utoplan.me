@@ -168,6 +168,11 @@ The current modernization work is centered on:
   utility-service baseline evidence for the fixed Aguada restaurant scenario,
   scoped to official Puerto Rico electricity-rate governance, outage-reporting,
   and Aguada water-service interruption sources.
+- `data/profile-reach/aguada-restaurant-utility-resilience-review.json`:
+  reviewed utility-resilience baseline evidence for the fixed Aguada restaurant
+  medium/regional and large/strategic scenarios, scoped to official Puerto
+  Rico Energy Bureau reliability and resource-adequacy oversight plus PRASA
+  emergency and operations sources.
 - `data/profile-reach/aguada-restaurant-site-screening-review.json`: reviewed
   site-screening baseline evidence for the fixed Aguada restaurant scenario,
   scoped to official Puerto Rico Planning Board zoning, flood, district, and
@@ -248,6 +253,7 @@ npm run test:planning-context
 npm run test:decision-signals
 npm run test:regulatory-signal-review
 npm run test:infrastructure-signal-review
+npm run test:utility-resilience-signal-review
 npm run test:site-feasibility-signal-review
 npm run test:large-site-signal-review
 npm run test:workforce-signal-review

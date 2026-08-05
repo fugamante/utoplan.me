@@ -327,22 +327,23 @@
           "lensId": "infrastructure-reliability-cost",
           "relevance": "primary",
           "criticality": "blocker",
-          "confidence": "low",
+          "confidence": "medium",
           "facts": [
             {
               "id": "medium-regional-shift-reliability",
               "signalId": "utility-resilience-gap",
               "label": "Utility continuity for multi-shift operations",
               "reachId": "regional-corridor",
-              "sourceType": "source-gap",
-              "notes": "The repo has no registered evidence for corridor-scale utility reliability or backup-service access."
+              "sourceType": "registered-source",
+              "sourceId": "pr-energy-bureau-jan-2026-reliability-metrics-report",
+              "notes": "Official Puerto Rico Energy Bureau and PRASA sources now establish electric reliability-reporting, firm-capacity, and water emergency-response context relevant to multi-shift utility continuity, but they do not prove corridor-level restoration speed, backup-service access, or one site's continuity performance."
             }
           ],
           "limitations": [
-            "Multiple shifts increase exposure to outage duration and recovery lag.",
-            "Current evidence does not measure whether the selected area can absorb a larger operating footprint."
+            "Multiple shifts still increase exposure to outage duration and recovery lag even though the larger-scale utility lane now has an official Puerto Rico baseline.",
+            "Current evidence does not measure corridor-level restoration performance, generator availability, or whether one site can absorb a larger operating footprint."
           ],
-          "nextValidationCheck": "Add corridor-level reliability evidence before treating multi-shift operations as feasible."
+          "nextValidationCheck": "Add corridor-specific outage-duration, restoration, or backup-service evidence before treating multi-shift continuity as more than a resilience screening question."
         },
         {
           "lensId": "workforce-capability",
@@ -498,22 +499,23 @@
           "lensId": "infrastructure-reliability-cost",
           "relevance": "primary",
           "criticality": "blocker",
-          "confidence": "low",
+          "confidence": "medium",
           "facts": [
             {
               "id": "large-strategic-resilience",
               "signalId": "utility-resilience-gap",
               "label": "Redundant power, water, and refrigeration resilience",
               "reachId": "island-wide",
-              "sourceType": "source-gap",
-              "notes": "No registered resilience or backup-capacity source exists for large-format operations."
+              "sourceType": "registered-source",
+              "sourceId": "pr-energy-bureau-jan-2026-reliability-metrics-report",
+              "notes": "Official Puerto Rico Energy Bureau and PRASA sources now establish island-wide electric reliability, firm-capacity, and water emergency-response context for continuity review, but they do not prove destination-scale backup power, redundant water supply, fuel logistics, or one operator's resilience performance."
             }
           ],
           "limitations": [
-            "Large-format food service cannot assume local utility continuity is enough.",
-            "The current repo does not capture resilience cost, backup options, or recovery lead times."
+            "Large-format food service still cannot assume ordinary local continuity is enough even though the registry now has an island-wide official resilience baseline.",
+            "The current repo does not capture backup-system sizing, resilience cost, fuel logistics, or recovery lead times for one operator."
           ],
-          "nextValidationCheck": "Add resilience and continuity evidence before treating this scenario as operationally plausible."
+          "nextValidationCheck": "Add destination-format backup-power, water-storage, or restoration evidence before treating this scenario as more than a resilience screening case."
         },
         {
           "lensId": "workforce-capability",
