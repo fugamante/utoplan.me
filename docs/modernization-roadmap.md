@@ -181,6 +181,13 @@
   medium/regional Aguada restaurant scenario, while Aguada-specific customer
   capture, repeat-demand volume, and island-wide destination pull remain
   explicit limits.
+- `data/profile-reach/aguada-restaurant-corridor-logistics-review.json` now
+  records the first logistics decision-signal upgrade: official Puerto Rico
+  west-corridor transport-planning and airport cargo publications now
+  establish a descriptive corridor logistics baseline for the fixed
+  medium/regional Aguada restaurant scenario, while route timing,
+  refrigerated-delivery performance, supplier redundancy, and spoilage risk
+  remain explicit limits.
 - `npm run test:decision-signals` validates the decision-signal registry and
   its linkage back to the profile/reach matrix so fixed-selection planning
   facts cannot drift away from their documented evidence or explicit gap state.
@@ -205,6 +212,9 @@
 - `npm run test:workforce-signal-review` validates the reviewed Aguada
   restaurant workforce artifact and its linkage to the source registry and
   decision-signal contract.
+- `npm run test:logistics-signal-review` validates the reviewed Aguada
+  restaurant corridor-logistics artifact and its linkage to the source
+  registry and decision-signal contract.
 - `npm run test:profile-reach-contract` validates the profile/reach contract,
   the three-scenario matrix, the fixed municipality/category boundary, and the
   expected profile-dependent reach and criticality progression.

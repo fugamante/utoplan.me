@@ -370,22 +370,23 @@
           "lensId": "logistics-supply-chain",
           "relevance": "primary",
           "criticality": "material-tradeoff",
-          "confidence": "low",
+          "confidence": "medium",
           "facts": [
             {
               "id": "medium-regional-cold-chain",
               "signalId": "cold-chain-corridor-gap",
               "label": "Corridor-level supplier and refrigerated delivery reliability",
               "reachId": "regional-corridor",
-              "sourceType": "source-gap",
-              "notes": "The repo does not yet register supplier-route evidence for perishable inputs."
+              "sourceType": "registered-source",
+              "sourceId": "prhta-pr2-aguadilla-mayaguez-corridor-study-2024",
+              "notes": "Official Puerto Rico transport-planning and cargo-statistics sources now establish PR-2 Aguadilla-Mayaguez corridor dependence and active west-region airport cargo context for perishable-input movement, but they do not prove refrigerated delivery timing, supplier redundancy, or one restaurant's spoilage exposure."
             }
           ],
           "limitations": [
-            "Medium/regional operations face wider supplier dependence than the small/local default.",
-            "Current planning context has no route-time or disruption evidence."
+            "Medium/regional operations still face wider supplier dependence than the small/local default even though the corridor logistics lane now has an official Puerto Rico baseline.",
+            "Current evidence does not measure route-time reliability, delivery recovery, or refrigerated supplier redundancy for one operator."
           ],
-          "nextValidationCheck": "Add supplier and route evidence before treating regional food-service logistics as routine."
+          "nextValidationCheck": "Add corridor travel-time, road-closure, or supplier-depth evidence before treating regional cold-chain logistics as more than a screened planning question."
         },
         {
           "lensId": "regulatory-execution-environment",

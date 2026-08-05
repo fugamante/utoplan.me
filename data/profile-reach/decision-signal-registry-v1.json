@@ -331,7 +331,11 @@
       "id": "cold-chain-corridor-gap",
       "lensId": "logistics-supply-chain",
       "label": "Corridor-level cold-chain and supplier reliability",
-      "sourceType": "source-gap",
+      "sourceType": "registered-source",
+      "sourceId": "prhta-pr2-aguadilla-mayaguez-corridor-study-2024",
+      "supportingSourceIds": [
+        "iepr-air-maritime-cargo-passengers-2024-q2"
+      ],
       "applicableScenarioIds": [
         "medium-regional"
       ],
@@ -342,13 +346,18 @@
         "medium-regional-cold-chain"
       ],
       "recency": {
-        "status": "no-registered-source"
+        "evidenceDate": "2026-08-05",
+        "quality": "official-west-corridor-planning-and-cargo-baseline"
       },
-      "interpretationLimits": [
-        "No registered evidence covers corridor-level route reliability or temperature-sensitive supplier exposure.",
-        "The current matrix does not measure backup supplier depth."
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-corridor-logistics-review.json",
+        "data/sources/puerto-rico.json"
       ],
-      "sourceGapBasis": "Regional logistics evidence remains blocked on reproducible route or supplier data."
+      "interpretationLimits": [
+        "The reviewed sources establish official west-corridor planning and regional cargo-movement surfaces, not measured delivery timing, refrigeration performance, or route recovery for one restaurant.",
+        "The current baseline still does not prove backup supplier depth, spoilage exposure, or cold-chain reliability for one operator."
+      ],
+      "decisionSummary": "Official Puerto Rico transport-planning and cargo-statistics sources now establish a descriptive west-corridor logistics baseline for the fixed medium/regional Aguada restaurant scenario."
     },
     {
       "id": "external-supply-chain-gap",

@@ -185,6 +185,10 @@ The current modernization work is centered on:
   west-region demand proxy evidence for the fixed Aguada restaurant
   medium/regional scenario, scoped to official Puerto Rico tourism occupancy
   and visitor-profile publications.
+- `data/profile-reach/aguada-restaurant-corridor-logistics-review.json`:
+  reviewed corridor logistics baseline evidence for the fixed Aguada
+  restaurant medium/regional scenario, scoped to official Puerto Rico west-
+  corridor transport-planning and airport cargo publications.
 - `data/profile-reach/aguada-restaurant-large-site-screening-review.json`:
   reviewed large-site screening baseline evidence for the fixed Aguada
   restaurant scenario, scoped to official Aguada territorial-plan, Planning
@@ -257,6 +261,7 @@ npm run test:utility-resilience-signal-review
 npm run test:site-feasibility-signal-review
 npm run test:large-site-signal-review
 npm run test:workforce-signal-review
+npm run test:logistics-signal-review
 npm run test:profile-reach-contract
 ```
 
