@@ -12,6 +12,9 @@
 - The production app and modern API images run their service commands as the
   unprivileged image user `node`, with container contract coverage preventing
   a regression to root runtime.
+- Every Node Docker stage is pinned to one reviewed OCI index digest; weekly
+  Dependabot discovery and the maintainer-owned refresh procedure are defined
+  in `docs/container-base-refresh.md`.
 - Docker DB validation builds a seeded Postgres test image instead of bind-mounting seed SQL, avoiding host file-sharing instability during database initialization.
 - DB-backed API contracts run in a current Node container against the modern API, including missing-record behavior.
 - The first-page map now prefers the modern same-origin `/v1/unis` collection path while preserving explicit demo/test fixture fallback for standalone static app runs.

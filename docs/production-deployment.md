@@ -87,6 +87,9 @@ checks described below; it requires `UTOPLAN_APP_URL` and optionally
 `docker-compose.integrated.yml` runs the verifier before each service process starts. The modern API Docker image also runs `--service=api` before starting `dtoapi/modern/lib/server.js`.
 The production app and API images run their service commands as the
 unprivileged image user `node`; neither runtime requires root privileges.
+Node base images are tag-and-digest pinned. Follow
+`docs/container-base-refresh.md` for scheduled updates, security-advisory
+response, validation, and rollback; do not update only a subset of Node stages.
 
 Public API mode is accepted only when `UTOPLAN_API_EXPOSURE=public` and
 `UTOPLAN_PUBLIC_API_URL` is set to a valid HTTP(S) URL.

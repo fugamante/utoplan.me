@@ -244,6 +244,7 @@ The project uses effort controls rather than a formal monetary budget:
 | Secret or identity leakage | Public repository hygiene failure | Keep secrets out of source; inspect branch names, commits, and PR text before push. |
 | Concurrent agent edits | Lost work or inconsistent docs | Inspect status before edits, keep ownership scoped, and never revert unrelated changes. |
 | Dependency vulnerability | Security or operational exposure | Run lockfile-backed audits across root, app, API, and modern API on dependency/release changes. |
+| Stale or drifting container base | Unreproducible rebuild or delayed security fixes | Pin every Node stage to one reviewed digest, discover updates weekly through Dependabot, and assign review/advisory response to the modernization maintainer. |
 | Stale standards documents | Audit evidence no longer reflects reality | Update affected IEEE documents in the same bundle as control, behavior, or risk changes. |
 
 Risk responses are: mitigate through tests or controls, defer with an owner and

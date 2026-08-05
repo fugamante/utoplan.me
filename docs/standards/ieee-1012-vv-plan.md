@@ -213,6 +213,7 @@ weakening reproducibility, provenance, or release confidence.
 | Integration tests | Exercise app/API/PostgreSQL and same-origin proxy behavior. |
 | Browser smoke tests | Verify visible map behavior, markers, toggles, tile rendering, and clean console/page errors. |
 | Docker compatibility tests | Verify clean container builds, unprivileged production app/API runtime users, seeded DB contracts, proxy wiring, and integrated browser behavior. |
+| Container base control | Verify every Node stage uses the same reviewed Node 26 tag/digest, refresh automation is scheduled, production images build, and runtime users remain unprivileged. |
 | Release smoke tests | Verify deployed app health, public `/v1/unis`, public `/v1/planning-context`, and optional API readiness from release URLs. |
 | Audit review | Confirms evidence, skipped checks, accepted risks, anomalies, and standards updates. |
 

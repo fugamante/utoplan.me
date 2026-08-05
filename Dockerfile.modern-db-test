@@ -1,4 +1,4 @@
-FROM node:26-bookworm-slim
+FROM node:26-bookworm-slim@sha256:81502e860176e63695d769d3d1a2d3a403abc1c27c6a02169b765f3e43b60ede
 
 WORKDIR /workspace
 

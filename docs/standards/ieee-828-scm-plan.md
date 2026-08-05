@@ -242,6 +242,12 @@ Lockfiles are controlled artifacts and must be updated only when dependency inte
 
 Docker assets are controlled artifacts:
 
+- Every Node `FROM` instruction uses the same reviewed
+  `node:26-bookworm-slim@sha256:<index-digest>` reference.
+- `.github/dependabot.yml` checks Docker dependencies weekly; the modernization
+  maintainer owns review and merge, and `docs/container-base-refresh.md` is the
+  update, advisory-response, validation, and rollback procedure.
+
 - `Dockerfile` validates clean install and build, then serves the app as the
   unprivileged image user `node`.
 - `Dockerfile.modern-api` builds the modern API runtime and drops to the
@@ -254,6 +260,8 @@ Docker assets are controlled artifacts:
   for intentional public API smoke paths.
 - `.node-version`, `.nvmrc`, and `scripts/verify_node_runtime.js` define the
   authoritative local and CI Node runtime pin.
+- `test/deployment_container_contract_test.js` is the deterministic control
+  that rejects an unreviewed tag, digest, or partial Node-stage refresh.
 
 Generated `node_modules` directories and compiled CommonJS output under `dtoapi/modern/lib/` are not source baselines. Committed browser assets under `app/public/js/` are controlled because they are directly served by the static app.
 

@@ -396,6 +396,11 @@ Required release design controls:
 Docker validation is part of the design because the production topology depends
 on container networking and PostgreSQL integration.
 
+All Node stages share one tag-and-digest reference. Weekly Dependabot discovery
+feeds a maintainer-reviewed refresh workflow; the container contract prevents a
+partial update, and `docs/container-base-refresh.md` defines validation and
+rollback. This separates reproducible build selection from update discovery.
+
 Key validation paths:
 
 - `docker build -t utoplanme:modernization .`

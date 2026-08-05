@@ -193,9 +193,13 @@ Collect or inspect this evidence before issuing an IEEE 828 audit finding:
 - Revisit trigger:
   - The next Node 26 base-image refresh, relevant base-image security advisory,
     or release-hardening pass, whichever occurs first.
-- Status: proposed; do not pin until the refresh owner and cadence are defined,
-  because an unmanaged digest pin would trade silent base drift for silent
-  security-patch staleness.
+- Status: implemented (2026-08-05); all six Node stages use the reviewed
+  `sha256:81502e860176e63695d769d3d1a2d3a403abc1c27c6a02169b765f3e43b60ede`
+  index digest, `.github/dependabot.yml` performs weekly Docker update
+  discovery, the modernization maintainer owns review and advisory response,
+  `test/deployment_container_contract_test.js` rejects partial or unreviewed
+  refreshes, and `docs/container-base-refresh.md` defines validation and
+  rollback.
 
 ## Hardening And Optimization Recommendation Rules
 
