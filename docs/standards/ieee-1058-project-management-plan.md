@@ -164,7 +164,7 @@ or branch cleanup requires explicit operator intent.
 | 4.0 | Database and migrations | PostgreSQL schema baseline, migration artifacts, readiness checks |
 | 5.0 | Data provenance and intake | `data/sources/puerto-rico.json`, provenance notes, source filters, import candidates |
 | 6.0 | Test and V&V | Host tests, Docker tests, browser smoke, release smoke, validation evidence |
-| 7.0 | Deployment and operations | Dockerfiles, Compose topology, health/readiness, release preflight, rollback runbooks |
+| 7.0 | Deployment and operations | Dockerfiles, unprivileged app/API runtime users, Compose topology, health/readiness, release preflight, rollback runbooks |
 | 8.0 | Security and dependency hygiene | Lockfile audits, secret handling, raw error controls, public repo hygiene |
 | 9.0 | Release management | Release baseline, artifact pairing, smoke results, rollback evidence |
 | 10.0 | Continuous audit | Standards updates, audit hooks, findings, recommendations, implemented hardening |

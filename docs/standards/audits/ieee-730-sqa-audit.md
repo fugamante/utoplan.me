@@ -278,6 +278,24 @@ work, but specific enough that the next auditor can reproduce the conclusion.
 
 ## Active Recommendations
 
+### RECO-730-2026-08-05-01
+
+- Class: required hardening
+- Finding: the production API image already ran as the unprivileged `node`
+  user, while the production app image still inherited the base image's root
+  runtime despite requiring no privileged operation after its build stage.
+- Acceptance evidence:
+  - `Dockerfile` transfers the runtime workspace to `node:node` and declares
+    `USER node` before the app command.
+  - `test/deployment_container_contract_test.js` asserts the app image's
+    unprivileged user declaration and its ordering before `CMD`.
+  - `npm run test:deployment-containers` and a production app image build pass.
+- Revisit trigger:
+  - Any production Dockerfile, runtime user, app startup command, writable-path
+    requirement, or deployment-container contract change.
+- Status: implemented (2026-08-05); commit `6de22e5` moves the app runtime to
+  the unprivileged `node` user and adds focused contract coverage.
+
 ### RECO-730-2026-06-08-01
 
 - Class: required hardening

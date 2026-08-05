@@ -267,6 +267,24 @@ Release decision:
 
 ## Active Recommendations
 
+### RECO-829-2026-08-05-01
+
+- Class: required hardening
+- Finding: deployment-container coverage asserted the API runtime user but did
+  not prevent the production app image from running its service command as
+  root.
+- Acceptance evidence:
+  - `test/deployment_container_contract_test.js` asserts `USER node` exists in
+    `Dockerfile` and precedes its `CMD`.
+  - `npm run test:deployment-containers` passes.
+  - A production app image builds and starts successfully with the declared
+    unprivileged user.
+- Revisit trigger:
+  - Any change to a production Dockerfile, runtime user, app command, image
+    filesystem ownership, or deployment-container test.
+- Status: implemented (2026-08-05); `6de22e5` adds the app runtime-user control
+  and focused regression assertions.
+
 ### RECO-829-2026-08-03-01
 
 - Class: optimization

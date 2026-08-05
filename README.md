@@ -278,6 +278,9 @@ path.
 `Dockerfile.postgres-test`, runs the DB-backed modern API contract tests in a
 current Node container, and tears the Compose stack down afterward.
 
+The production app and modern API images run their service commands as the
+unprivileged image user `node`; neither runtime requires root privileges.
+
 `npm run docker:test:proxy` uses the same seeded Postgres image, starts
 `npm run start:local` inside the test container, and verifies `/v1/unis` is
 served through the proxy from real modern API data rather than the offline

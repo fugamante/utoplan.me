@@ -338,7 +338,7 @@ Release validation checks that the intended commit can be operated safely:
 | TC-031 | Reviewed large-site signal artifact | `npm run test:large-site-signal-review` | The Aguada restaurant large-site screening artifact stays linked to the registered large-site signal, cites only the reviewed Puerto Rico authority stack, and keeps explicit descriptive limits. |
 | TC-032 | Reviewed workforce signal artifact | `npm run test:workforce-signal-review` | The Aguada restaurant workforce artifact stays linked to the registered workforce signal, cites only the reviewed Puerto Rico labor-market authority stack, and keeps explicit descriptive limits. |
 | TC-033 | Business-profile and geographic-reach contract | `npm run test:profile-reach-contract` | The versioned profile/reach contract holds one reviewed municipality/category selection constant across small/local, medium/regional, and large/strategic scenarios and verifies lens order, reach, relevance, criticality, confidence, limitations, and next validation checks without scores or ranks. |
-| TC-034 | Production API startup hardening | `npm run test:deployment-config`, `npm run test:deployment-containers`, and modern API image inspection/startup | Deployment verification accepts only PostgreSQL URL schemes without echoing invalid values, and the production API verifier/server command runs as the unprivileged `node` user. |
+| TC-034 | Production container startup hardening | `npm run test:deployment-config`, `npm run test:deployment-containers`, and production image inspection/startup | Deployment verification accepts only PostgreSQL URL schemes without echoing invalid values, and the production app and API service commands run as the unprivileged `node` user. |
 
 ## 7. Test Procedure Specification
 

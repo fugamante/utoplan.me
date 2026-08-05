@@ -153,6 +153,25 @@ Collect or inspect this evidence before issuing an IEEE 828 audit finding:
 
 ## Active Recommendations
 
+### RECO-828-2026-08-05-01
+
+- Class: runtime configuration hardening
+- Finding: the production app Dockerfile did not declare an unprivileged
+  runtime user, leaving its service command dependent on the base image's root
+  default even though the production API already used `node`.
+- Acceptance evidence:
+  - `Dockerfile` assigns `/workspace` to `node:node` and declares `USER node`
+    before `CMD`.
+  - `test/deployment_container_contract_test.js` fails if the app user
+    declaration is absent or follows the service command.
+  - Focused container-contract validation and the production app image build
+    pass.
+- Revisit trigger:
+  - Any production Dockerfile, base-image user, filesystem-write requirement,
+    service command, or container-contract test change.
+- Status: implemented (2026-08-05) in `6de22e5`; the app and API production
+  runtimes now share the controlled unprivileged `node` boundary.
+
 ### RECO-828-2026-08-01-01
 
 - Class: supply-chain reproducibility optimization
@@ -160,8 +179,10 @@ Collect or inspect this evidence before issuing an IEEE 828 audit finding:
   `node:26-bookworm-slim`, but the tag is mutable. The verified release build
   resolved it to OCI index digest
   `sha256:9e6f9357d371591e32ab6f2d8a26d63bdd0d17c29eee3f4f3e7e454d9634bf73`,
-  so rebuilding the same commit after a tag update could produce different base
-  layers.
+  while the 2026-08-05 app-image validation resolved the same tag to
+  `sha256:81502e860176e63695d769d3d1a2d3a403abc1c27c6a02169b765f3e43b60ede`.
+  The observed drift confirms that rebuilding the same commit after a tag
+  update can produce different base layers.
 - Acceptance evidence:
   - Every Node-based `FROM` instruction uses the same reviewed
     `node:26-bookworm-slim@sha256:<index-digest>` reference.

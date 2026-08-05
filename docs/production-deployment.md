@@ -85,8 +85,8 @@ checks described below; it requires `UTOPLAN_APP_URL` and optionally
 `npm run verify:deployment` validates the production app/API environment in the current shell. Use `node scripts/verify_deployment_config.js --service=app` or `--service=api` when checking one container at a time.
 
 `docker-compose.integrated.yml` runs the verifier before each service process starts. The modern API Docker image also runs `--service=api` before starting `dtoapi/modern/lib/server.js`.
-The production API image runs both commands as the unprivileged image user
-`node`; the runtime does not require root privileges.
+The production app and API images run their service commands as the
+unprivileged image user `node`; neither runtime requires root privileges.
 
 Public API mode is accepted only when `UTOPLAN_API_EXPOSURE=public` and
 `UTOPLAN_PUBLIC_API_URL` is set to a valid HTTP(S) URL.
