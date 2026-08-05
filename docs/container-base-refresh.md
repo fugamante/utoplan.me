@@ -11,6 +11,12 @@ GitHub Dependabot owns weekly discovery of Docker base-image updates through
 merge, and urgent advisory response. Automated discovery does not authorize
 automatic merge.
 
+This control becomes operational only when `.github/dependabot.yml` is present
+on the repository default branch and GitHub dependency automation is enabled.
+The first generated Docker refresh pull request is activation evidence; until
+then, local configuration and contract checks prove implementation readiness,
+not end-to-end operation.
+
 ## Normal Refresh
 
 1. Dependabot checks Docker dependencies each Monday at 09:00

@@ -193,13 +193,17 @@ Collect or inspect this evidence before issuing an IEEE 828 audit finding:
 - Revisit trigger:
   - The next Node 26 base-image refresh, relevant base-image security advisory,
     or release-hardening pass, whichever occurs first.
-- Status: implemented (2026-08-05); all six Node stages use the reviewed
+- Status: implemented locally; operational closure pending (2026-08-05). All
+  six Node stages use the reviewed
   `sha256:81502e860176e63695d769d3d1a2d3a403abc1c27c6a02169b765f3e43b60ede`
   index digest, `.github/dependabot.yml` performs weekly Docker update
   discovery, the modernization maintainer owns review and advisory response,
   `test/deployment_container_contract_test.js` rejects partial or unreviewed
   refreshes, and `docs/container-base-refresh.md` defines validation and
-  rollback.
+  rollback. End-to-end closure requires the configuration on the default
+  branch, GitHub dependency automation enabled, one generated Docker refresh
+  pull request, and passing PR validation. As of this review, `master` does not
+  contain `.github/dependabot.yml`, so no refresh PR or CI evidence exists.
 
 ## Hardening And Optimization Recommendation Rules
 
