@@ -43,6 +43,9 @@ Out of scope unless explicitly reintroduced:
   lockfiles.
 - Keep production app and API service commands on the unprivileged image user
   `node`, with container contract coverage for the runtime-user boundary.
+- Keep every Node Docker stage on the same reviewed tag-and-digest reference;
+  use weekly automated discovery plus maintainer review so reproducibility does
+  not become security-patch staleness.
 - Prevent fixture data from being mistaken for production data.
 - Keep API responses, resource columns, CORS, gzip, error envelopes, health
   checks, and readiness checks contract-tested.
@@ -172,6 +175,7 @@ validation stack before release or PR publication.
 | Reviewed signal evidence | The applicable focused signal-review command from `package.json`, or `npm run test` for the complete set | Permit, utility, site-feasibility, large-site, workforce, or later reviewed signal-artifact changes. |
 | Migration contract | `npm run test:migration-artifacts` | Migration template or artifact changes. |
 | Deployment config | `npm run verify:deployment` and `npm run verify:release` | Release, environment, container, or operator workflow changes. |
+| Container base | `npm run test:deployment-containers`, production app/API image builds, and image inspection | Base tag/digest, Dockerfile, refresh automation, runtime user, or advisory-response changes. |
 | Release smoke | `npm run verify:release-smoke` | Candidate deployed environment; `UTOPLAN_RELEASE_SMOKE_JSON=1` emits sanitized structured evidence when needed. |
 | Security audit | Root, `app`, `dtoapi`, and `dtoapi/modern` npm audits | Dependency or release changes. |
 

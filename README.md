@@ -286,6 +286,9 @@ current Node container, and tears the Compose stack down afterward.
 
 The production app and modern API images run their service commands as the
 unprivileged image user `node`; neither runtime requires root privileges.
+All Node Docker stages also use one reviewed OCI digest. Weekly update
+discovery, review ownership, validation, advisory response, and rollback are
+defined in `docs/container-base-refresh.md`.
 
 `npm run docker:test:proxy` uses the same seeded Postgres image, starts
 `npm run start:local` inside the test container, and verifies `/v1/unis` is

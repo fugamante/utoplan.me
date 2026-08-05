@@ -15,6 +15,9 @@ var dockerignore = fs.readFileSync(path.join(root, '.dockerignore'), 'utf8');
 var testCompose = fs.readFileSync(path.join(root, 'docker-compose.yml'), 'utf8');
 var compose = fs.readFileSync(path.join(root, 'docker-compose.integrated.yml'), 'utf8');
 var publicCompose = fs.readFileSync(path.join(root, 'docker-compose.public-api.yml'), 'utf8');
+var dependabot = fs.readFileSync(path.join(root, '.github', 'dependabot.yml'), 'utf8');
+var baseRefresh = fs.readFileSync(path.join(root, 'docs', 'container-base-refresh.md'), 'utf8');
+var nodeImage = 'node:26-bookworm-slim@sha256:81502e860176e63695d769d3d1a2d3a403abc1c27c6a02169b765f3e43b60ede';
 
 [
   appDockerfile,
@@ -23,9 +26,13 @@ var publicCompose = fs.readFileSync(path.join(root, 'docker-compose.public-api.y
   proxyTestDockerfile,
   browserTestDockerfile
 ].forEach(function (dockerfile) {
-  assert(dockerfile.indexOf('FROM node:26-bookworm-slim') !== -1);
+  var nodeStages = dockerfile.match(/^FROM node:[^\s]+/gm) || [];
+  assert(nodeStages.length > 0);
+  nodeStages.forEach(function (from) {
+    assert.strictEqual(from, 'FROM ' + nodeImage);
+  });
 });
-assert.strictEqual((apiDockerfile.match(/^FROM node:26-bookworm-slim/gm) || []).length, 2);
+assert.strictEqual((apiDockerfile.match(/^FROM node:/gm) || []).length, 2);
 assert(appDockerfile.indexOf('ENV NODE_ENV=production') !== -1);
 assert(appDockerfile.indexOf('USER node') !== -1);
 assert(appDockerfile.indexOf('USER node') < appDockerfile.indexOf('CMD ['));
@@ -49,3 +56,10 @@ assert(compose.indexOf('node scripts/verify_deployment_config.js --service=app')
 assert(compose.indexOf('node scripts/verify_deployment_config.js --service=api') !== -1);
 assert(publicCompose.indexOf('UTOPLAN_API_BIND') !== -1);
 assert(publicCompose.indexOf('UTOPLAN_API_HOST_PORT') !== -1);
+assert(dependabot.indexOf('package-ecosystem: docker') !== -1);
+assert(dependabot.indexOf('interval: weekly') !== -1);
+assert(dependabot.indexOf('timezone: America/Puerto_Rico') !== -1);
+assert(dependabot.indexOf('open-pull-requests-limit: 1') !== -1);
+assert(baseRefresh.indexOf('modernization maintainer owns review') !== -1);
+assert(baseRefresh.indexOf('## Security Advisory Response') !== -1);
+assert(baseRefresh.indexOf('## Rollback') !== -1);
