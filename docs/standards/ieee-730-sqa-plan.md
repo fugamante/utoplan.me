@@ -41,6 +41,8 @@ Out of scope unless explicitly reintroduced:
   reviewed Node 26 major declared in `.node-version` and `.nvmrc`.
 - Keep root install, build, test, and deployment checks reproducible from
   lockfiles.
+- Keep production app and API service commands on the unprivileged image user
+  `node`, with container contract coverage for the runtime-user boundary.
 - Prevent fixture data from being mistaken for production data.
 - Keep API responses, resource columns, CORS, gzip, error envelopes, health
   checks, and readiness checks contract-tested.

@@ -9,6 +9,9 @@
 - GitHub Actions installs Node 26, runs the contract-test baseline, and runs
   the modern Docker-backed validation surface.
 - Docker validation builds from lockfiles, runs the API test baseline, and serves the static app by default.
+- The production app and modern API images run their service commands as the
+  unprivileged image user `node`, with container contract coverage preventing
+  a regression to root runtime.
 - Docker DB validation builds a seeded Postgres test image instead of bind-mounting seed SQL, avoiding host file-sharing instability during database initialization.
 - DB-backed API contracts run in a current Node container against the modern API, including missing-record behavior.
 - The first-page map now prefers the modern same-origin `/v1/unis` collection path while preserving explicit demo/test fixture fallback for standalone static app runs.

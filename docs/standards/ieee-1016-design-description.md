@@ -380,8 +380,9 @@ as a compatible app/API artifact pair.
 Required release design controls:
 
 - Production secrets come from the platform secret store.
-- The production API image runs configuration verification and the API process
-  as the unprivileged image user `node`.
+- The production app and API images run their service commands as the
+  unprivileged image user `node`; the API verifier runs inside that same
+  boundary.
 - `UTOPLAN_DEMO_FIXTURE` remains unset in production.
 - Database changes are applied separately from service startup.
 - `/readyz` must pass before app traffic depends on a new API release.

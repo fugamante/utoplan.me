@@ -53,8 +53,8 @@ Both services expose `/healthz` for shallow process health. The API also exposes
 
 The API container fails fast in production when neither `DATABASE_URL` nor `DATABASE_HOST`, `DATABASE_USER`, and `DATABASE_DB` are configured.
 When `DATABASE_URL` is used, deployment verification accepts only
-`postgres://` or `postgresql://` URLs. The production API image starts the
-verifier and server as the image's unprivileged `node` user.
+`postgres://` or `postgresql://` URLs. The production app and API images start
+their service commands as the image's unprivileged `node` user.
 
 When API exposure is public, deployment configuration must explicitly declare
 `UTOPLAN_API_EXPOSURE=public` and provide `UTOPLAN_PUBLIC_API_URL` so release
