@@ -3,7 +3,7 @@
   "contractVersion": "business-profile-reach-v1",
   "scope": "puerto-rico-planning-candidate",
   "status": "candidate-needs-review",
-  "updatedAt": "2026-07-30",
+  "updatedAt": "2026-08-05",
   "rules": {
     "noScores": true,
     "noRankings": true,
@@ -308,19 +308,20 @@
               "notes": "The existing CBP row remains useful context, but it does not capture corridor pull."
             },
             {
-              "id": "medium-regional-corridor-demand-gap",
-              "signalId": "expanded-demand-proxy-gap",
-              "label": "Regional travel and repeat-demand pattern",
+              "id": "medium-regional-corridor-demand-baseline",
+              "signalId": "west-region-visitor-demand-baseline",
+              "label": "West-region visitor and restaurant-activity proxy",
               "reachId": "regional-corridor",
-              "sourceType": "source-gap",
-              "notes": "No registered corridor-demand evidence exists yet."
+              "sourceType": "registered-source",
+              "sourceId": "pr-tourism-registration-occupancy-2024",
+              "notes": "Official Puerto Rico tourism sources now show west-region arrivals, occupancy, visitor-region visitation, and restaurant-adjacent activity, but they still do not isolate Aguada capture or one concept's repeat-demand volume."
             }
           ],
           "limitations": [
-            "The current repo has local activity context only and no corridor-level demand evidence.",
-            "A medium/regional scenario cannot rely on municipality-only context as if it were the market boundary."
+            "The current repo now has a west-region tourism and visitor-activity proxy in addition to municipality context, but not a direct Aguada demand measure.",
+            "A medium/regional scenario still cannot treat regional visitor flow as if it guaranteed customer capture for one restaurant."
           ],
-          "nextValidationCheck": "Register a corridor-scale demand or travel proxy before acting on regional-customer assumptions."
+          "nextValidationCheck": "Pair the west-region demand proxy with logistics or mobility evidence before treating corridor-scale volume assumptions as routine."
         },
         {
           "lensId": "infrastructure-reliability-cost",
@@ -480,18 +481,18 @@
             },
             {
               "id": "large-strategic-island-demand-gap",
-              "signalId": "expanded-demand-proxy-gap",
+              "signalId": "island-wide-destination-demand-gap",
               "label": "Island-wide destination and visitor demand pattern",
               "reachId": "island-wide",
               "sourceType": "source-gap",
-              "notes": "No registered island-wide demand evidence exists for this category."
+              "notes": "The current west-region tourism proxy is still too narrow to establish island-wide destination demand for this category."
             }
           ],
           "limitations": [
-            "Municipality context alone is not the market boundary for a destination-format scenario.",
-            "No visitor, event, or island-wide customer-mobility source is currently registered."
+            "Municipality context alone is not the market boundary for a destination-format scenario, and the new west-region proxy does not solve that larger reach problem.",
+            "No stronger island-wide visitor, event, or customer-mobility source is currently registered."
           ],
-          "nextValidationCheck": "Register island-wide demand evidence before treating destination-scale volume assumptions as credible."
+          "nextValidationCheck": "Register a stronger island-wide demand proxy before treating destination-scale volume assumptions as credible."
         },
         {
           "lensId": "infrastructure-reliability-cost",

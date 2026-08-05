@@ -17,6 +17,8 @@ PostgreSQL-backed Node and TypeScript system with explicit data provenance.
 - Modern TypeScript Node API compatibility layer under `dtoapi/modern`.
 - PostgreSQL-backed deployment path with health and readiness checks.
 - Puerto Rico-only source-backed data intake and quarantine contracts.
+- Fixed-scenario demand, workforce, site, infrastructure, and permit baselines
+  recorded as reviewed Puerto Rico evidence where official sources are pinned.
 - Docker and host-native validation for app, API, database, and proxy paths.
 - IEEE-aligned planning, design, quality, test, and verification documentation.
 
@@ -174,6 +176,10 @@ The current modernization work is centered on:
   reviewed island-wide workforce baseline evidence for the fixed Aguada
   restaurant strategic scenario, scoped to official Puerto Rico labor-market
   occupation, wage, openings, and growth publications.
+- `data/profile-reach/aguada-restaurant-demand-proxy-review.json`: reviewed
+  west-region demand proxy evidence for the fixed Aguada restaurant
+  medium/regional scenario, scoped to official Puerto Rico tourism occupancy
+  and visitor-profile publications.
 - `data/profile-reach/aguada-restaurant-large-site-screening-review.json`:
   reviewed large-site screening baseline evidence for the fixed Aguada
   restaurant scenario, scoped to official Aguada territorial-plan, Planning

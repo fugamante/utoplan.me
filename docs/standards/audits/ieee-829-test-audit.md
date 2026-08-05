@@ -107,6 +107,9 @@ release branch, production deployment, or merge that changes app/API behavior.
 - Confirm planning-context fixtures pass the contract test and remain
   descriptive with explicit confidence labels, source metadata, and unresolved
   questions.
+- Confirm reviewed demand, regulatory, infrastructure, site-feasibility,
+  large-site, and workforce artifacts keep their linked source ids, fixed
+  scenario boundary, descriptive-only language, and explicit limitations.
 - Confirm profile-dependent fixtures are not accepted before TC-027 has a
   focused executable test covering reach, relevance, criticality, confidence,
   limitations, and next validation checks.
