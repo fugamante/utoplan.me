@@ -247,8 +247,13 @@
     {
       "id": "routine-food-service-staffing-gap",
       "lensId": "workforce-capability",
-      "label": "Routine service-role staffing depth",
-      "sourceType": "source-gap",
+      "label": "Routine food-service staffing baseline",
+      "sourceType": "registered-source",
+      "sourceId": "pr-lmi-hospitality-food-service-profile-2026",
+      "supportingSourceIds": [
+        "pr-lmi-top-occupations-2024",
+        "pr-lmi-occupation-openings-2022-2032"
+      ],
       "applicableScenarioIds": [
         "small-local",
         "medium-regional"
@@ -262,13 +267,18 @@
         "medium-regional-labor-depth"
       ],
       "recency": {
-        "status": "no-registered-source"
+        "evidenceDate": "2026-08-05",
+        "quality": "current-official-puerto-rico-labor-market-baseline"
       },
-      "interpretationLimits": [
-        "The current higher-education artifacts are not occupation-specific labor-supply evidence for restaurant staffing.",
-        "No registered wage, commute-time, or hiring-competition source is tied to the fixed selection."
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-routine-workforce-review.json",
+        "data/sources/puerto-rico.json"
       ],
-      "sourceGapBasis": "Workforce depth for food-service roles remains blocked on a registered occupation-level labor source."
+      "interpretationLimits": [
+        "The reviewed labor-market sources establish island-wide occupation, wage, and annual-openings context, not Aguada-specific hiring depth, commute range, or retention performance.",
+        "The current baseline does not prove that one operator can fill a local or corridor roster on schedule in the fixed municipality."
+      ],
+      "decisionSummary": "Official Puerto Rico labor-market publications now establish a descriptive workforce baseline for routine food-service staffing in the fixed Aguada small/local and medium/regional restaurant scenarios."
     },
     {
       "id": "specialized-management-pipeline-gap",

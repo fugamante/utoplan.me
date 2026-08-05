@@ -838,7 +838,7 @@
       "sourceUrl": "https://www.mercadolaboral.pr.gov/LMI/PDF/DIDO/Folletos/Alojamiento%20y%20Servicio%20de%20Comida.pdf",
       "resourceUrl": "https://www.mercadolaboral.pr.gov/LMI/PDF/DIDO/Folletos/Alojamiento%20y%20Servicio%20de%20Comida.pdf",
       "sourceBasis": "Official Puerto Rico labor-market sector profile for lodging and food service identifies role-specific wage and common training or experience expectations for direct supervisors, waitstaff, cooks, and related hospitality occupations.",
-      "notes": "Use as descriptive workforce-baseline evidence for planning-profile work only. It confirms island-wide Puerto Rico wage and qualification context for food-service supervision and staffing roles, but it does not prove Aguada-specific hiring depth, one employer's retention outcomes, or that a destination-format operator can assemble a leadership team at one site. Supporting review artifact: data/profile-reach/aguada-restaurant-workforce-pipeline-review.json."
+      "notes": "Use as descriptive workforce-baseline evidence for planning-profile work only. It confirms island-wide Puerto Rico wage and qualification context for food-service supervision and staffing roles, but it does not prove Aguada-specific hiring depth, one employer's retention outcomes, or that a destination-format operator can assemble a leadership team at one site. Supporting review artifacts: data/profile-reach/aguada-restaurant-routine-workforce-review.json and data/profile-reach/aguada-restaurant-workforce-pipeline-review.json."
     },
     {
       "id": "pr-lmi-top-occupations-2024",
@@ -853,7 +853,7 @@
       "sourceUrl": "https://www.mercadolaboral.pr.gov/LMI/PDF/Proyecciones/Datos_Interes/Ocupaciones%20con%20Mayor%20Empleo.pdf",
       "resourceUrl": "https://www.mercadolaboral.pr.gov/LMI/PDF/Proyecciones/Datos_Interes/Ocupaciones%20con%20Mayor%20Empleo.pdf",
       "sourceBasis": "Official Puerto Rico OEWS 2024 occupational-employment publication reports island-wide employment and wages for high-employment occupations, including food-service frontline roles relevant to restaurant staffing.",
-      "notes": "Use as descriptive island-wide staffing-volume evidence for planning-profile work only. It confirms that restaurant cooks, waitstaff, and quick-service counter roles remain large occupational pools in Puerto Rico, but it does not prove Aguada-specific hiring depth, shift coverage, or retention. Supporting review artifact: data/profile-reach/aguada-restaurant-workforce-pipeline-review.json."
+      "notes": "Use as descriptive island-wide staffing-volume evidence for planning-profile work only. It confirms that restaurant cooks, waitstaff, and quick-service counter roles remain large occupational pools in Puerto Rico, but it does not prove Aguada-specific hiring depth, shift coverage, or retention. Supporting review artifacts: data/profile-reach/aguada-restaurant-routine-workforce-review.json and data/profile-reach/aguada-restaurant-workforce-pipeline-review.json."
     },
     {
       "id": "pr-lmi-occupation-openings-2022-2032",
@@ -868,7 +868,7 @@
       "sourceUrl": "https://mercadolaboral.pr.gov/LMI/PDF/Proyecciones/Datos_Interes/Proyecciones%20por%20Ocupaciones%20con%20el%20Mayor%20N%C3%BAmero%20de%20Plazas%20Vacantes%20Anuales%202022-2032.pdf",
       "resourceUrl": "https://mercadolaboral.pr.gov/LMI/PDF/Proyecciones/Datos_Interes/Proyecciones%20por%20Ocupaciones%20con%20el%20Mayor%20N%C3%BAmero%20de%20Plazas%20Vacantes%20Anuales%202022-2032.pdf",
       "sourceBasis": "Official Puerto Rico occupational projections publication reports annual openings for occupations across the 2022-2032 horizon, including frontline food-service roles relevant to replacement and growth demand.",
-      "notes": "Use as descriptive workforce-flow evidence for planning-profile work only. It confirms island-wide annual openings for food-service roles in Puerto Rico, but it does not prove that one municipality or operator can fill those roles on schedule. Supporting review artifact: data/profile-reach/aguada-restaurant-workforce-pipeline-review.json."
+      "notes": "Use as descriptive workforce-flow evidence for planning-profile work only. It confirms island-wide annual openings for food-service roles in Puerto Rico, but it does not prove that one municipality or operator can fill those roles on schedule. Supporting review artifacts: data/profile-reach/aguada-restaurant-routine-workforce-review.json and data/profile-reach/aguada-restaurant-workforce-pipeline-review.json."
     },
     {
       "id": "pr-lmi-occupation-projections-2024-2034",

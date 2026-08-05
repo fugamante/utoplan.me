@@ -181,6 +181,10 @@ The current modernization work is centered on:
   reviewed island-wide workforce baseline evidence for the fixed Aguada
   restaurant strategic scenario, scoped to official Puerto Rico labor-market
   occupation, wage, openings, and growth publications.
+- `data/profile-reach/aguada-restaurant-routine-workforce-review.json`:
+  reviewed routine workforce baseline evidence for the fixed Aguada restaurant
+  small/local and medium/regional scenarios, scoped to official Puerto Rico
+  labor-market wage, role-volume, and annual-openings publications.
 - `data/profile-reach/aguada-restaurant-demand-proxy-review.json`: reviewed
   west-region demand proxy evidence for the fixed Aguada restaurant
   medium/regional scenario, scoped to official Puerto Rico tourism occupancy
@@ -260,6 +264,7 @@ npm run test:infrastructure-signal-review
 npm run test:utility-resilience-signal-review
 npm run test:site-feasibility-signal-review
 npm run test:large-site-signal-review
+npm run test:routine-workforce-signal-review
 npm run test:workforce-signal-review
 npm run test:logistics-signal-review
 npm run test:profile-reach-contract

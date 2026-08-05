@@ -239,7 +239,7 @@ stack before PR publication or release promotion.
 | Business category mapping | `npm run test:business-categories` | Category crosswalk, planning-context selection, or descriptive-scope changes. |
 | Planning-context fixture | `npm run test:planning-context` | Planning-context fixture, summary/detail, or descriptive-guardrail changes. |
 | Decision-signal registry | `npm run test:decision-signals` | Decision-signal registry, profile/reach fact linkage, source-gap classification, scenario reach, or interpretation-limit changes. |
-| Reviewed signal evidence | The applicable focused signal-review command from `package.json`, or `npm run test` for the complete set | Permit, utility, site-feasibility, large-site, workforce, or later reviewed signal-artifact changes. |
+| Reviewed signal evidence | The applicable focused signal-review command from `package.json`, or `npm run test` for the complete set | Permit, utility, site-feasibility, large-site, routine workforce, strategic workforce, or later reviewed signal-artifact changes. |
 | Migration artifact | `npm run test:migration-artifacts` | Migration template, artifact, readiness schema, or rollback changes. |
 | Deployment verification | `npm run verify:deployment` and `npm run verify:release` | Release, container, environment, or operator workflow changes. |
 | Release smoke | `UTOPLAN_APP_URL=<url> npm run verify:release-smoke` | Candidate deployed environment; set `UTOPLAN_RELEASE_SMOKE_JSON=1` when sanitized structured release evidence is required. |
