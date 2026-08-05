@@ -147,6 +147,14 @@
   water-service interruption evidence now establish a descriptive utility
   continuity baseline for the fixed restaurant scenario, while parcel-level
   reliability, outage duration, and spoilage risk remain explicit limits.
+- `data/profile-reach/aguada-restaurant-utility-resilience-review.json` now
+  records the next infrastructure decision-signal upgrade: official Puerto
+  Rico Energy Bureau reliability and firm-capacity oversight plus official
+  PRASA emergency and operations sources now establish a descriptive
+  utility-resilience baseline for the fixed medium/regional and
+  large/strategic restaurant scenarios, while corridor-level restoration time,
+  parcel-level performance, backup coverage, and continuity cost remain
+  explicit limits.
 - `data/profile-reach/aguada-restaurant-site-screening-review.json` now
   records the first site-feasibility decision-signal upgrade: official Puerto
   Rico Planning Board zoning, flood, district, and Aguada hazard sources now
@@ -182,6 +190,9 @@
 - `npm run test:infrastructure-signal-review` validates the reviewed Aguada
   restaurant utility-service artifact and its linkage to the source registry
   and decision-signal contract.
+- `npm run test:utility-resilience-signal-review` validates the reviewed
+  Aguada restaurant utility-resilience artifact and its linkage to the source
+  registry and decision-signal contract.
 - `npm run test:demand-signal-review` validates the reviewed Aguada restaurant
   demand-proxy artifact and its linkage to the source registry and
   decision-signal contract.

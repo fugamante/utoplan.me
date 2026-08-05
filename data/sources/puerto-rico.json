@@ -616,6 +616,81 @@
       "notes": "Use as descriptive Aguada water-service continuity evidence for planning-profile work only. It confirms that the fixed municipality can be affected by pump and filter-plant recovery conditions in the western regional system, but it does not prove current service quality, restoration time, or one parcel's water connection. Supporting review artifact: data/profile-reach/aguada-restaurant-utility-service-review.json."
     },
     {
+      "id": "pr-energy-bureau-jan-2026-reliability-metrics-report",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-infrastructure"
+      ],
+      "publisher": "Puerto Rico Energy Bureau",
+      "portal": "energia.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://energia.pr.gov/wp-content/uploads/sites/7/2026/02/20260220-MI20190007-Submission-Monthly-Report-System-Reliability-Metrics-for-Jan-2026.pdf",
+      "resourceUrl": "https://energia.pr.gov/wp-content/uploads/sites/7/2026/02/20260220-MI20190007-Submission-Monthly-Report-System-Reliability-Metrics-for-Jan-2026.pdf",
+      "sourceBasis": "Official January 2026 filing to the Puerto Rico Energy Bureau reports system-level SAIDI and SAIFI metrics for Puerto Rico under the Bureau's monthly reliability-reporting directives.",
+      "notes": "Use as descriptive electric reliability-reporting evidence for planning-profile work only. It confirms that current monthly system metrics are being filed for Puerto Rico, but it does not prove corridor-level restoration speed, parcel-level outage frequency, or one business's continuity readiness. Supporting review artifact: data/profile-reach/aguada-restaurant-utility-resilience-review.json."
+    },
+    {
+      "id": "pr-energy-bureau-reliability-metrics-order-2025",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-infrastructure"
+      ],
+      "publisher": "Puerto Rico Energy Bureau",
+      "portal": "energia.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://energia.pr.gov/wp-content/uploads/sites/7/2025/05/20250516-MI20190007-Resolution-and-Order.pdf",
+      "resourceUrl": "https://energia.pr.gov/wp-content/uploads/sites/7/2025/05/20250516-MI20190007-Resolution-and-Order.pdf",
+      "sourceBasis": "Official May 16, 2025 Puerto Rico Energy Bureau order requires monthly system SAIDI and SAIFI reporting and explains that generation-related outages experienced by customers are not fully reflected in the reported T and D metrics alone.",
+      "notes": "Use as descriptive electric reliability-governance evidence for planning-profile work only. It confirms the official reporting framework and its stated limits, but it does not prove one corridor's outage duration, restoration performance, or resilience cost. Supporting review artifact: data/profile-reach/aguada-restaurant-utility-resilience-review.json."
+    },
+    {
+      "id": "pr-energy-bureau-essa-reliability-order-2026",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-infrastructure"
+      ],
+      "publisher": "Puerto Rico Energy Bureau",
+      "portal": "energia.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://energia.pr.gov/wp-content/uploads/sites/7/2026/04/20260424-MI20200012-Resolution-and-Order.pdf",
+      "resourceUrl": "https://energia.pr.gov/wp-content/uploads/sites/7/2026/04/20260424-MI20200012-Resolution-and-Order.pdf",
+      "sourceBasis": "Official April 24, 2026 Puerto Rico Energy Bureau order states that Puerto Rico continues to need firm capacity to improve electric-system reliability and cites the Resource Adequacy Study's reduction of load-shed risk through additional storage resources.",
+      "notes": "Use as descriptive resource-adequacy and load-shed evidence for planning-profile work only. It confirms that island-wide electric continuity remains tied to firm-capacity and storage conditions, but it does not prove one site's backup-power coverage, outage duration, or refrigeration continuity. Supporting review artifact: data/profile-reach/aguada-restaurant-utility-resilience-review.json."
+    },
+    {
+      "id": "prasa-hurricane-season-guidance",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-infrastructure"
+      ],
+      "publisher": "Autoridad de Acueductos y Alcantarillados de Puerto Rico",
+      "portal": "acueductos.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.acueductos.pr.gov/en-us/comunicaciones/temporada-de-huracanes",
+      "resourceUrl": "https://www.acueductos.pr.gov/en-us/comunicaciones/temporada-de-huracanes",
+      "sourceBasis": "Official PRASA hurricane-season guidance provides emergency information contacts and region-level customer-service lines for water and sewer emergencies during major storm conditions.",
+      "notes": "Use as descriptive water emergency-response evidence for planning-profile work only. It confirms an official storm-response surface for Puerto Rico water-service continuity events, but it does not prove corridor-level restoration speed, water pressure, or one facility's continuity performance. Supporting review artifact: data/profile-reach/aguada-restaurant-utility-resilience-review.json."
+    },
+    {
+      "id": "prasa-mission-operations-profile",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-infrastructure"
+      ],
+      "publisher": "Autoridad de Acueductos y Alcantarillados de Puerto Rico",
+      "portal": "acueductos.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.acueductos.pr.gov/en-us/nuestra-aaa/mision-vision-y-objetivos",
+      "resourceUrl": "https://www.acueductos.pr.gov/en-us/nuestra-aaa/mision-vision-y-objetivos",
+      "sourceBasis": "Official PRASA mission and operations profile states that the authority is the only water company on the island and documents the scale and complexity of its island-wide operational infrastructure.",
+      "notes": "Use as descriptive island-wide water-operations evidence for planning-profile work only. It confirms the scale and operational footprint of Puerto Rico's public water system, but it does not prove one corridor's service stability, storage redundancy, or one operator's business continuity readiness. Supporting review artifact: data/profile-reach/aguada-restaurant-utility-resilience-review.json."
+    },
+    {
       "id": "pr-jp-mipr-site-screening",
       "status": "candidate",
       "targetTables": [

@@ -210,7 +210,14 @@
       "id": "utility-resilience-gap",
       "lensId": "infrastructure-reliability-cost",
       "label": "Utility resilience and operating continuity at larger scales",
-      "sourceType": "source-gap",
+      "sourceType": "registered-source",
+      "sourceId": "pr-energy-bureau-jan-2026-reliability-metrics-report",
+      "supportingSourceIds": [
+        "pr-energy-bureau-reliability-metrics-order-2025",
+        "pr-energy-bureau-essa-reliability-order-2026",
+        "prasa-hurricane-season-guidance",
+        "prasa-mission-operations-profile"
+      ],
       "applicableScenarioIds": [
         "medium-regional",
         "large-strategic"
@@ -224,13 +231,18 @@
         "large-strategic-resilience"
       ],
       "recency": {
-        "status": "no-registered-source"
+        "evidenceDate": "2026-08-05",
+        "quality": "official-electric-reliability-and-water-emergency-baseline"
       },
-      "interpretationLimits": [
-        "No registered evidence covers corridor-level or island-wide utility redundancy, outage recovery, or resilience cost.",
-        "The matrix cannot yet distinguish ordinary service adequacy from backup-power or resilience requirements."
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-utility-resilience-review.json",
+        "data/sources/puerto-rico.json"
       ],
-      "sourceGapBasis": "Larger-scale infrastructure resilience remains an explicit source gap."
+      "interpretationLimits": [
+        "The reviewed sources establish official electric reliability-reporting, firm-capacity, and water emergency-response surfaces, not parcel-level outage duration, restoration speed, or backup coverage.",
+        "The current baseline still does not prove corridor-level restoration time, destination-scale continuity controls, refrigeration survival, or one operator's resilience costs."
+      ],
+      "decisionSummary": "Official Puerto Rico Energy Bureau and PRASA sources now establish a descriptive utility-resilience baseline for the fixed medium/regional and large/strategic Aguada restaurant scenarios."
     },
     {
       "id": "routine-food-service-staffing-gap",
