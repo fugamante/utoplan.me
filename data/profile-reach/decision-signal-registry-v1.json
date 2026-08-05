@@ -3,7 +3,7 @@
   "registryVersion": "decision-signal-registry-v1",
   "scope": "puerto-rico-planning-candidate",
   "status": "candidate-needs-review",
-  "updatedAt": "2026-07-30",
+  "updatedAt": "2026-08-05",
   "fixedSelection": {
     "fixtureId": "mun003_restaurant",
     "municipalityCode": "003",
@@ -120,30 +120,59 @@
       ]
     },
     {
-      "id": "expanded-demand-proxy-gap",
+      "id": "west-region-visitor-demand-baseline",
       "lensId": "demand-market-reach",
-      "label": "Expanded reach demand proxies beyond one municipality",
+      "label": "West-region visitor demand proxy baseline",
+      "sourceType": "registered-source",
+      "sourceId": "pr-tourism-registration-occupancy-2024",
+      "supportingSourceIds": [
+        "pr-tourism-visitor-profile-fy2023-2024"
+      ],
+      "applicableScenarioIds": [
+        "medium-regional"
+      ],
+      "reachByScenario": {
+        "medium-regional": "regional-corridor"
+      },
+      "factIds": [
+        "medium-regional-corridor-demand-baseline"
+      ],
+      "recency": {
+        "evidenceDate": "2026-08-05",
+        "quality": "official-west-region-tourism-and-visitor-demand-proxy"
+      },
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-demand-proxy-review.json",
+        "data/sources/puerto-rico.json"
+      ],
+      "interpretationLimits": [
+        "The reviewed sources establish west-region arrivals, occupancy, visitor-region activity, and airport access context, not Aguada-specific restaurant demand or one concept's customer capture.",
+        "This proxy improves the corridor-demand lane but does not prove island-wide destination pull, municipality-level demand, or one operator's repeat-customer volume."
+      ],
+      "decisionSummary": "Official Puerto Rico tourism occupancy and visitor-survey sources now establish a descriptive west-region demand proxy baseline for the fixed Aguada medium/regional restaurant scenario."
+    },
+    {
+      "id": "island-wide-destination-demand-gap",
+      "lensId": "demand-market-reach",
+      "label": "Island-wide destination demand beyond west-region proxies",
       "sourceType": "source-gap",
       "applicableScenarioIds": [
-        "medium-regional",
         "large-strategic"
       ],
       "reachByScenario": {
-        "medium-regional": "regional-corridor",
         "large-strategic": "island-wide"
       },
       "factIds": [
-        "medium-regional-corridor-demand-gap",
         "large-strategic-island-demand-gap"
       ],
       "recency": {
         "status": "no-registered-source"
       },
       "interpretationLimits": [
-        "No registered corridor or island-wide spending, visitor, or traffic proxy is attached to the matrix.",
-        "The current matrix cannot separate observed local category presence from broader reachable demand."
+        "The current demand proxy stack improves west-region visitor context but does not measure island-wide destination pull for one restaurant concept.",
+        "No registered Puerto Rico source yet separates general visitor activity from the customer volume required for a destination-format operation."
       ],
-      "sourceGapBasis": "Demand expansion beyond the fixed municipality remains blocked on a registered Puerto Rico demand-proxy source."
+      "sourceGapBasis": "Island-wide destination demand remains blocked on a stronger official Puerto Rico proxy than the current west-region tourism baseline."
     },
     {
       "id": "aguada-basic-utility-service-baseline",

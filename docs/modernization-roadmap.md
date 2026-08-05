@@ -163,6 +163,13 @@
   establish island-wide food-service supervision, staffing-volume, annual-
   openings, and growth context, while Aguada-specific hiring depth, retention,
   commute range, and one-operator staffing resilience remain explicit limits.
+- `data/profile-reach/aguada-restaurant-demand-proxy-review.json` now records
+  the first demand decision-signal upgrade beyond municipality-only context:
+  official Puerto Rico tourism occupancy and visitor-profile publications now
+  establish a descriptive west-region demand proxy for the fixed
+  medium/regional Aguada restaurant scenario, while Aguada-specific customer
+  capture, repeat-demand volume, and island-wide destination pull remain
+  explicit limits.
 - `npm run test:decision-signals` validates the decision-signal registry and
   its linkage back to the profile/reach matrix so fixed-selection planning
   facts cannot drift away from their documented evidence or explicit gap state.
@@ -172,6 +179,9 @@
 - `npm run test:infrastructure-signal-review` validates the reviewed Aguada
   restaurant utility-service artifact and its linkage to the source registry
   and decision-signal contract.
+- `npm run test:demand-signal-review` validates the reviewed Aguada restaurant
+  demand-proxy artifact and its linkage to the source registry and
+  decision-signal contract.
 - `npm run test:site-feasibility-signal-review` validates the reviewed Aguada
   restaurant site-screening artifact and its linkage to the source registry
   and decision-signal contract.
@@ -311,13 +321,14 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 ## Immediate Next Step
 
 Continue replacing the highest-risk source-gap signals in the fixed-selection
-matrix with registered Puerto Rico evidence. After the new workforce baseline,
-the next best lane is demand or logistics, provided a bounded official Puerto
-Rico mobility or market proxy can be pinned without inventing municipality-
-specific precision. Keep category and place constant while upgrading
-`data/profile-reach/business-profile-reach-v1.json` from explicit gap control
-toward source-backed signals for demand, logistics, resilience, and the
-remaining workforce gaps.
+matrix with registered Puerto Rico evidence. After the new west-region demand
+proxy, the next best lane is logistics or larger-scale resilience, or a
+stronger island-wide demand proxy if an official Puerto Rico source can
+distinguish destination pull from general visitor activity without inventing
+municipality-specific precision. Keep category and place constant while
+upgrading `data/profile-reach/business-profile-reach-v1.json` from explicit
+gap control toward source-backed signals for logistics, resilience, island-wide
+demand, and the remaining workforce gaps.
 
 Treat the current 4-row generated `unis` slice and its review artifacts as a
 maintenance boundary, not the next product lane. Do not spend the next pass on

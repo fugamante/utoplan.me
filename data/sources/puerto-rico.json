@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "scope": "puerto-rico-only",
-  "retrievedAt": "2026-07-30",
+  "retrievedAt": "2026-08-05",
   "sources": [
     {
       "id": "datospr-cbp-2014-puerto-rico",
@@ -689,6 +689,36 @@
       "resourceUrl": "https://docs.pr.gov/files/JP-Junta%20de%20Planificacion/Planes%20Territoriales/PT/Aguada/JP-PT-26-01-Orden-Ejecutiva-OE-2024-044.pdf",
       "sourceBasis": "Official 2024 executive order approves Aguada's territorial-plan revision and states that the municipality's plan includes classification, zoning, urban-center delimitation, and road-plan documents presented as official digital geodata.",
       "notes": "Use as descriptive large-site governance evidence for planning-profile work only. It confirms that Aguada has an official current territorial-plan control for land-use, classification, and road-plan review, but it does not prove parcel assembly, parking supply, truck access, or one property's operating readiness. Supporting review artifact: data/profile-reach/aguada-restaurant-large-site-screening-review.json."
+    },
+    {
+      "id": "pr-tourism-registration-occupancy-2024",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-demand"
+      ],
+      "publisher": "Compania de Turismo de Puerto Rico",
+      "portal": "tourism.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://tourism.pr.gov/industry-research-and-statistics/?lang=en",
+      "resourceUrl": "https://tourism.pr.gov/wp-content/uploads/2025/06/CALENDAR-YEAR-2024.pdf",
+      "sourceBasis": "Official Puerto Rico Tourism Company registration and occupancy report provides by-region lodging arrivals, non-resident share, occupancy, room nights, ADR, and average stay for calendar year 2024, including Porta del Sol.",
+      "notes": "Use as descriptive demand-proxy evidence for planning-profile work only. It confirms west-region visitor and lodging activity relevant to the fixed Aguada restaurant scenario, but it does not prove Aguada-specific restaurant demand, one operator's capture rate, or island-wide destination pull. Supporting review artifact: data/profile-reach/aguada-restaurant-demand-proxy-review.json."
+    },
+    {
+      "id": "pr-tourism-visitor-profile-fy2023-2024",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-demand"
+      ],
+      "publisher": "Instituto de Estadisticas de Puerto Rico and Compania de Turismo de Puerto Rico",
+      "portal": "tourism.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://tourism.pr.gov/industry-research-and-statistics/?lang=en",
+      "resourceUrl": "https://tourism.pr.gov/wp-content/uploads/2025/07/Visitor-Profile-Fiscal-Year-2023-2024.pdf",
+      "sourceBasis": "Official Puerto Rico visitor survey profile reports tourist-region visitation, airport distribution, activity participation, return intent, and visitor spending for fiscal year 2023-2024.",
+      "notes": "Use as descriptive demand-proxy evidence for planning-profile work only. It confirms that Porta del Sol participates in the island visitor circuit and that restaurant-adjacent activity is common among visitors, but it does not prove municipality-level customer origin, one restaurant's demand, or island-wide destination-scale capture. Supporting review artifact: data/profile-reach/aguada-restaurant-demand-proxy-review.json."
     },
     {
       "id": "pr-lmi-hospitality-food-service-profile-2026",
