@@ -175,22 +175,23 @@
           "lensId": "workforce-capability",
           "relevance": "secondary",
           "criticality": "secondary",
-          "confidence": "low",
+          "confidence": "medium",
           "facts": [
             {
               "id": "small-local-shift-staffing",
               "signalId": "routine-food-service-staffing-gap",
-              "label": "Routine service-role staffing pool",
+              "label": "Routine food-service staffing baseline",
               "reachId": "local-catchment",
-              "sourceType": "source-gap",
-              "notes": "No occupation-specific labor-depth source is registered for food-service staffing in the current repo."
+              "sourceType": "registered-source",
+              "sourceId": "pr-lmi-hospitality-food-service-profile-2026",
+              "notes": "Official Puerto Rico labor-market publications now establish island-wide wage, staffing-volume, and openings context for routine restaurant staffing roles, but they do not prove that one Aguada operator can fill or retain a local shift roster."
             }
           ],
           "limitations": [
-            "Current higher-education artifacts are not workforce-capacity evidence for restaurant staffing.",
-            "No wage, commute-time, or hiring-competition source is tied to this scenario yet."
+            "The workforce lane now has an official Puerto Rico labor-market baseline, but it remains island-wide rather than Aguada-specific.",
+            "Current evidence does not measure local commute depth, shift coverage reliability, or employer-specific retention."
           ],
-          "nextValidationCheck": "Identify an occupation-level labor source before treating staffing as more than a secondary planning consideration."
+          "nextValidationCheck": "Add municipality-relevant commute, hiring-competition, or retention evidence before treating shift-fill assumptions as measured."
         },
         {
           "lensId": "logistics-supply-chain",
@@ -349,22 +350,23 @@
           "lensId": "workforce-capability",
           "relevance": "primary",
           "criticality": "material-tradeoff",
-          "confidence": "low",
+          "confidence": "medium",
           "facts": [
             {
               "id": "medium-regional-labor-depth",
               "signalId": "routine-food-service-staffing-gap",
-              "label": "Regional staffing depth across service and kitchen roles",
+              "label": "Routine food-service staffing baseline",
               "reachId": "regional-corridor",
-              "sourceType": "source-gap",
-              "notes": "No registered labor-depth or commute-range evidence exists for this scenario."
+              "sourceType": "registered-source",
+              "sourceId": "pr-lmi-hospitality-food-service-profile-2026",
+              "notes": "Official Puerto Rico labor-market publications now establish island-wide wage, staffing-volume, and annual-openings context for service and kitchen roles, but they do not prove corridor commute depth, schedule redundancy, or one operator's ability to maintain a broader roster."
             }
           ],
           "limitations": [
-            "The current repo cannot distinguish a routine local hiring pool from corridor-level staffing depth.",
-            "Education directory artifacts do not answer service-role supply, competition, or retention."
+            "The workforce lane now has an official Puerto Rico labor-market baseline, but it still cannot distinguish routine local hiring from corridor-specific staffing depth.",
+            "Current evidence does not measure commute range, hiring competition, or retention for a multi-shift Aguada operation."
           ],
-          "nextValidationCheck": "Register occupation or commute evidence before asserting regional hiring resilience."
+          "nextValidationCheck": "Register commute, labor-shed, or hiring-competition evidence before asserting corridor hiring resilience."
         },
         {
           "lensId": "logistics-supply-chain",

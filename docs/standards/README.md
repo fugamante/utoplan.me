@@ -8,6 +8,20 @@ The corpus is not archival. It must be updated whenever implementation,
 validation, deployment, data provenance, risk, or project-management behavior
 changes in a way that affects the documented controls.
 
+These documents are tailored engineering controls. They do not establish IEEE
+certification, formal compliance, or audited assurance.
+
+## Applicability And Evidence
+
+- `ieee-applicability.md` records the project profile, all seven family
+  decisions, owners, acceptance criteria, freshness, and escalation triggers.
+- `evidence-register.md` records the current controlled evidence and unresolved
+  risks without duplicating the detailed plans or audit corpuses.
+- The selected floor is `standard`. Any introduction of personal data,
+  write-capable production paths, automated ranking/recommendation decisions,
+  materially consequential claims, or binding assurance obligations requires
+  immediate high-assurance reassessment.
+
 ## Standards Documents
 
 | Standard | Project document | Audit corpus |
@@ -108,6 +122,7 @@ Audits should use repository evidence first:
 - `data/profile-reach/aguada-restaurant-site-screening-review.json`
 - `data/profile-reach/aguada-restaurant-demand-proxy-review.json`
 - `data/profile-reach/aguada-restaurant-large-site-screening-review.json`
+- `data/profile-reach/aguada-restaurant-routine-workforce-review.json`
 - `data/profile-reach/aguada-restaurant-workforce-pipeline-review.json`
 - `docs/database-migrations.md`
 - `docs/deployment-topology.md`
