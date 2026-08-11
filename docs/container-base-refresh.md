@@ -3,8 +3,10 @@
 ## Control
 
 All Node-based Docker stages use the reviewed Node 26 Bookworm Slim tag plus
-one shared OCI index digest. The tag keeps the intended runtime line legible;
-the digest makes a build of a given commit reproducible.
+one shared OCI index digest. The PostgreSQL contract-test image likewise uses
+the reviewed PostgreSQL 16 Alpine tag plus an OCI index digest. The tags keep
+the intended runtime lines legible; the digests make a build of a given commit
+reproducible across supported platforms.
 
 GitHub Dependabot owns weekly discovery of Docker base-image updates through
 `.github/dependabot.yml`. The modernization maintainer owns review, validation,
@@ -23,14 +25,16 @@ not end-to-end operation.
    `America/Puerto_Rico` and opens at most one Docker update pull request.
 2. Confirm every Node `FROM` instruction resolves to the same proposed digest
    and remains on `node:26-bookworm-slim`.
-3. Update the expected digest in
+3. For a PostgreSQL image refresh, confirm `Dockerfile.postgres-test` remains
+   on `postgres:16-alpine` and resolves to the reviewed OCI index digest.
+4. Update the expected digest in
    `test/deployment_container_contract_test.js` in the same change. A failing
    contract is an intentional review gate, not a reason to weaken the check.
-4. Review upstream Node image release and security notes for runtime-major,
-   Debian-variant, package, or compatibility impact.
-5. Run the validation stack below. Merge only when all required checks pass or
+5. Review the relevant upstream Node or PostgreSQL image release and security
+   notes for runtime-major, base-distribution, package, or compatibility impact.
+6. Run the validation stack below. Merge only when all required checks pass or
    a documented risk acceptance names the skipped environment-dependent gate.
-6. Record the accepted digest and validation evidence in the IEEE 828 audit
+7. Record the accepted digest and validation evidence in the IEEE 828 audit
    corpus when the refresh changes risk, procedure, or compatibility evidence.
 
 ## Security Advisory Response
@@ -75,7 +79,7 @@ only after the incompatibility or upstream issue is understood.
 
 ## Revisit Triggers
 
-Revisit this control when Node 26 support changes, the Debian variant changes,
-Dependabot ownership or scheduling changes, a production/test Dockerfile is
-added, the CI Docker surface changes, or a relevant security advisory requires
-faster response.
+Revisit this control when Node 26 or PostgreSQL 16 support changes, a base
+distribution changes, Dependabot ownership or scheduling changes, a
+production/test Dockerfile is added, the CI Docker surface changes, or a
+relevant security advisory requires faster response.

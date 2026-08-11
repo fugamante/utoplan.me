@@ -18,6 +18,7 @@ var publicCompose = fs.readFileSync(path.join(root, 'docker-compose.public-api.y
 var dependabot = fs.readFileSync(path.join(root, '.github', 'dependabot.yml'), 'utf8');
 var baseRefresh = fs.readFileSync(path.join(root, 'docs', 'container-base-refresh.md'), 'utf8');
 var nodeImage = 'node:26-bookworm-slim@sha256:81502e860176e63695d769d3d1a2d3a403abc1c27c6a02169b765f3e43b60ede';
+var postgresImage = 'postgres:16-alpine@sha256:57c72fd2a128e416c7fcc499958864df5301e940bca0a56f58fddf30ffc07777';
 
 [
   appDockerfile,
@@ -33,6 +34,7 @@ var nodeImage = 'node:26-bookworm-slim@sha256:81502e860176e63695d769d3d1a2d3a403
   });
 });
 assert.strictEqual((apiDockerfile.match(/^FROM node:/gm) || []).length, 2);
+assert.strictEqual(postgresDockerfile.split('\n')[0], 'FROM ' + postgresImage);
 assert(appDockerfile.indexOf('ENV NODE_ENV=production') !== -1);
 assert(appDockerfile.indexOf('USER node') !== -1);
 assert(appDockerfile.indexOf('USER node') < appDockerfile.indexOf('CMD ['));
@@ -57,6 +59,10 @@ assert(compose.indexOf('node scripts/verify_deployment_config.js --service=api')
 assert(publicCompose.indexOf('UTOPLAN_API_BIND') !== -1);
 assert(publicCompose.indexOf('UTOPLAN_API_HOST_PORT') !== -1);
 assert(dependabot.indexOf('package-ecosystem: docker') !== -1);
+assert.strictEqual((dependabot.match(/package-ecosystem: npm/g) || []).length, 3);
+assert(dependabot.indexOf('directory: /app') !== -1);
+assert(dependabot.indexOf('directory: /dtoapi/modern') !== -1);
+assert.strictEqual((dependabot.match(/version-update:semver-major/g) || []).length, 3);
 assert(dependabot.indexOf('interval: weekly') !== -1);
 assert(dependabot.indexOf('timezone: America/Puerto_Rico') !== -1);
 assert(dependabot.indexOf('open-pull-requests-limit: 1') !== -1);

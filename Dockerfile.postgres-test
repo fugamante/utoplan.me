@@ -1,4 +1,4 @@
-FROM postgres:16-alpine
+FROM postgres:16-alpine@sha256:57c72fd2a128e416c7fcc499958864df5301e940bca0a56f58fddf30ffc07777
 
 COPY docker/postgres/init.sql /docker-entrypoint-initdb.d/001_contract_data.sql
 COPY docker/postgres/002_unis_partial_seed.sql /docker-entrypoint-initdb.d/002_unis_partial_seed.sql

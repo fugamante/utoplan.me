@@ -1,5 +1,6 @@
 {
   "name": "utoplan.me",
+  "private": true,
   "email": "support@imaginary.tech",
   "description": "Modular data visualizer for strategic planning.",
   "license": "MIT",
