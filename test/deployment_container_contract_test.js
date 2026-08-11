@@ -17,7 +17,7 @@ var compose = fs.readFileSync(path.join(root, 'docker-compose.integrated.yml'), 
 var publicCompose = fs.readFileSync(path.join(root, 'docker-compose.public-api.yml'), 'utf8');
 var dependabot = fs.readFileSync(path.join(root, '.github', 'dependabot.yml'), 'utf8');
 var baseRefresh = fs.readFileSync(path.join(root, 'docs', 'container-base-refresh.md'), 'utf8');
-var nodeImage = 'node:26-bookworm-slim@sha256:81502e860176e63695d769d3d1a2d3a403abc1c27c6a02169b765f3e43b60ede';
+var nodeImage = 'node:26-bookworm-slim@sha256:cd565714d4da3e84bfd341e31448f81d47c6362198f152345297c9c1154e6341';
 var postgresImage = 'postgres:16-alpine@sha256:57c72fd2a128e416c7fcc499958864df5301e940bca0a56f58fddf30ffc07777';
 
 [
