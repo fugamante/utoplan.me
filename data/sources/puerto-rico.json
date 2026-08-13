@@ -718,7 +718,7 @@
       "sourceUrl": "https://estadisticas.pr/en/inventario-de-estadisticas/carga_pasajeros_aereos_maritimos",
       "resourceUrl": "https://estadisticas.pr/files/inventario/carga_pasajeros_aereos_maritimos/2024-09-23/AP-CargaPasajeros-2024-Q2.xlsx",
       "sourceBasis": "Official Puerto Rico cargo and passenger inventory publishes airport and maritime cargo volumes reported by the Puerto Rico Ports Authority, including Rafael Hernandez Airport in Aguadilla and Eugenio Maria de Hostos Airport in Mayaguez.",
-      "notes": "Use as descriptive west-region cargo-movement evidence for planning-profile work only. It confirms that official quarterly cargo volumes are tracked for the Aguadilla and Mayaguez airports, but it does not prove supplier depth, delivery timeliness, refrigeration continuity, or one restaurant's procurement path. Supporting review artifact: data/profile-reach/aguada-restaurant-corridor-logistics-review.json."
+      "notes": "Use as descriptive west-region cargo-movement evidence for planning-profile work only. It confirms that official quarterly cargo volumes are tracked for the Aguadilla and Mayaguez airports, but it does not prove supplier depth, delivery timeliness, refrigeration continuity, or one restaurant's procurement path. Supporting review artifact: data/profile-reach/aguada-restaurant-external-logistics-review.json."
     },
     {
       "id": "pr-jp-mipr-site-screening",

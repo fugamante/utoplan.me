@@ -194,6 +194,10 @@ The current modernization work is centered on:
   reviewed corridor logistics baseline evidence for the fixed Aguada
   restaurant medium/regional scenario, scoped to official Puerto Rico west-
   corridor transport-planning and airport cargo publications.
+- `data/profile-reach/aguada-restaurant-external-logistics-review.json`:
+  reviewed external-connection logistics baseline evidence for the fixed
+  Aguada restaurant large/strategic scenario, scoped to official Puerto Rico
+  air and maritime cargo inventory.
 - `data/profile-reach/aguada-restaurant-large-site-screening-review.json`:
   reviewed large-site screening baseline evidence for the fixed Aguada
   restaurant scenario, scoped to official Aguada territorial-plan, Planning
