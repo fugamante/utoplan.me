@@ -3,7 +3,7 @@
   "registryVersion": "decision-signal-registry-v1",
   "scope": "puerto-rico-planning-candidate",
   "status": "candidate-needs-review",
-  "updatedAt": "2026-08-05",
+  "updatedAt": "2026-08-12",
   "fixedSelection": {
     "fixtureId": "mun003_restaurant",
     "municipalityCode": "003",

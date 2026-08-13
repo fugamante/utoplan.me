@@ -3,7 +3,7 @@
   "contractVersion": "business-profile-reach-v1",
   "scope": "puerto-rico-planning-candidate",
   "status": "candidate-needs-review",
-  "updatedAt": "2026-08-05",
+  "updatedAt": "2026-08-12",
   "rules": {
     "noScores": true,
     "noRankings": true,
@@ -217,7 +217,7 @@
         {
           "lensId": "regulatory-execution-environment",
           "relevance": "primary",
-          "criticality": "blocker",
+          "criticality": "material-tradeoff",
           "confidence": "medium",
           "facts": [
             {
