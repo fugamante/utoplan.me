@@ -104,6 +104,7 @@ interpretation limits.
 Reviewed signal-upgrade artifacts now exist at
 `data/profile-reach/aguada-restaurant-demand-proxy-review.json` and
 `data/profile-reach/aguada-restaurant-corridor-logistics-review.json` and
+`data/profile-reach/aguada-restaurant-external-logistics-review.json` and
 `data/profile-reach/aguada-restaurant-permit-path-review.json` and
 `data/profile-reach/aguada-restaurant-utility-service-review.json` and
 `data/profile-reach/aguada-restaurant-utility-resilience-review.json` and
@@ -112,14 +113,15 @@ Reviewed signal-upgrade artifacts now exist at
 `data/profile-reach/aguada-restaurant-routine-workforce-review.json` and
 `data/profile-reach/aguada-restaurant-workforce-pipeline-review.json`. They
 upgrade the medium/regional demand, medium/regional logistics,
-regulatory-execution, small-scale infrastructure, medium/large utility
-resilience, small/medium site-feasibility, large-site-feasibility,
-small/medium routine workforce, and strategic workforce lanes for the fixed
-Aguada restaurant scenario from pure source gaps to source-backed descriptive
-reviews grounded in official Puerto Rico authorities. They remain descriptive
-baseline evidence, not proof of approval timing, parcel eligibility, outage
-duration, utility costs, backup coverage, route reliability, kitchen retrofit
-condition, parcel assembly, Aguada-specific customer capture,
+large/strategic external logistics, regulatory-execution, small-scale
+infrastructure, medium/large utility resilience, small/medium
+site-feasibility, large-site-feasibility, small/medium routine workforce, and
+strategic workforce lanes for the fixed Aguada restaurant scenario from pure
+source gaps to source-backed descriptive reviews grounded in official Puerto
+Rico authorities. They remain descriptive baseline evidence, not proof of
+approval timing, parcel eligibility, outage duration, utility costs, backup
+coverage, route reliability, supplier depth, cold-chain timing, kitchen
+retrofit condition, parcel assembly, Aguada-specific customer capture,
 Aguada-specific hiring depth, or launch readiness.
 
 The next product step is to replace the highest-risk source-gap signals in that
