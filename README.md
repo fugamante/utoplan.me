@@ -272,6 +272,7 @@ npm run test:large-site-signal-review
 npm run test:routine-workforce-signal-review
 npm run test:workforce-signal-review
 npm run test:logistics-signal-review
+npm run test:external-logistics-signal-review
 npm run test:profile-reach-contract
 ```
 
