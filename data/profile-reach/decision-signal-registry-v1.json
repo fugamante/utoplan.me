@@ -154,8 +154,12 @@
     {
       "id": "island-wide-destination-demand-gap",
       "lensId": "demand-market-reach",
-      "label": "Island-wide destination demand beyond west-region proxies",
-      "sourceType": "source-gap",
+      "label": "Island-wide destination demand baseline",
+      "sourceType": "registered-source",
+      "sourceId": "pr-tourism-visitors-expenditures-contribution-2024",
+      "supportingSourceIds": [
+        "pr-tourism-passenger-movement-cy-2024"
+      ],
       "applicableScenarioIds": [
         "large-strategic"
       ],
@@ -166,13 +170,18 @@
         "large-strategic-island-demand-gap"
       ],
       "recency": {
-        "status": "no-registered-source"
+        "evidenceDate": "2026-08-13",
+        "quality": "official-island-wide-visitor-spend-and-passenger-baseline"
       },
-      "interpretationLimits": [
-        "The current demand proxy stack improves west-region visitor context but does not measure island-wide destination pull for one restaurant concept.",
-        "No registered Puerto Rico source yet separates general visitor activity from the customer volume required for a destination-format operation."
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-island-demand-review.json",
+        "data/sources/puerto-rico.json"
       ],
-      "sourceGapBasis": "Island-wide destination demand remains blocked on a stronger official Puerto Rico proxy than the current west-region tourism baseline."
+      "interpretationLimits": [
+        "The reviewed sources establish Puerto Rico-wide visitor totals, visitor spending, tourism GDP contribution, and airport throughput, not Aguada-specific restaurant demand or one concept's conversion.",
+        "This baseline improves the large-scenario demand lane but does not prove destination capture, event demand, repeat-customer behavior, or one operator's volume."
+      ],
+      "decisionSummary": "Official Puerto Rico Tourism Company visitor-expenditure and passenger-movement reports now establish a descriptive island-wide demand baseline for the fixed Aguada large/strategic restaurant scenario."
     },
     {
       "id": "aguada-basic-utility-service-baseline",

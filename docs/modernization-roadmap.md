@@ -188,6 +188,13 @@
   medium/regional Aguada restaurant scenario, while Aguada-specific customer
   capture, repeat-demand volume, and island-wide destination pull remain
   explicit limits.
+- `data/profile-reach/aguada-restaurant-island-demand-review.json` now records
+  the next demand decision-signal upgrade for the fixed large/strategic Aguada
+  restaurant scenario: official Puerto Rico Tourism Company visitor-
+  expenditure, tourism-GDP-contribution, and passenger-movement publications
+  now establish a descriptive island-wide destination-demand baseline, while
+  Aguada-specific capture, event pull, west-coast dwell time, and one
+  operator's conversion remain explicit limits.
 - `data/profile-reach/aguada-restaurant-corridor-logistics-review.json` now
   records the first logistics decision-signal upgrade: official Puerto Rico
   west-corridor transport-planning and airport cargo publications now
@@ -216,6 +223,9 @@
   registry and decision-signal contract.
 - `npm run test:demand-signal-review` validates the reviewed Aguada restaurant
   demand-proxy artifact and its linkage to the source registry and
+  decision-signal contract.
+- `npm run test:island-demand-signal-review` validates the reviewed Aguada
+  restaurant island-demand artifact and its linkage to the source registry and
   decision-signal contract.
 - `npm run test:site-feasibility-signal-review` validates the reviewed Aguada
   restaurant site-screening artifact and its linkage to the source registry
@@ -366,14 +376,14 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 Continue replacing the highest-risk source-gap signals in the fixed-selection
 matrix with registered Puerto Rico evidence. After the west-region demand,
-corridor logistics, external logistics, utility-resilience, and routine-
-workforce upgrades, the next best lane is a stronger island-wide demand proxy,
-or a reproducible municipal-execution source that distinguishes routine
-permit-path evidence from larger-scale coordination risk, or a corridor/island
+island-wide demand, corridor logistics, external logistics,
+utility-resilience, and routine-workforce upgrades, the next best lane is a
+reproducible municipal-execution source that distinguishes routine permit-path
+evidence from larger-scale coordination risk, or a corridor/island
 support-network source for resilience. Keep category and place constant while
 upgrading `data/profile-reach/business-profile-reach-v1.json` from explicit
-gap control toward source-backed signals for island-wide demand, strategic
-coordination, and ecosystem resilience.
+gap control toward source-backed signals for strategic coordination and
+ecosystem resilience.
 
 Treat the current 4-row generated `unis` slice and its review artifacts as a
 maintenance boundary, not the next product lane. Do not spend the next pass on

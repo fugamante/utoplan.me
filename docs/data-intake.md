@@ -240,6 +240,7 @@ npm run test:decision-signals
 
 Reviewed signal-upgrade artifacts now live in
 `data/profile-reach/aguada-restaurant-demand-proxy-review.json` and
+`data/profile-reach/aguada-restaurant-island-demand-review.json` and
 `data/profile-reach/aguada-restaurant-corridor-logistics-review.json` and
 `data/profile-reach/aguada-restaurant-external-logistics-review.json` and
 `data/profile-reach/aguada-restaurant-permit-path-review.json` and

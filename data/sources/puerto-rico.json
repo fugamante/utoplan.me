@@ -826,6 +826,36 @@
       "notes": "Use as descriptive demand-proxy evidence for planning-profile work only. It confirms that Porta del Sol participates in the island visitor circuit and that restaurant-adjacent activity is common among visitors, but it does not prove municipality-level customer origin, one restaurant's demand, or island-wide destination-scale capture. Supporting review artifact: data/profile-reach/aguada-restaurant-demand-proxy-review.json."
     },
     {
+      "id": "pr-tourism-visitors-expenditures-contribution-2024",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-demand"
+      ],
+      "publisher": "Compania de Turismo de Puerto Rico",
+      "portal": "tourism.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://tourism.pr.gov/statistics/",
+      "resourceUrl": "https://tourism.pr.gov/wp-content/uploads/2025/09/JP-Visitors-Expenditures-Contribution.pdf",
+      "sourceBasis": "Official Puerto Rico Tourism Company fiscal-year summary table reports island-wide total visitors, tourists, visitor expenditures, and tourism contribution to gross product through fiscal year 2024.",
+      "notes": "Use as descriptive island-wide demand evidence for planning-profile work only. It confirms Puerto Rico-wide visitor scale, visitor spending, and tourism GDP contribution relevant to large-format destination-demand screening, but it does not prove Aguada-specific capture, one concept's customer conversion, or parcel-level demand. Supporting review artifact: data/profile-reach/aguada-restaurant-island-demand-review.json."
+    },
+    {
+      "id": "pr-tourism-passenger-movement-cy-2024",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-demand"
+      ],
+      "publisher": "Compania de Turismo de Puerto Rico",
+      "portal": "tourism.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://tourism.pr.gov/statistics/",
+      "resourceUrl": "https://tourism.pr.gov/wp-content/uploads/2025/09/Passenger-Movement-CY.pdf",
+      "sourceBasis": "Official Puerto Rico Tourism Company calendar-year passenger movement report publishes airport passenger totals for Puerto Rico, including Luis Munoz Marin International Airport and Rafael Hernandez Airport in Aguadilla, with 2024 totals.",
+      "notes": "Use as descriptive island-access demand evidence for planning-profile work only. It confirms current island-scale airport throughput and west-side airport participation relevant to destination-format access, but it does not prove ground-transport conversion, dwell time, or one restaurant's customer volume. Supporting review artifact: data/profile-reach/aguada-restaurant-island-demand-review.json."
+    },
+    {
       "id": "pr-lmi-hospitality-food-service-profile-2026",
       "status": "candidate",
       "targetTables": [

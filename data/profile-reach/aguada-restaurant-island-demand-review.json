@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "artifactVersion": "aguada-restaurant-island-demand-review-v1",
+  "scope": "puerto-rico-planning-candidate",
+  "status": "reviewed",
+  "reviewedAt": "2026-08-13",
+  "signalId": "island-wide-destination-demand-gap",
+  "fixedSelection": {
+    "fixtureId": "mun003_restaurant",
+    "municipalityCode": "003",
+    "municipalityLabel": "Aguada",
+    "businessCategoryId": "restaurant-cafe",
+    "selectedNaicsCodes": [
+      "722511"
+    ]
+  },
+  "decisionSummary": "The fixed Aguada restaurant matrix no longer relies on a pure large/strategic island-wide demand gap. Official Puerto Rico Tourism Company summary tables now establish an island-wide visitor-volume, visitor-expenditure, tourism-GDP-contribution, and airport-throughput baseline: the fiscal year 2024 visitors and expenditures summary reports 6.9076 million total visitors, 5.5512 million tourists, $6.0114 billion in total visitor expenditures, and a 7.02 percent tourism contribution to gross product, while the 2024 calendar-year passenger movement report records 13.247 million total passenger movements at Luis Munoz Marin International Airport and 739,723 at Rafael Hernandez Airport in Aguadilla. This remains island-wide demand-baseline evidence only: it does not prove Aguada parcel demand, one operator's capture rate, event-programming strength, or that destination-format restaurant volume will materialize for one concept.",
+  "authorities": [
+    {
+      "sourceId": "pr-tourism-visitors-expenditures-contribution-2024",
+      "role": "island-wide-visitor-volume-and-spend-baseline",
+      "evidence": "The official Puerto Rico Tourism Company visitors and expenditures summary reports 6.9076 million total visitors, 5.5512 million tourists, $6.0114 billion in total visitor expenditures, and a 7.02 percent contribution of tourism to gross product for fiscal year 2024."
+    },
+    {
+      "sourceId": "pr-tourism-passenger-movement-cy-2024",
+      "role": "island-air-access-and-throughput-baseline",
+      "evidence": "The official Puerto Rico Tourism Company calendar-year passenger movement report records 13.247 million total passenger movements at Luis Munoz Marin International Airport and 739,723 at Rafael Hernandez Airport in Aguadilla for 2024, which establishes current island-scale air-arrival throughput and west-side airport participation."
+    }
+  ],
+  "scenarioCoverage": [
+    {
+      "scenarioId": "large-strategic",
+      "reachId": "island-wide",
+      "coverage": "descriptive-island-demand-baseline",
+      "notes": [
+        "The fixed large/strategic scenario now has an official Puerto Rico island-wide baseline for visitor volume, visitor expenditures, tourism GDP contribution, and airport throughput instead of a blank destination-demand lane.",
+        "The evidence still does not prove that Aguada captures destination traffic, that one format converts island arrivals into restaurant visits, or that event and seasonality patterns support one operator's volume assumptions."
+      ]
+    }
+  ],
+  "interpretationLimits": [
+    "These sources establish Puerto Rico-wide visitor, spending, and passenger-throughput context, not Aguada-specific restaurant demand or one property's customer capture.",
+    "The reviewed reports do not separate day-trip, overnight, resident, event, or repeat-customer behavior in a way that proves one destination-format restaurant's volume.",
+    "The airport-throughput report establishes island and Aguadilla access scale, but it does not prove ground-transport conversion, west-coast dwell time, or restaurant-specific spend near the fixed municipality.",
+    "The artifact does not imply that a large-format restaurant should open in Aguada or that destination-scale demand risk is solved for the fixed selection."
+  ],
+  "nextUpgradeTargets": [
+    "Register official west-coast or municipality-relevant visitor-origin, event-demand, or dwell-time evidence if a reproducible Puerto Rico source becomes available.",
+    "Add source-backed conversion or customer-mobility evidence only if it can be tied to a documented Puerto Rico authority instead of inferred from broad visitor totals.",
+    "Keep Aguada-specific capture, seasonality, and concept-fit claims explicit until narrower demand evidence is registered."
+  ]
+}
