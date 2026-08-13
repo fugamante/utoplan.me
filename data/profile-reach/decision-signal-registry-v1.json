@@ -373,7 +373,8 @@
       "id": "external-supply-chain-gap",
       "lensId": "logistics-supply-chain",
       "label": "External supplier dependence and port or airport exposure",
-      "sourceType": "source-gap",
+      "sourceType": "registered-source",
+      "sourceId": "iepr-air-maritime-cargo-passengers-2024-q2",
       "applicableScenarioIds": [
         "large-strategic"
       ],
@@ -384,13 +385,18 @@
         "large-strategic-external-suppliers"
       ],
       "recency": {
-        "status": "no-registered-source"
+        "evidenceDate": "2026-08-13",
+        "quality": "official-external-cargo-gateway-baseline"
       },
-      "interpretationLimits": [
-        "No registered port, airport, or freight source is tied into the current fixed-selection matrix.",
-        "The matrix cannot yet quantify external dependency risk or service recovery time."
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-external-logistics-review.json",
+        "data/sources/puerto-rico.json"
       ],
-      "sourceGapBasis": "Strategic external logistics remains an explicit evidence gap."
+      "interpretationLimits": [
+        "The reviewed source establishes official external cargo-gateway activity and reporting surfaces, not supplier-level dependency, recovery timing, or cold-chain performance for one restaurant.",
+        "The current baseline still does not prove backup supplier depth, maritime versus air dependency, customs timing, or one operator's resilience to external procurement disruption."
+      ],
+      "decisionSummary": "Official Puerto Rico cargo inventory now establishes a descriptive external-connection logistics baseline for the fixed large/strategic Aguada restaurant scenario."
     },
     {
       "id": "food-service-permit-path-gap",

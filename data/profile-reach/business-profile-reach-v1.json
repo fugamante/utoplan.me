@@ -546,22 +546,23 @@
           "lensId": "logistics-supply-chain",
           "relevance": "primary",
           "criticality": "blocker",
-          "confidence": "low",
+          "confidence": "medium",
           "facts": [
             {
               "id": "large-strategic-external-suppliers",
               "signalId": "external-supply-chain-gap",
               "label": "External and island-wide cold-chain dependence",
               "reachId": "external-connection",
-              "sourceType": "source-gap",
-              "notes": "No registered source covers mainland or island-wide supply-chain resilience for this scenario."
+              "sourceType": "registered-source",
+              "sourceId": "iepr-air-maritime-cargo-passengers-2024-q2",
+              "notes": "Official Puerto Rico cargo inventory now establishes that west-region airport gateways and broader maritime cargo reporting are active external-connection surfaces for Puerto Rico, but they do not prove supplier depth, cold-chain performance, recovery speed, or one operator's procurement path."
             }
           ],
           "limitations": [
-            "Destination-scale operations can be constrained by supply dependencies that do not appear in municipality context.",
-            "Current repo evidence does not cover ports, airports, or external procurement timing."
+            "Destination-scale operations can still be constrained by supply dependencies that do not appear in municipality or corridor context even though the repo now has an official Puerto Rico gateway baseline.",
+            "Current evidence does not cover supplier depth, cold-chain timing, maritime dependency, customs timing, or one operator's backup procurement path."
           ],
-          "nextValidationCheck": "Register external-connection logistics evidence before treating supply continuity as routine."
+          "nextValidationCheck": "Add port, freight-disruption, or supplier-depth evidence before treating destination-scale supply continuity as more than an external logistics screening question."
         },
         {
           "lensId": "regulatory-execution-environment",
