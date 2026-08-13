@@ -378,6 +378,25 @@ Invariants:
   evidence or row-level authority review changes their status.
 - Identity-authority review is not coordinate evidence and is not import
   readiness by itself.
+
+## External Logistics Snapshot (2026-08-13)
+
+`data/profile-reach/aguada-restaurant-external-logistics-review.json` now
+records the first reviewed external-connection logistics baseline for the fixed
+large/strategic Aguada restaurant scenario.
+
+Current status:
+
+- The reviewed source uses the official Puerto Rico Institute of Statistics
+  cargo inventory reported from Puerto Rico Ports Authority facilities.
+- The bounded evidence establishes that west-region airport cargo gateways in
+  Aguadilla and Mayaguez are active, measured external-connection surfaces in
+  official Puerto Rico reporting.
+- The external logistics lane is no longer a pure source gap in the
+  profile/reach matrix; it is now a descriptive gateway baseline only.
+- Supplier depth, cold-chain timing, maritime dependency, backup sourcing,
+  recovery time, and one operator's procurement resilience remain explicit
+  unresolved limits.
 - Legacy detail fields remain scoped to the checked-in source-field artifact
   and the accepted 4-row boundary.
 

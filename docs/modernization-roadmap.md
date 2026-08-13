@@ -195,6 +195,13 @@
   medium/regional Aguada restaurant scenario, while route timing,
   refrigerated-delivery performance, supplier redundancy, and spoilage risk
   remain explicit limits.
+- `data/profile-reach/aguada-restaurant-external-logistics-review.json` now
+  records the next logistics decision-signal upgrade: official Puerto Rico
+  cargo inventory now establishes a descriptive external-connection gateway
+  baseline for the fixed large/strategic Aguada restaurant scenario through
+  west-region airport cargo and Puerto Rico maritime reporting context, while
+  supplier depth, cold-chain timing, maritime dependency, recovery time, and
+  one operator's procurement resilience remain explicit limits.
 - `npm run test:decision-signals` validates the decision-signal registry and
   its linkage back to the profile/reach matrix so fixed-selection planning
   facts cannot drift away from their documented evidence or explicit gap state.
@@ -224,6 +231,9 @@
   and decision-signal contract.
 - `npm run test:logistics-signal-review` validates the reviewed Aguada
   restaurant corridor-logistics artifact and its linkage to the source
+  registry and decision-signal contract.
+- `npm run test:external-logistics-signal-review` validates the reviewed
+  Aguada restaurant external-logistics artifact and its linkage to the source
   registry and decision-signal contract.
 - `npm run test:profile-reach-contract` validates the profile/reach contract,
   the three-scenario matrix, the fixed municipality/category boundary, and the
@@ -356,14 +366,14 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 Continue replacing the highest-risk source-gap signals in the fixed-selection
 matrix with registered Puerto Rico evidence. After the west-region demand,
-logistics, utility-resilience, and routine-workforce upgrades, the next best
-lane is a stronger island-wide demand proxy or external-connection logistics
-for the large/strategic scenario, or a reproducible municipal-execution source
-that distinguishes routine permit-path evidence from larger-scale coordination
-risk. Keep category and place constant while upgrading
-`data/profile-reach/business-profile-reach-v1.json` from explicit gap control
-toward source-backed signals for island-wide demand, external supply exposure,
-strategic coordination, and ecosystem resilience.
+corridor logistics, external logistics, utility-resilience, and routine-
+workforce upgrades, the next best lane is a stronger island-wide demand proxy,
+or a reproducible municipal-execution source that distinguishes routine
+permit-path evidence from larger-scale coordination risk, or a corridor/island
+support-network source for resilience. Keep category and place constant while
+upgrading `data/profile-reach/business-profile-reach-v1.json` from explicit
+gap control toward source-backed signals for island-wide demand, strategic
+coordination, and ecosystem resilience.
 
 Treat the current 4-row generated `unis` slice and its review artifacts as a
 maintenance boundary, not the next product lane. Do not spend the next pass on
