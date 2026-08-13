@@ -297,7 +297,7 @@
           "lensId": "demand-market-reach",
           "relevance": "primary",
           "criticality": "material-tradeoff",
-          "confidence": "low",
+          "confidence": "medium",
           "facts": [
             {
               "id": "medium-regional-cbp-baseline",
@@ -488,15 +488,16 @@
               "signalId": "island-wide-destination-demand-gap",
               "label": "Island-wide destination and visitor demand pattern",
               "reachId": "island-wide",
-              "sourceType": "source-gap",
-              "notes": "The current west-region tourism proxy is still too narrow to establish island-wide destination demand for this category."
+              "sourceType": "registered-source",
+              "sourceId": "pr-tourism-visitors-expenditures-contribution-2024",
+              "notes": "Official Puerto Rico Tourism Company visitor-expenditure and passenger-movement reports now establish island-wide visitor volume, visitor spending, tourism GDP contribution, and airport-throughput context, but they do not prove Aguada capture, event pull, or one concept's destination conversion."
             }
           ],
           "limitations": [
-            "Municipality context alone is not the market boundary for a destination-format scenario, and the new west-region proxy does not solve that larger reach problem.",
-            "No stronger island-wide visitor, event, or customer-mobility source is currently registered."
+            "Municipality context alone is not the market boundary for a destination-format scenario, and the new island-wide tourism baseline still stops short of Aguada-specific demand proof.",
+            "The current repo still does not show customer conversion, west-coast dwell time, event-programming strength, or one operator's repeat-demand volume."
           ],
-          "nextValidationCheck": "Register a stronger island-wide demand proxy before treating destination-scale volume assumptions as credible."
+          "nextValidationCheck": "Add narrower west-coast, event, or customer-mobility evidence before treating destination-scale volume assumptions as locally credible."
         },
         {
           "lensId": "infrastructure-reliability-cost",

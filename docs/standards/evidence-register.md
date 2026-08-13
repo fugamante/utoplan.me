@@ -2,8 +2,8 @@
 
 Profile: standard  
 Register owner role: Documentation auditor  
-Accepted baseline date: 2026-08-05  
-Next scheduled review: 2027-02-05
+Accepted baseline date: 2026-08-13  
+Next scheduled review: 2027-02-13
 
 Results below are attributable to the repository baseline current on the
 accepted date. Release candidates must record their own commit, environment,
@@ -12,12 +12,12 @@ substitute for a release record.
 
 | ID | Family/control | Controlled baseline | Acceptance evidence and result | Owner role | Retention | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| EV-730 | IEEE 730 quality assurance | `ieee-730-sqa-plan.md` and paired audit | `npm test` and `npm run docker:test:all-db` passed on 2026-08-05; policy/link checks passed | Modernization maintainer | Git plus change/release result | Current |
-| EV-828 | IEEE 828 configuration management | `ieee-828-scm-plan.md`; lockfiles; runtime pins; CI/Docker/migration controls | Repository status reviewed; controlled paths and release commands mapped; `npm test` passed on 2026-08-05 | Configuration/release owner | Git, CI, and release system | Current |
-| EV-829 | IEEE 829/29119 testing | `ieee-829-test-document.md`; test suites and package scripts | Root full test chain `npm test` passed on 2026-08-05; `npm run docker:test:all-db` passed with exit code 0 on the environment recorded below | Test owner | Git for tests; CI/change record for result | Current |
+| EV-730 | IEEE 730 quality assurance | `ieee-730-sqa-plan.md` and paired audit | Focused profile-reach demand checks passed on 2026-08-13: `npm run test:island-demand-signal-review`, `npm run test:decision-signals`, `npm run test:profile-reach-contract`, and `npm run test:data-sources` | Modernization maintainer | Git plus change/release result | Current |
+| EV-828 | IEEE 828 configuration management | `ieee-828-scm-plan.md`; lockfiles; runtime pins; CI/Docker/migration controls | Repository status reviewed; controlled profile-reach artifact, source-registry, test-script, and standards updates mapped; focused demand validation passed on 2026-08-13 | Configuration/release owner | Git, CI, and release system | Current |
+| EV-829 | IEEE 829/29119 testing | `ieee-829-test-document.md`; test suites and package scripts | Focused demand evidence chain `npm run test:island-demand-signal-review`, `npm run test:decision-signals`, `npm run test:profile-reach-contract`, and `npm run test:data-sources` passed on 2026-08-13 | Test owner | Git for tests; CI/change record for result | Current |
 | EV-830 | IEEE 830/29148 requirements | `ieee-830-srs.md`; product/scope/roadmap docs | Requirements and traceability anchors resolved by final documentation check | Product owner | Git | Current |
 | EV-1016 | IEEE 1016 design | `ieee-1016-design-description.md`; deployment/API/data docs | Design and interface evidence paths resolved by final documentation check | Technical owner | Git | Current |
-| EV-1012 | IEEE 1012 V&V | `ieee-1012-vv-plan.md`; traceability and release evidence rules | Full host test chain and Docker topology suite passed on 2026-08-05; release-impacting work still requires separate reviewer evidence | V&V reviewer | Git plus change/release review | Current for documentation and local execution baseline |
+| EV-1012 | IEEE 1012 V&V | `ieee-1012-vv-plan.md`; traceability and release evidence rules | Focused local evidence chain for island-wide demand promotion passed on 2026-08-13; release-impacting work still requires broader reviewer evidence | V&V reviewer | Git plus change/release review | Current for documentation and local execution baseline |
 | EV-1058 | IEEE 1058/16326 project management | `ieee-1058-project-management-plan.md`; roadmap and readiness board | Profile, roles, lifecycle, risks, and review triggers passed final documentation check | Modernization maintainer | Git and project history | Current |
 
 ## Open high-impact signals
@@ -41,5 +41,5 @@ substitute for a release record.
   retention rule, and revisit trigger in `ieee-applicability.md`.
 - A failed, skipped, stale, or blocked result must use `blocked` and record
   reason, owner, compensating evidence, and review date.
-- Revisit on the earlier of the standards-corpus cadence, 2027-02-05, or any
+- Revisit on the earlier of the standards-corpus cadence, 2027-02-13, or any
   event trigger in the applicability record.
