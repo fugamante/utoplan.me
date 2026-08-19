@@ -12,7 +12,7 @@ import * as rootContract from './root_contract';
 export const CORS_HEADERS: OutgoingHttpHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
+  'Access-Control-Allow-Methods': 'GET, OPTIONS'
 };
 
 export const SECURITY_HEADERS: OutgoingHttpHeaders = {
@@ -46,6 +46,7 @@ function sendJson(
 ): void {
   const headers = Object.assign({}, CORS_HEADERS, extraHeaders || {}, {
     'Content-Type': 'application/json; charset=utf-8',
+    Vary: 'Accept-Encoding',
     ...SECURITY_HEADERS,
     'X-Powered-By': 'utoplan-modern-api'
   });
