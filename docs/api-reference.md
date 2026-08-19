@@ -44,15 +44,15 @@ Every JSON response includes:
 Content-Type: application/json; charset=utf-8
 Access-Control-Allow-Origin: *
 Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization
-Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS
+Access-Control-Allow-Methods: GET, OPTIONS
 Referrer-Policy: no-referrer
 X-Content-Type-Options: nosniff
 X-Frame-Options: DENY
 X-Powered-By: utoplan-modern-api
 ```
 
-The advertised CORS methods preserve the legacy compatibility surface; known
-data routes still reject methods other than `GET` and `OPTIONS` with `405`.
+The current CORS surface advertises only `GET` and `OPTIONS`, and known data
+routes reject other methods with `405`.
 Sending `Accept-Encoding: gzip` enables gzip compression and adds
 `Content-Encoding: gzip`.
 
