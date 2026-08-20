@@ -174,6 +174,19 @@
   establish island-wide food-service supervision, staffing-volume, annual-
   openings, and growth context, while Aguada-specific hiring depth, retention,
   commute range, and one-operator staffing resilience remain explicit limits.
+- `data/profile-reach/aguada-restaurant-construction-execution-review.json`
+  now records the next regulatory-execution decision-signal upgrade: the
+  official Puerto Rico PEMAS publication establishes an Aguada-inclusive
+  construction-permit observability surface distinct from the routine
+  existing-location permit path, while case timing, approval outcome, and
+  interagency execution remain explicit limits.
+- `data/profile-reach/aguada-restaurant-support-network-review.json` now
+  records the next ecosystem decision-signal upgrade: official Puerto Rico
+  DDEC entrepreneurship and incentives guidance plus the Puerto Rico housing-
+  recovery incubator or accelerator program now establish a descriptive
+  support-network baseline for the fixed medium/regional and large/strategic
+  restaurant scenarios, while partner density, program eligibility, and one
+  operator's recovery outcome remain explicit limits.
 - `data/profile-reach/aguada-restaurant-routine-workforce-review.json` now
   records the next workforce decision-signal upgrade for the fixed Aguada
   restaurant small/local and medium/regional scenarios: official Puerto Rico
@@ -236,9 +249,15 @@
 - `npm run test:workforce-signal-review` validates the reviewed Aguada
   restaurant workforce artifact and its linkage to the source registry and
   decision-signal contract.
+- `npm run test:ecosystem-signal-review` validates the reviewed Aguada
+  restaurant support-network artifact and its linkage to the source registry
+  and decision-signal contract.
 - `npm run test:routine-workforce-signal-review` validates the reviewed Aguada
   restaurant routine-workforce artifact and its linkage to the source registry
   and decision-signal contract.
+- `npm run test:construction-execution-signal-review` validates the reviewed
+  Aguada restaurant construction-execution artifact and its linkage to the
+  source registry and decision-signal contract.
 - `npm run test:logistics-signal-review` validates the reviewed Aguada
   restaurant corridor-logistics artifact and its linkage to the source
   registry and decision-signal contract.
@@ -375,15 +394,19 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 ## Immediate Next Step
 
 Continue replacing the highest-risk source-gap signals in the fixed-selection
-matrix with registered Puerto Rico evidence. After the west-region demand,
-island-wide demand, corridor logistics, external logistics,
-utility-resilience, and routine-workforce upgrades, the next best lane is a
-reproducible municipal-execution source that distinguishes routine permit-path
-evidence from larger-scale coordination risk, or a corridor/island
-support-network source for resilience. Keep category and place constant while
-upgrading `data/profile-reach/business-profile-reach-v1.json` from explicit
-gap control toward source-backed signals for strategic coordination and
-ecosystem resilience.
+matrix with registered Puerto Rico evidence. The official PEMAS construction-
+permit publication now distinguishes the routine existing-location permit path
+from an Aguada-inclusive construction-execution observability surface for the
+large/strategic scenario, and official DDEC plus Puerto Rico housing-recovery
+sources now establish a descriptive support-network baseline for the
+medium/regional and large/strategic scenarios. Those upgrades still do not
+establish interagency handoffs, inspection throughput, case timing, or one
+operator's recovery outcome. The next best lane is therefore a reproducible
+official source for interagency coordination or inspection-throughput
+evidence. Keep category and place constant while upgrading
+`data/profile-reach/business-profile-reach-v1.json` from controlled gaps
+toward source-backed signals without turning descriptive evidence into launch
+advice.
 
 Treat the current 4-row generated `unis` slice and its review artifacts as a
 maintenance boundary, not the next product lane. Do not spend the next pass on

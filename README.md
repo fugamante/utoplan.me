@@ -182,6 +182,11 @@ The current modernization work is centered on:
   reviewed island-wide workforce baseline evidence for the fixed Aguada
   restaurant strategic scenario, scoped to official Puerto Rico labor-market
   occupation, wage, openings, and growth publications.
+- `data/profile-reach/aguada-restaurant-support-network-review.json`:
+  reviewed ecosystem and support-network baseline evidence for the fixed
+  Aguada restaurant medium/regional and large/strategic scenarios, scoped to
+  official Puerto Rico DDEC entrepreneurship and incentives guidance plus the
+  Puerto Rico housing-recovery incubator or accelerator program surface.
 - `data/profile-reach/aguada-restaurant-routine-workforce-review.json`:
   reviewed routine workforce baseline evidence for the fixed Aguada restaurant
   small/local and medium/regional scenarios, scoped to official Puerto Rico
@@ -202,6 +207,10 @@ The current modernization work is centered on:
   reviewed external-connection logistics baseline evidence for the fixed
   Aguada restaurant large/strategic scenario, scoped to official Puerto Rico
   air and maritime cargo inventory.
+- `data/profile-reach/aguada-restaurant-construction-execution-review.json`:
+  reviewed strategic construction-execution observability evidence for the
+  fixed Aguada restaurant large/strategic scenario, scoped to official Puerto
+  Rico PEMAS construction-permit publication coverage.
 - `data/profile-reach/aguada-restaurant-large-site-screening-review.json`:
   reviewed large-site screening baseline evidence for the fixed Aguada
   restaurant scenario, scoped to official Aguada territorial-plan, Planning
@@ -276,6 +285,8 @@ npm run test:site-feasibility-signal-review
 npm run test:large-site-signal-review
 npm run test:routine-workforce-signal-review
 npm run test:workforce-signal-review
+npm run test:ecosystem-signal-review
+npm run test:construction-execution-signal-review
 npm run test:logistics-signal-review
 npm run test:external-logistics-signal-review
 npm run test:profile-reach-contract

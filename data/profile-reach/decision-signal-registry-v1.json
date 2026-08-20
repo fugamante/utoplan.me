@@ -3,7 +3,7 @@
   "registryVersion": "decision-signal-registry-v1",
   "scope": "puerto-rico-planning-candidate",
   "status": "candidate-needs-review",
-  "updatedAt": "2026-08-12",
+  "updatedAt": "2026-08-20",
   "fixedSelection": {
     "fixtureId": "mun003_restaurant",
     "municipalityCode": "003",
@@ -445,10 +445,11 @@
       "decisionSummary": "Official Puerto Rico permit, fire-safety, health-transaction, and municipal-patent sources now establish a descriptive launch-permit path for the fixed Aguada restaurant scenario."
     },
     {
-      "id": "multi-agency-coordination-gap",
+      "id": "strategic-construction-execution-baseline",
       "lensId": "regulatory-execution-environment",
-      "label": "Multi-agency approvals and incentive coordination",
-      "sourceType": "source-gap",
+      "label": "Strategic construction execution observability",
+      "sourceType": "registered-source",
+      "sourceId": "pr-statistics-pemas-construction-permits",
       "applicableScenarioIds": [
         "large-strategic"
       ],
@@ -459,13 +460,18 @@
         "large-strategic-multi-agency-approvals"
       ],
       "recency": {
-        "status": "no-registered-source"
+        "evidenceDate": "2026-08-20",
+        "quality": "official-weekly-ogpe-construction-filing-and-adjudication-publication"
       },
-      "interpretationLimits": [
-        "No registered source measures multi-agency permit sequencing, incentive timing, or execution capacity.",
-        "The current matrix cannot separate ordinary local permit work from strategic-scale coordination risk."
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-construction-execution-review.json",
+        "data/sources/puerto-rico.json"
       ],
-      "sourceGapBasis": "Strategic regulatory coordination remains unmeasured in the repository."
+      "interpretationLimits": [
+        "The PEMAS publication describes construction-permit filing and adjudication fields, not multi-agency sequencing, incentive timing, or execution capacity for one project.",
+        "The stated coverage excludes named autonomous municipalities and permit uses; this review confirms only that Aguada is not listed among the exclusions, not a case-level completeness guarantee."
+      ],
+      "decisionSummary": "Official Puerto Rico PEMAS publication now establishes a descriptive construction-execution observability baseline for the fixed Aguada strategic restaurant scenario."
     },
     {
       "id": "local-industry-context-baseline",
@@ -499,7 +505,12 @@
       "id": "growth-network-gap",
       "lensId": "ecosystem-resilience-growth",
       "label": "Partner, service, and resilience network depth",
-      "sourceType": "source-gap",
+      "sourceType": "registered-source",
+      "sourceId": "ddec-emprender-puerto-rico-2026",
+      "supportingSourceIds": [
+        "ddec-ayudas-incentivos-2026",
+        "prdoh-sbia-program-2026"
+      ],
       "applicableScenarioIds": [
         "medium-regional",
         "large-strategic"
@@ -513,13 +524,18 @@
         "large-strategic-island-support-network"
       ],
       "recency": {
-        "status": "no-registered-source"
+        "evidenceDate": "2026-08-20",
+        "quality": "official-entrepreneurship-incentives-and-incubator-support-baseline"
       },
-      "interpretationLimits": [
-        "No registered ecosystem or resilience-network source is attached to the fixed selection.",
-        "The matrix does not yet quantify partner density, professional-service availability, or expansion flexibility."
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-support-network-review.json",
+        "data/sources/puerto-rico.json"
       ],
-      "sourceGapBasis": "Growth and resilience network evidence remains a controlled gap pending additional registered Puerto Rico sources."
+      "interpretationLimits": [
+        "The reviewed authorities establish official entrepreneurship, incentive, and incubator or accelerator support surfaces, not west-corridor partner density or one operator's program outcome.",
+        "The matrix still does not quantify municipality-specific professional-service throughput, private network depth, or disruption-recovery capacity for one business."
+      ],
+      "decisionSummary": "Official Puerto Rico DDEC and housing-recovery program sources now establish a descriptive support-network baseline for the fixed Aguada restaurant medium/regional and large/strategic scenarios."
     }
   ]
 }

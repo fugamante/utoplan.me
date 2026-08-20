@@ -121,6 +121,10 @@ Review these artifacts during each IEEE 1016 audit:
 - Do profile/reach facts and reviewed signal artifacts remain linked through the
   decision-signal registry, with registered authorities or explicit source gaps
   and scenario-specific reach?
+- Does construction-execution evidence stay separated from any claim about
+  case timing, approval, or multi-agency coordination?
+- Does ecosystem-support evidence stay separated from any claim about partner
+  density, program eligibility, or recovery success for one operator?
 - Do seed data and demo fixtures remain visibly separate from production data?
 - Does `/readyz` verify the database schema baseline required by the running
   API?

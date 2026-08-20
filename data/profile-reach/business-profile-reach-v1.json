@@ -3,7 +3,7 @@
   "contractVersion": "business-profile-reach-v1",
   "scope": "puerto-rico-planning-candidate",
   "status": "candidate-needs-review",
-  "updatedAt": "2026-08-12",
+  "updatedAt": "2026-08-20",
   "rules": {
     "noScores": true,
     "noRankings": true,
@@ -416,22 +416,23 @@
           "lensId": "ecosystem-resilience-growth",
           "relevance": "secondary",
           "criticality": "secondary",
-          "confidence": "low",
+          "confidence": "medium",
           "facts": [
             {
               "id": "medium-regional-corridor-partners",
               "signalId": "growth-network-gap",
               "label": "Regional partner, service, and recovery support depth",
               "reachId": "regional-corridor",
-              "sourceType": "source-gap",
-              "notes": "No registered corridor-scale ecosystem evidence is in place yet."
+              "sourceType": "registered-source",
+              "sourceId": "ddec-emprender-puerto-rico-2026",
+              "notes": "Official Puerto Rico entrepreneurship, incentives, and incubator-program sources now establish a west-region support touchpoint in Mayaguez plus island-wide support-network surfaces, but they do not prove corridor-specific partner density or one operator's recovery flexibility."
             }
           ],
           "limitations": [
-            "The current repo cannot show whether nearby municipalities add recovery or expansion depth.",
-            "Local establishment counts do not measure regional service-network resilience."
+            "The current repo now shows official west-region and island-wide support surfaces, but it still does not quantify nearby professional-service density, lender appetite, or municipality-specific recovery depth.",
+            "Local establishment counts still do not measure regional service-network resilience or private partnership strength."
           ],
-          "nextValidationCheck": "Keep ecosystem claims secondary until corridor support evidence is registered."
+          "nextValidationCheck": "Add corridor-relevant service-density, lender, or program-availability evidence before treating regional support depth as more than a screened planning question."
         }
       ]
     },
@@ -573,39 +574,41 @@
           "facts": [
             {
               "id": "large-strategic-multi-agency-approvals",
-              "signalId": "multi-agency-coordination-gap",
-              "label": "Large-format permit coordination and opening sequence",
+              "signalId": "strategic-construction-execution-baseline",
+              "label": "Large-format construction execution observability",
               "reachId": "regional-corridor",
-              "sourceType": "source-gap",
-              "notes": "No registered evidence exists for multi-agency permit timing or execution coordination."
+              "sourceType": "registered-source",
+              "sourceId": "pr-statistics-pemas-construction-permits",
+              "notes": "Official Puerto Rico PEMAS publication establishes a weekly construction-permit filing and adjudication-status surface for Aguada-inclusive OGPe coverage, distinguishing a larger construction path from the routine existing-location permit path without establishing a case timeline or approval outcome."
             }
           ],
           "limitations": [
-            "The current repo does not distinguish routine food-service permitting from larger coordinated approvals.",
-            "Regulatory timing risk can dominate launch timing for a strategic-format project."
+            "The current repo now distinguishes a construction-permit observability surface from the routine existing-location permit path, but it does not measure coordinated approvals for one project.",
+            "Regulatory timing risk can still dominate launch timing because the public publication does not establish a case-specific queue or outcome."
           ],
-          "nextValidationCheck": "Register permit-path and execution-timing evidence before treating launch sequencing as manageable."
+          "nextValidationCheck": "Review an Aguada-inclusive PEMAS extract for the relevant construction class only after an exact project, permit type, and aggregation rule are defined; keep launch sequencing unmeasured until then."
         },
         {
           "lensId": "ecosystem-resilience-growth",
           "relevance": "primary",
           "criticality": "material-tradeoff",
-          "confidence": "low",
+          "confidence": "medium",
           "facts": [
             {
               "id": "large-strategic-island-support-network",
               "signalId": "growth-network-gap",
               "label": "Island-wide service, partner, and recovery support network",
               "reachId": "island-wide",
-              "sourceType": "source-gap",
-              "notes": "No registered ecosystem or recovery-support source is attached to this profile yet."
+              "sourceType": "registered-source",
+              "sourceId": "ddec-emprender-puerto-rico-2026",
+              "notes": "Official Puerto Rico DDEC and housing-recovery sources now establish island-wide entrepreneurship, incentive, export-support, and incubator or accelerator surfaces, but they do not prove that one destination-format restaurant can scale or recover through those channels successfully."
             }
           ],
           "limitations": [
-            "Large-format growth and resilience depend on support networks that current local context does not measure.",
-            "The repo cannot yet show whether the selected place supports expansion without major relocation or redundancy costs."
+            "Large-format growth and resilience still depend on private support networks, funding access, and redundancy choices that the current official baseline does not measure directly.",
+            "The repo still cannot show whether the selected place supports expansion without major relocation, partner-search, or backup-infrastructure costs."
           ],
-          "nextValidationCheck": "Keep growth and resilience conclusions provisional until support-network evidence is registered."
+          "nextValidationCheck": "Add program-eligibility, corridor-density, or recovery-readiness evidence before treating ecosystem resilience as more than a bounded support-network baseline."
         }
       ]
     }

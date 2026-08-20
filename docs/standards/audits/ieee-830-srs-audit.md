@@ -160,6 +160,14 @@ the current project surface.
   registered Puerto Rico source or an explicit source gap; reviewed evidence
   artifacts remain descriptive and do not imply parcel, corridor, workforce,
   regulatory, utility, or profitability recommendations.
+- Construction-permit publication evidence may distinguish an Aguada-inclusive
+  construction review surface from routine existing-location permitting, but
+  requirements must retain explicit limits on case timing, approval, and
+  interagency coordination.
+- Ecosystem-support evidence may distinguish official entrepreneurship,
+  incentives, and incubator surfaces from a blank support-network lane, but
+  requirements must retain explicit limits on partner density, eligibility,
+  and recovery outcome.
 - Active planning-context municipality labels remain source-backed and do not
   regress to placeholder naming in API or browser-visible responses.
 - Requirements identify provenance gaps as blockers, not as implementation

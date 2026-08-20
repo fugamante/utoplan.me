@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "artifactVersion": "aguada-restaurant-construction-execution-review-v1",
+  "scope": "puerto-rico-planning-candidate",
+  "status": "reviewed",
+  "reviewedAt": "2026-08-20",
+  "signalId": "strategic-construction-execution-baseline",
+  "fixedSelection": {
+    "fixtureId": "mun003_restaurant",
+    "municipalityCode": "003",
+    "municipalityLabel": "Aguada",
+    "businessCategoryId": "restaurant-cafe",
+    "selectedNaicsCodes": [
+      "722511"
+    ]
+  },
+  "decisionSummary": "The fixed Aguada strategic restaurant scenario no longer relies on a blank distinction between routine existing-location permitting and a larger construction path. Puerto Rico's official PEMAS publication establishes a weekly OGPe construction-permit filing and adjudication-status surface with municipality fields, while retaining explicit limits on case timing, approval, and coordinated execution.",
+  "authorities": [
+    {
+      "sourceId": "pr-statistics-pemas-construction-permits",
+      "role": "construction-execution-observability",
+      "evidence": "The Puerto Rico Statistics Institute states that PEMAS lists construction-permit applications submitted to OGPe through the integrated permit system and includes case, permit type, project type, filing date, municipality, adjudication status, and adjudication date fields on a weekly publication cycle. Its stated autonomous-municipality exclusions do not include Aguada."
+    }
+  ],
+  "scenarioCoverage": [
+    {
+      "scenarioId": "large-strategic",
+      "reachId": "regional-corridor",
+      "coverage": "descriptive-construction-execution-observability",
+      "notes": [
+        "The official publication makes a larger project construction workflow observable separately from the existing-location Permiso Único path used in the smaller scenarios.",
+        "No PEMAS extract is attached to this candidate artifact, so it does not measure a permit class, queue duration, or result for a particular Aguada project."
+      ]
+    }
+  ],
+  "interpretationLimits": [
+    "The publication covers construction-permit applications, not every permit use, and it does not establish that a restaurant project requires construction approval.",
+    "Aguada's absence from the named autonomous-municipality exclusions is not proof that every relevant case is complete, current, or comparable.",
+    "The artifact does not measure interagency handoffs, inspection throughput, incentive coordination, costs, or approval outcomes for one project.",
+    "The artifact does not imply that a restaurant should open in Aguada or that a strategic-format location is viable."
+  ],
+  "nextUpgradeTargets": [
+    "Define a construction class, project boundary, and aggregation rule before using an Aguada-inclusive PEMAS extract for any descriptive timing review.",
+    "Register a reproducible official source for interagency handoffs or inspection throughput before reducing the strategic coordination limitation.",
+    "Keep parcel eligibility, permit outcome, and launch sequencing outside this baseline until project-specific evidence is reviewed."
+  ]
+}

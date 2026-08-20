@@ -916,6 +916,51 @@
       "notes": "Use as descriptive workforce-growth evidence for planning-profile work only. It confirms island-wide Puerto Rico growth and annual-openings context for selected food-service occupations, but it does not prove Aguada-specific management depth, commute patterns, or one operator's staffing resilience. Supporting review artifact: data/profile-reach/aguada-restaurant-workforce-pipeline-review.json."
     },
     {
+      "id": "ddec-emprender-puerto-rico-2026",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-ecosystem"
+      ],
+      "publisher": "Departamento de Desarrollo Economico y Comercio de Puerto Rico",
+      "portal": "desarrollo.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.desarrollo.pr.gov/emprender-en-puerto-rico",
+      "resourceUrl": "https://www.desarrollo.pr.gov/emprender-en-puerto-rico",
+      "sourceBasis": "Official DDEC entrepreneurship guidance lists business-orientation support for ideas, startups, expansion, and export activity, and identifies an entrepreneurship center at the Centro Regional de Distribucion in Mayaguez.",
+      "notes": "Use as descriptive ecosystem-support evidence for planning-profile work only. It confirms that an official west-region entrepreneurship support touchpoint and island-wide business-orientation path exist for Puerto Rico, but it does not prove partner density, service throughput, or one operator's recovery capacity. Supporting review artifact: data/profile-reach/aguada-restaurant-support-network-review.json."
+    },
+    {
+      "id": "ddec-ayudas-incentivos-2026",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-ecosystem"
+      ],
+      "publisher": "Departamento de Desarrollo Economico y Comercio de Puerto Rico",
+      "portal": "desarrollo.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.desarrollo.pr.gov/ayudas-e-incentivos",
+      "resourceUrl": "https://www.desarrollo.pr.gov/ayudas-e-incentivos",
+      "sourceBasis": "Official DDEC incentives guidance groups active business-support lanes including the Incentives Code, PyMEs, industry development incentives, export support, and federal-government assistance.",
+      "notes": "Use as descriptive ecosystem-growth evidence for planning-profile work only. It confirms that Puerto Rico maintains official incentive and growth-support channels for businesses, but it does not prove eligibility, approval timing, or one operator's expansion outcome. Supporting review artifact: data/profile-reach/aguada-restaurant-support-network-review.json."
+    },
+    {
+      "id": "prdoh-sbia-program-2026",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-ecosystem"
+      ],
+      "publisher": "Puerto Rico Department of Housing",
+      "portal": "recuperacion.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://recuperacion.pr.gov/en/programs/small-business-incubators-and-accelerators-program/",
+      "resourceUrl": "https://recuperacion.pr.gov/en/programs/small-business-incubators-and-accelerators-program/",
+      "sourceBasis": "Official Puerto Rico recovery-program guidance states that the Small Business Incubators and Accelerators Program supports early-stage businesses through entities across the island that provide mentoring, networking, training, consulting, technical assistance, and collaborative work space.",
+      "notes": "Use as descriptive ecosystem and recovery-support evidence for planning-profile work only. It confirms that Puerto Rico has an island-wide incubator or accelerator support surface, but it does not prove that one Aguada restaurant qualifies for, uses, or benefits from those services successfully. Supporting review artifact: data/profile-reach/aguada-restaurant-support-network-review.json."
+    },
+    {
       "id": "census-cbp-2014-state-72-fallback",
       "status": "fallback-candidate",
       "targetTables": [
@@ -1024,6 +1069,21 @@
           }
         ]
       }
+    },
+    {
+      "id": "pr-statistics-pemas-construction-permits",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-regulatory"
+      ],
+      "publisher": "Instituto de Estadísticas de Puerto Rico",
+      "portal": "estadisticas.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.estadisticas.pr.gov/productos/pemas---permisos-de-construccion",
+      "resourceUrl": "https://www.estadisticas.pr.gov/productos/pemas---permisos-de-construccion",
+      "sourceBasis": "Official Puerto Rico PEMAS construction-permit publication documents weekly OGPe construction filings and exposes case, municipality, filing, adjudication-status, and adjudication-date fields. Its stated exclusions name Bayamón, Guaynabo, Carolina, Caguas, Cidra, and Ponce; Aguada is not among those exclusions.",
+      "notes": "Use as descriptive construction-execution observability evidence for the fixed Aguada planning profile only. It distinguishes the existing-location Permiso Único path from a larger project that may require construction review, but it does not establish an Aguada case queue, a permit outcome, multi-agency coordination quality, or a launch timeline. Supporting review artifact: data/profile-reach/aguada-restaurant-construction-execution-review.json."
     }
   ],
   "unresolvedTargets": [

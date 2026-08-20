@@ -164,6 +164,12 @@ product and operational purpose.
 - Reviewed signal upgrades retain authority linkage, evidence dates, scenario
   reach, interpretation limits, and focused executable checks; review status is
   not treated as production validation or a business recommendation.
+- Construction-execution evidence remains an observability baseline unless a
+  focused review proves a defined Aguada permit class, aggregation method, and
+  coverage boundary.
+- Ecosystem-support evidence remains a support-surface baseline unless a
+  focused review proves corridor density, program eligibility, or one
+  operator's recovery outcome.
 - Future recommendation, scoring, zoning, workforce, infrastructure, or
   lifecycle-planning features expose source, timestamp, transform, and known
   limitation metadata before being treated as decision-support outputs.
