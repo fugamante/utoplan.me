@@ -147,6 +147,8 @@ Verify implementation changes through code review and focused checks:
 - New data intake code enforces registered Puerto Rico filters.
 - Planning-context and category-mapping changes stay descriptive and retain
   confidence, limitations, and unresolved-question evidence.
+- Reviewed profile/reach signal upgrades keep official-source scope, fixed-
+  selection linkage, and decision limits under focused contract tests.
 - Tests are added or updated with behavior changes.
 
 Validate implementation by exercising the product path that users or operators

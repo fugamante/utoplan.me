@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "artifactVersion": "aguada-restaurant-support-network-review-v1",
+  "scope": "puerto-rico-planning-candidate",
+  "status": "reviewed",
+  "reviewedAt": "2026-08-20",
+  "signalId": "growth-network-gap",
+  "fixedSelection": {
+    "fixtureId": "mun003_restaurant",
+    "municipalityCode": "003",
+    "municipalityLabel": "Aguada",
+    "businessCategoryId": "restaurant-cafe",
+    "selectedNaicsCodes": [
+      "722511"
+    ]
+  },
+  "decisionSummary": "The fixed Aguada restaurant matrix no longer relies on a pure ecosystem and support-network source gap for the medium/regional and large/strategic scenarios. Official Puerto Rico business-support surfaces now establish a descriptive baseline through the DDEC entrepreneurship page, which identifies a Mayaguez entrepreneurship center and business-orientation path, the DDEC incentives portal, which groups incentive and export support lanes, and the Puerto Rico recovery office's Small Business Incubators and Accelerators Program, which states that entities throughout the island provide mentoring, networking, training, consulting, technical assistance, and collaborative business space. This remains support-surface evidence only: it does not prove west-corridor partner density, one operator's recovery plan, or that a large-format restaurant can expand without additional redundancy cost.",
+  "authorities": [
+    {
+      "sourceId": "ddec-emprender-puerto-rico-2026",
+      "role": "west-region-entrepreneurship-support-surface",
+      "evidence": "The official DDEC entrepreneurship page states that entrepreneurs can receive orientation on business ideas, startups, expansion, and exporting, and it identifies an entrepreneurship center at the Centro Regional de Distribucion in Mayaguez, which provides a reproducible west-region support touchpoint for the fixed Aguada scenario."
+    },
+    {
+      "sourceId": "ddec-ayudas-incentivos-2026",
+      "role": "island-wide-incentives-and-growth-support-surface",
+      "evidence": "The official DDEC incentives page groups active support lanes including the Incentives Code, PyMEs, industry business-development incentives, exporting, youth development, artisans, and federal-government assistance, which establishes that island-wide growth-support channels are formally maintained by Puerto Rico's economic-development authority."
+    },
+    {
+      "sourceId": "prdoh-sbia-program-2026",
+      "role": "island-wide-incubation-and-recovery-support-surface",
+      "evidence": "The Puerto Rico recovery office states that the Small Business Incubators and Accelerators Program supports early-stage businesses through entities across the island that provide mentoring, professional networking, training, consulting, technical assistance, and collaborative work space at non-prohibitive cost."
+    }
+  ],
+  "scenarioCoverage": [
+    {
+      "scenarioId": "medium-regional",
+      "reachId": "regional-corridor",
+      "coverage": "descriptive-support-network-baseline",
+      "notes": [
+        "The fixed medium/regional scenario now has an official west-region entrepreneurship touchpoint and island-wide support-program baseline instead of a blank ecosystem lane.",
+        "The evidence still does not prove west-corridor partner density, municipality-specific professional-service depth, or whether nearby municipalities materially improve recovery flexibility for one operator."
+      ]
+    },
+    {
+      "scenarioId": "large-strategic",
+      "reachId": "island-wide",
+      "coverage": "descriptive-support-network-baseline",
+      "notes": [
+        "The fixed large/strategic scenario now has official Puerto Rico support-network evidence for entrepreneurship assistance, incentives, export-oriented help, and incubator or accelerator services instead of a blank growth-network lane.",
+        "The evidence still does not prove that one large-format restaurant can scale through those programs, secure durable partnerships, or recover from major disruption without additional private redundancy."
+      ]
+    }
+  ],
+  "interpretationLimits": [
+    "These sources establish that Puerto Rico maintains official entrepreneurship, incentive, and incubator or accelerator support surfaces, not that one Aguada restaurant will qualify for, use, or benefit from them successfully.",
+    "The reviewed sources do not quantify west-corridor partner density, professional-service throughput, lender appetite, or municipality-specific recovery support for one operator.",
+    "The artifact does not resolve customer resilience, private supplier partnerships, lease expansion options, or post-disruption operating continuity for the fixed selection.",
+    "The artifact does not imply that a medium/regional or large/strategic restaurant should operate in Aguada or that ecosystem risk is solved."
+  ],
+  "nextUpgradeTargets": [
+    "Register corridor-relevant professional-service, lender, or business-support density evidence if a reproducible Puerto Rico authority becomes available.",
+    "Add official program-eligibility or utilization evidence only if it can remain descriptive and tied to a Puerto Rico public authority instead of anecdotal outcomes.",
+    "Keep major-disruption recovery and expansion-capacity claims explicit until narrower network, redundancy, or business-continuity evidence is registered."
+  ]
+}
