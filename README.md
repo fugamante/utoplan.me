@@ -280,15 +280,16 @@ npm run test:decision-signals
 npm run test:regulatory-signal-review
 npm run test:infrastructure-signal-review
 npm run test:utility-resilience-signal-review
+npm run test:demand-signal-review
 npm run test:island-demand-signal-review
+npm run test:logistics-signal-review
+npm run test:external-logistics-signal-review
 npm run test:site-feasibility-signal-review
 npm run test:large-site-signal-review
 npm run test:routine-workforce-signal-review
 npm run test:workforce-signal-review
 npm run test:ecosystem-signal-review
 npm run test:construction-execution-signal-review
-npm run test:logistics-signal-review
-npm run test:external-logistics-signal-review
 npm run test:profile-reach-contract
 ```
 
