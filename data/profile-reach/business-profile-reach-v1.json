@@ -574,19 +574,19 @@
           "facts": [
             {
               "id": "large-strategic-multi-agency-approvals",
-              "signalId": "strategic-construction-execution-baseline",
-              "label": "Large-format construction execution observability",
+              "signalId": "strategic-coordination-timing-baseline",
+              "label": "Large-format interagency coordination timing",
               "reachId": "regional-corridor",
               "sourceType": "registered-source",
-              "sourceId": "pr-statistics-pemas-construction-permits",
-              "notes": "Official Puerto Rico PEMAS publication establishes a weekly construction-permit filing and adjudication-status surface for Aguada-inclusive OGPe coverage, distinguishing a larger construction path from the routine existing-location permit path without establishing a case timeline or approval outcome."
+              "sourceId": "ddec-permit-task-force-coordination-timing-2025",
+              "notes": "Official Puerto Rico DDEC reporting establishes an aggregate interagency recommendation-processing baseline: its 2025 permit-system Task Force report records a reduction from 55 to 27 days and more than 2,600 priority-project filings processed, while PEMAS remains supporting construction-execution observability for Aguada-inclusive OGPe coverage."
             }
           ],
           "limitations": [
-            "The current repo now distinguishes a construction-permit observability surface from the routine existing-location permit path, but it does not measure coordinated approvals for one project.",
-            "Regulatory timing risk can still dominate launch timing because the public publication does not establish a case-specific queue or outcome."
+            "The current repo now has an official aggregate interagency coordination-timing baseline and a distinct construction-execution observability surface, but it does not measure coordinated approvals for one project.",
+            "Regulatory timing risk can still dominate launch timing because the public evidence does not establish an Aguada restaurant case-specific queue, inspection completion, or outcome."
           ],
-          "nextValidationCheck": "Review an Aguada-inclusive PEMAS extract for the relevant construction class only after an exact project, permit type, and aggregation rule are defined; keep launch sequencing unmeasured until then."
+          "nextValidationCheck": "Review an Aguada-inclusive PEMAS extract for the relevant construction class only after an exact project, permit type, and aggregation rule are defined; add official inspection-throughput evidence before treating the aggregate coordination metric as a case-level schedule."
         },
         {
           "lensId": "ecosystem-resilience-growth",

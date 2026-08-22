@@ -445,11 +445,14 @@
       "decisionSummary": "Official Puerto Rico permit, fire-safety, health-transaction, and municipal-patent sources now establish a descriptive launch-permit path for the fixed Aguada restaurant scenario."
     },
     {
-      "id": "strategic-construction-execution-baseline",
+      "id": "strategic-coordination-timing-baseline",
       "lensId": "regulatory-execution-environment",
-      "label": "Strategic construction execution observability",
+      "label": "Strategic interagency coordination timing",
       "sourceType": "registered-source",
-      "sourceId": "pr-statistics-pemas-construction-permits",
+      "sourceId": "ddec-permit-task-force-coordination-timing-2025",
+      "supportingSourceIds": [
+        "pr-statistics-pemas-construction-permits"
+      ],
       "applicableScenarioIds": [
         "large-strategic"
       ],
@@ -460,18 +463,19 @@
         "large-strategic-multi-agency-approvals"
       ],
       "recency": {
-        "evidenceDate": "2026-08-20",
-        "quality": "official-weekly-ogpe-construction-filing-and-adjudication-publication"
+        "evidenceDate": "2025-10-31",
+        "quality": "official-ddec-task-force-interagency-recommendation-processing-report"
       },
       "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-coordination-timing-review.json",
         "data/profile-reach/aguada-restaurant-construction-execution-review.json",
         "data/sources/puerto-rico.json"
       ],
       "interpretationLimits": [
-        "The PEMAS publication describes construction-permit filing and adjudication fields, not multi-agency sequencing, incentive timing, or execution capacity for one project.",
-        "The stated coverage excludes named autonomous municipalities and permit uses; this review confirms only that Aguada is not listed among the exclusions, not a case-level completeness guarantee."
+        "The DDEC report measures aggregate processing of recommendations from concerned government entities and priority-project filings; it does not provide an Aguada restaurant case queue, inspection-completion distribution, or approval outcome.",
+        "The reported improvement may reflect the priority-project population, process changes, and period reviewed; it is not a promise of timing for a future project or evidence that the fixed scenario qualifies as strategic."
       ],
-      "decisionSummary": "Official Puerto Rico PEMAS publication now establishes a descriptive construction-execution observability baseline for the fixed Aguada strategic restaurant scenario."
+      "decisionSummary": "Official Puerto Rico DDEC reporting now establishes a descriptive interagency coordination-timing baseline for the fixed Aguada strategic restaurant scenario, with PEMAS retained as supporting construction-execution observability."
     },
     {
       "id": "local-industry-context-baseline",

@@ -251,6 +251,7 @@ Reviewed signal-upgrade artifacts now live in
 `data/profile-reach/aguada-restaurant-routine-workforce-review.json` and
 `data/profile-reach/aguada-restaurant-workforce-pipeline-review.json` and
 `data/profile-reach/aguada-restaurant-construction-execution-review.json` and
+`data/profile-reach/aguada-restaurant-coordination-timing-review.json` and
 `data/profile-reach/aguada-restaurant-support-network-review.json`.
 
 Each artifact must:
@@ -278,6 +279,7 @@ npm run test:large-site-signal-review
 npm run test:routine-workforce-signal-review
 npm run test:workforce-signal-review
 npm run test:construction-execution-signal-review
+npm run test:coordination-timing-signal-review
 npm run test:ecosystem-signal-review
 ```
 
