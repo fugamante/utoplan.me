@@ -180,6 +180,12 @@
   construction-permit observability surface distinct from the routine
   existing-location permit path, while case timing, approval outcome, and
   interagency execution remain explicit limits.
+- `data/profile-reach/aguada-restaurant-coordination-timing-review.json` now
+  records the next regulatory-execution decision-signal upgrade: the official
+  Puerto Rico DDEC permit-system Task Force report establishes an aggregate
+  interagency recommendation-processing baseline for the fixed large/strategic
+  restaurant scenario, while Aguada case timing, inspection completion,
+  project qualification, and approval outcome remain explicit limits.
 - `data/profile-reach/aguada-restaurant-support-network-review.json` now
   records the next ecosystem decision-signal upgrade: official Puerto Rico
   DDEC entrepreneurship and incentives guidance plus the Puerto Rico housing-
@@ -258,6 +264,9 @@
 - `npm run test:construction-execution-signal-review` validates the reviewed
   Aguada restaurant construction-execution artifact and its linkage to the
   source registry and decision-signal contract.
+- `npm run test:coordination-timing-signal-review` validates the reviewed
+  Aguada restaurant coordination-timing artifact and its linkage to the source
+  registry and decision-signal contract.
 - `npm run test:logistics-signal-review` validates the reviewed Aguada
   restaurant corridor-logistics artifact and its linkage to the source
   registry and decision-signal contract.
@@ -394,16 +403,17 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 ## Immediate Next Step
 
 Continue replacing the highest-risk source-gap signals in the fixed-selection
-matrix with registered Puerto Rico evidence. The official PEMAS construction-
-permit publication now distinguishes the routine existing-location permit path
-from an Aguada-inclusive construction-execution observability surface for the
-large/strategic scenario, and official DDEC plus Puerto Rico housing-recovery
-sources now establish a descriptive support-network baseline for the
-medium/regional and large/strategic scenarios. Those upgrades still do not
-establish interagency handoffs, inspection throughput, case timing, or one
-operator's recovery outcome. The next best lane is therefore a reproducible
-official source for interagency coordination or inspection-throughput
-evidence. Keep category and place constant while upgrading
+matrix with registered Puerto Rico evidence. The official DDEC permit-system
+Task Force report now establishes a Puerto Rico-wide aggregate baseline for
+concerned-entity recommendation processing (55 to 27 days) and priority-
+project filing throughput, with PEMAS retained as Aguada-inclusive construction
+case observability. Official DDEC plus Puerto Rico housing-recovery sources
+also establish a descriptive support-network baseline for the medium/regional
+and large/strategic scenarios. These upgrades do not establish Aguada case
+timing, inspection throughput, project qualification, approval outcome, or one
+operator's recovery outcome. The next best lane is a reproducible official
+inspection-throughput source with a defined scope and reporting period. Keep
+category and place constant while upgrading
 `data/profile-reach/business-profile-reach-v1.json` from controlled gaps
 toward source-backed signals without turning descriptive evidence into launch
 advice.
