@@ -478,6 +478,35 @@
       "decisionSummary": "Official Puerto Rico DDEC reporting now establishes a descriptive interagency coordination-timing baseline for the fixed Aguada strategic restaurant scenario, with PEMAS retained as supporting construction-execution observability."
     },
     {
+      "id": "strategic-inspection-service-window-baseline",
+      "lensId": "regulatory-execution-environment",
+      "label": "Strategic permit inspection service window",
+      "sourceType": "registered-source",
+      "sourceId": "ddec-permit-task-force-inspection-window-2025",
+      "applicableScenarioIds": [
+        "large-strategic"
+      ],
+      "reachByScenario": {
+        "large-strategic": "island-wide"
+      },
+      "factIds": [
+        "large-strategic-permit-inspection-window"
+      ],
+      "recency": {
+        "evidenceDate": "2025-10-31",
+        "quality": "official-ddec-permit-unico-inspection-service-window-report"
+      },
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-inspection-window-review.json",
+        "data/sources/puerto-rico.json"
+      ],
+      "interpretationLimits": [
+        "The DDEC report defines a 90-day accountability window for inspections corresponding to Permiso Unico requests; it does not report a completed-inspection count, completion rate, or distribution of elapsed inspection time.",
+        "The report does not identify Aguada, restaurant-cafe use, construction inspection, case qualification, inspection result, or permit outcome."
+      ],
+      "decisionSummary": "Official Puerto Rico DDEC reporting now establishes a descriptive inspection service-window baseline for the fixed Aguada strategic restaurant scenario without claiming observed inspection throughput."
+    },
+    {
       "id": "local-industry-context-baseline",
       "lensId": "ecosystem-resilience-growth",
       "label": "Existing local food-service activity context",

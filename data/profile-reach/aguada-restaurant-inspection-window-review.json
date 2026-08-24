@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "artifactVersion": "aguada-restaurant-inspection-window-review-v1",
+  "scope": "puerto-rico-planning-candidate",
+  "status": "reviewed",
+  "reviewedAt": "2026-08-23",
+  "signalId": "strategic-inspection-service-window-baseline",
+  "fixedSelection": {
+    "fixtureId": "mun003_restaurant",
+    "municipalityCode": "003",
+    "municipalityLabel": "Aguada",
+    "businessCategoryId": "restaurant-cafe",
+    "selectedNaicsCodes": ["722511"]
+  },
+  "decisionSummary": "The fixed Aguada strategic restaurant scenario now has official Puerto Rico evidence for the public inspection service window that applies to a Permiso Unico request. DDEC's final permit-system Task Force report states that the State has 90 days to perform the corresponding inspection and that inspections not completed in time are not managed or paid by the merchant. This is an inspection-accountability control, not evidence of observed inspection throughput or a schedule for one project.",
+  "authorities": [
+    {
+      "sourceId": "ddec-permit-task-force-inspection-window-2025",
+      "role": "permit-unico-inspection-service-window",
+      "evidence": "The official DDEC report states that the State has 90 days to perform the inspection corresponding to a Permiso Unico request. If the inspection is not performed in that period, the merchant does not have to manage or pay for it; the State bills only inspections completed on time."
+    }
+  ],
+  "scenarioCoverage": [
+    {
+      "scenarioId": "large-strategic",
+      "reachId": "island-wide",
+      "coverage": "descriptive-permit-inspection-service-window-baseline",
+      "notes": [
+        "The fixed large/strategic scenario now has a reproducible official inspection-accountability window rather than a blank inspection-control lane.",
+        "The service window applies to Permiso Unico inspection requests and does not establish that the fixed scenario requires that permit, qualifies for any expedited process, or will complete inspection within 90 days."
+      ]
+    }
+  ],
+  "interpretationLimits": [
+    "The source defines a service window, not a count of requested, assigned, completed, delayed, or failed inspections for a reporting period.",
+    "The source is Puerto Rico-wide and does not identify Aguada, restaurant-cafe uses, construction inspections, inspection agencies, or a project-specific queue.",
+    "The 90-day control does not measure time to correct deficiencies, receive final licenses, obtain construction approval, or open a business.",
+    "The artifact does not imply that a strategic-format restaurant should operate in Aguada or that inspection risk is resolved."
+  ],
+  "nextUpgradeTargets": [
+    "Register an official completed-inspection count, completion rate, or elapsed-time distribution with a defined reporting period before describing observed inspection throughput.",
+    "Use a case-level official record only after a project boundary and permitted disclosure basis are defined.",
+    "Keep project qualification, inspection outcome, construction completion, and launch sequencing outside this baseline until project-specific evidence is reviewed."
+  ]
+}

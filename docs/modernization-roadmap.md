@@ -186,6 +186,12 @@
   interagency recommendation-processing baseline for the fixed large/strategic
   restaurant scenario, while Aguada case timing, inspection completion,
   project qualification, and approval outcome remain explicit limits.
+- `data/profile-reach/aguada-restaurant-inspection-window-review.json` now
+  records the next regulatory-execution decision-signal upgrade: the official
+  Puerto Rico DDEC permit-system Task Force report defines a 90-day State
+  inspection service window for Permiso Unico requests, while observed
+  inspection throughput, Aguada case completion, construction inspection, and
+  project outcome remain explicit limits.
 - `data/profile-reach/aguada-restaurant-support-network-review.json` now
   records the next ecosystem decision-signal upgrade: official Puerto Rico
   DDEC entrepreneurship and incentives guidance plus the Puerto Rico housing-
@@ -267,6 +273,9 @@
 - `npm run test:coordination-timing-signal-review` validates the reviewed
   Aguada restaurant coordination-timing artifact and its linkage to the source
   registry and decision-signal contract.
+- `npm run test:inspection-window-signal-review` validates the reviewed Aguada
+  restaurant inspection-window artifact and its linkage to the source registry
+  and decision-signal contract.
 - `npm run test:logistics-signal-review` validates the reviewed Aguada
   restaurant corridor-logistics artifact and its linkage to the source
   registry and decision-signal contract.
@@ -405,14 +414,16 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 Continue replacing the highest-risk source-gap signals in the fixed-selection
 matrix with registered Puerto Rico evidence. The official DDEC permit-system
 Task Force report now establishes a Puerto Rico-wide aggregate baseline for
-concerned-entity recommendation processing (55 to 27 days) and priority-
-project filing throughput, with PEMAS retained as Aguada-inclusive construction
-case observability. Official DDEC plus Puerto Rico housing-recovery sources
-also establish a descriptive support-network baseline for the medium/regional
-and large/strategic scenarios. These upgrades do not establish Aguada case
-timing, inspection throughput, project qualification, approval outcome, or one
-operator's recovery outcome. The next best lane is a reproducible official
-inspection-throughput source with a defined scope and reporting period. Keep
+concerned-entity recommendation processing (55 to 27 days), priority-project
+filing throughput, and a 90-day State inspection service window for Permiso
+Unico requests, with PEMAS retained as Aguada-inclusive construction-case
+observability. Official DDEC plus Puerto Rico housing-recovery sources also
+establish a descriptive support-network baseline for the medium/regional and
+large/strategic scenarios. These upgrades do not establish Aguada case timing,
+completed-inspection volume or rate, construction inspection, project
+qualification, approval outcome, or one operator's recovery outcome. The next
+best lane is a reproducible official completed-inspection count, completion
+rate, or elapsed-time distribution with a defined reporting period. Keep
 category and place constant while upgrading
 `data/profile-reach/business-profile-reach-v1.json` from controlled gaps
 toward source-backed signals without turning descriptive evidence into launch

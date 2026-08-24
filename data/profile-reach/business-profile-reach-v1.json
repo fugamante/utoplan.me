@@ -580,13 +580,22 @@
               "sourceType": "registered-source",
               "sourceId": "ddec-permit-task-force-coordination-timing-2025",
               "notes": "Official Puerto Rico DDEC reporting establishes an aggregate interagency recommendation-processing baseline: its 2025 permit-system Task Force report records a reduction from 55 to 27 days and more than 2,600 priority-project filings processed, while PEMAS remains supporting construction-execution observability for Aguada-inclusive OGPe coverage."
+            },
+            {
+              "id": "large-strategic-permit-inspection-window",
+              "signalId": "strategic-inspection-service-window-baseline",
+              "label": "Large-format permit inspection service window",
+              "reachId": "island-wide",
+              "sourceType": "registered-source",
+              "sourceId": "ddec-permit-task-force-inspection-window-2025",
+              "notes": "Official Puerto Rico DDEC reporting defines a 90-day State inspection window for Permiso Unico requests and states that inspections not completed within that window are not billable, which establishes a public inspection-accountability control without reporting observed completion throughput."
             }
           ],
           "limitations": [
             "The current repo now has an official aggregate interagency coordination-timing baseline and a distinct construction-execution observability surface, but it does not measure coordinated approvals for one project.",
-            "Regulatory timing risk can still dominate launch timing because the public evidence does not establish an Aguada restaurant case-specific queue, inspection completion, or outcome."
+            "Regulatory timing risk can still dominate launch timing because the public evidence does not establish an Aguada restaurant case-specific queue, inspection completion rate, or outcome."
           ],
-          "nextValidationCheck": "Review an Aguada-inclusive PEMAS extract for the relevant construction class only after an exact project, permit type, and aggregation rule are defined; add official inspection-throughput evidence before treating the aggregate coordination metric as a case-level schedule."
+          "nextValidationCheck": "Review an Aguada-inclusive PEMAS extract for the relevant construction class only after an exact project, permit type, and aggregation rule are defined; add official completed-inspection volume or rate evidence before treating the service window as observed inspection throughput."
         },
         {
           "lensId": "ecosystem-resilience-growth",
