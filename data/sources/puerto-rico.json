@@ -1099,6 +1099,21 @@
       "resourceUrl": "https://www.desarrollo.pr.gov/noticias/el-grupo-de-trabajo-para-la-simplificacion-de-permisos-en-puerto-rico-presenta-hoja-de-ruta-para-transformar-el-sistema-de-permisos",
       "sourceBasis": "The official DDEC Final Task Force report for Puerto Rico's permit-system simplification, revised October 31, 2025, reports that processing time for recommendations from concerned government entities fell from 55 to 27 days and that more than 2,600 priority-project filings had been processed. The report identifies fragmented multi-agency processes as a structural timing constraint.",
       "notes": "Use as descriptive Puerto Rico interagency coordination-timing evidence for the fixed large/strategic planning profile only. It provides an official aggregate measure for concerned-entity recommendation processing and priority-project throughput, but it does not identify Aguada, restaurant use, a construction class, inspection completion, permit outcome, or a case-specific schedule. Supporting review artifact: data/profile-reach/aguada-restaurant-coordination-timing-review.json."
+    },
+    {
+      "id": "ddec-permit-task-force-inspection-window-2025",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-regulatory"
+      ],
+      "publisher": "Departamento de Desarrollo Económico y Comercio de Puerto Rico",
+      "portal": "desarrollo.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://docs.pr.gov/files/DDEC/Aviso%20Pu%CC%81blico/Informe%20Final%20del%20Task%20Force%20para%20Simplicaci%C3%B3n%20del%20%20Sistema%20de%20Permiso%20de%20Puerto%20Rico/2025-11-21-Informe%20de%20Permisos-FINAL%20DDEC.pdf",
+      "resourceUrl": "https://www.permisos.pr.gov/mejoras-sistema-permisos",
+      "sourceBasis": "The official DDEC Final Task Force report, revised October 31, 2025, states that the State has 90 days to perform the inspection corresponding to a Permiso Unico request; inspections not completed on time are not managed or paid by the merchant, and the State bills only inspections completed within the window.",
+      "notes": "Use as descriptive Puerto Rico inspection-service-window evidence for the fixed large/strategic planning profile only. It defines the public accountability window for Permiso Unico inspections, but it does not report an inspection count, completion rate, Aguada case queue, restaurant-specific coverage, construction inspection timing, or permit outcome. Supporting review artifact: data/profile-reach/aguada-restaurant-inspection-window-review.json."
     }
   ],
   "unresolvedTargets": [
