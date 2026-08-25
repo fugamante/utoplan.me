@@ -179,8 +179,8 @@ Collect or inspect this evidence before issuing an IEEE 828 audit finding:
   `node:26-bookworm-slim`, but the tag is mutable. The verified release build
   resolved it to OCI index digest
   `sha256:9e6f9357d371591e32ab6f2d8a26d63bdd0d17c29eee3f4f3e7e454d9634bf73`,
-  while the 2026-08-05 app-image validation resolved the same tag to
-  `sha256:cd565714d4da3e84bfd341e31448f81d47c6362198f152345297c9c1154e6341`.
+  while the 2026-08-25 app-image validation resolved the same tag to
+  `sha256:4db36457f406501e6f608802e5da617e5fbd0e80b75901b6a09de1ae5a667d32`.
   The observed drift confirms that rebuilding the same commit after a tag
   update can produce different base layers.
 - Acceptance evidence:
@@ -193,9 +193,9 @@ Collect or inspect this evidence before issuing an IEEE 828 audit finding:
 - Revisit trigger:
   - The next Node 26 base-image refresh, relevant base-image security advisory,
     or release-hardening pass, whichever occurs first.
-- Status: implemented locally; operational closure pending (2026-08-05). All
+- Status: implemented locally; operational closure pending (2026-08-25). All
   six Node stages use the reviewed
-  `sha256:cd565714d4da3e84bfd341e31448f81d47c6362198f152345297c9c1154e6341`
+  `sha256:4db36457f406501e6f608802e5da617e5fbd0e80b75901b6a09de1ae5a667d32`
   index digest, `.github/dependabot.yml` performs weekly Docker update
   discovery, the modernization maintainer owns review and advisory response,
   `test/deployment_container_contract_test.js` rejects partial or unreviewed
