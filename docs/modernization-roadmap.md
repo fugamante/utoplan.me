@@ -411,8 +411,9 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Continue replacing the highest-risk source-gap signals in the fixed-selection
-matrix with registered Puerto Rico evidence. The official DDEC permit-system
+Continue strengthening the highest-criticality evidence limitations in the
+fixed-selection matrix while replacing literal source gaps when a sufficiently
+narrow official Puerto Rico source is available. The official DDEC permit-system
 Task Force report now establishes a Puerto Rico-wide aggregate baseline for
 concerned-entity recommendation processing (55 to 27 days), priority-project
 filing throughput, and a 90-day State inspection service window for Permiso
@@ -422,12 +423,14 @@ establish a descriptive support-network baseline for the medium/regional and
 large/strategic scenarios. These upgrades do not establish Aguada case timing,
 completed-inspection volume or rate, construction inspection, project
 qualification, approval outcome, or one operator's recovery outcome. The next
-best lane is a reproducible official completed-inspection count, completion
-rate, or elapsed-time distribution with a defined reporting period. Keep
-category and place constant while upgrading
-`data/profile-reach/business-profile-reach-v1.json` from controlled gaps
-toward source-backed signals without turning descriptive evidence into launch
-advice.
+best high-criticality evidence-depth lane is a reproducible official completed-
+inspection count, completion rate, or elapsed-time distribution with a defined
+reporting period. The registry's sole literal source gap is now
+`local-supplier-route-gap` for the small/local scenario; do not overextend the
+existing corridor evidence to close that local lane. Keep category and place
+constant while upgrading `data/profile-reach/business-profile-reach-v1.json`
+from controlled gaps or bounded baselines toward stronger source-backed signals
+without turning descriptive evidence into launch advice.
 
 Treat the current 4-row generated `unis` slice and its review artifacts as a
 maintenance boundary, not the next product lane. Do not spend the next pass on

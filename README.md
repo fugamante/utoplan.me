@@ -211,6 +211,14 @@ The current modernization work is centered on:
   reviewed strategic construction-execution observability evidence for the
   fixed Aguada restaurant large/strategic scenario, scoped to official Puerto
   Rico PEMAS construction-permit publication coverage.
+- `data/profile-reach/aguada-restaurant-coordination-timing-review.json`:
+  reviewed aggregate interagency recommendation-processing evidence for the
+  fixed Aguada restaurant large/strategic scenario, scoped to the official DDEC
+  permit-system Task Force report.
+- `data/profile-reach/aguada-restaurant-inspection-window-review.json`:
+  reviewed Permiso Unico inspection-accountability evidence for the fixed
+  Aguada restaurant large/strategic scenario, scoped to the official DDEC
+  90-day service window without claiming observed inspection throughput.
 - `data/profile-reach/aguada-restaurant-large-site-screening-review.json`:
   reviewed large-site screening baseline evidence for the fixed Aguada
   restaurant scenario, scoped to official Aguada territorial-plan, Planning
@@ -290,6 +298,9 @@ npm run test:routine-workforce-signal-review
 npm run test:workforce-signal-review
 npm run test:ecosystem-signal-review
 npm run test:construction-execution-signal-review
+npm run test:coordination-timing-signal-review
+npm run test:inspection-window-signal-review
+npm run test:profile-reach-traceability
 npm run test:profile-reach-contract
 ```
 
