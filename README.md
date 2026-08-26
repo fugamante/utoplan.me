@@ -304,6 +304,10 @@ npm run test:profile-reach-traceability
 npm run test:profile-reach-contract
 ```
 
+`npm run test:profile-reach-traceability` also fails if the maintained roadmap,
+product-scope, and registry drift away from the current next evidence-depth
+lane or if additional literal profile/reach source gaps appear without review.
+
 Data-maintenance helpers:
 
 ```sh
