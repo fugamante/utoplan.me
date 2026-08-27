@@ -15,6 +15,7 @@ var registry = readJson('data/profile-reach/decision-signal-registry-v1.json');
 var packageContract = readJson('package.json');
 var roadmapContents = fs.readFileSync(path.join(root, 'docs', 'modernization-roadmap.md'), 'utf8');
 var productScopeContents = fs.readFileSync(path.join(root, 'docs', 'product-scope.md'), 'utf8');
+var evidenceRegisterContents = fs.readFileSync(path.join(root, 'docs', 'standards', 'evidence-register.md'), 'utf8');
 var reviewedArtifactPaths = Array.from(new Set(
   registry.signals.reduce(function(paths, signal) {
     return paths.concat(signal.artifactPaths || []);
@@ -43,6 +44,10 @@ var inspectionWindowSignal = registry.signals.find(function(signal) {
 
 assert.strictEqual(profile.updatedAt, latestReviewedAt, 'profile updatedAt must equal the latest reviewed artifact date');
 assert.strictEqual(registry.updatedAt, latestReviewedAt, 'registry updatedAt must equal the latest reviewed artifact date');
+assert(
+  evidenceRegisterContents.indexOf('Accepted baseline date: ' + latestReviewedAt) !== -1,
+  'evidence register accepted baseline date must equal the latest reviewed artifact date'
+);
 assert.deepStrictEqual(
   sourceGapSignals.map(function(signal) { return signal.id; }).sort(),
   ['local-supplier-route-gap'],
@@ -71,6 +76,21 @@ assert(
   productScopeContents.indexOf('`local-supplier-route-gap` remains the sole literal source gap.') !== -1,
   'product scope must keep the sole literal source gap explicit'
 );
+[
+  'EV-730',
+  'EV-828',
+  'EV-829',
+  'EV-830',
+  'EV-1016',
+  'EV-1012',
+  'EV-1058'
+].forEach(function(evidenceId) {
+  var evidencePattern = new RegExp('\\| ' + evidenceId + ' \\|[^\\n]*2026-08-26');
+  assert(
+    evidencePattern.test(evidenceRegisterContents),
+    evidenceId + ' must record the current focused validation date in the evidence register'
+  );
+});
 
 [
   'README.md',

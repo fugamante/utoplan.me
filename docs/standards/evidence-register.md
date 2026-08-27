@@ -2,8 +2,8 @@
 
 Profile: standard  
 Register owner role: Documentation auditor  
-Accepted baseline date: 2026-08-24
-Next scheduled review: 2027-02-24
+Accepted baseline date: 2026-08-23
+Next scheduled review: 2027-02-23
 
 Results below are attributable to the repository baseline current on the
 accepted date. Release candidates must record their own commit, environment,
@@ -12,13 +12,13 @@ substitute for a release record.
 
 | ID | Family/control | Controlled baseline | Acceptance evidence and result | Owner role | Retention | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| EV-730 | IEEE 730 quality assurance | `ieee-730-sqa-plan.md` and paired audit | Focused coordination, inspection, construction, registry, profile/reach, traceability, and source checks passed on 2026-08-24: `npm run test:coordination-timing-signal-review`, `npm run test:inspection-window-signal-review`, `npm run test:construction-execution-signal-review`, `npm run test:decision-signals`, `npm run test:profile-reach-contract`, `npm run test:profile-reach-traceability`, and `npm run test:data-sources` | Modernization maintainer | Git plus change/release result | Current |
-| EV-828 | IEEE 828 configuration management | `ieee-828-scm-plan.md`; lockfiles; runtime pins; CI/Docker/migration controls | Repository status reviewed; controlled profile/reach currency, reviewed-artifact mirrors, test script, and standards traceability were reconciled; focused validation passed on 2026-08-24 | Configuration/release owner | Git, CI, and release system | Current |
-| EV-829 | IEEE 829/29119 testing | `ieee-829-test-document.md`; test suites and package scripts | The focused chain `npm run test:coordination-timing-signal-review`, `npm run test:inspection-window-signal-review`, `npm run test:construction-execution-signal-review`, `npm run test:decision-signals`, `npm run test:profile-reach-contract`, `npm run test:profile-reach-traceability`, and `npm run test:data-sources` passed on 2026-08-24 | Test owner | Git for tests; CI/change record for result | Current |
-| EV-830 | IEEE 830/29148 requirements | `ieee-830-srs.md`; product/scope/roadmap docs | `npm run test:profile-reach-traceability` passed on 2026-08-24 and verifies the registry-derived reviewed-artifact set across the maintained requirements and product mirrors | Product owner | Git | Current |
-| EV-1016 | IEEE 1016 design | `ieee-1016-design-description.md`; deployment/API/data docs | `npm run test:profile-reach-traceability` passed on 2026-08-24 and verifies the registry-derived reviewed-artifact set in the design ownership mirror | Technical owner | Git | Current |
-| EV-1012 | IEEE 1012 V&V | `ieee-1012-vv-plan.md`; traceability and release evidence rules | Focused local coordination, inspection, construction, registry, profile/reach, traceability, and source validation passed on 2026-08-24; release-impacting work still requires broader reviewer evidence | V&V reviewer | Git plus change/release review | Current for documentation and local execution baseline |
-| EV-1058 | IEEE 1058/16326 project management | `ieee-1058-project-management-plan.md`; roadmap and readiness board | Roadmap taxonomy now distinguishes the sole literal source gap from the selected high-criticality evidence-depth limitation; the focused traceability check passed on 2026-08-24 | Modernization maintainer | Git and project history | Current |
+| EV-730 | IEEE 730 quality assurance | `ieee-730-sqa-plan.md` and paired audit | Focused coordination, inspection, construction, registry, profile/reach, traceability, and source checks passed on 2026-08-26: `npm run test:coordination-timing-signal-review`, `npm run test:inspection-window-signal-review`, `npm run test:construction-execution-signal-review`, `npm run test:decision-signals`, `npm run test:profile-reach-contract`, `npm run test:profile-reach-traceability`, and `npm run test:data-sources` | Modernization maintainer | Git plus change/release result | Current |
+| EV-828 | IEEE 828 configuration management | `ieee-828-scm-plan.md`; lockfiles; runtime pins; CI/Docker/migration controls | Repository status reviewed; controlled profile/reach currency, reviewed-artifact mirrors, test script, standards traceability, and evidence-register currency were reconciled; focused validation passed on 2026-08-26 | Configuration/release owner | Git, CI, and release system | Current |
+| EV-829 | IEEE 829/29119 testing | `ieee-829-test-document.md`; test suites and package scripts | The focused chain `npm run test:coordination-timing-signal-review`, `npm run test:inspection-window-signal-review`, `npm run test:construction-execution-signal-review`, `npm run test:decision-signals`, `npm run test:profile-reach-contract`, `npm run test:profile-reach-traceability`, and `npm run test:data-sources` passed on 2026-08-26 | Test owner | Git for tests; CI/change record for result | Current |
+| EV-830 | IEEE 830/29148 requirements | `ieee-830-srs.md`; product/scope/roadmap docs | `npm run test:profile-reach-traceability` passed on 2026-08-26 and verifies the registry-derived reviewed-artifact set across the maintained requirements, product mirrors, and evidence-register baseline | Product owner | Git | Current |
+| EV-1016 | IEEE 1016 design | `ieee-1016-design-description.md`; deployment/API/data docs | `npm run test:profile-reach-traceability` passed on 2026-08-26 and verifies the registry-derived reviewed-artifact set in the design ownership mirror plus the aligned evidence-register date | Technical owner | Git | Current |
+| EV-1012 | IEEE 1012 V&V | `ieee-1012-vv-plan.md`; traceability and release evidence rules | Focused local coordination, inspection, construction, registry, profile/reach, traceability, and source validation passed on 2026-08-26; release-impacting work still requires broader reviewer evidence | V&V reviewer | Git plus change/release review | Current for documentation and local execution baseline |
+| EV-1058 | IEEE 1058/16326 project management | `ieee-1058-project-management-plan.md`; roadmap and readiness board | Roadmap taxonomy now distinguishes the sole literal source gap from the selected high-criticality evidence-depth limitation, and the focused traceability check passed on 2026-08-26 with aligned evidence-register currency | Modernization maintainer | Git and project history | Current |
 
 ## Open high-impact signals
 
@@ -41,5 +41,5 @@ substitute for a release record.
   retention rule, and revisit trigger in `ieee-applicability.md`.
 - A failed, skipped, stale, or blocked result must use `blocked` and record
   reason, owner, compensating evidence, and review date.
-- Revisit on the earlier of the standards-corpus cadence, 2027-02-24, or any
+- Revisit on the earlier of the standards-corpus cadence, 2027-02-23, or any
   event trigger in the applicability record.
