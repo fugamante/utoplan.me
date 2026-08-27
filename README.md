@@ -284,6 +284,8 @@ npm run test:unis-identity-review
 npm run test:unis-import
 npm run test:unis-public-address-review
 npm run test:planning-context
+npm run test:signal-review-orchestration
+npm run test:signal-reviews
 npm run test:decision-signals
 npm run test:regulatory-signal-review
 npm run test:infrastructure-signal-review
@@ -308,6 +310,11 @@ npm run test:profile-reach-contract
 product-scope, standards evidence register, and registry drift away from the
 current next evidence-depth lane or if additional literal profile/reach source
 gaps appear without review.
+
+`npm run test:signal-reviews` is the stable complete signal-evidence gate. It
+discovers the registry-listed reviewed artifacts, verifies a one-to-one mapping
+to the preserved focused commands, runs the orchestration and decision-signal
+contracts, and then runs every focused signal review in deterministic order.
 
 Data-maintenance helpers:
 

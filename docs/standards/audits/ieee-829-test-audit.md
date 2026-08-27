@@ -292,12 +292,10 @@ Release decision:
 ### RECO-829-2026-08-03-01
 
 - Class: optimization
-- Finding: the root `npm run test` script names the decision-signal registry
-  test and fifteen reviewed signal-artifact tests individually. The
-  registry-derived `test:profile-reach-traceability` guard verifies that the
-  focused commands are documented, but it does not prove that every command is
-  included in the root chain. Each new signal-review lane therefore still
-  requires a manual root-script edit and creates a growing omission risk.
+- Finding: the root `npm run test` script previously named the decision-signal
+  registry test and fifteen reviewed signal-artifact tests individually. The
+  registry-derived traceability guard verified documentation coverage but did
+  not prove complete root-chain inclusion.
 - Acceptance evidence:
   - A stable aggregate command, such as `test:signal-reviews`, runs the
     decision-signal registry contract and every checked-in reviewed
@@ -310,10 +308,13 @@ Release decision:
 - Revisit trigger:
   - The next reviewed signal type or focused signal-review test, or any edit to
     the root test orchestration.
-- Status: proposed; revisit triggered repeatedly through the inspection-window
-  lane added on 2026-08-23. Current focused commands and the root test chain
-  remain valid, and the traceability guard supplies partial compensating
-  evidence, so this remains a non-blocking optimization.
+- Status: implemented (2026-08-27). `scripts/run_signal_reviews.js` discovers
+  the registry-backed artifact/test plan and runs the orchestration contract,
+  decision-signal contract, and all focused reviews in sorted order.
+  `test/signal_review_orchestration_test.js` proves missing-test and
+  missing-artifact failures, exact command wiring, one-to-one coverage, and
+  aggregate-only root-chain routing. Individual focused commands remain
+  available.
 
 ### RECO-829-2026-07-27-01
 

@@ -40,10 +40,16 @@ substitute for a release record.
   the tightened API interface contract; IEEE 828 configuration evidence is
   supplied by the compiler/container builds, controlled lockfiles, and pinned
   container checks.
-- Residual recommendation: `RECO-829-2026-08-03-01` remains proposed. The root
-  test chain manually names fifteen focused signal-review commands; the
-  traceability guard mitigates documentation drift but does not prove root-chain
-  inclusion. Revisit on the next focused lane or root test-orchestration edit.
+- Implemented recommendation: `RECO-829-2026-08-03-01` is closed locally.
+  `npm run test:signal-review-orchestration` proves exact one-to-one coverage
+  and omission failures, while `npm run test:signal-reviews` executes the
+  registry contract and all fifteen focused reviews in deterministic order.
+  Revisit on the next focused lane, registry artifact, or root orchestration
+  edit.
+- Implementation acceptance evidence: both new focused commands,
+  `npm run test:profile-reach-traceability`, the complete `npm test` chain,
+  the complete `npm run docker:test:all-db` stack, documentation consistency,
+  and diff checks passed on 2026-08-27.
 - Release boundary: this is local branch acceptance evidence, not deployed
   release-candidate, CI-on-default-branch, performance, or production assurance.
 
