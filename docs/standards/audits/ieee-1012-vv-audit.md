@@ -123,6 +123,9 @@ documented baseline.
 - `README.md` root command inventory matches `package.json` scripts.
 - `npm run install:all`, `npm run build`, and `npm run test` remain the normal
   root verification path.
+- `npm run test:signal-review-orchestration` proves every registry-listed
+  reviewed artifact has exactly one preserved focused test, and
+  `npm run test:signal-reviews` executes the verified complete set.
 - Narrow changes run targeted checks that match the changed surface.
 - Release-impacting changes run Docker DB, proxy, and browser compatibility
   checks when Docker is available.

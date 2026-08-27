@@ -88,8 +88,9 @@ Review these artifacts during each IEEE 730 audit:
   deployment rollback?
 - Are quality gates documented in one or more executable root commands rather
   than only described in prose?
-- Do `npm run test:decision-signals` and the applicable focused signal-review
-  tests preserve registry/fact/source linkage and descriptive-only language?
+- Do `npm run test:signal-review-orchestration` and
+  `npm run test:signal-reviews` prove exact registry/artifact/focused-test
+  coverage while preserving linkage and descriptive-only language?
 - Are quality responsibilities clear for API contracts, frontend smoke
   behavior, database migrations, data intake, deployment, and security audits?
 - Do new or changed docs avoid weakening the current production safety
