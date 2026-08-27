@@ -235,7 +235,7 @@ Node HTTP runtime keeps the operational surface small.
 
 | Endpoint class | Contract |
 | --- | --- |
-| Root | Preserve captured root response behavior, CORS headers, and gzip behavior. |
+| Root | Preserve captured root response behavior; advertise only `GET, OPTIONS` through CORS; emit `Vary: Accept-Encoding`; and preserve gzip behavior. |
 | Read resources | Serve seeded DB-backed compatibility responses through typed resource contracts. |
 | Planning-context resources | Serve read-only descriptive fixture summaries/details from `data/planning-context/*.json` with explicit guardrail flags. |
 | Health | `/healthz` reports shallow process liveness. |

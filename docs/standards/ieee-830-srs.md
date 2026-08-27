@@ -166,6 +166,9 @@ municipality or available dataset as the default unit of analysis.
   `grace_cs`.
 - Known record routes shall reject unsupported methods with `405 Method Not
   Allowed`.
+- The read-oriented API CORS declaration shall advertise only `GET` and
+  `OPTIONS`; JSON responses shall emit `Vary: Accept-Encoding` so shared caches
+  distinguish compressed and uncompressed representations.
 - API responses shall preserve the typed compatibility envelope and avoid
   exposing raw database errors to clients.
 - API route, CORS, gzip, root response, resource, records, schema, and readiness
