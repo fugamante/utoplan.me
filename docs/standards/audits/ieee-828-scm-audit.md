@@ -143,6 +143,21 @@ Collect or inspect this evidence before issuing an IEEE 828 audit finding:
 - `/readyz` gates API database readiness and schema baseline compatibility.
 - Rollback instructions identify app, API, and database recovery order.
 
+## Active Recommendation
+
+### RECO-828-2026-08-01-01
+
+- Class: supply-chain reproducibility hardening
+- Finding: mutable Node Docker tags can change rebuild output without a source
+  change.
+- Acceptance evidence: all six Node stages share one reviewed digest; weekly
+  Dependabot discovery is active on the default branch; production images and
+  full host/Docker validation pass; the first generated refresh PR passes CI.
+- Revisit trigger: each base refresh, relevant security advisory, Node support
+  change, Dockerfile addition, or refresh-workflow change.
+- Status: implemented locally; operational closure pending the first generated
+  default-branch Docker refresh PR and passing CI.
+
 ## Hardening And Optimization Recommendation Rules
 
 Open a hardening recommendation when an SCM control weakness can create an
