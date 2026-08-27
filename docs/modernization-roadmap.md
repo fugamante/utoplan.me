@@ -6,7 +6,7 @@
 - `dtoapi/` serves the modern API entrypoint; obsolete Nodal source has been removed from the normal project tree.
 - Root workspace scripts install, test, build, and start both services from lockfiles.
 - Generated dependency folders are ignored and removed from source control.
-- GitHub Actions installs Node 24, runs the contract-test baseline, and runs
+- GitHub Actions installs Node 26, runs the contract-test baseline, and runs
   the modern Docker-backed validation surface.
 - Docker validation builds from lockfiles, runs the API test baseline, and serves the static app by default.
 - Docker DB validation builds a seeded Postgres test image instead of bind-mounting seed SQL, avoiding host file-sharing instability during database initialization.

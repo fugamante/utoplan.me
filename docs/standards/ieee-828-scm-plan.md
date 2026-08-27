@@ -99,7 +99,7 @@ Runtime baselines are named by contract, not by environment accident. The curren
 The development baseline is the current modernization branch plus all committed lockfiles and tests. A development baseline is acceptable when:
 
 - Root installation can be reproduced from lockfiles.
-- `npm run test:node-runtime` passes against the pinned Node 24 major from
+- `npm run test:node-runtime` passes against the pinned Node 26 major from
   `.node-version` and `.nvmrc`.
 - `npm run build` has defined behavior.
 - Affected contract tests pass or failures are documented.
@@ -194,7 +194,7 @@ Local development uses the root scripts documented in `README.md`. Developers ma
 npm run start:local
 ```
 
-Local install, build, and test workflows are pinned to the reviewed Node 24
+Local install, build, and test workflows are pinned to the reviewed Node 26
 major declared in `.node-version` and `.nvmrc`. `scripts/verify_node_runtime.js`
 enforces that pin before install, test, build, and start commands run.
 
@@ -234,6 +234,12 @@ Production secrets must come from the deployment platform secret store and must 
 Lockfiles are controlled artifacts and must be updated only when dependency intent changes. Manifest and lockfile changes should be reviewed together.
 
 Docker assets are controlled artifacts:
+
+- Every Node stage uses the same reviewed Node 26 Bookworm Slim tag and OCI
+  index digest. `.github/dependabot.yml` checks weekly, while the modernization
+  maintainer owns review, validation, merge, and advisory response.
+- `docs/container-base-refresh.md` defines update and rollback procedures;
+  `test/deployment_container_contract_test.js` rejects partial digest updates.
 
 - `Dockerfile` validates clean install, build, and app serving.
 - `Dockerfile.modern-api` builds the modern API runtime.
