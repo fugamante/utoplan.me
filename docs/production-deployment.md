@@ -74,6 +74,11 @@ npm --prefix dtoapi/modern audit
 
 Run Docker compatibility checks when Docker is available, because the production topology depends on container networking and seeded Postgres validation.
 
+Production app/API images run as the unprivileged `node` user. All Node stages
+use one reviewed tag-and-digest reference; follow
+`docs/container-base-refresh.md` for scheduled updates, advisory response,
+validation, and rollback.
+
 `npm run verify:deployment` validates the production app/API environment in the current shell. Use `node scripts/verify_deployment_config.js --service=app` or `--service=api` when checking one container at a time.
 
 `docker-compose.integrated.yml` runs the verifier before each service process starts. The modern API Docker image also runs `--service=api` before starting `dtoapi/modern/lib/server.js`.

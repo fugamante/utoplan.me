@@ -22,7 +22,7 @@ PostgreSQL-backed Node and TypeScript system with explicit data provenance.
 
 ## Quick Start
 
-Use Node 24.x. Install the root workspace and both nested packages:
+Use Node 26.x. Install the root workspace and both nested packages:
 
 ```sh
 npm run install:all

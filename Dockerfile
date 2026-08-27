@@ -1,4 +1,4 @@
-FROM node:24-bookworm-slim
+FROM node:26-bookworm-slim@sha256:4db36457f406501e6f608802e5da617e5fbd0e80b75901b6a09de1ae5a667d32
 
 WORKDIR /workspace
 
@@ -18,6 +18,10 @@ COPY . .
 RUN npm run build
 
 ENV NODE_ENV=production
+
+RUN chown -R node:node /workspace
+
+USER node
 
 EXPOSE 8080
 

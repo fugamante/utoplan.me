@@ -379,6 +379,10 @@ Required release design controls:
 Docker validation is part of the design because the production topology depends
 on container networking and PostgreSQL integration.
 
+All Node stages use one reviewed Node 26 Bookworm Slim tag-and-digest reference.
+Weekly update discovery feeds maintainer review; the container contract rejects
+partial refreshes, and `docs/container-base-refresh.md` defines rollback.
+
 Key validation paths:
 
 - `docker build -t utoplanme:modernization .`
