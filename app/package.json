@@ -21,6 +21,6 @@
     "test": "npm run build && node test/map_config_contract_test.js && node test/planning_context_contract_test.js && node test/leaflet_vendor_contract_test.js && node test/static_smoke_test.js && node test/static_api_gate_test.js && node test/static_proxy_test.js && node test/static_config_test.js"
   },
   "devDependencies": {
-    "typescript": "^6.0.3"
+    "typescript": "^7.0.2"
   }
 }
