@@ -211,7 +211,7 @@ weakening reproducibility, provenance, or release confidence.
 | Unit and contract tests | Pin typed API, browser, response, resource, routing, data-source, migration, and deployment verifier behavior. |
 | Integration tests | Exercise app/API/PostgreSQL and same-origin proxy behavior. |
 | Browser smoke tests | Verify visible map behavior, markers, toggles, tile rendering, and clean console/page errors. |
-| Docker compatibility tests | Verify clean container builds, seeded DB contracts, proxy wiring, and integrated browser behavior. |
+| Docker compatibility tests | Verify clean builds, one reviewed Node digest, unprivileged production users, seeded DB contracts, proxy wiring, and integrated browser behavior. |
 | Release smoke tests | Verify deployed app health, public `/v1/unis`, and optional API readiness from release URLs. |
 | Audit review | Confirms evidence, skipped checks, accepted risks, anomalies, and standards updates. |
 

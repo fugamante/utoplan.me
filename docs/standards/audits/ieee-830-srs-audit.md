@@ -168,7 +168,7 @@ the current project surface.
 
 - Requirements include reproducible install, build, test, and start workflows
   from the repository root.
-- Requirements keep the reviewed Node 24 runtime explicit across version pins,
+- Requirements keep the reviewed Node 26 runtime explicit across version pins,
   package metadata, CI, and `npm run test:node-runtime`.
 - Requirements include dependency and generated-output hygiene.
 - Requirements include security expectations for dependency audits, secret
