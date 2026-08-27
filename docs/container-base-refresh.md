@@ -50,12 +50,13 @@ review time in the IEEE 730 and 828 audit records.
 
 ```sh
 npm run test:deployment-containers
-npm run verify:release
+UTOPLAN_RELEASE_SAMPLE=1 npm run verify:release
 docker build -t utoplanme:base-refresh-app .
 docker build -f Dockerfile.modern-api -t utoplanme:base-refresh-api .
 docker image inspect utoplanme:base-refresh-app --format '{{.Config.User}} {{json .Config.Cmd}}'
 docker image inspect utoplanme:base-refresh-api --format '{{.Config.User}} {{json .Config.Cmd}}'
 npm run test
+npm run docker:test:all-db
 ```
 
 Required results:
@@ -66,8 +67,8 @@ Required results:
 - Stable app, API, data, migration, deployment, and release contracts pass.
 
 DB, proxy, and browser Docker compatibility checks remain required in the
-normal CI workflow. Run them locally when the refresh changes observed runtime
-behavior or when CI evidence is unavailable.
+normal CI workflow and for local release-candidate evidence when CI evidence is
+unavailable.
 
 ## Rollback
 

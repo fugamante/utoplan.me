@@ -200,10 +200,10 @@ Collect or inspect this evidence before issuing an IEEE 828 audit finding:
   discovery, the modernization maintainer owns review and advisory response,
   `test/deployment_container_contract_test.js` rejects partial or unreviewed
   refreshes, and `docs/container-base-refresh.md` defines validation and
-  rollback. End-to-end closure requires the configuration on the default
-  branch, GitHub dependency automation enabled, one generated Docker refresh
-  pull request, and passing PR validation. As of this review, `master` does not
-  contain `.github/dependabot.yml`, so no refresh PR or CI evidence exists.
+  rollback. PR #18 placed the configuration on current `master`; end-to-end
+  closure still requires confirmation that GitHub dependency automation is
+  enabled, one generated Docker refresh pull request, and passing validation
+  for that exact pull-request commit.
 
 ## Hardening And Optimization Recommendation Rules
 

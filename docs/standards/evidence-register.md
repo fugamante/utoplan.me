@@ -88,6 +88,38 @@ substitute for a release record.
   commit and supersede after any tracked change, failed gate, dependency or
   container refresh, CI workflow change, or release-environment change.
 
+### RC-2026-08-27-B
+
+- Candidate identity: the pending merge of integration baseline
+  `1d97a642bcf8bc59399f8aeecb94e1f7f637bd62` with current `master`
+  `4447e4c03465b3baadfa266509aa85ebed02b14b`; the local rollback ref
+  `recovery/integration-review-pre-master-2026-08-27` preserves the integration
+  preimage. All 22 commits that were unpublished before reconciliation remain
+  in the integration-side ancestry.
+- Resolution: fourteen textual conflicts were reconciled without rolling back
+  TypeScript 7, active Node 26 verification, package/lock coherence, profile
+  and reach traceability, release-smoke coverage, container digests, CI action
+  pins, or unprivileged runtime controls. The refresh procedure now uses the
+  executable sample-mode release preflight and the full local Docker stack.
+- Environment: macOS Darwin 25.6.0 arm64; Node.js 26.7.0; npm 11.19.0;
+  Docker client/server 29.7.2; Buildx 0.36.1-desktop.1.
+- Results: `npm run install:all`, the complete `npm test` chain,
+  `npm run test:browser`, `UTOPLAN_RELEASE_SAMPLE=1 npm run verify:release`,
+  and `npm run docker:test:all-db` passed on 2026-08-27. Clean installs reported
+  zero vulnerabilities in all four npm scopes; Docker exercised the seeded
+  PostgreSQL, same-origin proxy, and integrated-browser paths with the pinned
+  Node and PostgreSQL images.
+- Review and preservation: an independent read-only contract review confirmed
+  the resolved dependency, runtime, container, CI, and evidence invariants and
+  identified one redundant deployment paragraph, which was removed before
+  integration. No required check was skipped. The unrelated untracked literal
+  `$CODEX_HOME/` directory remained unmodified and outside the committed scope.
+- Decision boundary: locally acceptable for a reconciliation commit. This is
+  not publication, PR synchronization, hosted Ubuntu CI, deployed smoke,
+  performance, or production assurance. Supersede after any tracked change,
+  failed gate, dependency/container refresh, CI edit, or release-environment
+  change.
+
 ## Open high-impact signals
 
 | ID | Signal | Current boundary | Required action / trigger | Owner role | Status |
