@@ -191,7 +191,8 @@ contracts, source registry rules, or migration artifact rules change.
 
 Expected coverage includes:
 
-- API root response, CORS, gzip, and status behavior.
+- API root response, exact `GET, OPTIONS` CORS method declaration,
+  `Vary: Accept-Encoding`, gzip, and status behavior.
 - API response and error envelope serialization.
 - Resource column order, row serialization, and parameterized query
   construction.

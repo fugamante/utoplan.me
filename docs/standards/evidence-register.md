@@ -20,6 +20,33 @@ substitute for a release record.
 | EV-1012 | IEEE 1012 V&V | `ieee-1012-vv-plan.md`; traceability and release evidence rules | Focused local coordination, inspection, construction, registry, profile/reach, traceability, and source validation passed on 2026-08-26; release-impacting work still requires broader reviewer evidence | V&V reviewer | Git plus change/release review | Current for documentation and local execution baseline |
 | EV-1058 | IEEE 1058/16326 project management | `ieee-1058-project-management-plan.md`; roadmap and readiness board | Roadmap taxonomy now distinguishes the sole literal source gap from the selected high-criticality evidence-depth limitation, and the focused traceability check passed on 2026-08-26 with aligned evidence-register currency | Modernization maintainer | Git and project history | Current |
 
+## Standards maintenance evidence
+
+### 2026-08-27 repository reconciliation
+
+- Baseline reviewed: active `modernization/integration-review` branch through
+  `4f01820` (`Upgrade TypeScript compiler`). Material changes since the prior
+  corpus pass included TypeScript 7 lockfile baselines, the narrowed API CORS
+  method declaration plus `Vary: Accept-Encoding`, refreshed CI/PostgreSQL/Node
+  pins, fifteen reviewed signal-evidence lanes, and the registry-derived
+  profile/reach traceability guard.
+- Acceptance evidence: the 17-document repository-path and root-command
+  consistency check, `npm run test:api`,
+  `npm run test:profile-reach-traceability`,
+  `npm run test:deployment-containers`, the complete `npm test` chain, and
+  `npm run docker:test:all-db` passed on 2026-08-27.
+- Control-family disposition: IEEE 730/1012 gates and IEEE 1058 milestone scope
+  now enumerate the current evidence lanes; IEEE 830/1016/829 artifacts state
+  the tightened API interface contract; IEEE 828 configuration evidence is
+  supplied by the compiler/container builds, controlled lockfiles, and pinned
+  container checks.
+- Residual recommendation: `RECO-829-2026-08-03-01` remains proposed. The root
+  test chain manually names fifteen focused signal-review commands; the
+  traceability guard mitigates documentation drift but does not prove root-chain
+  inclusion. Revisit on the next focused lane or root test-orchestration edit.
+- Release boundary: this is local branch acceptance evidence, not deployed
+  release-candidate, CI-on-default-branch, performance, or production assurance.
+
 ## Open high-impact signals
 
 | ID | Signal | Current boundary | Required action / trigger | Owner role | Status |

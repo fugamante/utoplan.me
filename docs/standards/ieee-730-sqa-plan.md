@@ -172,7 +172,7 @@ validation stack before release or PR publication.
 | Planning-context fixture | `npm run test:planning-context` | Planning-context fixture, summary/detail, or descriptive-guardrail changes. |
 | Planned profile/reach contract | `npm run test:profile-reach-contract` plus `npm run test:planning-context` when fixtures expand | Business-profile schema, decision-lens relevance, reach, or scale-scenario changes. |
 | Decision-signal registry | `npm run test:decision-signals` | Signal classification, source linkage, fact linkage, scenario reach, recency, or interpretation-limit changes. |
-| Reviewed signal evidence | The applicable focused signal-review command from `package.json`, or `npm run test` for the complete set | Permit, utility, site-feasibility, large-site, routine workforce, strategic workforce, or later reviewed signal-artifact changes. |
+| Reviewed signal evidence | The applicable focused signal-review command from `package.json`, or `npm run test` for the complete set | Demand, island-wide demand, permit, construction execution, coordination timing, inspection window, utility, utility resilience, logistics, ecosystem support, site feasibility, large-site, routine workforce, strategic workforce, or later reviewed signal-artifact changes. |
 | Migration contract | `npm run test:migration-artifacts` | Migration template or artifact changes. |
 | Deployment config | `npm run verify:deployment` and `npm run verify:release` | Release, environment, container, or operator workflow changes. |
 | Container base | `npm run test:deployment-containers`, production app/API image builds, and image inspection | Base tag/digest, Dockerfile, refresh automation, runtime user, or advisory-response changes. |
