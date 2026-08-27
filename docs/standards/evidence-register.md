@@ -53,6 +53,41 @@ substitute for a release record.
 - Release boundary: this is local branch acceptance evidence, not deployed
   release-candidate, CI-on-default-branch, performance, or production assurance.
 
+## Integration release-candidate evidence
+
+### RC-2026-08-27-A
+
+- Intended commit: `a6474185e8886dd83df8434fd36827900a733b34`
+  (`Aggregate signal review validation`) on
+  `modernization/integration-review`. The tracked worktree was clean before and
+  after validation; the unrelated untracked literal `$CODEX_HOME/` directory
+  was excluded from every command and remains outside this evidence.
+- Environment: macOS Darwin 25.6.0 arm64; Node.js 26.7.0; npm 11.19.0;
+  Docker client/server 29.7.2; Buildx 0.36.1-desktop.1.
+- CI comparison: `.github/workflows/ci.yml` uses Ubuntu, Node 26, clean
+  workspace installation, `npm run build`, Chromium smoke, sample-mode release
+  preflight, Docker DB, and Docker integrated-browser checks. This local pass
+  ran each equivalent command and additionally ran the standalone Docker proxy
+  gate through `npm run docker:test:all-db`.
+- Results: `npm run install:all`, `npm run build`, `npm run test:browser`,
+  `UTOPLAN_RELEASE_SAMPLE=1 npm run verify:release`,
+  `npm run test:signal-review-orchestration`, and
+  `npm run docker:test:all-db` passed on 2026-08-27. Clean installs reported no
+  vulnerabilities in the root, app, legacy API wrapper, or modern API scopes.
+  The build completed the root validation chain, which invoked
+  `npm run test:signal-reviews` exactly once and preserved all fifteen focused
+  signal-review commands.
+- Documentation and change controls: standards path/root-command consistency
+  and `git diff --check` passed. No required check was skipped and no product,
+  data, API, migration, deployment, or provenance contract changed during this
+  evidence pass.
+- Decision: locally acceptable as an integration release candidate. This is
+  not publication, merge, default-branch CI, deployed smoke, performance, or
+  production assurance.
+- Owner and retention: release reviewer; retain in Git with this candidate
+  commit and supersede after any tracked change, failed gate, dependency or
+  container refresh, CI workflow change, or release-environment change.
+
 ## Open high-impact signals
 
 | ID | Signal | Current boundary | Required action / trigger | Owner role | Status |
