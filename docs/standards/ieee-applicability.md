@@ -1,10 +1,10 @@
 # IEEE Control Applicability
 
-Status: accepted standard-profile baseline  
-Assessed on: 2026-08-05  
-Next scheduled review: 2027-02-05  
-Owner role: Modernization maintainer  
-Approver role: Release reviewer for release-impacting changes
+- Status: accepted standard-profile baseline
+- Assessed on: 2026-08-05
+- Next scheduled review: 2027-02-05
+- Owner role: Modernization maintainer
+- Approver role: Release reviewer for release-impacting changes
 
 This record describes tailored engineering controls. It does not claim IEEE
 certification, formal compliance, or audited assurance.
@@ -80,4 +80,3 @@ baseline alone.
 None. Any lowering or omission requires explicit authorization plus owner,
 scope, rationale, compensating evidence, approval date, expiry or next review,
 and event-driven revisit triggers.
-
