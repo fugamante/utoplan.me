@@ -16,6 +16,19 @@ jobs:
       - name: Checkout
         # actions/checkout v7.0.1
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+
+      - name: Check changed-line hygiene
+        env:
+          DIFF_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          if [[ ! "$DIFF_BASE" =~ ^[0-9a-f]{40}$ ]] || [[ "$DIFF_BASE" =~ ^0+$ ]]; then
+            echo "Invalid diff base: $DIFF_BASE" >&2
+            exit 1
+          fi
+          git cat-file -e "$DIFF_BASE^{commit}"
+          git diff --check "$DIFF_BASE...HEAD"
 
       - name: Set up Node.js
         # actions/setup-node v6.5.0

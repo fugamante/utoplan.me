@@ -1,9 +1,9 @@
 # Engineering Acceptance Evidence Register
 
-Profile: standard  
-Register owner role: Documentation auditor  
-Accepted baseline date: 2026-08-23
-Next scheduled review: 2027-02-23
+- Profile: standard
+- Register owner role: Documentation auditor
+- Accepted baseline date: 2026-08-23
+- Next scheduled review: 2027-02-23
 
 Results below are attributable to the repository baseline current on the
 accepted date. Release candidates must record their own commit, environment,
@@ -60,8 +60,8 @@ substitute for a release record.
 - Intended commit: `a6474185e8886dd83df8434fd36827900a733b34`
   (`Aggregate signal review validation`) on
   `modernization/integration-review`. The tracked worktree was clean before and
-  after validation; the unrelated untracked literal `$CODEX_HOME/` directory
-  was excluded from every command and remains outside this evidence.
+  after validation; an unrelated untracked local-tooling directory was excluded
+  from every command and remains outside this evidence.
 - Environment: macOS Darwin 25.6.0 arm64; Node.js 26.7.0; npm 11.19.0;
   Docker client/server 29.7.2; Buildx 0.36.1-desktop.1.
 - CI comparison: `.github/workflows/ci.yml` uses Ubuntu, Node 26, clean
@@ -112,8 +112,8 @@ substitute for a release record.
 - Review and preservation: an independent read-only contract review confirmed
   the resolved dependency, runtime, container, CI, and evidence invariants and
   identified one redundant deployment paragraph, which was removed before
-  integration. No required check was skipped. The unrelated untracked literal
-  `$CODEX_HOME/` directory remained unmodified and outside the committed scope.
+  integration. No required check was skipped. An unrelated untracked
+  local-tooling directory remained unmodified and outside the committed scope.
 - Decision boundary: locally acceptable for a reconciliation commit. This is
   not publication, PR synchronization, hosted Ubuntu CI, deployed smoke,
   performance, or production assurance. Supersede after any tracked change,
