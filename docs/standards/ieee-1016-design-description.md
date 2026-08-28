@@ -43,6 +43,7 @@ Out of scope unless explicitly revived:
 - `docs/frontend-inventory.md`
 - `docs/modernization-roadmap.md`
 - `docs/product-scope.md`
+- `docs/business-location-decision-framework.md`
 - `docs/production-deployment.md`
 - `data/mappings/puerto-rico-business-categories.json`
 - `data/municipalities/planning-context-municipalities.json`
@@ -62,6 +63,12 @@ evaluate location-specific business conditions through a map-first interface
 that can correlate universities, municipalities, workforce, zoning,
 infrastructure, business density, industry patterns, and other local resources
 as the data model matures.
+
+The approved next design direction begins with a versioned operating profile,
+then assigns each fact a site-bound, local-catchment, regional-corridor,
+island-wide, or external-connection reach. This is a planned contract boundary,
+not a claim that the current planning-context API implements profile-dependent
+evidence selection.
 
 The current implementation is intentionally conservative:
 
@@ -107,7 +114,7 @@ PostgreSQL
 | Static app server | `app/app.js` | Serve static assets, gate fixture mode, proxy `/v1/*`, expose app health. |
 | Browser UI | `app/public/index.html`, `app/public/css/`, `app/public/src/` | Render the first-page map, UI toggles, and data-backed markers. |
 | Browser compiled assets | `app/public/js/` | Committed JavaScript produced from first-party TypeScript for static serving. |
-| Vendored browser assets | `app/public/vendor/`, `app/public/Untitled/` | Preserve Leaflet, RequireJS, XML tools, Unity artifacts, and other external/static assets. |
+| Vendored browser assets | `app/public/vendor/`, `app/public/Untitled/` | Preserve Leaflet, Unity artifacts, and other current external/static assets. |
 | Modern API runtime | `dtoapi/modern/src/server.ts` | Own HTTP routing, CORS, gzip handling, method handling, health, readiness, and response dispatch. |
 | Planning-context API module | `dtoapi/modern/src/planning_context.ts` | Own planning-context fixture discovery, descriptive guardrail checks, and read-only summary/detail shaping. |
 | API response contracts | `dtoapi/modern/src/response_contract.ts`, `root_contract.ts`, `records.ts` | Own typed public response shapes and compatibility wrapping. |
@@ -119,6 +126,9 @@ PostgreSQL
 | Business category mapping | `data/mappings/puerto-rico-business-categories.json` | Record candidate category-to-NAICS mappings that planning-context fixtures may reference without turning them into scores or recommendations. |
 | Municipality display-name registry | `data/municipalities/planning-context-municipalities.json` | Record source-backed municipality labels for the active planning-context fixture set. |
 | Planning-context fixtures | `data/planning-context/` | Record descriptive municipality/category slices with confidence, limitations, and unresolved questions. |
+| Planned business-profile and reach contracts | `data/profile-reach/business-profile-reach-v1.json` | Own versioned operating assumptions, decision-lens relevance, geographic reach, profile-dependent criticality, confidence, limitations, and next validation checks before API/UI expansion. |
+| Decision-signal registry | `data/profile-reach/decision-signal-registry-v1.json` | Record which fixed-selection profile/reach facts are backed by registered Puerto Rico evidence versus explicit source gaps, including scenario reach, recency, interpretation limits, and matrix linkage. |
+| Reviewed signal-upgrade artifacts | `data/profile-reach/aguada-restaurant-demand-proxy-review.json`, `data/profile-reach/aguada-restaurant-island-demand-review.json`, `data/profile-reach/aguada-restaurant-corridor-logistics-review.json`, `data/profile-reach/aguada-restaurant-external-logistics-review.json`, `data/profile-reach/aguada-restaurant-permit-path-review.json`, `data/profile-reach/aguada-restaurant-construction-execution-review.json`, `data/profile-reach/aguada-restaurant-coordination-timing-review.json`, `data/profile-reach/aguada-restaurant-inspection-window-review.json`, `data/profile-reach/aguada-restaurant-support-network-review.json`, `data/profile-reach/aguada-restaurant-utility-service-review.json`, `data/profile-reach/aguada-restaurant-utility-resilience-review.json`, `data/profile-reach/aguada-restaurant-site-screening-review.json`, `data/profile-reach/aguada-restaurant-large-site-screening-review.json`, `data/profile-reach/aguada-restaurant-routine-workforce-review.json`, `data/profile-reach/aguada-restaurant-workforce-pipeline-review.json` | Record bounded reviewed evidence upgrades for individual decision signals without expanding API/UI scope or turning demand-proxy, island-wide demand baseline, corridor-logistics, external-logistics gateway baseline, permit-path, construction-execution observability, aggregate coordination timing, inspection-accountability, support-network baseline, continuity-baseline, resilience-baseline, site-screening, large-site screening, routine workforce baseline, or island-wide workforce baseline evidence into recommendations. |
 | Release scripts | `scripts/`, `test/` | Verify deployment configuration, release smoke behavior, and integration contracts. |
 
 ### 5.3 Runtime Modes
@@ -225,7 +235,7 @@ Node HTTP runtime keeps the operational surface small.
 
 | Endpoint class | Contract |
 | --- | --- |
-| Root | Preserve captured root response behavior, CORS headers, and gzip behavior. |
+| Root | Preserve captured root response behavior; advertise only `GET, OPTIONS` through CORS; emit `Vary: Accept-Encoding`; and preserve gzip behavior. |
 | Read resources | Serve seeded DB-backed compatibility responses through typed resource contracts. |
 | Planning-context resources | Serve read-only descriptive fixture summaries/details from `data/planning-context/*.json` with explicit guardrail flags. |
 | Health | `/healthz` reports shallow process liveness. |
@@ -255,11 +265,14 @@ database fields are configured.
 
 Supported configuration forms:
 
-- `DATABASE_URL`.
+- `DATABASE_URL` using the `postgres://` or `postgresql://` scheme.
 - `DATABASE_HOST`, `DATABASE_PORT`, `DATABASE_USER`, `DATABASE_PASSWORD`,
   `DATABASE_DB`.
 
 Test configuration may use the corresponding `TEST_DATABASE_*` variables.
+Production deployment verification rejects malformed database URLs and
+unsupported schemes before API startup without including the configured value
+in the validation error.
 
 ### 7.5 API Evolution Rules
 
@@ -367,10 +380,14 @@ as a compatible app/API artifact pair.
 Required release design controls:
 
 - Production secrets come from the platform secret store.
+- The production app and API images run their service commands as the
+  unprivileged image user `node`; the API verifier runs inside that same
+  boundary.
 - `UTOPLAN_DEMO_FIXTURE` remains unset in production.
 - Database changes are applied separately from service startup.
 - `/readyz` must pass before app traffic depends on a new API release.
-- Public `/v1/unis` must be smoke-tested through the app origin.
+- Public `/v1/unis` and `/v1/planning-context` must be smoke-tested through
+  the app origin.
 - Rollback restores the last known-good app/API artifact pair and follows any
   database rollback note from the release artifact.
 
@@ -379,9 +396,10 @@ Required release design controls:
 Docker validation is part of the design because the production topology depends
 on container networking and PostgreSQL integration.
 
-All Node stages use one reviewed Node 26 Bookworm Slim tag-and-digest reference.
-Weekly update discovery feeds maintainer review; the container contract rejects
-partial refreshes, and `docs/container-base-refresh.md` defines rollback.
+All Node stages share one tag-and-digest reference. Weekly Dependabot discovery
+feeds a maintainer-reviewed refresh workflow; the container contract prevents a
+partial update, and `docs/container-base-refresh.md` defines validation and
+rollback. This separates reproducible build selection from update discovery.
 
 Key validation paths:
 
@@ -487,6 +505,19 @@ step is explicitly documented.
 
 ## 13. Evolution Rules
 
+- Keep the business-profile and geographic-reach boundary versioned under
+  `data/profile-reach/` and validated before expanding planning-context
+  fixtures by scale.
+- Keep category and place constant in the first scenario matrix so verification
+  can attribute changed relevance or criticality to operating profile rather
+  than unrelated data drift.
+- Do not encode a composite score, municipality rank, or recommendation in the
+  profile/reach contracts.
+- Treat reviewed construction-permit publication evidence as an observability
+  boundary only: it may distinguish a larger construction path from routine
+  permit work, but it must not imply a case timeline, approval, or coordinated
+  execution result.
+
 Use these rules when modifying the design:
 
 1. Preserve public contracts unless the change is intentional, documented, and
@@ -518,7 +549,7 @@ Use these rules when modifying the design:
 | App/API proxy | `npm run docker:test:proxy` |
 | Browser map behavior | `npm run test:browser`, `npm run test:browser:start-local`, `npm run docker:test:start-local-browser` |
 | Deployment config | `npm run verify:deployment`, `npm run verify:release` |
-| Release smoke | `npm run verify:release-smoke` |
+| Release smoke | `npm run verify:release-smoke`; set `UTOPLAN_RELEASE_SMOKE_JSON=1` when sanitized structured evidence is required. |
 | Data source scope | `npm run test:data-sources` |
 | Migration artifacts | `npm run test:migration-artifacts` |
 

@@ -27,17 +27,15 @@
 
 ## Vendored Or Generated Assets
 
-- `app/public/vendor/jquery/jquery.min.js`
 - `app/public/vendor/leaflet/`
-- `app/public/vendor/require/require.js`
-- `app/public/vendor/xml2json/xml2json.js`
 - `app/public/Untitled/`
 - `app/public/original_art/`
 
 ## Removed Duplicate Or Stale Files
 
 - `app/index.html` was not served by `app/app.js` and was older than `app/public/index.html`.
-- `app/js/main.js`, `app/js/require.js`, and `app/js/xml2json.js` were not served by `app/app.js`; preserved vendored copies now live under `app/public/vendor/`.
+- `app/js/main.js`, `app/js/require.js`, and `app/js/xml2json.js` were not served by `app/app.js`; RequireJS and XML2JSON are no longer part of the current served vendor surface.
+- The old jQuery browser dependency has been removed from the served first page; current first-party behavior is owned by TypeScript modules compiled to `app/public/js/`.
 - `app/public/index.js` and `app/public/server.js` were not referenced by `app/public/index.html`.
 
 ## Phase 4 Cleanup Order

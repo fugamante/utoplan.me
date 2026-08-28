@@ -16,6 +16,9 @@ async function main() {
     data: [
       {
         id: 'mun001_construction',
+        status: 'candidate-needs-review',
+        updatedAt: '2026-05-29',
+        sourceCount: 1,
         municipality: {
           code: '001',
           label: 'Adjuntas'
@@ -59,6 +62,10 @@ async function main() {
 
   assert.strictEqual(normalized.length, 1, 'only descriptive guardrail-complete summaries should be accepted');
   assert.strictEqual(normalized[0].id, 'mun001_construction');
+  assert.strictEqual(normalized[0].status, 'candidate-needs-review');
+  assert.strictEqual(normalized[0].updatedAt, '2026-05-29');
+  assert.strictEqual(normalized[0].sourceCount, 1);
+  assert.strictEqual(planningContext.describeFixtureStatus(normalized[0].status), 'Candidate review required');
   assert.strictEqual(planningContext.describeSummary(normalized[0]), 'Adjuntas - Construction service');
 
   assert.deepStrictEqual(planningContext.normalizePlanningContext({}), []);
@@ -68,6 +75,9 @@ async function main() {
   var detail = planningContext.normalizePlanningContextDetail({
     data: [{
       id: 'mun001_construction',
+      status: 'candidate-needs-review',
+      updatedAt: '2026-05-29',
+      sourceCount: 1,
       municipality: {
         code: '001',
         label: 'Adjuntas'
@@ -130,6 +140,8 @@ async function main() {
 
   assert(detail, 'detail payload should normalize');
   assert.strictEqual(detail.id, 'mun001_construction');
+  assert.strictEqual(detail.status, 'candidate-needs-review');
+  assert.strictEqual(detail.updatedAt, '2026-05-29');
   assert.strictEqual(detail.confidence.rationale.length, 2);
   assert.strictEqual(detail.cbpFacts[0].naicsTitle, 'Residential Remodelers');
   assert.strictEqual(detail.cbpFacts[0].display.annualPayroll, 'masked (disclosure-limited)');

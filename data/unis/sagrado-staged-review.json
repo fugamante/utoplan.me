@@ -15,6 +15,7 @@
     "publicAddressReviewArtifactPath": "data/geocoding/unis-public-address-review.json",
     "addressVerificationArtifactPath": "data/geocoding/unis-address-verification.json",
     "censusCacheArtifactPath": "data/geocoding/unis-census-geocoder-cache.json",
+    "geocoderCandidateReviewArtifactPath": "data/geocoding/sagrado-geocoder-candidate-review.json",
     "quarantineArtifactPath": "data/geocoding/unis-import-quarantine.json",
     "importBoundaryArtifactPath": "data/geocoding/unis-import-boundary-review.json",
     "generatedArtifactPath": "data/generated/unis-partial-import.json",
@@ -98,15 +99,16 @@
           "summary": "The checked-in ORLIE/JIP review lists Universidad del Sagrado Corazón at Calle Rosales, Esquina San Antonio Parada 26 1/2, San Juan."
         }
       ],
-      "censusCacheDecision": "not-run-staged-before-cache-review",
+      "censusCacheDecision": "read-only-candidate-review-no-cache-match",
+      "geocoderCandidateReviewArtifactPath": "data/geocoding/sagrado-geocoder-candidate-review.json",
       "promotionDecision": "retain-quarantine-before-census-cache",
       "promotionBlockers": [
-        "missing reviewed Puerto Rico Census geocoder cache match",
+        "no reviewed Puerto Rico Census geocoder match for tested official-source address candidates",
         "staged decision not yet integrated into cache, quarantine, boundary, registry, generated output, DB seed, and tests as an import expansion"
       ],
       "useForGeocoder": false,
       "censusResult": {
-        "status": "not-run",
+        "status": "read-only-candidate-review-no-cache-match",
         "attemptedAddress": null
       },
       "importEligible": false,

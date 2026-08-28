@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "artifactVersion": "aguada-restaurant-coordination-timing-review-v1",
+  "scope": "puerto-rico-planning-candidate",
+  "status": "reviewed",
+  "reviewedAt": "2026-08-22",
+  "signalId": "strategic-coordination-timing-baseline",
+  "fixedSelection": {
+    "fixtureId": "mun003_restaurant",
+    "municipalityCode": "003",
+    "municipalityLabel": "Aguada",
+    "businessCategoryId": "restaurant-cafe",
+    "selectedNaicsCodes": ["722511"]
+  },
+  "decisionSummary": "The fixed Aguada strategic restaurant scenario now has an official Puerto Rico aggregate baseline for interagency coordination timing in addition to construction-case observability. DDEC's final permit-system Task Force report records that processing recommendations from concerned government entities fell from 55 to 27 days by October 31, 2025, and that more than 2,600 priority-project filings had been processed. This describes a Commonwealth-level coordination result, not a schedule or approval expectation for an Aguada restaurant project.",
+  "authorities": [
+    {
+      "sourceId": "ddec-permit-task-force-coordination-timing-2025",
+      "role": "interagency-recommendation-timing-and-priority-throughput",
+      "evidence": "The official DDEC report identifies multiple agencies operating in separate systems without effective coordination as a structural permit constraint. It reports that processing time for recommendations from concerned government entities was reduced from 55 to 27 days by October 31, 2025, and that more than 2,600 filings associated with priority projects had been processed."
+    },
+    {
+      "sourceId": "pr-statistics-pemas-construction-permits",
+      "role": "supporting-construction-case-observability",
+      "evidence": "The official PEMAS publication separately exposes weekly OGPe construction-permit filing and adjudication-status fields with municipality coverage that includes Aguada, but it does not itself establish interagency recommendation timing."
+    }
+  ],
+  "scenarioCoverage": [
+    {
+      "scenarioId": "large-strategic",
+      "reachId": "regional-corridor",
+      "coverage": "descriptive-interagency-coordination-timing-baseline",
+      "notes": [
+        "The fixed large/strategic scenario now has a reproducible official aggregate measure for the timing of concerned-entity recommendations rather than relying only on construction filing and adjudication fields.",
+        "The report's priority-project throughput and coordination metric do not establish that the fixed restaurant scenario is eligible for priority treatment or that its process will follow the reported aggregate timing."
+      ]
+    }
+  ],
+  "interpretationLimits": [
+    "The report is Puerto Rico-wide and aggregate; it does not identify Aguada, a restaurant-cafe use, a parcel, a permit class, an inspection queue, or a project-specific start and end date.",
+    "The 55-to-27-day measure applies to processing recommendations from concerned government entities, not the complete elapsed time for construction, environmental review, inspection, or business opening.",
+    "Priority-project filing throughput does not demonstrate that a future project qualifies as critical or strategic, will receive the same coordination, or will be approved.",
+    "The artifact does not imply that a strategic-format restaurant should operate in Aguada or that regulatory timing risk is resolved."
+  ],
+  "nextUpgradeTargets": [
+    "Register an official inspection-throughput publication with scope and period before reducing the inspection limitation.",
+    "Use a PEMAS extract only after defining a construction class, project boundary, and aggregation rule for a descriptive Aguada timing review.",
+    "Keep parcel eligibility, project qualification, permit outcome, and launch sequencing outside this baseline until project-specific evidence is reviewed."
+  ]
+}

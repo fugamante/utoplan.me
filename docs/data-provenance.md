@@ -250,6 +250,12 @@ Current status:
   rows have NCES identity/campus, DAPIP accreditation, and ORLIE/JIP
   licensure-listing corroboration, while 22 still lack row-level authority
   corroboration.
+- `data/unis/albizu-staged-review.json` and
+  `data/unis/sagrado-staged-review.json` record the two
+  NCES+DAPIP+ORLIE/JIP-corroborated rows with staged alias/campus and
+  public-address evidence. These staged artifacts are not cache artifacts and
+  do not create coordinates, generated rows, DB seed rows, API coverage, or UI
+  coverage.
 - `data/geocoding/unis-import-boundary-review.json` records the current MAX
   decision board. The implemented boundary accepts partial import only from
   the 4 cache-backed rows; the corrected-address and identity-review artifacts
@@ -342,6 +348,12 @@ Decision board outcome:
   corroboration from `data/unis/orlie-jip-row-review.json`; 22 rows still lack
   row-level authority corroboration, and zero rows are identity-promoted or
   generated-output eligible.
+- Corroborated identity follow-up review: implemented through
+  `data/unis/corroborated-identity-followup-review.json`,
+  `data/unis/albizu-staged-review.json`, and
+  `data/unis/sagrado-staged-review.json`; Albizu and Sagrado have staged
+  alias/campus and public-address evidence but still have zero cache,
+  coordinate, import, or generated-output eligibility.
 - Contract hardening: implemented through
   `data/geocoding/unis-import-boundary-review.json` and
   `npm run test:data-sources`.
@@ -366,6 +378,25 @@ Invariants:
   evidence or row-level authority review changes their status.
 - Identity-authority review is not coordinate evidence and is not import
   readiness by itself.
+
+## External Logistics Snapshot (2026-08-13)
+
+`data/profile-reach/aguada-restaurant-external-logistics-review.json` now
+records the first reviewed external-connection logistics baseline for the fixed
+large/strategic Aguada restaurant scenario.
+
+Current status:
+
+- The reviewed source uses the official Puerto Rico Institute of Statistics
+  cargo inventory reported from Puerto Rico Ports Authority facilities.
+- The bounded evidence establishes that west-region airport cargo gateways in
+  Aguadilla and Mayaguez are active, measured external-connection surfaces in
+  official Puerto Rico reporting.
+- The external logistics lane is no longer a pure source gap in the
+  profile/reach matrix; it is now a descriptive gateway baseline only.
+- Supplier depth, cold-chain timing, maritime dependency, backup sourcing,
+  recovery time, and one operator's procurement resilience remain explicit
+  unresolved limits.
 - Legacy detail fields remain scoped to the checked-in source-field artifact
   and the accepted 4-row boundary.
 

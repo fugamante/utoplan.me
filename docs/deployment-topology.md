@@ -52,6 +52,9 @@ Set `UTOPLAN_API_BIND=127.0.0.1` when host-local only exposure is required.
 Both services expose `/healthz` for shallow process health. The API also exposes `/readyz`, which checks database reachability. The Compose baseline waits for API readiness before starting the app and marks the app healthy only after its own `/healthz` responds.
 
 The API container fails fast in production when neither `DATABASE_URL` nor `DATABASE_HOST`, `DATABASE_USER`, and `DATABASE_DB` are configured.
+When `DATABASE_URL` is used, deployment verification accepts only
+`postgres://` or `postgresql://` URLs. The production app and API images start
+their service commands as the image's unprivileged `node` user.
 
 When API exposure is public, deployment configuration must explicitly declare
 `UTOPLAN_API_EXPOSURE=public` and provide `UTOPLAN_PUBLIC_API_URL` so release

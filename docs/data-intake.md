@@ -121,6 +121,13 @@ The ORLIE/JIP row-level subset is bounded in
 `data/unis/orlie-jip-row-review.json`; it stores licensure-listing context only,
 excludes personal contact fields, and does not provide coordinate authority or
 public-address correction evidence.
+The current follow-up stage is bounded in
+`data/unis/corroborated-identity-followup-review.json`,
+`data/unis/albizu-staged-review.json`, and
+`data/unis/sagrado-staged-review.json`. Albizu and Sagrado have staged
+alias/campus and public-address evidence only; those artifacts are not import
+artifacts and do not create Census cache rows, coordinates, DB seed rows,
+generated output, API coverage, or UI coverage.
 
 Before broad `unis` geocoder refresh work begins, keep a checked-in exact-match
 baseline at `data/unis/ipeds-geocode-audit.json`. Use that audit to document
@@ -184,6 +191,98 @@ Validate the fixture contract with:
 
 ```sh
 npm run test:planning-context
+```
+
+## Profile And Reach Contract Gate
+
+Profile-dependent planning work now starts from the versioned contract in
+`data/profile-reach/business-profile-reach-v1.json`.
+
+That artifact must:
+
+- hold one reviewed municipality/category selection constant;
+- define the five geographic-reach levels from site-bound through
+  external-connection;
+- define the seven decision lenses in their documented order;
+- include exactly one small/local, one medium/regional, and one
+  large/strategic scenario;
+- show profile-dependent relevance, criticality, confidence, limitations, and
+  next validation checks without scores, ranks, or recommendations;
+- distinguish registered-source facts from explicit source gaps so scenario
+  growth does not silently invent evidence coverage.
+
+Validate the profile/reach contract with:
+
+```sh
+npm run test:profile-reach-contract
+```
+
+The linked decision-signal registry now lives in
+`data/profile-reach/decision-signal-registry-v1.json`.
+
+That artifact must:
+
+- cover all seven documented decision lenses;
+- keep every signal tied to the fixed municipality/category selection;
+- record applicable business-profile scenarios and the governing geographic
+  reach for each linked scenario;
+- distinguish registered Puerto Rico evidence from explicit source gaps;
+- record recency and interpretation limits without drifting into scores, ranks,
+  or recommendations;
+- link each registry signal back to one or more facts in the
+  business-profile/reach matrix.
+
+Validate the decision-signal registry with:
+
+```sh
+npm run test:decision-signals
+```
+
+Reviewed signal-upgrade artifacts now live in
+`data/profile-reach/aguada-restaurant-demand-proxy-review.json` and
+`data/profile-reach/aguada-restaurant-island-demand-review.json` and
+`data/profile-reach/aguada-restaurant-corridor-logistics-review.json` and
+`data/profile-reach/aguada-restaurant-external-logistics-review.json` and
+`data/profile-reach/aguada-restaurant-permit-path-review.json` and
+`data/profile-reach/aguada-restaurant-utility-service-review.json` and
+`data/profile-reach/aguada-restaurant-utility-resilience-review.json` and
+`data/profile-reach/aguada-restaurant-site-screening-review.json` and
+`data/profile-reach/aguada-restaurant-large-site-screening-review.json` and
+`data/profile-reach/aguada-restaurant-routine-workforce-review.json` and
+`data/profile-reach/aguada-restaurant-workforce-pipeline-review.json` and
+`data/profile-reach/aguada-restaurant-construction-execution-review.json` and
+`data/profile-reach/aguada-restaurant-coordination-timing-review.json` and
+`data/profile-reach/aguada-restaurant-inspection-window-review.json` and
+`data/profile-reach/aguada-restaurant-support-network-review.json`.
+
+Each artifact must:
+
+- stay tied to the fixed municipality/category selection;
+- cite only official Puerto Rico authorities for the reviewed evidence lane;
+- distinguish source-backed baseline evidence from unresolved timing,
+  parcel-eligibility, case-outcome, continuity, or cost gaps;
+- remain descriptive and avoid scores, rankings, recommendations, or launch
+  promises;
+- link back to the controlling decision-signal entry and its registered
+  Puerto Rico source ids.
+
+Validate the reviewed signal-upgrade artifacts with:
+
+```sh
+npm run test:demand-signal-review
+npm run test:logistics-signal-review
+npm run test:external-logistics-signal-review
+npm run test:regulatory-signal-review
+npm run test:infrastructure-signal-review
+npm run test:utility-resilience-signal-review
+npm run test:site-feasibility-signal-review
+npm run test:large-site-signal-review
+npm run test:routine-workforce-signal-review
+npm run test:workforce-signal-review
+npm run test:construction-execution-signal-review
+npm run test:coordination-timing-signal-review
+npm run test:inspection-window-signal-review
+npm run test:ecosystem-signal-review
 ```
 
 ## Current Candidate Sources

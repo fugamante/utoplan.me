@@ -41,6 +41,11 @@ Out of scope unless explicitly reintroduced:
   reviewed Node 26 major declared in `.node-version` and `.nvmrc`.
 - Keep root install, build, test, and deployment checks reproducible from
   lockfiles.
+- Keep production app and API service commands on the unprivileged image user
+  `node`, with container contract coverage for the runtime-user boundary.
+- Keep every Node Docker stage on the same reviewed tag-and-digest reference;
+  use weekly automated discovery plus maintainer review so reproducibility does
+  not become security-patch staleness.
 - Prevent fixture data from being mistaken for production data.
 - Keep API responses, resource columns, CORS, gzip, error envelopes, health
   checks, and readiness checks contract-tested.
@@ -57,6 +62,7 @@ Out of scope unless explicitly reintroduced:
 - `docs/modernization-roadmap.md`
 - `docs/api-modernization.md`
 - `docs/product-scope.md`
+- `docs/business-location-decision-framework.md`
 - `docs/database-migrations.md`
 - `docs/data-intake.md`
 - `docs/data-provenance.md`
@@ -115,6 +121,9 @@ covered the role for the change set.
   import readiness can move to ready.
 - Candidate business-category mappings and planning-context fixtures must stay
   descriptive and avoid score, ranking, or recommendation drift.
+- The profile/reach contract, decision-signal registry, and reviewed signal
+  artifacts must remain mutually linked, source-backed or explicitly marked as
+  source gaps, reach-bounded by scenario, and free of decision language.
 - Exposed planning-context CBP facts must use the controlled NAICS title
   registry under `data/naics/` when the source row omits title text.
 
@@ -135,7 +144,11 @@ Required documentation records:
   `data/municipalities/planning-context-municipalities.json`,
   `data/naics/planning-context-naics-titles.json`, and
   `data/planning-context/`.
+- Profile/reach evidence changes in `data/profile-reach/`, including the
+  decision-signal registry and reviewed signal-upgrade artifacts.
 - Product-boundary changes in `docs/product-scope.md`.
+- Business-profile, decision-lens, or geographic-reach changes in
+  `docs/business-location-decision-framework.md`.
 - Release operations in `docs/production-deployment.md`.
 - Quality evidence, audits, and update cadence in this plan.
 
@@ -146,7 +159,7 @@ validation stack before release or PR publication.
 
 | Gate | Command or evidence | Required when |
 | --- | --- | --- |
-| Node runtime | `npm run test:node-runtime` | Runtime pin, engines, install hook, CI, Docker, or toolchain changes. |
+| Node runtime | `npm run verify:node && npm run test:node-runtime` | Runtime pin, engines, install hook, CI, Docker, npm lifecycle configuration, or toolchain changes. The first command verifies the active process; the second unit-tests the verifier contract. |
 | Clean install | `npm run install:all` | Dependency, lockfile, CI, Docker, or release changes. |
 | Build baseline | `npm run build` | Any code or validation-script change. |
 | Root tests | `npm run test` | Normal pre-merge validation. |
@@ -157,9 +170,13 @@ validation stack before release or PR publication.
 | Data registry | `npm run test:data-sources` | Source registry, provenance, import, or data-scope changes. |
 | Business category mapping | `npm run test:business-categories` | Category crosswalk, planning-context selection, or descriptive-scope changes. |
 | Planning-context fixture | `npm run test:planning-context` | Planning-context fixture, summary/detail, or descriptive-guardrail changes. |
+| Planned profile/reach contract | `npm run test:profile-reach-contract` plus `npm run test:planning-context` when fixtures expand | Business-profile schema, decision-lens relevance, reach, or scale-scenario changes. |
+| Decision-signal registry | `npm run test:decision-signals` for the focused contract; `npm run test:signal-reviews` for the complete registry and evidence set | Signal classification, source linkage, fact linkage, scenario reach, recency, or interpretation-limit changes. |
+| Reviewed signal evidence | `npm run test:signal-review-orchestration` for discovery/wiring changes; the applicable focused command during development; `npm run test:signal-reviews` for the complete set | Demand, island-wide demand, permit, construction execution, coordination timing, inspection window, utility, utility resilience, logistics, ecosystem support, site feasibility, large-site, routine workforce, strategic workforce, or later reviewed signal-artifact changes. |
 | Migration contract | `npm run test:migration-artifacts` | Migration template or artifact changes. |
 | Deployment config | `npm run verify:deployment` and `npm run verify:release` | Release, environment, container, or operator workflow changes. |
-| Release smoke | `npm run verify:release-smoke` | Candidate deployed environment. |
+| Container base | `npm run test:deployment-containers`, production app/API image builds, and image inspection | Base tag/digest, Dockerfile, refresh automation, runtime user, or advisory-response changes. |
+| Release smoke | `npm run verify:release-smoke` | Candidate deployed environment; `UTOPLAN_RELEASE_SMOKE_JSON=1` emits sanitized structured evidence when needed. |
 | Security audit | Root, `app`, `dtoapi`, and `dtoapi/modern` npm audits | Dependency or release changes. |
 
 If Docker is unavailable, record the skipped Docker gate and the reason in the
@@ -204,7 +221,8 @@ Before release promotion, verify:
   source control.
 - API `/readyz` enforces the current database baseline.
 - App `/healthz` confirms proxy mode and not fixture mode.
-- Public `/v1/unis` smoke path works through the app origin.
+- Public `/v1/unis` and `/v1/planning-context` smoke paths work through the
+  app origin.
 - Rollback artifact pair and database rollback note are known.
 
 ### 9.3 Data Audit

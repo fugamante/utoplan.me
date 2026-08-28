@@ -47,6 +47,8 @@ Out of scope unless explicitly approved:
 - `docs/api-modernization.md`
 - `docs/frontend-inventory.md`
 - `docs/product-scope.md`
+- `docs/business-location-decision-framework.md`
+- `docs/production-readiness-decision-board.md`
 - `docs/deployment-topology.md`
 - `docs/production-deployment.md`
 - `docs/database-migrations.md`
@@ -162,7 +164,7 @@ or branch cleanup requires explicit operator intent.
 | 4.0 | Database and migrations | PostgreSQL schema baseline, migration artifacts, readiness checks |
 | 5.0 | Data provenance and intake | `data/sources/puerto-rico.json`, provenance notes, source filters, import candidates |
 | 6.0 | Test and V&V | Host tests, Docker tests, browser smoke, release smoke, validation evidence |
-| 7.0 | Deployment and operations | Dockerfiles, Compose topology, health/readiness, release preflight, rollback runbooks |
+| 7.0 | Deployment and operations | Dockerfiles, unprivileged app/API runtime users, Compose topology, health/readiness, release preflight, rollback runbooks |
 | 8.0 | Security and dependency hygiene | Lockfile audits, secret handling, raw error controls, public repo hygiene |
 | 9.0 | Release management | Release baseline, artifact pairing, smoke results, rollback evidence |
 | 10.0 | Continuous audit | Standards updates, audit hooks, findings, recommendations, implemented hardening |
@@ -182,10 +184,14 @@ re-baselined when phase exit criteria change.
 | TypeScript adoption | Active API and first-party browser boundaries compile from typed source. |
 | Deployment hardening | App/API topology, health, readiness, production config checks, and rollback triggers are documented and tested. |
 | Data replacement readiness | Puerto Rico source registry entries map to preserved schemas with license, scope, retrieval, and transform evidence. |
+| Profile/reach contract | `data/profile-reach/business-profile-reach-v1.json`, `data/profile-reach/decision-signal-registry-v1.json`, and focused review artifacts hold `mun003_restaurant` constant across small/local, medium/regional, and large/strategic scenarios while verifying profile-dependent relevance, criticality, geographic reach, confidence, limitations, source linkage or explicit source gaps, and next validation checks without scores or municipality ranks. Status: controlled candidate contract implemented; demand, island-demand, permit, construction-execution, coordination-timing, inspection-window, ecosystem-support, utility-service, utility-resilience, corridor and external logistics, site-feasibility, large-site, routine-workforce, and strategic-workforce evidence upgrades are reviewed. The completed-inspection throughput limitation and sole local-supplier route source gap remain explicit. |
 | Release candidate | Required validation stack passes or skipped checks are explicitly justified; release and rollback records are complete. |
 
 Schedule risk is managed by limiting each bundle to a validation surface that
 can be tested before merge or release.
+
+Additional university-directory promotion is a maintenance-only lane unless a
+concrete occupation-to-skill or training-capacity question reopens it.
 
 ## 9. Resource Management
 
@@ -238,6 +244,7 @@ The project uses effort controls rather than a formal monetary budget:
 | Secret or identity leakage | Public repository hygiene failure | Keep secrets out of source; inspect branch names, commits, and PR text before push. |
 | Concurrent agent edits | Lost work or inconsistent docs | Inspect status before edits, keep ownership scoped, and never revert unrelated changes. |
 | Dependency vulnerability | Security or operational exposure | Run lockfile-backed audits across root, app, API, and modern API on dependency/release changes. |
+| Stale or drifting container base | Unreproducible rebuild or delayed security fixes | Pin every Node stage to one reviewed digest, discover updates weekly through Dependabot, and assign review/advisory response to the modernization maintainer. |
 | Stale standards documents | Audit evidence no longer reflects reality | Update affected IEEE documents in the same bundle as control, behavior, or risk changes. |
 
 Risk responses are: mitigate through tests or controls, defer with an owner and
@@ -364,7 +371,8 @@ Release promotion is acceptable when:
 - App `/healthz` and API `/healthz` behave as expected.
 - API `/readyz` verifies database reachability and the required schema
   baseline.
-- Public app origin serves `/v1/unis` through the app path.
+- Public app origin serves `/v1/unis` and `/v1/planning-context` through the
+  app path.
 - Production fixture mode is disabled.
 - Rollback artifact pair and database rollback note are known.
 - Release evidence is recorded.

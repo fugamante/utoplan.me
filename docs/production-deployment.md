@@ -23,6 +23,10 @@ Single URL:
 DATABASE_URL=postgres://utoplan:replace-me@postgres.example.internal:5432/utoplan
 ```
 
+`DATABASE_URL` must be a valid `postgres://` or `postgresql://` URL. Deployment
+verification rejects other schemes and malformed values before API startup
+without echoing the configured value.
+
 Discrete fields:
 
 ```sh
@@ -61,7 +65,6 @@ npm run install:all
 npm run build
 npm run verify:deployment
 npm run verify:release
-npm run verify:release-smoke
 npm run test:browser
 npm run docker:test:db
 npm run docker:test:proxy
@@ -74,21 +77,35 @@ npm --prefix dtoapi/modern audit
 
 Run Docker compatibility checks when Docker is available, because the production topology depends on container networking and seeded Postgres validation.
 
-Production app/API images run as the unprivileged `node` user. All Node stages
-use one reviewed tag-and-digest reference; follow
-`docs/container-base-refresh.md` for scheduled updates, advisory response,
-validation, and rollback.
+`npm run verify:release-smoke` is a post-deploy gate, not a local preflight
+command. Run it against the deployed candidate after the app and API readiness
+checks described below; it requires `UTOPLAN_APP_URL` and optionally
+`UTOPLAN_API_URL`.
 
 `npm run verify:deployment` validates the production app/API environment in the current shell. Use `node scripts/verify_deployment_config.js --service=app` or `--service=api` when checking one container at a time.
 
 `docker-compose.integrated.yml` runs the verifier before each service process starts. The modern API Docker image also runs `--service=api` before starting `dtoapi/modern/lib/server.js`.
+The production app and API images run their service commands as the
+unprivileged image user `node`; neither runtime requires root privileges.
+Node base images are tag-and-digest pinned. Follow
+`docs/container-base-refresh.md` for scheduled updates, security-advisory
+response, validation, and rollback; do not update only a subset of Node stages.
 
 Public API mode is accepted only when `UTOPLAN_API_EXPOSURE=public` and
 `UTOPLAN_PUBLIC_API_URL` is set to a valid HTTP(S) URL.
 
 `npm run verify:release` wraps the app and API deployment verifiers for release jobs. CI runs it with `UTOPLAN_RELEASE_SAMPLE=1` to validate wiring without production secrets; production release jobs must omit sample mode and provide real platform environment values.
 
-After deploying a candidate release, run `npm run verify:release-smoke` with `UTOPLAN_APP_URL` set to the public app origin. Set `UTOPLAN_API_URL` only when the API readiness URL is reachable from the release job network.
+After deploying a candidate release, run `npm run verify:release-smoke` with
+`UTOPLAN_APP_URL` set to the public app origin. The smoke check verifies app
+`/healthz`, public `/v1/unis`, and public `/v1/planning-context` through the
+app origin. Set `UTOPLAN_API_URL` only when the API readiness URL is reachable
+from the release job network.
+
+Set `UTOPLAN_RELEASE_SMOKE_JSON=1` when release evidence needs a
+machine-readable summary. The script still writes the human pass/fail summary
+to stderr and exits nonzero on failure, while stdout contains sanitized tested
+URLs, status codes, and per-check outcomes.
 
 Confirm these release facts before deployment:
 
@@ -126,7 +143,8 @@ Do not add startup-time schema mutation to either service. Production startup sh
 5. Wait for `GET /readyz` on the API to return `200`.
 6. Deploy the app with `UTOPLAN_API_ORIGIN` pointing at the API service.
 7. Wait for `GET /healthz` on the app to return `200`.
-8. Smoke test the public app origin and verify `/v1/unis` is served through the app origin.
+8. Smoke test the public app origin and verify `/v1/unis` and
+   `/v1/planning-context` are served through the app origin.
 9. If the API is public, smoke test the public API URL (`/healthz` and `/readyz`) from an external client path.
 
 Example smoke checks:
@@ -158,6 +176,7 @@ Rollback immediately when:
 - Either service fails readiness checks after deployment.
 - The app health response shows fixture mode enabled.
 - `/v1/unis` fails through the public app origin.
+- `/v1/planning-context` fails through the public app origin.
 - If public, direct API `/healthz` or `/readyz` fails from the external client path.
 - The API logs database connection or query failures after rollout.
 - Browser smoke checks show missing map data or uncaught page errors.
@@ -168,6 +187,6 @@ Rollback order:
 2. Restore the previous API artifact.
 3. Verify API `/readyz`.
 4. Verify app `/healthz`.
-5. Verify `/v1/unis` from the public app origin.
+5. Verify `/v1/unis` and `/v1/planning-context` from the public app origin.
 
 If a release included a production database change, follow the release-specific database rollback note before restoring app traffic. If no safe database rollback exists, keep the previous compatible application version in service and escalate the data fix separately.

@@ -65,12 +65,14 @@ Review these artifacts during each IEEE 1012 audit:
 | `docs/api-modernization.md` | API verification evidence | Are compatibility contracts and typed API boundaries verified before changes are accepted? |
 | `docs/frontend-inventory.md` | frontend verification evidence | Are served assets, map behavior, fixtures, and browser hooks represented in checks? |
 | `docs/product-scope.md` | product-boundary validation evidence | Do planning-context features remain descriptive and within the approved non-recommendation scope? |
+| `docs/business-location-decision-framework.md` | planned domain validation evidence | Are operating-profile and geographic-reach claims separated from current runtime behavior and tied to future executable acceptance evidence? |
 | `docs/deployment-topology.md` | operational validation evidence | Does runtime topology match the validated request flow and API visibility assumptions? |
 | `docs/production-deployment.md` | release validation evidence | Are preflight, smoke, rollback, secret, and readiness checks sufficient for promotion decisions? |
 | `docs/database-migrations.md` and `db/migrations/` | database verification evidence | Do migration artifacts include preflight, apply, read-only verify, rollback, and readiness impact? |
 | `docs/data-intake.md` and `data/sources/puerto-rico.json` | data validation evidence | Are production-style sources Puerto Rico-scoped, licensed, dated, and target-mapped? |
 | `docs/data-provenance.md` | data trust validation | Are unresolved legacy source gaps visible and blocking where appropriate? |
 | `data/mappings/puerto-rico-business-categories.json`, `data/municipalities/planning-context-municipalities.json`, `data/naics/planning-context-naics-titles.json`, and `data/planning-context/` | descriptive planning-context validation evidence | Do category mappings, municipality labels, NAICS title labels, and planning-context fixtures remain descriptive, traceable, and confidence-bounded? |
+| `data/profile-reach/business-profile-reach-v1.json`, `data/profile-reach/decision-signal-registry-v1.json`, and reviewed signal artifacts | profile/reach validation evidence | Are scenario facts linked bidirectionally to registered sources or explicit gaps, bounded to the declared reach, and protected from score, rank, or recommendation drift? |
 | `package.json` and service manifests | executable V&V surface | Do scripts, audits, and dependencies match documented gates? |
 | `app/test/`, `dtoapi/test/`, `dtoapi/modern/test/`, and `test/` | verification implementation | Do tests prove requirements and design contracts rather than only implementation details? |
 | Dockerfiles, Compose files, CI definitions such as `.github/workflows/ci.yml`, and verification scripts | environment validation | Do container and CI paths exercise the intended release topology? |
@@ -121,6 +123,9 @@ documented baseline.
 - `README.md` root command inventory matches `package.json` scripts.
 - `npm run install:all`, `npm run build`, and `npm run test` remain the normal
   root verification path.
+- `npm run test:signal-review-orchestration` proves every registry-listed
+  reviewed artifact has exactly one preserved focused test, and
+  `npm run test:signal-reviews` executes the verified complete set.
 - Narrow changes run targeted checks that match the changed surface.
 - Release-impacting changes run Docker DB, proxy, and browser compatibility
   checks when Docker is available.
@@ -156,6 +161,18 @@ product and operational purpose.
   authoritative legal, permitting, investment, or labor-market advice.
 - User-visible changes preserve or intentionally revise the documented product
   scope, target users, and acceptance criteria.
+- Profile/reach behavior remains bounded to the controlled contract until the
+  versioned matrix and its focused executable evidence are updated alongside any
+  expansion.
+- Reviewed signal upgrades retain authority linkage, evidence dates, scenario
+  reach, interpretation limits, and focused executable checks; review status is
+  not treated as production validation or a business recommendation.
+- Construction-execution evidence remains an observability baseline unless a
+  focused review proves a defined Aguada permit class, aggregation method, and
+  coverage boundary.
+- Ecosystem-support evidence remains a support-surface baseline unless a
+  focused review proves corridor density, program eligibility, or one
+  operator's recovery outcome.
 - Future recommendation, scoring, zoning, workforce, infrastructure, or
   lifecycle-planning features expose source, timestamp, transform, and known
   limitation metadata before being treated as decision-support outputs.
@@ -382,9 +399,9 @@ Next trigger:
 ### RECO-1012-2026-06-08-01
 
 - Class: required validation
-- Finding: deployed release smoke proves app `/healthz`, `/v1/unis`, and
-  optional API `/readyz`, but it does not yet validate the same-origin
-  planning-context summary path that the first page now uses. That leaves a
+- Finding: deployed release smoke previously proved app `/healthz`,
+  `/v1/unis`, and optional API `/readyz`, but did not validate the same-origin
+  planning-context summary path that the first page now uses. That left a
   release decision gap between validated browser behavior in pre-release
   environments and deployed-path validation after rollout.
 - Acceptance evidence:
@@ -395,10 +412,11 @@ Next trigger:
   - `docs/production-deployment.md` and the IEEE 829 test document reflect the
     expanded deployed smoke expectation.
 - Revisit trigger:
-  - Before the next production-style release candidate that depends on the
-    current first-page planning-context flow, or sooner if rollback or release
-    decisions must rely on deployed planning-context availability.
-- Status: proposed
+  - Next time the release smoke script, first-page planning-context route, or
+    release-smoke evidence contract changes.
+- Status: implemented; `scripts/release_smoke_check.js` now validates the
+  public app-origin `/v1/planning-context` envelope and descriptive guardrail
+  flags, with coverage in `test/release_smoke_check_test.js`.
 
 ## Current Control Expectations
 

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "artifactVersion": "aguada-restaurant-corridor-logistics-review-v1",
+  "scope": "puerto-rico-planning-candidate",
+  "status": "reviewed",
+  "reviewedAt": "2026-08-05",
+  "signalId": "cold-chain-corridor-gap",
+  "fixedSelection": {
+    "fixtureId": "mun003_restaurant",
+    "municipalityCode": "003",
+    "municipalityLabel": "Aguada",
+    "businessCategoryId": "restaurant-cafe",
+    "selectedNaicsCodes": [
+      "722511"
+    ]
+  },
+  "decisionSummary": "The fixed Aguada restaurant matrix no longer relies on a pure corridor logistics source gap for the medium/regional scenario. Official Puerto Rico transport-planning and cargo-statistics sources now establish a descriptive west-corridor logistics baseline through the PR-2 Aguadilla-Mayagüez corridor planning surface and official cargo movement volumes reported for Rafael Hernandez Airport in Aguadilla and Eugenio Maria de Hostos Airport in Mayaguez. This remains corridor-baseline evidence only: it does not prove refrigerated trucking performance, vendor depth, on-time delivery, spoilage exposure, or one operator's backup supplier plan.",
+  "authorities": [
+    {
+      "sourceId": "prhta-pr2-aguadilla-mayaguez-corridor-study-2024",
+      "role": "official-west-corridor-transport-planning",
+      "evidence": "The Puerto Rico transport-planning record for the Aguadilla urbanized area identifies a study request for improvements on the PR-2 Aguadilla-Mayaguez corridor from its intersection with PR-107 in Aguadilla toward PR-114 near Mayaguez, which establishes an official planning surface for the corridor that governs routine west-region supplier movement."
+    },
+    {
+      "sourceId": "iepr-air-maritime-cargo-passengers-2024-q2",
+      "role": "official-west-region-air-cargo-baseline",
+      "evidence": "The Puerto Rico Institute of Statistics publishes official airport and maritime cargo movement volumes reported by the Puerto Rico Ports Authority, including quarterly cargo figures for Rafael Hernandez Airport in Aguadilla and Eugenio Maria de Hostos Airport in Mayaguez."
+    }
+  ],
+  "scenarioCoverage": [
+    {
+      "scenarioId": "medium-regional",
+      "reachId": "regional-corridor",
+      "coverage": "descriptive-corridor-logistics-baseline",
+      "notes": [
+        "The fixed medium/regional scenario now has official Puerto Rico corridor-planning and cargo-movement evidence instead of a blank logistics lane.",
+        "The evidence shows that west-region supplier movement depends on the Aguadilla-Mayaguez corridor and active regional air-cargo facilities, but it does not prove refrigerated route reliability, delivery windows, or supplier redundancy for one restaurant."
+      ]
+    }
+  ],
+  "interpretationLimits": [
+    "These sources establish official corridor-planning and regional cargo-movement surfaces, not measured travel time, delivery punctuality, temperature control, or spoilage performance for one route.",
+    "The reviewed cargo evidence is airport-level west-region context and does not prove that a restaurant in Aguada receives goods through those airports or that one supplier chain is resilient.",
+    "The reviewed transport-planning evidence confirms that the PR-2 Aguadilla-Mayaguez corridor remains a governing logistics surface, but it does not measure congestion, closures, or recovery time for one delivery window.",
+    "The artifact does not imply that a medium/regional restaurant should operate in Aguada or that one operator has sufficient backup suppliers."
+  ],
+  "nextUpgradeTargets": [
+    "Register official corridor travel-time, road-closure, or freight-recovery evidence if a reproducible Puerto Rico source becomes available.",
+    "Add reviewed supplier-depth or cold-chain backup evidence before reducing criticality for perishability or delivery-window assumptions.",
+    "Add external-connection freight evidence separately before reducing the large-strategic logistics gap."
+  ]
+}

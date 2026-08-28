@@ -1,5 +1,8 @@
 export interface PlanningContextSummary {
   id: string;
+  status: string;
+  updatedAt: string;
+  sourceCount: number;
   municipality: {
     code: string;
     label: string;
@@ -30,6 +33,8 @@ export interface PlanningContextResult {
 
 export interface PlanningContextDetail {
   id: string;
+  status: string;
+  updatedAt: string;
   municipality: {
     code: string;
     label: string;
@@ -272,8 +277,11 @@ function asSummary(value: unknown): PlanningContextSummary | null {
   const categoryId = asNonEmptyString(businessCategory.id);
   const categoryName = asNonEmptyString(businessCategory.displayName);
   const confidenceOverall = asNonEmptyString(confidence.overall);
+  const status = asNonEmptyString(value.status);
+  const updatedAt = asNonEmptyString(value.updatedAt);
+  const sourceCount = asNumber(value.sourceCount);
 
-  if (!municipalityCode || !municipalityLabel || !categoryId || !categoryName || !confidenceOverall) {
+  if (!municipalityCode || !municipalityLabel || !categoryId || !categoryName || !confidenceOverall || !status || !updatedAt || sourceCount === null || sourceCount === 0) {
     return null;
   }
 
@@ -288,6 +296,9 @@ function asSummary(value: unknown): PlanningContextSummary | null {
 
   return {
     id: id,
+    status: status,
+    updatedAt: updatedAt,
+    sourceCount: sourceCount,
     municipality: {
       code: municipalityCode,
       label: municipalityLabel
@@ -326,8 +337,23 @@ export function normalizePlanningContext(payload: PlanningContextPayload): Plann
   return summaries;
 }
 
-export function describeSummary(summary: PlanningContextSummary): string {
+export function describeSummary(summary: {
+  municipality: {
+    label: string;
+  };
+  businessCategory: {
+    displayName: string;
+  };
+}): string {
   return summary.municipality.label + ' - ' + summary.businessCategory.displayName;
+}
+
+export function describeFixtureStatus(status: string): string {
+  if (status === 'candidate-needs-review') {
+    return 'Candidate review required';
+  }
+
+  return status.replace(/[-_]+/g, ' ');
 }
 
 function asDetail(value: unknown): PlanningContextDetail | null {
@@ -362,6 +388,8 @@ function asDetail(value: unknown): PlanningContextDetail | null {
 
   return {
     id: summary.id,
+    status: summary.status,
+    updatedAt: summary.updatedAt,
     municipality: summary.municipality,
     businessCategory: summary.businessCategory,
     confidence: {
@@ -519,6 +547,16 @@ export function renderPlanningContextDetail(
   confidence.textContent = 'Overall confidence: ' + detail.confidence.overall;
   container.appendChild(confidence);
 
+  const reviewStatus = documentRef.createElement('p');
+  reviewStatus.className = 'planningContextMeta';
+  reviewStatus.textContent = 'Status: ' + describeFixtureStatus(detail.status);
+  container.appendChild(reviewStatus);
+
+  const provenanceSummary = documentRef.createElement('p');
+  provenanceSummary.className = 'planningContextMeta';
+  provenanceSummary.textContent = 'Updated: ' + detail.updatedAt + ' | Registered sources: ' + String(detail.sourceProvenance.sourceCount);
+  container.appendChild(provenanceSummary);
+
   detail.cbpFacts.forEach(function(fact: PlanningContextFact): void {
     const factSection = documentRef.createElement('section');
     factSection.className = 'planningContextSection';
@@ -604,6 +642,16 @@ export function renderPlanningContext(documentRef: Document, result: PlanningCon
     confidence.className = 'planningContextMeta';
     confidence.textContent = 'Confidence: ' + summary.confidence.overall;
     button.appendChild(confidence);
+
+    const reviewStatus = documentRef.createElement('p');
+    reviewStatus.className = 'planningContextMeta';
+    reviewStatus.textContent = 'Status: ' + describeFixtureStatus(summary.status);
+    button.appendChild(reviewStatus);
+
+    const provenanceSummary = documentRef.createElement('p');
+    provenanceSummary.className = 'planningContextMeta';
+    provenanceSummary.textContent = 'Updated: ' + summary.updatedAt + ' | Registered sources: ' + String(summary.sourceCount);
+    button.appendChild(provenanceSummary);
 
     const guardrails = documentRef.createElement('p');
     guardrails.className = 'planningContextMeta';

@@ -42,6 +42,28 @@ function parseHttpUrl(value, name, errors) {
   return parsed;
 }
 
+function parseDatabaseUrl(value, name, errors) {
+  var parsed;
+
+  if (!hasValue(value)) {
+    return null;
+  }
+
+  try {
+    parsed = new URL(value);
+  } catch (error) {
+    errors.push(name + ' must be a valid URL');
+    return null;
+  }
+
+  if (parsed.protocol !== 'postgres:' && parsed.protocol !== 'postgresql:') {
+    errors.push(name + ' must use postgres or postgresql');
+    return null;
+  }
+
+  return parsed;
+}
+
 function validatePort(value, name, errors) {
   var port;
 
@@ -61,6 +83,10 @@ function validateDatabase(env, errors) {
 
   if (!hasUrl && !hasFields) {
     errors.push('DATABASE_URL or DATABASE_HOST, DATABASE_USER, and DATABASE_DB are required');
+  }
+
+  if (hasUrl) {
+    parseDatabaseUrl(env.DATABASE_URL, 'DATABASE_URL', errors);
   }
 
   if (hasValue(env.DATABASE_PORT)) {

@@ -8,3 +8,63 @@ updates:
       time: "09:00"
       timezone: America/Puerto_Rico
     open-pull-requests-limit: 1
+
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:15"
+      timezone: America/Puerto_Rico
+    open-pull-requests-limit: 1
+    groups:
+      compatible-updates:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - version-update:semver-major
+
+  - package-ecosystem: npm
+    directory: /app
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:30"
+      timezone: America/Puerto_Rico
+    open-pull-requests-limit: 1
+    groups:
+      compatible-updates:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - version-update:semver-major
+
+  - package-ecosystem: npm
+    directory: /dtoapi/modern
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:45"
+      timezone: America/Puerto_Rico
+    open-pull-requests-limit: 1
+    groups:
+      compatible-updates:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - version-update:semver-major
