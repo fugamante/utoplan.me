@@ -59,6 +59,11 @@ body {
   margin-top: 7px;
   font-size: 11px;
 }
+#appHeader .coverageDetail{
+  margin-top: 4px;
+  font-size: 11px;
+  line-height: 1.4;
+}
 #searchForm{
   border: 1px solid var(--border);
   border-radius: var(--radius);

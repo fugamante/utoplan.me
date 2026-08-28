@@ -8,14 +8,18 @@ var reviewPath = path.join(__dirname, '..', 'data', 'geocoding', 'unis-public-ad
 var verificationPath = path.join(__dirname, '..', 'data', 'geocoding', 'unis-address-verification.json');
 var cachePath = path.join(__dirname, '..', 'data', 'geocoding', 'unis-census-geocoder-cache.json');
 var quarantinePath = path.join(__dirname, '..', 'data', 'geocoding', 'unis-import-quarantine.json');
+var albizuStagedReviewPath = path.join(__dirname, '..', 'data', 'unis', 'albizu-staged-review.json');
 var sagradoStagedReviewPath = path.join(__dirname, '..', 'data', 'unis', 'sagrado-staged-review.json');
+var sagradoGeocoderCandidateReviewPath = path.join(__dirname, '..', 'data', 'geocoding', 'sagrado-geocoder-candidate-review.json');
 var policyPath = path.join(__dirname, '..', 'docs', 'unis-geocoding-policy.md');
 
 var review = JSON.parse(fs.readFileSync(reviewPath, 'utf8'));
 var verification = JSON.parse(fs.readFileSync(verificationPath, 'utf8'));
 var cache = JSON.parse(fs.readFileSync(cachePath, 'utf8'));
 var quarantine = JSON.parse(fs.readFileSync(quarantinePath, 'utf8'));
+var albizuStagedReview = JSON.parse(fs.readFileSync(albizuStagedReviewPath, 'utf8'));
 var sagradoStagedReview = JSON.parse(fs.readFileSync(sagradoStagedReviewPath, 'utf8'));
+var sagradoGeocoderCandidateReview = JSON.parse(fs.readFileSync(sagradoGeocoderCandidateReviewPath, 'utf8'));
 var geocodingPolicy = fs.readFileSync(policyPath, 'utf8');
 
 function isIsoDate(value) {
@@ -105,6 +109,26 @@ assert.strictEqual(
 );
 
 assert(!review.records.some(function(record) {
+  return record.directoryInstitution === 'Universidad Carlos Albizu';
+}), 'Albizu staged address evidence must not be inserted into the Census verification address board');
+assert.strictEqual(albizuStagedReview.status, 'staged-no-cache', 'Albizu staged review must stay outside Census cache');
+assert.strictEqual(albizuStagedReview.summary.reviewedPublicAddressRows, 1, 'Albizu staged review must record one public-address evidence decision');
+assert.strictEqual(albizuStagedReview.summary.coordinateEligibleRows, 0, 'Albizu staged review must not create coordinate eligibility');
+assert.strictEqual(albizuStagedReview.records[0].directoryInstitution, 'Universidad Carlos Albizu');
+assert.strictEqual(albizuStagedReview.records[0].publicAddressDecision, 'reviewed-public-address-evidence-staged');
+assert.strictEqual(albizuStagedReview.records[0].reviewedPublicAddress, '151 Calle Tanca, San Juan, PR 00901');
+assert.strictEqual(albizuStagedReview.records[0].useForGeocoder, false);
+assert.strictEqual(albizuStagedReview.records[0].censusResult.attemptedAddress, null);
+assert(albizuStagedReview.records[0].officialEvidence.some(function(evidence) {
+  return evidence.sourceId === 'albizu-home' &&
+    evidence.url === 'https://www.albizu.edu/?lang=es';
+}), 'Albizu staged review must cite the official Albizu home page');
+assert(albizuStagedReview.records[0].officialEvidence.some(function(evidence) {
+  return evidence.sourceId === 'albizu-san-juan' &&
+    evidence.url === 'https://www.albizu.edu/san-juan/?lang=es';
+}), 'Albizu staged review must cite the official Albizu San Juan page');
+
+assert(!review.records.some(function(record) {
   return record.directoryInstitution === 'Universidad del Sagrado Corazón';
 }), 'Sagrado staged address evidence must not be inserted into the Census verification address board');
 assert.strictEqual(sagradoStagedReview.status, 'staged-no-cache', 'Sagrado staged review must stay outside Census cache');
@@ -113,6 +137,9 @@ assert.strictEqual(sagradoStagedReview.summary.coordinateEligibleRows, 0, 'Sagra
 assert.strictEqual(sagradoStagedReview.records[0].directoryInstitution, 'Universidad del Sagrado Corazón');
 assert.strictEqual(sagradoStagedReview.records[0].publicAddressDecision, 'reviewed-public-address-evidence-staged');
 assert(sagradoStagedReview.records[0].reviewedPublicAddress.indexOf('00914') !== -1, 'Sagrado reviewed public address must preserve official ZIP 00914');
+assert.strictEqual(sagradoStagedReview.inputArtifacts.geocoderCandidateReviewArtifactPath, 'data/geocoding/sagrado-geocoder-candidate-review.json');
+assert.strictEqual(sagradoStagedReview.records[0].geocoderCandidateReviewArtifactPath, 'data/geocoding/sagrado-geocoder-candidate-review.json');
+assert.strictEqual(sagradoStagedReview.records[0].censusCacheDecision, 'read-only-candidate-review-no-cache-match');
 assert(sagradoStagedReview.records[0].addressVarianceNotes.some(function(note) {
   return note.indexOf('nearby ZIP variance is recorded but does not block') !== -1;
 }), 'Sagrado staged review must record ZIP variance as non-blocking');
@@ -126,6 +153,33 @@ assert(sagradoStagedReview.records[0].officialEvidence.some(function(evidence) {
   return evidence.sourceId === 'msche-sagrado' &&
     evidence.url === 'https://www.msche.org/institution/0604/';
 }), 'Sagrado staged review must cite the MSCHE institution page');
+assert.strictEqual(sagradoGeocoderCandidateReview.schemaVersion, 1, 'Sagrado candidate review schemaVersion must be 1');
+assert.strictEqual(sagradoGeocoderCandidateReview.status, 'reviewed-no-cache', 'Sagrado candidate review must stay non-cache');
+assert.strictEqual(sagradoGeocoderCandidateReview.decision, 'retain-sagrado-staged-no-cache', 'Sagrado candidate review must retain staged decision');
+assert.strictEqual(sagradoGeocoderCandidateReview.provider, 'U.S. Census Geocoding Services API', 'Sagrado candidate review provider mismatch');
+assert.strictEqual(sagradoGeocoderCandidateReview.benchmark, cache.benchmark, 'Sagrado candidate review benchmark must match cache benchmark');
+assert.strictEqual(sagradoGeocoderCandidateReview.vintage, cache.vintage, 'Sagrado candidate review vintage must match cache vintage');
+assert.strictEqual(sagradoGeocoderCandidateReview.summary.candidateAddressCount, 3, 'Sagrado candidate review must record three address candidates');
+assert.strictEqual(sagradoGeocoderCandidateReview.summary.candidateAddressesWithPuertoRicoMatches, 0, 'Sagrado candidate review must record zero Puerto Rico matches');
+assert.strictEqual(sagradoGeocoderCandidateReview.summary.cacheRecordsAdded, 0, 'Sagrado candidate review must not add cache records');
+assert.strictEqual(sagradoGeocoderCandidateReview.summary.coordinateEligibleRows, 0, 'Sagrado candidate review must not create coordinate eligibility');
+assert.strictEqual(sagradoGeocoderCandidateReview.summary.generatedOutputEligibleRows, 0, 'Sagrado candidate review must not create generated output eligibility');
+assert.strictEqual(sagradoGeocoderCandidateReview.records.length, 1, 'Sagrado candidate review must contain one reviewed row');
+assert.strictEqual(sagradoGeocoderCandidateReview.records[0].directoryInstitution, 'Universidad del Sagrado Corazón');
+assert.strictEqual(sagradoGeocoderCandidateReview.records[0].candidateTests.length, 3, 'Sagrado candidate review must keep the three tested forms');
+sagradoGeocoderCandidateReview.records[0].candidateTests.forEach(function(candidate) {
+  assert(candidate.attemptedAddress.indexOf('00914') !== -1, 'Sagrado candidate address must use official ZIP 00914');
+  assert.strictEqual(candidate.matchCount, 0, 'Sagrado candidate must record zero Census matches');
+  assert.strictEqual(candidate.puertoRicoMatchCount, 0, 'Sagrado candidate must record zero Puerto Rico matches');
+  assert(Array.isArray(candidate.matchedAddresses), 'Sagrado candidate matchedAddresses must be an array');
+  assert.strictEqual(candidate.matchedAddresses.length, 0, 'Sagrado candidate must not store matched addresses when no match exists');
+});
+assert.strictEqual(sagradoGeocoderCandidateReview.records[0].cacheEligible, false);
+assert.strictEqual(sagradoGeocoderCandidateReview.records[0].coordinateEligible, false);
+assert.strictEqual(sagradoGeocoderCandidateReview.records[0].generatedOutputEligible, false);
+assert(sagradoGeocoderCandidateReview.invariants.some(function(invariant) {
+  return invariant.indexOf('Google Earth, Google Maps') !== -1;
+}), 'Sagrado candidate review must keep Google Earth/Maps out of scope');
 assert(geocodingPolicy.indexOf('## ZIP Variance Rule') !== -1, 'geocoding policy must include ZIP variance rule');
 assert(geocodingPolicy.indexOf('ZIP codes are supporting address evidence, not') !== -1, 'geocoding policy must treat ZIP as supporting evidence');
 assert(geocodingPolicy.indexOf('Do not block an alias/campus or public-address staged decision only because of') !== -1, 'geocoding policy must prevent ZIP-only blocking');

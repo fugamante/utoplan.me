@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "artifactVersion": "aguada-restaurant-demand-proxy-review-v1",
+  "scope": "puerto-rico-planning-candidate",
+  "status": "reviewed",
+  "reviewedAt": "2026-08-05",
+  "signalId": "west-region-visitor-demand-baseline",
+  "fixedSelection": {
+    "fixtureId": "mun003_restaurant",
+    "municipalityCode": "003",
+    "municipalityLabel": "Aguada",
+    "businessCategoryId": "restaurant-cafe",
+    "selectedNaicsCodes": [
+      "722511"
+    ]
+  },
+  "decisionSummary": "The fixed Aguada restaurant matrix no longer relies on a pure medium/regional demand gap. Official Puerto Rico tourism reports now establish a descriptive west-region demand proxy: the 2024 registration and occupancy report shows 310,405 Porta del Sol arrivals, 125,786 non-resident arrivals, and 48.1 percent average occupancy, while the FY 2023-2024 visitor profile reports that 28.0 percent of visitors went to Porta del Sol, 86.6 percent participated in outings to restaurants, bars, and related nightlife, and Rafael Hernandez Airport in Aguadilla represented 5.6 percent of the weighted airport distribution. This remains demand-proxy evidence only: it does not prove Aguada parcel demand, restaurant capture rate, repeat-customer volume for one operator, or island-wide destination pull.",
+  "authorities": [
+    {
+      "sourceId": "pr-tourism-registration-occupancy-2024",
+      "role": "west-region-lodging-and-arrival-baseline",
+      "evidence": "The official 2024 Puerto Rico Tourism Company registration and occupancy report records Porta del Sol at 310,405 total arrivals, 125,786 non-resident arrivals, 48.1 percent average occupancy, and a $186.31 average daily rate for calendar year 2024."
+    },
+    {
+      "sourceId": "pr-tourism-visitor-profile-fy2023-2024",
+      "role": "west-region-visitor-behavior-and-access-proxy",
+      "evidence": "The official FY 2023-2024 visitor profile reports that 28.0 percent of visitors visited Porta del Sol, 86.6 percent engaged in outings to restaurants, bars, pubs, and similar nightlife, and Rafael Hernandez International Airport in Aguadilla represented 5.6 percent of the weighted airport distribution."
+    }
+  ],
+  "scenarioCoverage": [
+    {
+      "scenarioId": "medium-regional",
+      "reachId": "regional-corridor",
+      "coverage": "descriptive-demand-proxy-baseline",
+      "notes": [
+        "The fixed medium/regional scenario now has an official Puerto Rico demand proxy for west-region visitor flow and restaurant-adjacent activity instead of a blank corridor-demand lane.",
+        "The evidence still does not isolate Aguada-specific customer capture, corridor drive-time behavior, or repeat-demand volume for one restaurant concept."
+      ]
+    }
+  ],
+  "interpretationLimits": [
+    "These sources establish west-region lodging, visitor-region, and activity context, not direct restaurant demand for Aguada or one site.",
+    "The reviewed sources do not measure local resident spending, municipality-level customer origin, event-driven surges, or one operator's likely market share.",
+    "The artifact does not imply that a medium/regional restaurant should open in Aguada or that corridor-demand risk is fully resolved for the fixed selection."
+  ],
+  "nextUpgradeTargets": [
+    "Keep the large-strategic island-wide demand fact blocked until an official Puerto Rico source can distinguish destination-scale pull from general visitor activity.",
+    "Add reproducible west-coast mobility or corridor-travel evidence only if an official Puerto Rico source can be pinned without inventing municipality precision.",
+    "Pair this baseline with logistics or resilience evidence before treating broader operating scale as routine."
+  ]
+}

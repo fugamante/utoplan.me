@@ -47,6 +47,8 @@ evidence and must record restoration of the formal baseline as an action item.
 | `docs/modernization-roadmap.md` phase gates | Test plan, summary | Are active phase exit criteria covered by tests? |
 | `docs/api-modernization.md` | Test design, case traceability | Are API contracts pinned before endpoint changes? |
 | `docs/frontend-inventory.md` | Test design, item scope | Are browser and fixture boundaries represented in tests? |
+| `docs/business-location-decision-framework.md` and `data/profile-reach/business-profile-reach-v1.json` | Planned test design | Does the profile/reach matrix keep explicit fields, a no-score/no-rank oracle, and executable coverage before fixture expansion? |
+| `data/profile-reach/decision-signal-registry-v1.json` and reviewed signal artifacts | Test items and traceability data | Do registry, profile facts, source authorities or explicit gaps, scenario reach, recency, and interpretation limits remain mutually consistent under focused tests? |
 | `docs/database-migrations.md` | Procedure, incident, release gate | Are schema changes independently reviewable and rollbackable? |
 | `docs/deployment-topology.md` | Test design, item transmittal | Does test coverage exercise the app/API/private API topology? |
 | `docs/production-deployment.md` | Procedure, summary, release gate | Are deployment checks runnable and release blocking? |
@@ -72,6 +74,8 @@ release branch, production deployment, or merge that changes app/API behavior.
   not list obsolete test commands.
 - Confirm `.node-version`, `.nvmrc`, package `engines`, CI, and
   `npm run test:node-runtime` still agree on the reviewed Node major.
+- Confirm `npm run verify:node` checks the active process independently of npm
+  lifecycle-hook execution.
 - Confirm every active roadmap exit criterion has executable or documented test
   evidence.
 - Confirm new or changed `/v1/*`, `/healthz`, or `/readyz` behavior has API
@@ -103,6 +107,16 @@ release branch, production deployment, or merge that changes app/API behavior.
 - Confirm planning-context fixtures pass the contract test and remain
   descriptive with explicit confidence labels, source metadata, and unresolved
   questions.
+- Confirm reviewed demand, regulatory, construction-execution, ecosystem,
+  infrastructure, site-feasibility, large-site, and workforce artifacts keep
+  their linked source ids, fixed scenario boundary, descriptive-only
+  language, and explicit limitations.
+- Confirm profile-dependent fixtures are not accepted before TC-027 has a
+  focused executable test covering reach, relevance, criticality, confidence,
+  limitations, and next validation checks.
+- Confirm decision-signal and reviewed-evidence changes run
+  `npm run test:decision-signals` plus the applicable focused signal-review
+  test, and remain included in the root `npm run test` chain.
 - Confirm exposed planning-context municipality labels resolve from
   `data/municipalities/planning-context-municipalities.json` for the active
   fixture set.
@@ -175,7 +189,8 @@ fails when the required schema or database connection is unavailable.
 
 Acceptance: production configuration fails closed when required values are
 missing, app `/healthz` and API `/readyz` are covered by deployment policy, and
-the public app origin serves `/v1/unis` through the app/API topology.
+the public app origin serves `/v1/unis` and `/v1/planning-context` through the
+app/API topology.
 
 ## Hardening And Optimization Recommendation Rules
 
@@ -256,6 +271,76 @@ Release decision:
 
 ## Active Recommendations
 
+### RECO-829-2026-08-05-01
+
+- Class: required hardening
+- Finding: deployment-container coverage asserted the API runtime user but did
+  not prevent the production app image from running its service command as
+  root.
+- Acceptance evidence:
+  - `test/deployment_container_contract_test.js` asserts `USER node` exists in
+    `Dockerfile` and precedes its `CMD`.
+  - `npm run test:deployment-containers` passes.
+  - A production app image builds and starts successfully with the declared
+    unprivileged user.
+- Revisit trigger:
+  - Any change to a production Dockerfile, runtime user, app command, image
+    filesystem ownership, or deployment-container test.
+- Status: implemented (2026-08-05); `6de22e5` adds the app runtime-user control
+  and focused regression assertions.
+
+### RECO-829-2026-08-03-01
+
+- Class: optimization
+- Finding: the root `npm run test` script previously named the decision-signal
+  registry test and fifteen reviewed signal-artifact tests individually. The
+  registry-derived traceability guard verified documentation coverage but did
+  not prove complete root-chain inclusion.
+- Acceptance evidence:
+  - A stable aggregate command, such as `test:signal-reviews`, runs the
+    decision-signal registry contract and every checked-in reviewed
+    signal-artifact test.
+  - A contract test or deterministic discovery rule fails when a reviewed
+    signal artifact or its focused test is omitted from the aggregate command.
+  - Root `npm run test`, the IEEE 829 test document, and the IEEE 730/1012 gate
+    matrices reference the aggregate command without weakening focused-test
+    availability.
+- Revisit trigger:
+  - The next reviewed signal type or focused signal-review test, or any edit to
+    the root test orchestration.
+- Status: implemented (2026-08-27). `scripts/run_signal_reviews.js` discovers
+  the registry-backed artifact/test plan and runs the orchestration contract,
+  decision-signal contract, and all focused reviews in sorted order.
+  `test/signal_review_orchestration_test.js` proves missing-test and
+  missing-artifact failures, exact command wiring, one-to-one coverage, and
+  aggregate-only root-chain routing. Individual focused commands remain
+  available.
+
+### RECO-829-2026-07-27-01
+
+- Class: required hardening
+- Finding: `npm run test` can complete on an unsupported Node major when the
+  operator has npm `ignore-scripts=true`, because that setting suppresses the
+  root `pretest` hook. `npm run test:node-runtime` unit-tests the verifier with
+  synthetic version values but does not validate the active process.
+- Acceptance evidence:
+  - Root install, build, and test entrypoints invoke the active-runtime verifier
+    in their explicit script chains rather than relying only on `pre*`
+    lifecycle hooks.
+  - `test/node_runtime_test.js` runs all three root entrypoints with lifecycle
+    scripts disabled and an unsupported synthetic runtime, then proves each
+    entrypoint fails before substantive validation begins.
+  - `npm run verify:node && npm run test:node-runtime` passes on the reviewed
+    Node 26 runtime.
+- Revisit trigger:
+  - Any change to root install/build/test scripts, Node version pins, npm
+    lifecycle policy, or runtime-verifier behavior.
+- Status: implemented (2026-07-29); `install:all`, `build`, and `test` now begin
+  with an explicit `verify:node` command, and `test/node_runtime_test.js`
+  exercises all three entrypoints with lifecycle hooks disabled plus a
+  synthetic unsupported runtime, proving each command fails before substantive
+  validation.
+
 ### RECO-829-2026-05-24-01
 
 - Class: optimization
@@ -277,10 +362,10 @@ Release decision:
 ### RECO-829-2026-06-01-01
 
 - Class: required hardening
-- Finding: deployed release smoke currently validates app `/healthz`,
+- Finding: deployed release smoke previously validated app `/healthz`,
   `/v1/unis`, and optional API `/readyz`, but not the same-origin
-  `/v1/planning-context` summary/detail path that the current first page now
-  uses for descriptive planning-context rendering.
+  `/v1/planning-context` summary path that the current first page now uses for
+  descriptive planning-context rendering.
 - Acceptance evidence:
   - `scripts/release_smoke_check.js` validates a successful
     `GET /v1/planning-context` response from `UTOPLAN_APP_URL`.
@@ -289,10 +374,11 @@ Release decision:
   - `docs/production-deployment.md`, the IEEE 829 test document, and this audit
     corpus describe the expanded deployed smoke scope.
 - Revisit trigger:
-  - Before the next production-style release candidate from the current
-    first-page planning-context baseline, or sooner if release, rollback, or
-    smoke decisions need to rely on planning-context availability.
-- Status: proposed
+  - Next time the release smoke script, first-page planning-context route, or
+    release-smoke evidence contract changes.
+- Status: implemented; `scripts/release_smoke_check.js` now validates the
+  public app-origin `/v1/planning-context` envelope and descriptive guardrail
+  flags, with coverage in `test/release_smoke_check_test.js`.
 
 ### RECO-829-2026-06-08-01
 

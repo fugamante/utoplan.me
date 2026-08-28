@@ -65,6 +65,7 @@ or recommendations change.
 - `docs/modernization-roadmap.md`
 - `docs/api-modernization.md`
 - `docs/product-scope.md`
+- `docs/business-location-decision-framework.md`
 - `docs/database-migrations.md`
 - `docs/data-intake.md`
 - `docs/data-provenance.md`
@@ -146,6 +147,8 @@ Verify implementation changes through code review and focused checks:
 - New data intake code enforces registered Puerto Rico filters.
 - Planning-context and category-mapping changes stay descriptive and retain
   confidence, limitations, and unresolved-question evidence.
+- Reviewed profile/reach signal upgrades keep official-source scope, fixed-
+  selection linkage, and decision limits under focused contract tests.
 - Tests are added or updated with behavior changes.
 
 Validate implementation by exercising the product path that users or operators
@@ -211,8 +214,9 @@ weakening reproducibility, provenance, or release confidence.
 | Unit and contract tests | Pin typed API, browser, response, resource, routing, data-source, migration, and deployment verifier behavior. |
 | Integration tests | Exercise app/API/PostgreSQL and same-origin proxy behavior. |
 | Browser smoke tests | Verify visible map behavior, markers, toggles, tile rendering, and clean console/page errors. |
-| Docker compatibility tests | Verify clean builds, one reviewed Node digest, unprivileged production users, seeded DB contracts, proxy wiring, and integrated browser behavior. |
-| Release smoke tests | Verify deployed app health, public `/v1/unis`, and optional API readiness from release URLs. |
+| Docker compatibility tests | Verify clean container builds, unprivileged production app/API runtime users, seeded DB contracts, proxy wiring, and integrated browser behavior. |
+| Container base control | Verify every Node stage uses the same reviewed Node 26 tag/digest, refresh automation is scheduled, production images build, and runtime users remain unprivileged. |
+| Release smoke tests | Verify deployed app health, public `/v1/unis`, public `/v1/planning-context`, and optional API readiness from release URLs. |
 | Audit review | Confirms evidence, skipped checks, accepted risks, anomalies, and standards updates. |
 
 ## 8. Acceptance Gates
@@ -222,7 +226,7 @@ stack before PR publication or release promotion.
 
 | Gate | Command or evidence | Required when |
 | --- | --- | --- |
-| Node runtime | `npm run test:node-runtime` | Runtime pin, engines, install hook, CI, Docker, or toolchain changes. |
+| Node runtime | `npm run verify:node && npm run test:node-runtime` | Runtime pin, engines, install hook, CI, Docker, npm lifecycle configuration, or toolchain changes. The first command verifies the active process; the second unit-tests the verifier contract. |
 | Clean install | `npm run install:all` | Dependency, lockfile, CI, Docker, or release changes. |
 | Build baseline | `npm run build` | Code, TypeScript, script, or validation changes. |
 | Root tests | `npm run test` | Normal pre-merge validation. |
@@ -236,9 +240,11 @@ stack before PR publication or release promotion.
 | Data registry | `npm run test:data-sources` | Source registry, provenance, import, or data-scope changes. |
 | Business category mapping | `npm run test:business-categories` | Category crosswalk, planning-context selection, or descriptive-scope changes. |
 | Planning-context fixture | `npm run test:planning-context` | Planning-context fixture, summary/detail, or descriptive-guardrail changes. |
+| Decision-signal registry | `npm run test:decision-signals` for the focused contract; `npm run test:signal-reviews` for the complete registry and evidence set | Decision-signal registry, profile/reach fact linkage, source-gap classification, scenario reach, or interpretation-limit changes. |
+| Reviewed signal evidence | `npm run test:signal-review-orchestration` for discovery/wiring changes; the applicable focused command during development; `npm run test:signal-reviews` for the complete set | Demand, island-wide demand, permit, construction execution, coordination timing, inspection window, utility, utility resilience, logistics, ecosystem support, site feasibility, large-site, routine workforce, strategic workforce, or later reviewed signal-artifact changes. |
 | Migration artifact | `npm run test:migration-artifacts` | Migration template, artifact, readiness schema, or rollback changes. |
 | Deployment verification | `npm run verify:deployment` and `npm run verify:release` | Release, container, environment, or operator workflow changes. |
-| Release smoke | `UTOPLAN_APP_URL=<url> npm run verify:release-smoke` | Candidate deployed environment. |
+| Release smoke | `UTOPLAN_APP_URL=<url> npm run verify:release-smoke` | Candidate deployed environment; set `UTOPLAN_RELEASE_SMOKE_JSON=1` when sanitized structured release evidence is required. |
 | Security audit | Root, `app`, `dtoapi`, and `dtoapi/modern` npm audits | Dependency or release changes. |
 
 If Docker is unavailable, record the skipped Docker gate and reason in the
@@ -259,6 +265,7 @@ release evidence, and audit record.
 | Deployment topology | `docs/deployment-topology.md`, production runbook | IEEE 1016 SDD | Docker proxy/browser tests, deployment verification |
 | Data provenance | `docs/data-intake.md`, `docs/data-provenance.md`, `docs/data-source-schema-mapping.md`, `docs/unis-alias-campus-match-policy.md` | Source registry, import design | `npm run test:data-sources`, data review |
 | Planning context | `docs/product-scope.md`, candidate category mapping, municipality registry, NAICS title registry, planning-context fixtures | IEEE 1016 SDD, API/frontend notes | `npm run test:business-categories`, `npm run test:planning-context`, `npm run test:browser`, `npm run test:browser:start-local` |
+| Profile/reach and decision signals | `docs/business-location-decision-framework.md`, `docs/product-scope.md`, `data/profile-reach/business-profile-reach-v1.json`, `data/profile-reach/decision-signal-registry-v1.json`, and reviewed signal artifacts | IEEE 1016 SDD profile/reach and evidence boundary | `npm run test:profile-reach-contract`, `npm run test:signal-review-orchestration`, and `npm run test:signal-reviews` proving the three-scenario matrix, exact artifact/test coverage, source linkage or explicit gaps, reach, and descriptive limits |
 | Release readiness | IEEE 730 SQA, IEEE 829 test document, production runbook | Release checklist | Release smoke, audit record, rollback review |
 | Standards corpus | This plan and peer IEEE documents | Audit hooks | Standards audit and document diffs |
 
@@ -340,7 +347,8 @@ A release candidate is ready only when:
   app, API, database, or deployment changes when Docker is available.
 - API `/readyz` validates the current read baseline.
 - App `/healthz` reports expected proxy state and no production fixture mode.
-- Public `/v1/unis` smoke passes through the app origin.
+- Public `/v1/unis` and `/v1/planning-context` smoke checks pass through the
+  app origin.
 - Source registry and migration artifact checks pass when data or schema are
   affected.
 - Security audit status is known across root, `app`, `dtoapi`, and
@@ -378,7 +386,7 @@ traceability, or strengthen release confidence.
 
 Current recommendations to track:
 
-- Add structured JSON output to deployment and release smoke verifiers.
+- Add structured JSON output to deployment verifiers.
 - Add CI artifacts for V&V records, test logs, and release summaries.
 - Add explicit accessibility and performance gates when product criteria are
   defined.

@@ -35,6 +35,8 @@ Audit these configuration item classes on every SCM review:
 - Data provenance assets: `data/sources/puerto-rico.json`,
   `docs/data-intake.md`, `docs/data-provenance.md`, and fixture/test data.
 - Product-boundary and planning-context assets: `docs/product-scope.md`,
+  `docs/business-location-decision-framework.md`,
+  `docs/production-readiness-decision-board.md`,
   `data/mappings/puerto-rico-business-categories.json`,
   `data/municipalities/planning-context-municipalities.json`,
   `data/naics/planning-context-naics-titles.json`, and
@@ -75,8 +77,9 @@ Collect or inspect this evidence before issuing an IEEE 828 audit finding:
   mutate schema.
 - Data control: source registry entries, Puerto Rico-only scope enforcement,
   license/source URLs, retrieval dates, category-mapping traceability,
-  planning-context fixture boundaries, and separation of fixture, seed, and
-  production data.
+  planning-context fixture boundaries, profile/reach contract and
+  decision-signal registry linkage, reviewed signal artifacts, and separation
+  of fixture, seed, and production data.
 - Documentation trace: README, roadmap, deployment topology, production
   deployment runbook, product scope, data intake/provenance notes, and
   database migration strategy updated when behavior changes.
@@ -117,6 +120,8 @@ Collect or inspect this evidence before issuing an IEEE 828 audit finding:
   production data separately.
 - Product-scope status identifies whether planning-context behavior is still
   descriptive and backed by visible confidence and limitation evidence.
+- Planned profile/reach status distinguishes canonical requirements and design
+  evidence from schemas, fixtures, and tests that do not exist yet.
 - Open provenance gaps remain visible until evidence is found or replacement
   sources are formally accepted.
 - Audit findings record recommendation state: proposed, accepted, implemented,
@@ -131,6 +136,9 @@ Collect or inspect this evidence before issuing an IEEE 828 audit finding:
 - Security-sensitive changes include dependency audit and secret exposure
   checks.
 - Data intake changes include registry validation and source-scope review.
+- Profile/reach and signal-review changes keep the contract, signal registry,
+  source registry, reviewed artifact, focused test, and root test inventory in
+  one controlled change set.
 - SCM audit updates are committed with the standards documentation bundle or the
   change that invalidated prior controls.
 
@@ -143,20 +151,59 @@ Collect or inspect this evidence before issuing an IEEE 828 audit finding:
 - `/readyz` gates API database readiness and schema baseline compatibility.
 - Rollback instructions identify app, API, and database recovery order.
 
-## Active Recommendation
+## Active Recommendations
+
+### RECO-828-2026-08-05-01
+
+- Class: runtime configuration hardening
+- Finding: the production app Dockerfile did not declare an unprivileged
+  runtime user, leaving its service command dependent on the base image's root
+  default even though the production API already used `node`.
+- Acceptance evidence:
+  - `Dockerfile` assigns `/workspace` to `node:node` and declares `USER node`
+    before `CMD`.
+  - `test/deployment_container_contract_test.js` fails if the app user
+    declaration is absent or follows the service command.
+  - Focused container-contract validation and the production app image build
+    pass.
+- Revisit trigger:
+  - Any production Dockerfile, base-image user, filesystem-write requirement,
+    service command, or container-contract test change.
+- Status: implemented (2026-08-05) in `6de22e5`; the app and API production
+  runtimes now share the controlled unprivileged `node` boundary.
 
 ### RECO-828-2026-08-01-01
 
-- Class: supply-chain reproducibility hardening
-- Finding: mutable Node Docker tags can change rebuild output without a source
-  change.
-- Acceptance evidence: all six Node stages share one reviewed digest; weekly
-  Dependabot discovery is active on the default branch; production images and
-  full host/Docker validation pass; the first generated refresh PR passes CI.
-- Revisit trigger: each base refresh, relevant security advisory, Node support
-  change, Dockerfile addition, or refresh-workflow change.
-- Status: implemented locally; operational closure pending the first generated
-  default-branch Docker refresh PR and passing CI.
+- Class: supply-chain reproducibility optimization
+- Finding: all Node-based Dockerfiles consistently select
+  `node:26-bookworm-slim`, but the tag is mutable. The verified release build
+  resolved it to OCI index digest
+  `sha256:9e6f9357d371591e32ab6f2d8a26d63bdd0d17c29eee3f4f3e7e454d9634bf73`,
+  while the 2026-08-25 app-image validation resolved the same tag to
+  `sha256:4db36457f406501e6f608802e5da617e5fbd0e80b75901b6a09de1ae5a667d32`.
+  The observed drift confirms that rebuilding the same commit after a tag
+  update can produce different base layers.
+- Acceptance evidence:
+  - Every Node-based `FROM` instruction uses the same reviewed
+    `node:26-bookworm-slim@sha256:<index-digest>` reference.
+  - A documented automated or scheduled refresh process updates the digest so
+    security fixes are not indefinitely excluded by reproducibility controls.
+  - Root and modern API image builds, image runtime/user inspection, the full CI
+    workflow, and DB/proxy/browser Docker checks pass after a digest refresh.
+- Revisit trigger:
+  - The next Node 26 base-image refresh, relevant base-image security advisory,
+    or release-hardening pass, whichever occurs first.
+- Status: implemented locally; operational closure pending (2026-08-25). All
+  six Node stages use the reviewed
+  `sha256:4db36457f406501e6f608802e5da617e5fbd0e80b75901b6a09de1ae5a667d32`
+  index digest, `.github/dependabot.yml` performs weekly Docker update
+  discovery, the modernization maintainer owns review and advisory response,
+  `test/deployment_container_contract_test.js` rejects partial or unreviewed
+  refreshes, and `docs/container-base-refresh.md` defines validation and
+  rollback. PR #18 placed the configuration on current `master`; end-to-end
+  closure still requires confirmation that GitHub dependency automation is
+  enabled, one generated Docker refresh pull request, and passing validation
+  for that exact pull-request commit.
 
 ## Hardening And Optimization Recommendation Rules
 

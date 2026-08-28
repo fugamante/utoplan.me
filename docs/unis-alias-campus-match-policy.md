@@ -142,6 +142,12 @@ As of 2026-06-11, the first reviewed pass is checked in:
   DAPIP accreditation and ORLIE/JIP licensure-listing corroboration, 22 still
   lack row-level authority corroboration, and zero are coordinate-eligible or
   generated-output eligible.
+- `data/unis/albizu-staged-review.json` and
+  `data/unis/sagrado-staged-review.json` now record staged alias/campus and
+  public-address evidence for Albizu and Sagrado only; both remain outside the
+  approved alias/campus partition used by the Census cache builder until a
+  future cache/quarantine/boundary pass updates the full evidence chain
+  together.
 - `data/geocoding/unis-address-verification.json` verifies that those 15
   geocoder-specific exclusions currently have zero promotion-eligible rows
   under the pinned Census benchmark/vintage.

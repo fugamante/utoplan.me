@@ -34,6 +34,7 @@ Puerto Rico data coverage and documents unresolved provenance gaps.
 - `docs/api-modernization.md`
 - `docs/frontend-inventory.md`
 - `docs/product-scope.md`
+- `docs/business-location-decision-framework.md`
 - `docs/deployment-topology.md`
 - `docs/production-deployment.md`
 - `docs/data-intake.md`
@@ -60,7 +61,10 @@ deployment and validation paths.
 The long-term direction is a place-based planning engine that can simulate and
 stimulate business formation by surfacing evidence, constraints, and tradeoffs.
 Near-term work is intentionally narrower: keep the map and active legacy read
-contracts working while rebuilding the data and technical foundation.
+contracts working while rebuilding the data and technical foundation. The next
+planned product contract starts from a business operating profile and evaluates
+each need at its decision-relevant geographic reach instead of treating a
+municipality or available dataset as the default unit of analysis.
 
 ### 4.2 Current System Shape
 
@@ -162,6 +166,9 @@ contracts working while rebuilding the data and technical foundation.
   `grace_cs`.
 - Known record routes shall reject unsupported methods with `405 Method Not
   Allowed`.
+- The read-oriented API CORS declaration shall advertise only `GET` and
+  `OPTIONS`; JSON responses shall emit `Vary: Accept-Encoding` so shared caches
+  distinguish compressed and uncompressed representations.
 - API responses shall preserve the typed compatibility envelope and avoid
   exposing raw database errors to clients.
 - API route, CORS, gzip, root response, resource, records, schema, and readiness
@@ -200,14 +207,18 @@ contracts working while rebuilding the data and technical foundation.
 | FR-005 | The modern API shall preserve the active legacy read resource contracts. | DB-backed API contract tests pass for collections, records, missing records, and supported resource names. |
 | FR-006 | The API shall expose shallow health and database-backed readiness endpoints. | `GET /healthz` returns process health; `GET /readyz` returns ready only when DB and schema checks pass. |
 | FR-007 | Known unsupported API methods shall fail explicitly. | Known record routes return `405` for unsupported methods. |
-| FR-008 | Production startup shall fail on missing API database configuration. | Deployment verification and production API startup reject missing DB config. |
-| FR-009 | The release flow shall smoke test the public app origin and data path. | `npm run verify:release-smoke` checks app `/healthz`, public `/v1/unis`, and optional API `/readyz`. |
+| FR-008 | Production startup shall fail on missing or invalid API database configuration, and production app/API service commands shall not require root privileges. | Deployment verification and production API startup reject missing DB config, malformed URLs, and non-PostgreSQL URL schemes; the production app and API images run their service commands as the unprivileged `node` user. |
+| FR-009 | The release flow shall smoke test the public app origin and data path. | `npm run verify:release-smoke` checks app `/healthz`, public `/v1/unis`, public `/v1/planning-context`, and optional API `/readyz`. |
 | FR-010 | Database schema changes shall be handled as explicit migration artifacts. | New schema work includes artifact sections for preflight, apply, verify, rollback, and readiness impact. |
 | FR-011 | New production-style data sources shall be registered before import. | `npm run test:data-sources` passes and registry entries include required source metadata plus legacy mapping evidence for active mapped tables. |
 | FR-012 | Unresolved legacy tables shall remain blocked for production import. | `cdepts`, `businesses`, and `grade_cs` imports are blocked until source, license, and transform path are recorded. |
 | FR-013 | Public behavior changes shall update related requirements, design, test, and release docs. | Relevant IEEE and project docs change in the same bundle as the behavior change. |
 | FR-014 | The API shall expose read-only planning-context summary/detail routes with explicit descriptive-only guardrails. | `GET /v1/planning-context` and `GET /v1/planning-context/:id` return descriptive fixture payloads with guardrail flags and reject unsupported methods with `405`. |
 | FR-015 | The first page shall render planning-context summary options from same-origin `/v1/planning-context` and load selected descriptive detail from `/v1/planning-context/:id` without score/ranking/recommendation language. | Browser smoke verifies the summary/detail request paths and rendered descriptive options, source-backed municipality names, confidence, limitations, unresolved questions, and CBP fact-value masking/approximation rules. |
+| FR-016 | Before planning-context expansion, the product shall define a versioned business-profile contract and geographic-reach contract covering site-bound, local-catchment, regional-corridor, island-wide, and external-connection evidence. | `data/profile-reach/business-profile-reach-v1.json` holds `mun003_restaurant` constant across small/local, medium/regional, and large/strategic scenarios and `npm run test:profile-reach-contract` verifies profile-dependent relevance, criticality, confidence, limitations, and next validation checks without composite scores or municipality ranks. The contract is implemented as a controlled candidate artifact and is not yet exposed through the API/UI. |
+| FR-017 | The product shall maintain a decision-signal registry that links each fixed-selection profile/reach fact to either registered Puerto Rico evidence or an explicit source gap. | `data/profile-reach/decision-signal-registry-v1.json` records signal lens, scenario applicability, geographic reach, recency, interpretation limits, and linked fact ids, while `npm run test:decision-signals` verifies bidirectional linkage between the registry and `data/profile-reach/business-profile-reach-v1.json`. |
+| FR-018 | The product shall keep reviewed decision-signal upgrades as descriptive evidence artifacts that cite official Puerto Rico authorities and explicit interpretation limits. | `data/profile-reach/aguada-restaurant-demand-proxy-review.json`, `data/profile-reach/aguada-restaurant-island-demand-review.json`, `data/profile-reach/aguada-restaurant-corridor-logistics-review.json`, `data/profile-reach/aguada-restaurant-external-logistics-review.json`, `data/profile-reach/aguada-restaurant-permit-path-review.json`, `data/profile-reach/aguada-restaurant-construction-execution-review.json`, `data/profile-reach/aguada-restaurant-coordination-timing-review.json`, `data/profile-reach/aguada-restaurant-inspection-window-review.json`, `data/profile-reach/aguada-restaurant-support-network-review.json`, `data/profile-reach/aguada-restaurant-utility-service-review.json`, `data/profile-reach/aguada-restaurant-utility-resilience-review.json`, `data/profile-reach/aguada-restaurant-site-screening-review.json`, `data/profile-reach/aguada-restaurant-large-site-screening-review.json`, `data/profile-reach/aguada-restaurant-routine-workforce-review.json`, and `data/profile-reach/aguada-restaurant-workforce-pipeline-review.json` record reviewed upgrades for the Aguada restaurant demand, island-wide demand, corridor logistics, external logistics, routine regulatory, strategic construction-execution, aggregate coordination timing, inspection accountability, ecosystem support-network, infrastructure, resilience, site-feasibility, large-site-feasibility, routine workforce, and strategic workforce signals, while the corresponding focused tests verify their authority stacks, fixed-selection linkage, and descriptive-only limits. |
+| FR-019 | Every Node-based Docker stage shall use one reviewed Node 26 Bookworm Slim OCI digest with scheduled update discovery, explicit maintainer review, and a documented security-advisory and rollback procedure. | `npm run test:deployment-containers` rejects tag, digest, or stage inconsistency; `.github/dependabot.yml` checks Docker dependencies weekly; `docs/container-base-refresh.md` defines ownership and procedure. |
 
 ## 9. Nonfunctional Requirements
 
@@ -269,6 +280,9 @@ contracts working while rebuilding the data and technical foundation.
 - Labels, source-backed content, and future recommendations shall avoid implying
   certainty where provenance, coverage, or transformation assumptions are still
   unresolved.
+- Product flows shall ask for operating needs before implying place fit and
+  shall show the geographic reach governing each fact rather than treating
+  municipality boundaries as universally decision-relevant.
 
 ## 10. Data And Provenance Requirements
 
@@ -297,7 +311,7 @@ an explicit accepted risk:
 - Release smoke passes against the candidate app origin.
 - API `/readyz` reports the expected schema baseline.
 - App `/healthz` reports proxy mode and no production fixture mode.
-- Public `/v1/unis` returns through the app origin.
+- Public `/v1/unis` and `/v1/planning-context` return through the app origin.
 - Required standards, roadmap, API, deployment, migration, and provenance docs
   are updated for changed behavior.
 - Skipped checks, accepted risks, and rollback notes are recorded.
@@ -321,18 +335,23 @@ an explicit accepted risk:
 | FR-013 | Documentation consistency | Standards and project-doc review |
 | FR-014 | Read-only planning-context API contract | `npm run test:api`, `dtoapi/modern/test/planning_context_test.js` |
 | FR-015 | Planning-context summary UI contract | `npm run test:browser`, `npm run test:browser:start-local`, `app/test/static_smoke_test.js` with `test:browser:start-local` running against the provisioned seeded baseline database unless the operator explicitly opts into a known baseline-ready alternative |
+| FR-016 | Business profile and geographic reach direction | `docs/product-scope.md`, `docs/business-location-decision-framework.md`, `docs/modernization-roadmap.md`, `data/profile-reach/business-profile-reach-v1.json`, `npm run test:profile-reach-contract` |
+| FR-017 | Decision-signal registry direction | `docs/product-scope.md`, `docs/business-location-decision-framework.md`, `docs/data-intake.md`, `data/profile-reach/decision-signal-registry-v1.json`, `npm run test:decision-signals` |
+| FR-018 | Reviewed decision-signal evidence upgrades | `docs/product-scope.md`, `docs/data-intake.md`, `data/profile-reach/aguada-restaurant-demand-proxy-review.json`, `data/profile-reach/aguada-restaurant-island-demand-review.json`, `data/profile-reach/aguada-restaurant-corridor-logistics-review.json`, `data/profile-reach/aguada-restaurant-external-logistics-review.json`, `data/profile-reach/aguada-restaurant-permit-path-review.json`, `data/profile-reach/aguada-restaurant-construction-execution-review.json`, `data/profile-reach/aguada-restaurant-coordination-timing-review.json`, `data/profile-reach/aguada-restaurant-inspection-window-review.json`, `data/profile-reach/aguada-restaurant-support-network-review.json`, `data/profile-reach/aguada-restaurant-utility-service-review.json`, `data/profile-reach/aguada-restaurant-utility-resilience-review.json`, `data/profile-reach/aguada-restaurant-site-screening-review.json`, `data/profile-reach/aguada-restaurant-large-site-screening-review.json`, `data/profile-reach/aguada-restaurant-routine-workforce-review.json`, `data/profile-reach/aguada-restaurant-workforce-pipeline-review.json`, `npm run test:demand-signal-review`, `npm run test:island-demand-signal-review`, `npm run test:logistics-signal-review`, `npm run test:external-logistics-signal-review`, `npm run test:regulatory-signal-review`, `npm run test:construction-execution-signal-review`, `npm run test:coordination-timing-signal-review`, `npm run test:inspection-window-signal-review`, `npm run test:infrastructure-signal-review`, `npm run test:utility-resilience-signal-review`, `npm run test:site-feasibility-signal-review`, `npm run test:large-site-signal-review`, `npm run test:routine-workforce-signal-review`, `npm run test:workforce-signal-review`, `npm run test:ecosystem-signal-review`, `npm run test:profile-reach-traceability` |
+| FR-019 | Managed Node container base | `.github/dependabot.yml`, `docs/container-base-refresh.md`, `npm run test:deployment-containers`, production image builds and inspection |
 | DR-001 - DR-006, DR-002A | Trustworthy Puerto Rico data product | Registry tests, provenance docs, source-schema mapping docs, import review, future recommendation tests |
 
 ## 13. Open Requirements And Risks
 
 - Formal performance budgets for first page load and `/v1/unis` response time
   are still missing.
+- The versioned business-profile and geographic-reach contracts in FR-016 are
+  implemented as controlled candidate artifacts and remain intentionally out of
+  the live API/UI surface.
+- The linked decision-signal registry in FR-017 is implemented as controlled
+  evidence metadata and must not drift into recommendation logic.
 - The original organizer-provided dataset name, license, files, and transform
   path remain unresolved.
-- Deployed release smoke still validates app `/healthz`, public `/v1/unis`,
-  and optional API `/readyz`, but it does not yet exercise the same-origin
-  `/v1/planning-context` summary/detail path that the first page now uses for
-  descriptive planning-context rendering.
 - The approved `cbps.cnaic_name` auxiliary join now depends on the checked-in
   `data/naics/cbp-naics-titles.json` Census title artifact staying aligned with
   the registered Puerto Rico CBP source snapshot and its documented rebuild

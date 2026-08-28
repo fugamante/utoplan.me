@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "artifactVersion": "aguada-restaurant-utility-service-review-v1",
+  "scope": "puerto-rico-planning-candidate",
+  "status": "reviewed",
+  "reviewedAt": "2026-07-30",
+  "signalId": "aguada-basic-utility-service-baseline",
+  "fixedSelection": {
+    "fixtureId": "mun003_restaurant",
+    "municipalityCode": "003",
+    "municipalityLabel": "Aguada",
+    "businessCategoryId": "restaurant-cafe",
+    "selectedNaicsCodes": [
+      "722511"
+    ]
+  },
+  "decisionSummary": "The fixed Aguada restaurant scenario no longer relies on a pure utility-service source gap. Official Puerto Rico sources now establish a descriptive baseline for electric-cost governance, official outage-reporting and status paths, and documented water-service interruption exposure affecting Aguada. This remains continuity-baseline evidence only: it does not prove parcel-level service quality, outage duration, restoration speed, refrigeration loss, or business continuity readiness.",
+  "authorities": [
+    {
+      "sourceId": "pr-energy-bureau-2026-electricity-rate-order",
+      "role": "electric-cost-governance",
+      "evidence": "The Puerto Rico Energy Bureau's April 15, 2026 Final Resolution and Order on Electricity Rates established the approved electric rate structure, and the July 22, 2026 order approved the revised tariff book reflecting the current rates, riders, and charges."
+    },
+    {
+      "sourceId": "luma-outage-reporting-faq",
+      "role": "electric-outage-reporting",
+      "evidence": "LUMA's official customer guidance states that power outages, voltage fluctuations, and brownouts can be reported through the Mi LUMA web portal or by phone, which provides an official interruption-reporting path for electric service issues."
+    },
+    {
+      "sourceId": "prasa-aguada-water-service-interruption-2023",
+      "role": "aguada-water-interruption-exposure",
+      "evidence": "The Puerto Rico Aqueduct and Sewer Authority documented that sectors in Aguada experienced low pressure and water-service interruption when the regional distribution system depended on pumps and filter-plant recovery, which establishes a reviewed local water-service continuity exposure for the fixed municipality."
+    }
+  ],
+  "scenarioCoverage": [
+    {
+      "scenarioId": "small-local",
+      "reachId": "local-catchment",
+      "coverage": "descriptive-utility-baseline",
+      "notes": [
+        "The fixed scenario now has official electric and water service evidence instead of a blank utility lane.",
+        "The evidence shows operator and governance surfaces for rate and interruption handling, but not the reliability of a specific parcel or kitchen build-out."
+      ]
+    }
+  ],
+  "interpretationLimits": [
+    "These sources establish cost-governance and interruption-handling surfaces, not measured outage frequency or restoration performance for one address.",
+    "The reviewed Aguada water interruption evidence is locality-relevant but historical and does not guarantee the current condition of a specific service connection.",
+    "The artifact does not quantify refrigeration-loss risk, backup-power coverage, or utility costs for a particular lease."
+  ],
+  "nextUpgradeTargets": [
+    "Register municipality-level outage-duration or restoration evidence if an official reproducible Puerto Rico source becomes available.",
+    "Add parcel- or corridor-level utility-service evidence before reducing criticality for operating-hour or spoilage assumptions.",
+    "Add source-backed electric or water cost evidence tied to a small commercial customer profile before treating utility cost as more than a governed baseline."
+  ]
+}

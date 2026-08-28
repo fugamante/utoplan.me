@@ -34,6 +34,8 @@ data provenance controls, release validation, and ongoing audit duties.
   planning context uses CBP facts.
 - Planning-context fixture validation for municipality/category fact selection,
   confidence labels, and unresolved-question visibility.
+- Future business-profile and geographic-reach contract validation before
+  profile-dependent planning-context fixtures are accepted.
 - Production deployment preflight, smoke checks, rollback triggers, and release
   summary reporting.
 
@@ -63,9 +65,12 @@ data provenance controls, release validation, and ongoing audit duties.
 | Data source registry | `data/sources/puerto-rico.json` | Non-Puerto Rico or unlicensed source intake |
 | Business category mapping | `data/mappings/puerto-rico-business-categories.json` | Category-specific planning context turns descriptive CBP facts into unsupported scores or recommendations |
 | Planning-context fixture | `data/planning-context/*.json` | Category context hides uncertainty or drifts into recommendation language |
+| Profile/reach contract | `data/profile-reach/business-profile-reach-v1.json` | Scale scenarios change evidence relevance without explicit reach, criticality, confidence, limitations, or a next validation check |
+| Decision-signal registry | `data/profile-reach/decision-signal-registry-v1.json` | Fixed-selection profile/reach facts drift away from their documented evidence or source-gap state |
+| Reviewed signal-upgrade artifacts | `data/profile-reach/aguada-restaurant-demand-proxy-review.json`, `data/profile-reach/aguada-restaurant-island-demand-review.json`, `data/profile-reach/aguada-restaurant-corridor-logistics-review.json`, `data/profile-reach/aguada-restaurant-external-logistics-review.json`, `data/profile-reach/aguada-restaurant-permit-path-review.json`, `data/profile-reach/aguada-restaurant-construction-execution-review.json`, `data/profile-reach/aguada-restaurant-coordination-timing-review.json`, `data/profile-reach/aguada-restaurant-inspection-window-review.json`, `data/profile-reach/aguada-restaurant-support-network-review.json`, `data/profile-reach/aguada-restaurant-utility-service-review.json`, `data/profile-reach/aguada-restaurant-utility-resilience-review.json`, `data/profile-reach/aguada-restaurant-site-screening-review.json`, `data/profile-reach/aguada-restaurant-large-site-screening-review.json`, `data/profile-reach/aguada-restaurant-routine-workforce-review.json`, `data/profile-reach/aguada-restaurant-workforce-pipeline-review.json` | Reviewed authority stacks drift away from the registered signals or start implying direct demand, route reliability, external supply certainty, approval, construction timing, observed inspection throughput, support-network efficacy, measured continuity, resilience readiness, parcel readiness, large-site feasibility, or Aguada-specific staffing certainty beyond the documented baseline |
 | Migration artifacts | `db/migrations/` | Missing rollback, unsafe schema change, readiness drift |
 | Deployment verification | `scripts/verify_*.js` | Production starts with missing config or wrong mode |
-| Release smoke checks | `scripts/release_smoke_check.js` | Public app cannot serve API-backed map data |
+| Release smoke checks | `scripts/release_smoke_check.js` | Public app cannot serve API-backed map or planning-context data |
 | Docker topology | `Dockerfile*`, `docker-compose*.yml` | Container-only regressions, network wiring failures |
 
 ## 4. Test Plan
@@ -93,6 +98,7 @@ npm run test
 The release preflight stack is:
 
 ```sh
+npm run verify:node
 npm run test:node-runtime
 npm run install:all
 npm run build
@@ -119,8 +125,9 @@ Postgres validation, and the app/API proxy topology.
 A change is test-acceptable when:
 
 - `npm run test` passes from the repository root.
-- `npm run test:node-runtime` passes against the pinned Node 26 major before
-  local, CI, or Docker workflows are accepted as comparable evidence.
+- `npm run verify:node` confirms the active process uses the pinned Node 26
+  major, and `npm run test:node-runtime` passes the verifier unit contract,
+  before local, CI, or Docker workflows are accepted as comparable evidence.
 - TypeScript-generated browser and API outputs are current after source edits.
 - Docker DB, proxy, and browser compatibility checks pass for release-impacting
   app, API, database, or deployment changes.
@@ -129,6 +136,8 @@ A change is test-acceptable when:
   fixture mode.
 - `/v1/unis` is served through the same-origin app path in integrated and
   release smoke checks.
+- `/v1/planning-context` is served through the same-origin app path in release
+  smoke checks.
 - `/v1/planning-context` and `/v1/planning-context/:id` remain read-only and
   include explicit descriptive guardrails in API contracts.
 - Data source changes pass `npm run test:data-sources` and preserve
@@ -182,7 +191,8 @@ contracts, source registry rules, or migration artifact rules change.
 
 Expected coverage includes:
 
-- API root response, CORS, gzip, and status behavior.
+- API root response, exact `GET, OPTIONS` CORS method declaration,
+  `Vary: Accept-Encoding`, gzip, and status behavior.
 - API response and error envelope serialization.
 - Resource column order, row serialization, and parameterized query
   construction.
@@ -286,6 +296,8 @@ Release validation checks that the intended commit can be operated safely:
 - `UTOPLAN_DEMO_FIXTURE` is unset in production.
 - App and API artifacts come from the same release commit.
 - Public app origin can serve `/v1/unis`.
+- Public app origin can serve `/v1/planning-context` with descriptive
+  guardrails.
 - Optional API readiness URL returns healthy status from the release job
   network.
 
@@ -294,7 +306,7 @@ Release validation checks that the intended commit can be operated safely:
 | ID | Name | Procedure | Expected Result |
 | --- | --- | --- | --- |
 | TC-001 | Root test baseline | `npm run test` | All host contract and verification tests pass |
-| TC-001A | Node runtime pin | `npm run test:node-runtime` | Local validation runs on the pinned Node 26 major |
+| TC-001A | Node runtime pin | `npm run verify:node && npm run test:node-runtime` | The active process uses Node 26, the verifier unit contract passes, and root install/build/test entrypoints reject an unsupported synthetic runtime when npm lifecycle hooks are disabled |
 | TC-002 | Clean install | `npm run install:all` | Root, app, API, and modern API install from lockfiles |
 | TC-003 | Build baseline | `npm run build` | Build delegates to test baseline and passes |
 | TC-004 | API contracts | `npm run test:api` | Root, response, resource, route, and DB-free contracts pass |
@@ -308,8 +320,8 @@ Release validation checks that the intended commit can be operated safely:
 | TC-012 | Deployment config | `npm run test:deployment-config` | App/API environment verifier contracts pass |
 | TC-013 | Deployment containers | `npm run test:deployment-containers` | Container startup verifier contracts pass |
 | TC-014 | Release preflight | `npm run test:release-preflight` | Release verifier wrapper contracts pass |
-| TC-015 | Release smoke script | `npm run test:release-smoke` | Smoke-check script contracts pass |
-| TC-016 | Live release smoke | `UTOPLAN_APP_URL=<url> npm run verify:release-smoke` | Public app health and `/v1/unis` smoke pass |
+| TC-015 | Release smoke script | `npm run test:release-smoke` | Smoke-check script contracts pass, including optional structured JSON evidence |
+| TC-016 | Live release smoke | `UTOPLAN_APP_URL=<url> npm run verify:release-smoke` | Public app health, `/v1/unis`, and descriptive `/v1/planning-context` smoke pass; `UTOPLAN_RELEASE_SMOKE_JSON=1` may be used to emit sanitized machine-readable evidence |
 | TC-017 | API readiness | `curl -fsS <api-origin>/readyz` | API reports ready only with DB and schema available |
 | TC-018 | App health | `curl -fsS <app-origin>/healthz` | App reports expected service, proxy state, and no fixture leakage |
 | TC-019 | Source registry | `npm run test:data-sources` | Registered sources are Puerto Rico-only or explicitly filtered, `cbps`/`unis` entries include full preserved-column `legacySchemaMap` coverage, active `unis` geocoding policy/cache/quarantine/import-boundary plus reviewed alias/campus decision controls are pinned when coordinates are derived, and stronger-authority-blocked `unis` intake retains the registered NCES identity, U.S. Department of Education accreditation, and Puerto Rico ORLIE/JIP licensure corroboration sources as review inputs rather than direct row-import sources |
@@ -320,6 +332,27 @@ Release validation checks that the intended commit can be operated safely:
 | TC-024 | Planning-context API contract | `npm run test:api` | `GET /v1/planning-context` and `GET /v1/planning-context/:id` return read-only descriptive payloads with guardrails and reject unsupported methods with `405` |
 | TC-025 | Planning-context summary/detail UI | `npm run test:browser` | First page requests `/v1/planning-context`, loads selected detail from `/v1/planning-context/:id`, and renders descriptive municipality/category, confidence, CBP fact-value masking/approximation, limitation, and unresolved-question content without score/ranking/recommendation language |
 | TC-026 | Integrated planning-context browser path | `npm run test:browser:start-local` | Browser renders seeded same-origin `/v1/unis` and `/v1/planning-context` data through `start:local`, loads descriptive detail from the real API path, avoids the offline fixture, and does not depend on an ambient host database schema |
+| TC-027 | Decision-signal registry contract | `npm run test:decision-signals` | The decision-signal registry covers all seven lenses, keeps fixed-selection signals linked to scenarios and reaches, and stays bidirectionally aligned with the profile/reach matrix. |
+| TC-028 | Reviewed regulatory signal artifact | `npm run test:regulatory-signal-review` | The Aguada restaurant permit-path artifact stays linked to the registered regulatory signal, cites only the reviewed Puerto Rico authority stack, and keeps explicit descriptive limits. |
+| TC-028A | Reviewed construction-execution signal artifact | `npm run test:construction-execution-signal-review` | The Aguada restaurant construction-execution artifact stays linked to the registered Aguada-inclusive PEMAS source, distinguishes construction observability from the routine permit path, and keeps case timing and coordination limits explicit. |
+| TC-028B | Reviewed ecosystem support-network signal artifact | `npm run test:ecosystem-signal-review` | The Aguada restaurant support-network artifact stays linked to the registered ecosystem signal, cites only the reviewed Puerto Rico support-program authority stack, and keeps corridor-density and outcome limits explicit. |
+| TC-029 | Reviewed infrastructure signal artifact | `npm run test:infrastructure-signal-review` | The Aguada restaurant utility-service artifact stays linked to the registered infrastructure signal, cites only the reviewed Puerto Rico authority stack, and keeps explicit descriptive limits. |
+| TC-029A | Reviewed demand signal artifact | `npm run test:demand-signal-review` | The Aguada restaurant demand-proxy artifact stays linked to the registered demand signal, cites only the reviewed Puerto Rico tourism authority stack, and keeps explicit descriptive limits. |
+| TC-029B | Reviewed utility-resilience signal artifact | `npm run test:utility-resilience-signal-review` | The Aguada restaurant utility-resilience artifact stays linked to the registered resilience signal, cites only the reviewed Puerto Rico utility and water authority stack, and keeps explicit descriptive limits. |
+| TC-029C | Reviewed logistics signal artifact | `npm run test:logistics-signal-review` | The Aguada restaurant corridor-logistics artifact stays linked to the registered logistics signal, cites only the reviewed Puerto Rico transport and cargo authority stack, and keeps explicit descriptive limits. |
+| TC-029D | Reviewed external-logistics signal artifact | `npm run test:external-logistics-signal-review` | The Aguada restaurant external-logistics artifact stays linked to the registered external-connection logistics signal, cites only the reviewed Puerto Rico cargo-inventory authority stack, and keeps explicit descriptive limits. |
+| TC-030 | Reviewed site-feasibility signal artifact | `npm run test:site-feasibility-signal-review` | The Aguada restaurant site-screening artifact stays linked to the registered site-feasibility signal, cites only the reviewed Puerto Rico authority stack, and keeps explicit descriptive limits. |
+| TC-031 | Reviewed large-site signal artifact | `npm run test:large-site-signal-review` | The Aguada restaurant large-site screening artifact stays linked to the registered large-site signal, cites only the reviewed Puerto Rico authority stack, and keeps explicit descriptive limits. |
+| TC-032 | Reviewed routine-workforce signal artifact | `npm run test:routine-workforce-signal-review` | The Aguada restaurant routine-workforce artifact stays linked to the registered workforce signal for the small/local and medium/regional scenarios, cites only the reviewed Puerto Rico labor-market authority stack, and keeps explicit descriptive limits. |
+| TC-032A | Reviewed strategic-workforce signal artifact | `npm run test:workforce-signal-review` | The Aguada restaurant strategic-workforce artifact stays linked to the registered workforce signal, cites only the reviewed Puerto Rico labor-market authority stack, and keeps explicit descriptive limits. |
+| TC-033 | Business-profile and geographic-reach contract | `npm run test:profile-reach-contract` | The versioned profile/reach contract holds one reviewed municipality/category selection constant across small/local, medium/regional, and large/strategic scenarios and verifies lens order, reach, relevance, criticality, confidence, limitations, and next validation checks without scores or ranks. |
+| TC-034 | Island-wide demand signal review | `npm run test:island-demand-signal-review` | The reviewed large/strategic island-demand artifact stays tied to the fixed selection, cites only registered Puerto Rico demand authorities, and keeps destination-demand claims descriptive with explicit limitations. |
+| TC-035 | Coordination-timing signal review | `npm run test:coordination-timing-signal-review` | The reviewed large/strategic coordination artifact stays tied to the fixed selection and registered DDEC/PEMAS authority stack while keeping aggregate timing distinct from an Aguada restaurant case outcome. |
+| TC-036 | Inspection-window signal review | `npm run test:inspection-window-signal-review` | The reviewed large/strategic inspection artifact stays tied to the fixed selection and registered DDEC authority while keeping the 90-day accountability window distinct from observed inspection throughput. |
+| TC-037 | Profile/reach traceability and currency | `npm run test:profile-reach-traceability` | Every reviewed artifact registered in the decision-signal contract is represented in the maintained project and standards mirrors, profile/registry currency equals the latest reviewed artifact date, the standards evidence register reflects the same focused validation date, the completed-inspection evidence-depth lane stays explicit in roadmap and product-scope docs, and `local-supplier-route-gap` remains the sole literal source gap until a narrower reviewed source replaces it. |
+| TC-038 | Production container startup hardening | `npm run test:deployment-config`, `npm run test:deployment-containers`, and production image inspection/startup | Deployment verification accepts only PostgreSQL URL schemes without echoing invalid values, and the production app and API service commands run as the unprivileged `node` user. |
+| TC-039 | Node container base reproducibility | `npm run test:deployment-containers`, production app/API builds, and image inspection | Every Node stage uses the same reviewed Node 26 Bookworm Slim OCI digest; production images build and retain the unprivileged `node` runtime user. |
+| TC-040 | Reviewed signal orchestration | `npm run test:signal-review-orchestration` and `npm run test:signal-reviews` | Registry-listed reviewed artifacts map one-to-one to preserved focused test commands; missing artifacts, missing or duplicate focused tests, invalid command wiring, and root-chain bypass fail deterministically; the verified registry and focused tests run in sorted order. |
 
 ## 7. Test Procedure Specification
 
@@ -328,6 +361,7 @@ Release validation checks that the intended commit can be operated safely:
 1. Install dependencies:
 
    ```sh
+   npm run verify:node
    npm run test:node-runtime
    npm run install:all
    ```
@@ -423,6 +457,10 @@ Release validation checks that the intended commit can be operated safely:
    ```sh
    npm run test:planning-context
    ```
+
+Do not add profile-dependent fixture variants beyond the controlled three-scenario
+matrix until TC-027 and TC-028 remain green and new evidence is attached through
+the versioned profile/reach contract and decision-signal registry.
 
 ## 8. Test Log
 
@@ -530,7 +568,7 @@ At least two reviewers or agents should evaluate updates to this document:
 Recommended improvements to consider and implement when scoped:
 
 - Add CI artifacts for test logs and release summaries.
-- Add structured JSON output to deployment and release smoke verifiers.
+- Add structured JSON output to deployment verifiers.
 - Add explicit accessibility checks for the map-first UI.
 - Add API negative tests for malformed IDs and unsupported collection routes.
 - Add performance budgets for first page load and `/v1/unis` response time.

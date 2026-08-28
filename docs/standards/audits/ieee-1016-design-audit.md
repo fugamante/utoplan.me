@@ -46,6 +46,7 @@ Review these artifacts during each IEEE 1016 audit:
 | `docs/api-modernization.md` | API component design and compatibility boundary | Are typed API modules, generated output, and compatibility rules still aligned? |
 | `docs/frontend-inventory.md` | frontend component design and asset ownership | Are served assets, TypeScript boundaries, data hooks, and fixture rules current? |
 | `docs/product-scope.md` | product-boundary design | Does the design keep planning-context behavior descriptive and inside the approved non-recommendation scope? |
+| `docs/business-location-decision-framework.md` | planned domain-contract design | Does future context start from operating needs and assign evidence reach before place comparison? |
 | `docs/deployment-topology.md` | runtime topology and request flow | Does deployment design still match app/API/database service responsibilities? |
 | `docs/production-deployment.md` | operator design and release controls | Are health, readiness, secret, migration, rollback, and smoke-check responsibilities covered? |
 | `docs/database-migrations.md` | database evolution design | Are schema contracts, migration artifacts, rollback notes, and readiness baselines current? |
@@ -56,6 +57,7 @@ Review these artifacts during each IEEE 1016 audit:
 | `data/mappings/puerto-rico-business-categories.json` | planning-context data design | Are category-to-NAICS mappings explicit and descriptive rather than implicit scoring logic? |
 | `data/municipalities/planning-context-municipalities.json` | planning-context label design | Are active municipality labels source-backed instead of placeholder UI text? |
 | `data/planning-context/` | planning-context fixture design | Do summary/detail fixtures expose confidence, limitations, and unresolved questions? |
+| `data/profile-reach/business-profile-reach-v1.json`, `data/profile-reach/decision-signal-registry-v1.json`, and reviewed signal artifacts | profile/reach evidence design | Does the versioned registry keep scenario facts, source authorities or gaps, reach, recency, and interpretation limits explicit without introducing scoring logic? |
 | `app/app.js` | app server/proxy design | Does app serving, `/healthz`, proxying, and fixture gating match documented topology? |
 | `app/public/src/` | typed browser design | Are map, UI, and configuration responsibilities separated and tested? |
 | `dtoapi/modern/src/` | typed API design | Are routing, response envelopes, records, resources, and database access separated and tested? |
@@ -116,6 +118,13 @@ Review these artifacts during each IEEE 1016 audit:
   evidence exists?
 - Do business-category mappings and planning-context fixtures remain explicit,
   descriptive, and visibly confidence-bounded?
+- Do profile/reach facts and reviewed signal artifacts remain linked through the
+  decision-signal registry, with registered authorities or explicit source gaps
+  and scenario-specific reach?
+- Does construction-execution evidence stay separated from any claim about
+  case timing, approval, or multi-agency coordination?
+- Does ecosystem-support evidence stay separated from any claim about partner
+  density, program eligibility, or recovery success for one operator?
 - Do seed data and demo fixtures remain visibly separate from production data?
 - Does `/readyz` verify the database schema baseline required by the running
   API?
@@ -170,6 +179,9 @@ changes:
 - Compare `docs/product-scope.md`, category mappings, and planning-context
   fixtures against frontend and API behavior so descriptive-only guardrails do
   not drift silently.
+- Compare the decision framework and roadmap immediate next step against the
+  versioned profile/reach contract; do not accept broader fixture or API/UI
+  expansion unless the three-scenario matrix remains current and executable.
 - Confirm active mapped tables (`cbps`, `unis`) have consistent full
   preserved-column `legacySchemaMap` coverage in the registry and
   `docs/data-source-schema-mapping.md`.

@@ -1,10 +1,10 @@
 # utoplan.Me
 
-`utoplan.Me` is a map-first planning tool for evaluating where a business idea
-can take root in Puerto Rico. It combines local economic, workforce, education,
-zoning, and infrastructure signals so founders, investors, planners, and local
-development teams can reason about place-based opportunity before committing
-capital, time, and people.
+`utoplan.Me` is a map-first planning tool for evaluating how and where a
+business can take root in Puerto Rico. It starts with the business's operating
+model, scale, and market reach, then examines the site, demand, infrastructure,
+workforce, logistics, execution, and resilience conditions that could enable or
+constrain it before capital, time, and people are committed.
 
 This repository is the modernization fork of the original Imaginary Films
 hackathon prototype. The current work preserves the useful public behavior of
@@ -17,6 +17,8 @@ PostgreSQL-backed Node and TypeScript system with explicit data provenance.
 - Modern TypeScript Node API compatibility layer under `dtoapi/modern`.
 - PostgreSQL-backed deployment path with health and readiness checks.
 - Puerto Rico-only source-backed data intake and quarantine contracts.
+- Fixed-scenario demand, workforce, site, infrastructure, and permit baselines
+  recorded as reviewed Puerto Rico evidence where official sources are pinned.
 - Docker and host-native validation for app, API, database, and proxy paths.
 - IEEE-aligned planning, design, quality, test, and verification documentation.
 
@@ -49,10 +51,17 @@ map `/v1/unis` to `app/public/data/unis.json`. Without
 teams evaluate the economic potential of a business in Puerto Rico through
 place-based analysis.
 
-The tool is intended to correlate zoning, municipalities, education, workforce
-signals, business density, industry patterns, infrastructure, and other local
-resources so users can reason about the full lifecycle of establishing a
-business:
+The tool is intended to correlate site feasibility, demand, infrastructure,
+workforce capability, logistics, execution conditions, business density, and
+industry patterns at the reach appropriate to each business need. Municipality
+boundaries remain useful, but local catchments, regional corridors, island-wide
+access, and external connections may be more decision-relevant.
+
+Education and training are supporting workforce evidence rather than the
+organizing principle. A nearby institution matters only when its current
+programs or training capacity connect to skills the business needs.
+
+This lets users reason about the full lifecycle of establishing a business:
 
 - **Conception:** identify viable business ideas, market gaps, and promising
   locations.
@@ -136,6 +145,7 @@ The current modernization work is centered on:
 
 - `docs/api-reference.md`: complete active HTTP API reference, response contracts, and static proxy behavior.
 - `docs/api-modernization.md`: modern API replacement notes.
+- `docs/business-location-decision-framework.md`: business-scale, geographic-reach, and decision-lens model for product work.
 - `docs/database-migrations.md`: production database migration artifact strategy.
 - `docs/deployment-topology.md`: integrated app/API deployment topology.
 - `docs/frontend-inventory.md`: static app source and asset inventory.
@@ -149,6 +159,70 @@ The current modernization work is centered on:
 - `docs/data-intake.md`: Puerto Rico-only source intake contract and registry policy.
 - `docs/data-provenance.md`: known evidence and open gaps for the original
   hackathon dataset.
+- `data/profile-reach/`: versioned business-profile and geographic-reach
+  contract artifacts, decision-signal registry metadata, and scenario matrices
+  for profile-dependent planning checks.
+- `data/profile-reach/aguada-restaurant-permit-path-review.json`: reviewed
+  regulatory-path evidence for the fixed Aguada restaurant scenario, scoped to
+  official Puerto Rico permit, fire, health, and municipal-patent sources.
+- `data/profile-reach/aguada-restaurant-utility-service-review.json`: reviewed
+  utility-service baseline evidence for the fixed Aguada restaurant scenario,
+  scoped to official Puerto Rico electricity-rate governance, outage-reporting,
+  and Aguada water-service interruption sources.
+- `data/profile-reach/aguada-restaurant-utility-resilience-review.json`:
+  reviewed utility-resilience baseline evidence for the fixed Aguada restaurant
+  medium/regional and large/strategic scenarios, scoped to official Puerto
+  Rico Energy Bureau reliability and resource-adequacy oversight plus PRASA
+  emergency and operations sources.
+- `data/profile-reach/aguada-restaurant-site-screening-review.json`: reviewed
+  site-screening baseline evidence for the fixed Aguada restaurant scenario,
+  scoped to official Puerto Rico Planning Board zoning, flood, district, and
+  Aguada hazard sources.
+- `data/profile-reach/aguada-restaurant-workforce-pipeline-review.json`:
+  reviewed island-wide workforce baseline evidence for the fixed Aguada
+  restaurant strategic scenario, scoped to official Puerto Rico labor-market
+  occupation, wage, openings, and growth publications.
+- `data/profile-reach/aguada-restaurant-support-network-review.json`:
+  reviewed ecosystem and support-network baseline evidence for the fixed
+  Aguada restaurant medium/regional and large/strategic scenarios, scoped to
+  official Puerto Rico DDEC entrepreneurship and incentives guidance plus the
+  Puerto Rico housing-recovery incubator or accelerator program surface.
+- `data/profile-reach/aguada-restaurant-routine-workforce-review.json`:
+  reviewed routine workforce baseline evidence for the fixed Aguada restaurant
+  small/local and medium/regional scenarios, scoped to official Puerto Rico
+  labor-market wage, role-volume, and annual-openings publications.
+- `data/profile-reach/aguada-restaurant-demand-proxy-review.json`: reviewed
+  west-region demand proxy evidence for the fixed Aguada restaurant
+  medium/regional scenario, scoped to official Puerto Rico tourism occupancy
+  and visitor-profile publications.
+- `data/profile-reach/aguada-restaurant-island-demand-review.json`: reviewed
+  island-wide demand baseline evidence for the fixed Aguada restaurant
+  large/strategic scenario, scoped to official Puerto Rico Tourism Company
+  visitor-expenditure and passenger-movement publications.
+- `data/profile-reach/aguada-restaurant-corridor-logistics-review.json`:
+  reviewed corridor logistics baseline evidence for the fixed Aguada
+  restaurant medium/regional scenario, scoped to official Puerto Rico west-
+  corridor transport-planning and airport cargo publications.
+- `data/profile-reach/aguada-restaurant-external-logistics-review.json`:
+  reviewed external-connection logistics baseline evidence for the fixed
+  Aguada restaurant large/strategic scenario, scoped to official Puerto Rico
+  air and maritime cargo inventory.
+- `data/profile-reach/aguada-restaurant-construction-execution-review.json`:
+  reviewed strategic construction-execution observability evidence for the
+  fixed Aguada restaurant large/strategic scenario, scoped to official Puerto
+  Rico PEMAS construction-permit publication coverage.
+- `data/profile-reach/aguada-restaurant-coordination-timing-review.json`:
+  reviewed aggregate interagency recommendation-processing evidence for the
+  fixed Aguada restaurant large/strategic scenario, scoped to the official DDEC
+  permit-system Task Force report.
+- `data/profile-reach/aguada-restaurant-inspection-window-review.json`:
+  reviewed Permiso Unico inspection-accountability evidence for the fixed
+  Aguada restaurant large/strategic scenario, scoped to the official DDEC
+  90-day service window without claiming observed inspection throughput.
+- `data/profile-reach/aguada-restaurant-large-site-screening-review.json`:
+  reviewed large-site screening baseline evidence for the fixed Aguada
+  restaurant scenario, scoped to official Aguada territorial-plan, Planning
+  Board zoning, flood, district, and hazard sources.
 - `docs/unis-geocoding-policy.md`: approved reproducible geocoding policy for
   deriving `unis.lat` and `unis.long` from registered Puerto Rico source
   addresses.
@@ -168,6 +242,11 @@ The current modernization work is centered on:
 - `data/unis/orlie-jip-row-review.json`: bounded ORLIE/JIP public Power BI
   row-review artifact for the 5 identity-corroborated rows; it stores
   licensure-listing context only and excludes personal contact fields.
+- `data/unis/albizu-staged-review.json` and
+  `data/unis/sagrado-staged-review.json`: staged alias/campus and
+  public-address review artifacts for two identity-corroborated rows; neither
+  artifact creates Census cache rows, coordinates, generated output, or DB seed
+  rows.
 - `data/generated/unis-partial-import.json`: generated 4-row partial `unis`
   import slice rebuilt from the accepted Census-cache boundary by
   `node scripts/build_unis_slice.js`.
@@ -205,7 +284,37 @@ npm run test:unis-identity-review
 npm run test:unis-import
 npm run test:unis-public-address-review
 npm run test:planning-context
+npm run test:signal-review-orchestration
+npm run test:signal-reviews
+npm run test:decision-signals
+npm run test:regulatory-signal-review
+npm run test:infrastructure-signal-review
+npm run test:utility-resilience-signal-review
+npm run test:demand-signal-review
+npm run test:island-demand-signal-review
+npm run test:logistics-signal-review
+npm run test:external-logistics-signal-review
+npm run test:site-feasibility-signal-review
+npm run test:large-site-signal-review
+npm run test:routine-workforce-signal-review
+npm run test:workforce-signal-review
+npm run test:ecosystem-signal-review
+npm run test:construction-execution-signal-review
+npm run test:coordination-timing-signal-review
+npm run test:inspection-window-signal-review
+npm run test:profile-reach-traceability
+npm run test:profile-reach-contract
 ```
+
+`npm run test:profile-reach-traceability` also fails if the maintained roadmap,
+product-scope, standards evidence register, and registry drift away from the
+current next evidence-depth lane or if additional literal profile/reach source
+gaps appear without review.
+
+`npm run test:signal-reviews` is the stable complete signal-evidence gate. It
+discovers the registry-listed reviewed artifacts, verifies a one-to-one mapping
+to the preserved focused commands, runs the orchestration and decision-signal
+contracts, and then runs every focused signal review in deterministic order.
 
 Data-maintenance helpers:
 
@@ -236,6 +345,12 @@ path.
 `npm run docker:test:db` builds a disposable seeded Postgres image from
 `Dockerfile.postgres-test`, runs the DB-backed modern API contract tests in a
 current Node container, and tears the Compose stack down afterward.
+
+The production app and modern API images run their service commands as the
+unprivileged image user `node`; neither runtime requires root privileges.
+All Node Docker stages also use one reviewed OCI digest. Weekly update
+discovery, review ownership, validation, advisory response, and rollback are
+defined in `docs/container-base-refresh.md`.
 
 `npm run docker:test:proxy` uses the same seeded Postgres image, starts
 `npm run start:local` inside the test container, and verifies `/v1/unis` is

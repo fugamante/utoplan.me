@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "artifactVersion": "aguada-restaurant-utility-resilience-review-v1",
+  "scope": "puerto-rico-planning-candidate",
+  "status": "reviewed",
+  "reviewedAt": "2026-08-05",
+  "signalId": "utility-resilience-gap",
+  "fixedSelection": {
+    "fixtureId": "mun003_restaurant",
+    "municipalityCode": "003",
+    "municipalityLabel": "Aguada",
+    "businessCategoryId": "restaurant-cafe",
+    "selectedNaicsCodes": [
+      "722511"
+    ]
+  },
+  "decisionSummary": "The fixed Aguada restaurant matrix no longer relies on a pure utility-resilience source gap for the medium/regional and large/strategic scenarios. Official Puerto Rico Energy Bureau oversight now establishes current electric reliability-reporting and resource-adequacy context, while official PRASA emergency and operations pages establish island-wide water-service continuity and emergency-response surfaces. This remains resilience-baseline evidence only: it does not prove corridor-level restoration time, parcel-level outage frequency, backup-power capacity, water pressure at one address, refrigeration survival, or one operator's continuity plan.",
+  "authorities": [
+    {
+      "sourceId": "pr-energy-bureau-jan-2026-reliability-metrics-report",
+      "role": "current-electric-reliability-reporting",
+      "evidence": "The January 2026 filing to the Puerto Rico Energy Bureau states that LUMA submitted the required monthly system SAIDI and SAIFI metrics for Puerto Rico in compliance with the Bureau's directives."
+    },
+    {
+      "sourceId": "pr-energy-bureau-reliability-metrics-order-2025",
+      "role": "reliability-metric-governance",
+      "evidence": "The Puerto Rico Energy Bureau's May 16, 2025 order states that reliability is of particular importance to stakeholders and requires monthly reporting of system SAIDI and SAIFI metrics, while also noting that generation-related outages experienced by customers are not fully reflected in those reported T and D metrics."
+    },
+    {
+      "sourceId": "pr-energy-bureau-essa-reliability-order-2026",
+      "role": "resource-adequacy-and-load-shed-context",
+      "evidence": "The Puerto Rico Energy Bureau's April 24, 2026 order states that Puerto Rico continues to need firm capacity to improve electric-system reliability and cites the Resource Adequacy Study's finding that additional storage can reduce ongoing load-shed exposure caused in considerable part by inadequate capacity resources."
+    },
+    {
+      "sourceId": "prasa-hurricane-season-guidance",
+      "role": "water-emergency-response-surface",
+      "evidence": "PRASA's official hurricane-season guidance provides an emergency information center and customer-service center zones for water and sewer emergencies, which establishes an official storm-response surface for utility continuity events."
+    },
+    {
+      "sourceId": "prasa-mission-operations-profile",
+      "role": "island-wide-water-operations-context",
+      "evidence": "PRASA states that it is the only water company on the island, serves more than 1.2 million active customers, and operates a complex island-wide network of dams, treatment plants, pump stations, wells, tanks, and distribution infrastructure."
+    }
+  ],
+  "scenarioCoverage": [
+    {
+      "scenarioId": "medium-regional",
+      "reachId": "regional-corridor",
+      "coverage": "descriptive-utility-resilience-baseline",
+      "notes": [
+        "The fixed medium/regional scenario now has official Puerto Rico electric reliability and water emergency-response evidence instead of a blank resilience lane.",
+        "The evidence shows reporting, adequacy, and emergency-response surfaces, but it does not prove corridor-level restoration speed, backup generation access, or continuity performance for one multi-shift site."
+      ]
+    },
+    {
+      "scenarioId": "large-strategic",
+      "reachId": "island-wide",
+      "coverage": "descriptive-utility-resilience-baseline",
+      "notes": [
+        "The fixed large-strategic scenario now has official island-wide electric reliability and water-operations context for resilience review.",
+        "The evidence still does not prove destination-scale backup power, redundant water supply, fuel logistics, or whether one large-format operator can maintain continuity through major disruptions."
+      ]
+    }
+  ],
+  "interpretationLimits": [
+    "These sources establish official reliability-reporting, resource-adequacy, and water emergency-response surfaces, not parcel-level outage duration, restoration performance, or utility redundancy for one address.",
+    "The reviewed electric evidence is system-level Puerto Rico context and does not separate Aguada-specific service quality from island-wide or corridor-wide continuity conditions.",
+    "The reviewed PRASA sources establish island-wide operational scale and emergency contact surfaces, but they do not prove pressure stability, storage, or restoration time for one corridor or facility.",
+    "The artifact does not imply that a medium or large restaurant operation should proceed in Aguada or that one site can withstand utility disruption without additional continuity controls."
+  ],
+  "nextUpgradeTargets": [
+    "Register corridor-level or municipality-level outage-duration or restoration evidence if an official reproducible Puerto Rico source becomes available.",
+    "Add parcel-specific backup-power, water-storage, or fuel-delivery evidence before reducing criticality for multi-shift or destination-format continuity assumptions.",
+    "Add source-backed continuity cost evidence only if it can be tied to a reviewed Puerto Rico authority or reproducible operator-grade artifact."
+  ]
+}

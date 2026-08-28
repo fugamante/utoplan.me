@@ -29,9 +29,16 @@
   Census-cache-backed slice. Legacy `desc` is populated only from
   `data/unis/partial-source-fields.json` for those included rows.
 - Planning-context responses include explicit descriptive-only guardrails (`descriptiveOnly`, `noScores`, `noRankings`, `noRecommendations`).
+- Planning-context summaries now also carry fixture `status`, `updatedAt`, and
+  `sourceCount` so the frontend can surface candidate-grade state without
+  inferring it locally.
 - The first-page frontend now consumes `GET /v1/planning-context` to render descriptive municipality/category planning-context options and requests `GET /v1/planning-context/:id` for the selected option detail.
 - The first-page detail panel now renders disclosure-limited CBP values as `masked (disclosure-limited)` and rounded/noise-flagged values as `approx. <value>` so the UI does not imply false precision.
 - The planning-context detail contract now requires `cbpFacts[].naicsTitle`, resolved from `data/naics/planning-context-naics-titles.json`, so the UI can render source-backed industry labels without relying on fixture-local free text.
+- The first-page app now renders candidate-review status, update date, and
+  registered-source count for planning-context list/detail states, and renders
+  the first explicit `/v1/unis` coverage limitation under the partial-coverage
+  label.
 - `dtoapi/modern/test/db_contract_test.js` verifies the seeded read endpoint set and missing-record behavior against the Docker database.
 - Known record routes reject unsupported methods with `405 Method Not Allowed` and avoid exposing raw database errors to clients.
 - Planning-context collection and record routes reject unsupported methods with `405 Method Not Allowed`.
@@ -60,8 +67,11 @@ The modern API must pass preserved endpoint contracts before additional endpoint
 ## Next Slice
 
 Keep new API behavior in typed sources under `dtoapi/modern/src/` and
-compatibility tests under `dtoapi/modern/test/`. The next planning-context
-data improvement should focus on expanding the NAICS title registry and fixture
-coverage beyond the current municipality registry subset, plus other
-documented fixture-quality gaps before adding decision-oriented product
-behavior.
+compatibility tests under `dtoapi/modern/test/`. The versioned business-profile
+and geographic-reach contract now lives outside the API under
+`data/profile-reach/business-profile-reach-v1.json`, and the linked
+decision-signal registry now lives alongside it under
+`data/profile-reach/decision-signal-registry-v1.json` with focused validation
+in `npm run test:decision-signals` and `npm run test:profile-reach-contract`;
+keep both as controlled product/data artifacts until stronger source-backed
+evidence justifies API exposure or planning-context fixture expansion.

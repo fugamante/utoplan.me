@@ -36,6 +36,8 @@ Review these artifacts during each IEEE 730 audit:
   fixture policy, TypeScript boundary, and browser smoke coverage.
 - `docs/product-scope.md`: current descriptive product boundary for planning
   context and non-recommendation constraints.
+- `docs/business-location-decision-framework.md`: planned operating-profile,
+  decision-lens, geographic-reach, and scale-scenario quality boundary.
 - `docs/database-migrations.md`: migration artifact format, release policy, and
   database review checklist.
 - `docs/data-provenance.md`: verified source evidence, unresolved provenance
@@ -61,6 +63,10 @@ Review these artifacts during each IEEE 730 audit:
   `cnaic_name`.
 - `data/planning-context/`: descriptive municipality/category fixture slices
   with visible confidence and limitation metadata.
+- `data/profile-reach/business-profile-reach-v1.json`,
+  `data/profile-reach/decision-signal-registry-v1.json`, and reviewed signal
+  artifacts: controlled scenario matrix, evidence authority, explicit gap,
+  reach, recency, and interpretation-limit records.
 - `package.json`, `app/package.json`, `dtoapi/package.json`, and
   `dtoapi/modern/package.json`: authoritative scripts, dependencies, and audit
   surfaces.
@@ -82,6 +88,9 @@ Review these artifacts during each IEEE 730 audit:
   deployment rollback?
 - Are quality gates documented in one or more executable root commands rather
   than only described in prose?
+- Do `npm run test:signal-review-orchestration` and
+  `npm run test:signal-reviews` prove exact registry/artifact/focused-test
+  coverage while preserving linkage and descriptive-only language?
 - Are quality responsibilities clear for API contracts, frontend smoke
   behavior, database migrations, data intake, deployment, and security audits?
 - Do new or changed docs avoid weakening the current production safety
@@ -90,8 +99,10 @@ Review these artifacts during each IEEE 730 audit:
 ### Process And Standards
 
 - Are root commands in `README.md` still valid and aligned with package scripts?
-- Do `.node-version`, `.nvmrc`, package `engines`, and `npm run test:node-runtime`
-  still agree on the reviewed Node major?
+- Do `.node-version`, `.nvmrc`, package `engines`, and
+  `npm run test:node-runtime` still agree on the reviewed Node major, and does
+  `npm run verify:node` independently confirm the active process when npm
+  lifecycle hooks are disabled?
 - Does the modernization roadmap record current status and next action without
   stale phase claims?
 - Do code changes preserve the documented boundary between dependency-free app
@@ -163,6 +174,9 @@ Review these artifacts during each IEEE 730 audit:
   kept visibly separate?
 - Do candidate business-category mappings and planning-context fixtures remain
   descriptive and free of score, ranking, or recommendation drift?
+- Does profile/reach work remain blocked from broader fixture expansion until
+  the versioned contract and focused executable test stay aligned with the
+  three-scenario acceptance matrix?
 - Do exposed planning-context municipality labels remain source-backed instead
   of falling back to placeholder names?
 
@@ -265,13 +279,31 @@ work, but specific enough that the next auditor can reproduce the conclusion.
 
 ## Active Recommendations
 
+### RECO-730-2026-08-05-01
+
+- Class: required hardening
+- Finding: the production API image already ran as the unprivileged `node`
+  user, while the production app image still inherited the base image's root
+  runtime despite requiring no privileged operation after its build stage.
+- Acceptance evidence:
+  - `Dockerfile` transfers the runtime workspace to `node:node` and declares
+    `USER node` before the app command.
+  - `test/deployment_container_contract_test.js` asserts the app image's
+    unprivileged user declaration and its ordering before `CMD`.
+  - `npm run test:deployment-containers` and a production app image build pass.
+- Revisit trigger:
+  - Any production Dockerfile, runtime user, app startup command, writable-path
+    requirement, or deployment-container contract change.
+- Status: implemented (2026-08-05); commit `6de22e5` moves the app runtime to
+  the unprivileged `node` user and adds focused contract coverage.
+
 ### RECO-730-2026-06-08-01
 
 - Class: required hardening
-- Finding: deployed release smoke currently validates app `/healthz`,
-  `/v1/unis`, and optional API `/readyz`, but it does not validate the
-  same-origin `/v1/planning-context` path that the first page now depends on
-  for descriptive planning-context rendering.
+- Finding: deployed release smoke previously validated app `/healthz`,
+  `/v1/unis`, and optional API `/readyz`, but did not validate the same-origin
+  `/v1/planning-context` path that the first page now depends on for
+  descriptive planning-context rendering.
 - Acceptance evidence:
   - `scripts/release_smoke_check.js` validates a successful
     `GET /v1/planning-context` response from `UTOPLAN_APP_URL`.
@@ -280,7 +312,8 @@ work, but specific enough that the next auditor can reproduce the conclusion.
   - `docs/production-deployment.md`, `docs/standards/ieee-829-test-document.md`,
     and this audit corpus describe the expanded deployed smoke scope.
 - Revisit trigger:
-  - Before the next production-style release candidate that relies on the
-    first-page planning-context baseline, or sooner if release, rollback, or
-    smoke decisions need to rely on planning-context availability.
-- Status: proposed
+  - Next time the release smoke script, first-page planning-context route, or
+    release-smoke evidence contract changes.
+- Status: implemented; `scripts/release_smoke_check.js` now validates the
+  public app-origin `/v1/planning-context` envelope and descriptive guardrail
+  flags, with coverage in `test/release_smoke_check_test.js`.

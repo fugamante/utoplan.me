@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "artifactVersion": "aguada-restaurant-site-screening-review-v1",
+  "scope": "puerto-rico-planning-candidate",
+  "status": "reviewed",
+  "reviewedAt": "2026-07-30",
+  "signalId": "site-ready-kitchen-gap",
+  "fixedSelection": {
+    "fixtureId": "mun003_restaurant",
+    "municipalityCode": "003",
+    "municipalityLabel": "Aguada",
+    "businessCategoryId": "restaurant-cafe",
+    "selectedNaicsCodes": [
+      "722511"
+    ]
+  },
+  "decisionSummary": "The fixed Aguada restaurant scenario no longer relies on a pure site-feasibility source gap. Official Puerto Rico Planning Board sources now establish a descriptive site-screening baseline through official zoning and land-use viewers, official flood-determination access, district definitions for flood and commercial classes, and Aguada's reviewed hazard context. This remains screening-baseline evidence only: it does not prove lease readiness, kitchen retrofit condition, frontage fit, parking adequacy, landlord approval, or parcel-specific permit outcome.",
+  "authorities": [
+    {
+      "sourceId": "pr-jp-mipr-site-screening",
+      "role": "official-zoning-and-land-use-screening",
+      "evidence": "The Puerto Rico Planning Board presents Mi Puerto Rico Interactivo and the interactive zoning catalog as official online services for maps, uses, regulations, and classifications, while the MIPR disclaimer states the data represent official Planning Board-controlled documents and files."
+    },
+    {
+      "sourceId": "pr-jp-flood-determination-service",
+      "role": "official-flood-screening",
+      "evidence": "The Planning Board states that its standard flood-determination service provides official property flood information based on FIRM and ABFE criteria, and that the Planning Board flood portal uses the official adopted flood-risk maps for Puerto Rico."
+    },
+    {
+      "sourceId": "aguada-hazard-mitigation-plan-2020",
+      "role": "aguada-hazard-context",
+      "evidence": "Aguada's 2020 hazard mitigation summary identifies flood as the municipality's most significant natural hazard and states that the risk analysis used geographic information system data to assess hazard impacts."
+    },
+    {
+      "sourceId": "pr-jp-district-legend",
+      "role": "district-definition-reference",
+      "evidence": "The Planning Board district legend defines flood districts such as A, AE, and X, and also defines commercial and developed-area classes used when screening whether a parcel may require deeper site and permit review."
+    }
+  ],
+  "scenarioCoverage": [
+    {
+      "scenarioId": "small-local",
+      "reachId": "site-bound",
+      "coverage": "descriptive-site-screening-baseline",
+      "notes": [
+        "The fixed scenario now has official screening surfaces for flood exposure, zoning and classification context, and Aguada-specific hazard priority instead of a blank site-feasibility lane.",
+        "The evidence still stops at parcel screening and does not prove that an existing kitchen space, frontage condition, or landlord arrangement is ready for operation."
+      ]
+    },
+    {
+      "scenarioId": "medium-regional",
+      "reachId": "site-bound",
+      "coverage": "descriptive-site-screening-baseline",
+      "notes": [
+        "The same official Planning Board screening surfaces apply to a larger-format restaurant site in Aguada.",
+        "The evidence does not yet establish larger-format parking, loading, circulation, or retrofit feasibility for one property."
+      ]
+    }
+  ],
+  "interpretationLimits": [
+    "These sources establish official screening and hazard-review surfaces, not parcel-specific readiness or legal clearance for one address.",
+    "The reviewed Aguada hazard evidence is municipality-level and does not replace parcel engineering, lease review, or building-condition inspection.",
+    "The artifact does not determine kitchen retrofit cost, frontage visibility, parking adequacy, or whether a landlord will support restaurant operations.",
+    "The artifact does not imply that a restaurant should open in Aguada or that a specific site is ready for operation."
+  ],
+  "nextUpgradeTargets": [
+    "Register parcel-specific or corridor-specific frontage, access, or parking evidence if an official reproducible Puerto Rico source becomes available.",
+    "Add building-condition or kitchen-retrofit evidence only if it can be tied to an official or operator-reviewed source without becoming a one-off anecdote.",
+    "Add parcel-level flood or zoning determination evidence before reducing criticality for location-specific launch assumptions."
+  ]
+}

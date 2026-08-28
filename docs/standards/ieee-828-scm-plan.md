@@ -22,6 +22,8 @@ Controlled configuration domains:
 - Data source registry and provenance records under `data/` and `docs/`.
 - Candidate business-category mappings and planning-context fixtures under
   `data/`.
+- The versioned profile/reach contract, decision-signal registry, and reviewed
+  signal evidence artifacts under `data/profile-reach/`.
 - Standards documents under `docs/standards/`.
 - Production deployment, release, rollback, and readiness documentation.
 
@@ -75,14 +77,17 @@ Primary configuration items:
   `data/naics/planning-context-naics-titles.json`.
 - Candidate business-category mappings and planning-context fixtures under
   `data/`.
-- Product, deployment, provenance, and standards documentation.
+- Product, deployment, provenance, and standards documentation, including the
+  canonical business-location decision framework and production-readiness
+  decision board.
 
 Secondary configuration evidence:
 
 - Test command output summarized in PRs or release notes.
 - Image tags, commit SHAs, and deployment environment identifiers.
 - Database backup identifiers and migration execution records.
-- Release smoke results for app `/healthz`, API `/readyz`, and public `/v1/unis`.
+- Release smoke results for app `/healthz`, public `/v1/unis`, public
+  `/v1/planning-context`, and optional API `/readyz`.
 
 ### 5.2 Naming And Version Identification
 
@@ -99,8 +104,9 @@ Runtime baselines are named by contract, not by environment accident. The curren
 The development baseline is the current modernization branch plus all committed lockfiles and tests. A development baseline is acceptable when:
 
 - Root installation can be reproduced from lockfiles.
-- `npm run test:node-runtime` passes against the pinned Node 26 major from
-  `.node-version` and `.nvmrc`.
+- `npm run verify:node` confirms the active process uses the Node 26 major from
+  `.node-version` and `.nvmrc`, and `npm run test:node-runtime` passes the
+  verifier's unit contract.
 - `npm run build` has defined behavior.
 - Affected contract tests pass or failures are documented.
 - Documentation changed by the work reflects the actual behavior.
@@ -133,7 +139,8 @@ Release candidates must satisfy:
 - Production configuration verification passes.
 - API `/readyz` verifies the required database contract.
 - App `/healthz` confirms proxy mode and does not indicate fixture mode.
-- Public `/v1/unis` is served through the app origin.
+- Public `/v1/unis` and `/v1/planning-context` are served through the app
+  origin.
 - Database migration and rollback notes are present when data shape changes.
 - When API exposure is public, external API smoke checks and edge controls are verified.
 
@@ -235,14 +242,16 @@ Lockfiles are controlled artifacts and must be updated only when dependency inte
 
 Docker assets are controlled artifacts:
 
-- Every Node stage uses the same reviewed Node 26 Bookworm Slim tag and OCI
-  index digest. `.github/dependabot.yml` checks weekly, while the modernization
-  maintainer owns review, validation, merge, and advisory response.
-- `docs/container-base-refresh.md` defines update and rollback procedures;
-  `test/deployment_container_contract_test.js` rejects partial digest updates.
+- Every Node `FROM` instruction uses the same reviewed
+  `node:26-bookworm-slim@sha256:<index-digest>` reference.
+- `.github/dependabot.yml` checks Docker dependencies weekly; the modernization
+  maintainer owns review and merge, and `docs/container-base-refresh.md` is the
+  update, advisory-response, validation, and rollback procedure.
 
-- `Dockerfile` validates clean install, build, and app serving.
-- `Dockerfile.modern-api` builds the modern API runtime.
+- `Dockerfile` validates clean install and build, then serves the app as the
+  unprivileged image user `node`.
+- `Dockerfile.modern-api` builds the modern API runtime and drops to the
+  unprivileged image user `node` before its verifier/server command.
 - `Dockerfile.postgres-test` and `Dockerfile.modern-db-test` support seeded DB validation.
 - `Dockerfile.proxy-test` validates same-origin proxy behavior.
 - `Dockerfile.start-local-browser-test` validates rendered map behavior against the seeded integrated path.
@@ -251,6 +260,8 @@ Docker assets are controlled artifacts:
   for intentional public API smoke paths.
 - `.node-version`, `.nvmrc`, and `scripts/verify_node_runtime.js` define the
   authoritative local and CI Node runtime pin.
+- `test/deployment_container_contract_test.js` is the deterministic control
+  that rejects an unreviewed tag, digest, or partial Node-stage refresh.
 
 Generated `node_modules` directories and compiled CommonJS output under `dtoapi/modern/lib/` are not source baselines. Committed browser assets under `app/public/js/` are controlled because they are directly served by the static app.
 

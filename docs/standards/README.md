@@ -8,6 +8,20 @@ The corpus is not archival. It must be updated whenever implementation,
 validation, deployment, data provenance, risk, or project-management behavior
 changes in a way that affects the documented controls.
 
+These documents are tailored engineering controls. They do not establish IEEE
+certification, formal compliance, or audited assurance.
+
+## Applicability And Evidence
+
+- `ieee-applicability.md` records the project profile, all seven family
+  decisions, owners, acceptance criteria, freshness, and escalation triggers.
+- `evidence-register.md` records the current controlled evidence and unresolved
+  risks without duplicating the detailed plans or audit corpuses.
+- The selected floor is `standard`. Any introduction of personal data,
+  write-capable production paths, automated ranking/recommendation decisions,
+  materially consequential claims, or binding assurance obligations requires
+  immediate high-assurance reassessment.
+
 ## Standards Documents
 
 | Standard | Project document | Audit corpus |
@@ -96,13 +110,31 @@ Audits should use repository evidence first:
 - `docs/api-modernization.md`
 - `docs/frontend-inventory.md`
 - `docs/product-scope.md`
+- `docs/business-location-decision-framework.md`
 - `docs/data-intake.md`
 - `docs/unis-geocoding-policy.md`
 - `docs/data-provenance.md`
 - `docs/data-source-schema-mapping.md`
+- `data/profile-reach/business-profile-reach-v1.json`
+- `data/profile-reach/decision-signal-registry-v1.json`
+- `data/profile-reach/aguada-restaurant-permit-path-review.json`
+- `data/profile-reach/aguada-restaurant-utility-service-review.json`
+- `data/profile-reach/aguada-restaurant-site-screening-review.json`
+- `data/profile-reach/aguada-restaurant-demand-proxy-review.json`
+- `data/profile-reach/aguada-restaurant-island-demand-review.json`
+- `data/profile-reach/aguada-restaurant-external-logistics-review.json`
+- `data/profile-reach/aguada-restaurant-support-network-review.json`
+- `data/profile-reach/aguada-restaurant-construction-execution-review.json`
+- `data/profile-reach/aguada-restaurant-coordination-timing-review.json`
+- `data/profile-reach/aguada-restaurant-inspection-window-review.json`
+- `data/profile-reach/aguada-restaurant-large-site-screening-review.json`
+- `data/profile-reach/aguada-restaurant-routine-workforce-review.json`
+- `data/profile-reach/aguada-restaurant-workforce-pipeline-review.json`
 - `docs/database-migrations.md`
 - `docs/deployment-topology.md`
 - `docs/production-deployment.md`
+- `docs/container-base-refresh.md`
+- `docs/production-readiness-decision-board.md`
 - `.node-version`
 - `.nvmrc`
 - `db/migrations/`
@@ -119,8 +151,10 @@ Audits should use repository evidence first:
   `scripts/verify_node_runtime.js`, `scripts/start_integrated.js`,
   `scripts/verify_deployment_config.js`, `scripts/release_preflight.js`, and
   `scripts/release_smoke_check.js`
-- Dockerfiles, Compose files, and CI configuration such as
-  `docker-compose.public-api.yml` and `.github/workflows/ci.yml`
+- Focused contract tests such as `test/profile_reach_contract_test.js`
+- Dockerfiles, Compose files, and CI/dependency-update configuration such as
+  `docker-compose.public-api.yml`, `.github/workflows/ci.yml`, and
+  `.github/dependabot.yml`
 - Tests under `app/test/`, `dtoapi/test/`, `dtoapi/modern/test/`, and `test/`
 
 External standards references may inform structure, but repository behavior is

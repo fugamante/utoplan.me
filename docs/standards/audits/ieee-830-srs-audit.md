@@ -53,6 +53,8 @@ Inspect these artifacts during each IEEE 830 audit:
   data URL policy, fixture constraints, and browser smoke expectations.
 - `docs/product-scope.md`: descriptive product boundary for planning-context
   behavior and non-recommendation constraints.
+- `docs/business-location-decision-framework.md`: authoritative operating
+  profile, decision-lens, geographic-reach, and scale-scenario direction.
 - `docs/data-intake.md`: Puerto Rico-only source acceptance requirements,
   registry fields, current candidates, and blocked legacy tables.
 - `docs/data-provenance.md`: verified legacy evidence, unresolved source gaps,
@@ -75,6 +77,10 @@ Inspect these artifacts during each IEEE 830 audit:
   details.
 - `data/planning-context/`: descriptive planning-context fixture evidence for
   municipality/category summary and detail behavior.
+- `data/profile-reach/business-profile-reach-v1.json`,
+  `data/profile-reach/decision-signal-registry-v1.json`, and reviewed signal
+  artifacts: controlled scenario, evidence authority or gap, reach, recency,
+  interpretation-limit, and non-recommendation requirement evidence.
 - `db/migrations/`: database requirement and readiness baseline evidence.
 - `.node-version`, `.nvmrc`, and `scripts/verify_node_runtime.js`: reviewed
   runtime requirement evidence for local, CI, and Docker validation parity.
@@ -147,6 +153,21 @@ the current project surface.
   separate requirement classes.
 - Candidate business-category mappings and planning-context fixtures remain
   descriptive and traceable, not implicit scoring logic.
+- Profile-dependent context starts from operating needs, assigns each fact a
+  decision-relevant reach, and remains bounded to the versioned contract until
+  broader runtime behavior is explicitly accepted.
+- Each profile/reach fact resolves through the decision-signal registry to a
+  registered Puerto Rico source or an explicit source gap; reviewed evidence
+  artifacts remain descriptive and do not imply parcel, corridor, workforce,
+  regulatory, utility, or profitability recommendations.
+- Construction-permit publication evidence may distinguish an Aguada-inclusive
+  construction review surface from routine existing-location permitting, but
+  requirements must retain explicit limits on case timing, approval, and
+  interagency coordination.
+- Ecosystem-support evidence may distinguish official entrepreneurship,
+  incentives, and incubator surfaces from a blank support-network lane, but
+  requirements must retain explicit limits on partner density, eligibility,
+  and recovery outcome.
 - Active planning-context municipality labels remain source-backed and do not
   regress to placeholder naming in API or browser-visible responses.
 - Requirements identify provenance gaps as blockers, not as implementation
@@ -160,7 +181,8 @@ the current project surface.
 - Production API startup fails fast when required database configuration is
   missing.
 - Release requirements include app `/healthz`, API `/healthz`, API `/readyz`,
-  public `/v1/unis`, and rollback trigger checks.
+  public `/v1/unis`, public `/v1/planning-context`, and rollback trigger
+  checks.
 - Required environment variables are documented and verifiable before service
   startup.
 
@@ -169,7 +191,8 @@ the current project surface.
 - Requirements include reproducible install, build, test, and start workflows
   from the repository root.
 - Requirements keep the reviewed Node 26 runtime explicit across version pins,
-  package metadata, CI, and `npm run test:node-runtime`.
+  package metadata, CI, `npm run verify:node` active-process verification, and
+  the `npm run test:node-runtime` verifier unit contract.
 - Requirements include dependency and generated-output hygiene.
 - Requirements include security expectations for dependency audits, secret
   handling, private API exposure, and raw error suppression.
@@ -342,6 +365,26 @@ Review date:
 ```
 
 ## Active Recommendations
+
+### RECO-830-2026-07-27-01
+
+- Class: required documentation
+- Finding: the roadmap and product scope made the versioned business-profile
+  and geographic-reach contracts the next product milestone, but the SRS and
+  peer standards still treated future planning-context work as
+  municipality/category expansion without the new operating-profile boundary.
+- Acceptance evidence:
+  - `docs/standards/ieee-830-srs.md` records FR-016 as planned, names all five
+    reach classes, and does not claim executable implementation.
+  - The IEEE 1016, 1058, 730, 828, 829, and 1012 documents and audit corpuses
+    identify the same canonical framework and planned acceptance boundary.
+  - Standards consistency checks confirm the framework path and FR-016/TC-027
+    trace remain present.
+- Revisit trigger:
+  - The first implementation of a business-profile schema, reach schema, or
+    profile-dependent planning-context fixture.
+- Status: implemented (2026-07-27); documentation now distinguishes the
+  approved next contract from current runtime behavior.
 
 ### RECO-830-2026-06-08-01
 

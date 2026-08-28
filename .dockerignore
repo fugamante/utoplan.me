@@ -4,6 +4,7 @@
 node_modules
 app/node_modules
 dtoapi/node_modules
+dtoapi/modern/node_modules
 dtoapi/modern/lib
 
 npm-debug.log*

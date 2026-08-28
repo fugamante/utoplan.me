@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "scope": "puerto-rico-only",
-  "retrievedAt": "2026-06-11",
+  "retrievedAt": "2026-08-05",
   "sources": [
     {
       "id": "datospr-cbp-2014-puerto-rico",
@@ -281,7 +281,9 @@
         "status": "reviewed-excluded",
         "reviewArtifactPath": "data/unis/identity-review.json",
         "followupReviewArtifactPath": "data/unis/corroborated-identity-followup-review.json",
+        "albizuStagedReviewArtifactPath": "data/unis/albizu-staged-review.json",
         "sagradoStagedReviewArtifactPath": "data/unis/sagrado-staged-review.json",
+        "sagradoGeocoderCandidateReviewArtifactPath": "data/geocoding/sagrado-geocoder-candidate-review.json",
         "matchReviewArtifactPath": "data/unis/ipeds-alias-campus-review.json",
         "quarantineArtifactPath": "data/geocoding/unis-import-quarantine.json",
         "authoritySourceIds": [
@@ -319,8 +321,8 @@
               "lat",
               "long"
             ],
-            "summary": "The current Datos.PR directory plus single auxiliary audit path is not a strong enough institution authority for all real Puerto Rico institutions; the row-level identity review keeps all 27 identity-quarantined rows excluded, including 5 NCES+DAPIP+ORLIE/JIP-corroborated rows. Sagrado has a staged alias/campus and public-address decision, but remains not import-ready without Census-cache evidence.",
-            "resolutionEvidence": "Use data/unis/identity-review.json as the current exclusion contract. It records 5 NCES College Navigator corroborations, 5 DAPIP accreditation corroborations, 5 ORLIE/JIP row-level licensure-listing corroborations from data/unis/orlie-jip-row-review.json, and 22 rows still without row-level authority corroboration, with zero identity-promoted, coordinate-eligible, or generated-output-eligible rows. Use data/unis/corroborated-identity-followup-review.json as the current five-row follow-up decision and data/unis/sagrado-staged-review.json as the single Sagrado staged alias/campus and public-address decision. Future review may use the registered NCES College Navigator Puerto Rico CSV export, U.S. Department of Education DAPIP Puerto Rico accreditation search, Puerto Rico Department of State ORLIE/JIP public postsecondary listing, Sagrado official contact page, and MSCHE institution page as review inputs. Do not treat any of them as a direct replacement row source, and keep this blocker open until all row-level authority, alias/campus, public-address, and Census-cache evidence gates are recorded for any row reconsidered for import."
+            "summary": "The current Datos.PR directory plus single auxiliary audit path is not a strong enough institution authority for all real Puerto Rico institutions; the row-level identity review keeps all 27 identity-quarantined rows excluded, including 5 NCES+DAPIP+ORLIE/JIP-corroborated rows. Albizu and Sagrado have staged alias/campus and public-address decisions, but remain not import-ready without Census-cache evidence.",
+            "resolutionEvidence": "Use data/unis/identity-review.json as the current exclusion contract. It records 5 NCES College Navigator corroborations, 5 DAPIP accreditation corroborations, 5 ORLIE/JIP row-level licensure-listing corroborations from data/unis/orlie-jip-row-review.json, and 22 rows still without row-level authority corroboration, with zero identity-promoted, coordinate-eligible, or generated-output-eligible rows. Use data/unis/corroborated-identity-followup-review.json as the current five-row follow-up decision, data/unis/albizu-staged-review.json and data/unis/sagrado-staged-review.json as staged alias/campus and public-address decisions, and data/geocoding/sagrado-geocoder-candidate-review.json as read-only non-cache geocoder candidate evidence for Sagrado. Future review may use the registered NCES College Navigator Puerto Rico CSV export, U.S. Department of Education DAPIP Puerto Rico accreditation search, Puerto Rico Department of State ORLIE/JIP public postsecondary listing, official Albizu pages, Sagrado official contact page, and MSCHE institution pages as review inputs. Do not treat any of them as a direct replacement row source, and keep this blocker open until all row-level authority, alias/campus, public-address, and Census-cache evidence gates are recorded for any row reconsidered for import."
           },
           {
             "id": "reviewed-census-geocode-cache-required",
@@ -459,7 +461,7 @@
       "sourceUrl": "https://nces.ed.gov/collegenavigator/",
       "resourceUrl": "https://nces.ed.gov/collegenavigator/default.aspx?s=PR&xp=2",
       "sourceBasis": "Federal higher-education institution directory with Puerto Rico state filtering and spreadsheet export; candidate corroboration source for institution identity, campus labels, and address review.",
-      "notes": "Use only with the Puerto Rico state filter. The CSV export path returns current Puerto Rico College Navigator search results with institution names, addresses, IPEDS IDs, OPE IDs, and basic institutional descriptors. This source is stronger for institution identity review than the current single auxiliary exact-match audit, but it is not a direct replacement row source for the preserved unis table."
+      "notes": "Use only with the Puerto Rico state filter. The CSV export path returns current Puerto Rico College Navigator search results with institution names, addresses, IPEDS IDs, OPE IDs, and basic institutional descriptors. This source is stronger for institution identity corroboration and campus-label review than the current single auxiliary exact-match audit, but it is not a direct replacement row source for the preserved unis table."
     },
     {
       "id": "usdoe-dapip-puerto-rico",
@@ -507,6 +509,456 @@
       "resourceId": "974f57b4-c5fd-4317-a4d8-dc13cdcf8372",
       "sourceBasis": "Official Puerto Rico municipality boundary data.",
       "notes": "Candidate for municipality reference data and future map geometry work; do not import geometry into the read API until the target schema is designed."
+    },
+    {
+      "id": "pr-ogpe-permiso-unico-business-path",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-regulatory"
+      ],
+      "publisher": "Oficina de Gerencia de Permisos, Departamento de Desarrollo Economico y Comercio",
+      "portal": "PR.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.permisos.pr.gov/",
+      "resourceUrl": "https://www.permisos.pr.gov/",
+      "sourceBasis": "Official Puerto Rico OGPe guidance for obtaining business permits shows the Permiso Unico and SBP process path for a new business operating from an existing location.",
+      "notes": "Use as descriptive regulatory-path evidence for planning-profile work only. It confirms the official OGPe/SBP path and required process steps for business operation in Puerto Rico, but it does not prove case-level approval timing, local site eligibility, or launch readiness. Supporting review artifact: data/profile-reach/aguada-restaurant-permit-path-review.json."
+    },
+    {
+      "id": "pr-bomberos-commercial-permit-basics",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-regulatory"
+      ],
+      "publisher": "Negociado del Cuerpo de Bomberos de Puerto Rico",
+      "portal": "PR.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://bomberos.pr.gov/permisos",
+      "resourceUrl": "https://bomberos.pr.gov/permisos",
+      "sourceBasis": "Official Puerto Rico Fire Bureau permit guidance provides baseline commercial-premises permit requirements and links the fire-safety review path back to the Permiso Unico process.",
+      "notes": "Use as descriptive fire-safety and permit-path evidence for planning-profile work only. It confirms that commercial uses requiring a use permit must request a Permiso Unico and documents baseline small-premises fire requirements, but it does not prove inspection outcome or timing. Supporting review artifact: data/profile-reach/aguada-restaurant-permit-path-review.json."
+    },
+    {
+      "id": "pr-health-salud-digital-portal",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-regulatory"
+      ],
+      "publisher": "Departamento de Salud de Puerto Rico",
+      "portal": "PR.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.salud.pr.gov/CMS/95",
+      "resourceUrl": "https://www.salud.pr.gov/CMS/95",
+      "sourceBasis": "Official Department of Health guidance confirms Salud Digital as the online platform for permits, certifications, and environmental-health transactions in Puerto Rico.",
+      "notes": "Use as descriptive health-transaction-path evidence for planning-profile work only. It confirms an official digital path for supporting health-related transactions, but it does not prove that a specific food-service permit has been issued or how long review will take. Supporting review artifact: data/profile-reach/aguada-restaurant-permit-path-review.json."
+    },
+    {
+      "id": "pr-ogp-municipal-patent-2026-2027",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-regulatory"
+      ],
+      "publisher": "Oficina de Gerencia y Presupuesto",
+      "portal": "PR.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://docs.pr.gov/files/OGP/Website_OGP/CartasCirculares/CC2026/CC-002-2026.pdf",
+      "resourceUrl": "https://docs.pr.gov/files/OGP/Website_OGP/CartasCirculares/CC2026/CC-002-2026.pdf",
+      "sourceBasis": "Official Puerto Rico OGP circular establishes the 2026-2027 municipal-patent rules and states that the guidance applies to all municipalities in Puerto Rico.",
+      "notes": "Use as descriptive municipal-patent governance evidence for planning-profile work only. It confirms a Puerto Rico-wide municipal patent filing path relevant to the fixed Aguada scenario, but it does not prove a specific municipality's processing speed or case outcome. Supporting review artifact: data/profile-reach/aguada-restaurant-permit-path-review.json."
+    },
+    {
+      "id": "pr-energy-bureau-2026-electricity-rate-order",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-infrastructure"
+      ],
+      "publisher": "Puerto Rico Energy Bureau",
+      "portal": "energia.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://energia.pr.gov/wp-content/uploads/sites/7/2026/04/20260415-AP20230003-Final-Resolution-and-Order.pdf",
+      "resourceUrl": "https://energia.pr.gov/wp-content/uploads/sites/7/2026/07/20260722-MI20260005-Resolution-and-Order.pdf",
+      "sourceBasis": "Official Puerto Rico Energy Bureau electricity-rate orders establish the approved electric rate structure and the current tariff book reflecting approved rates, riders, and charges.",
+      "notes": "Use as descriptive electric-cost-governance evidence for planning-profile work only. It confirms the current approved electricity rate structure in Puerto Rico, but it does not prove service continuity, outage frequency, or a specific small-business bill. Supporting review artifact: data/profile-reach/aguada-restaurant-utility-service-review.json."
+    },
+    {
+      "id": "luma-outage-reporting-faq",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-infrastructure"
+      ],
+      "publisher": "LUMA Energy",
+      "portal": "lumapr.com",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://lumapr.com/faq/how-can-i-report-an-outage-a-voltage-fluctuation-or-brownout/?lang=en",
+      "resourceUrl": "https://miluma.lumapr.com/view-outage-map",
+      "sourceBasis": "Official LUMA customer guidance describes how to report outages, voltage fluctuations, and brownouts through Mi LUMA or the customer phone line.",
+      "notes": "Use as descriptive electric interruption-reporting evidence for planning-profile work only. It confirms the official outage-reporting and status path for Puerto Rico electric service issues, but it does not prove outage duration, restoration speed, or business continuity readiness. Supporting review artifact: data/profile-reach/aguada-restaurant-utility-service-review.json."
+    },
+    {
+      "id": "prasa-aguada-water-service-interruption-2023",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-infrastructure"
+      ],
+      "publisher": "Autoridad de Acueductos y Alcantarillados de Puerto Rico",
+      "portal": "acueductos.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.acueductos.pr.gov/comunicados/region-oeste-3",
+      "resourceUrl": "https://www.acueductos.pr.gov/comunicados/region-oeste-3",
+      "sourceBasis": "Official Puerto Rico Aqueduct and Sewer Authority communication documents reviewed water-service interruption and low-pressure exposure affecting Aguada during regional filter-plant and pump recovery.",
+      "notes": "Use as descriptive Aguada water-service continuity evidence for planning-profile work only. It confirms that the fixed municipality can be affected by pump and filter-plant recovery conditions in the western regional system, but it does not prove current service quality, restoration time, or one parcel's water connection. Supporting review artifact: data/profile-reach/aguada-restaurant-utility-service-review.json."
+    },
+    {
+      "id": "pr-energy-bureau-jan-2026-reliability-metrics-report",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-infrastructure"
+      ],
+      "publisher": "Puerto Rico Energy Bureau",
+      "portal": "energia.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://energia.pr.gov/wp-content/uploads/sites/7/2026/02/20260220-MI20190007-Submission-Monthly-Report-System-Reliability-Metrics-for-Jan-2026.pdf",
+      "resourceUrl": "https://energia.pr.gov/wp-content/uploads/sites/7/2026/02/20260220-MI20190007-Submission-Monthly-Report-System-Reliability-Metrics-for-Jan-2026.pdf",
+      "sourceBasis": "Official January 2026 filing to the Puerto Rico Energy Bureau reports system-level SAIDI and SAIFI metrics for Puerto Rico under the Bureau's monthly reliability-reporting directives.",
+      "notes": "Use as descriptive electric reliability-reporting evidence for planning-profile work only. It confirms that current monthly system metrics are being filed for Puerto Rico, but it does not prove corridor-level restoration speed, parcel-level outage frequency, or one business's continuity readiness. Supporting review artifact: data/profile-reach/aguada-restaurant-utility-resilience-review.json."
+    },
+    {
+      "id": "pr-energy-bureau-reliability-metrics-order-2025",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-infrastructure"
+      ],
+      "publisher": "Puerto Rico Energy Bureau",
+      "portal": "energia.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://energia.pr.gov/wp-content/uploads/sites/7/2025/05/20250516-MI20190007-Resolution-and-Order.pdf",
+      "resourceUrl": "https://energia.pr.gov/wp-content/uploads/sites/7/2025/05/20250516-MI20190007-Resolution-and-Order.pdf",
+      "sourceBasis": "Official May 16, 2025 Puerto Rico Energy Bureau order requires monthly system SAIDI and SAIFI reporting and explains that generation-related outages experienced by customers are not fully reflected in the reported T and D metrics alone.",
+      "notes": "Use as descriptive electric reliability-governance evidence for planning-profile work only. It confirms the official reporting framework and its stated limits, but it does not prove one corridor's outage duration, restoration performance, or resilience cost. Supporting review artifact: data/profile-reach/aguada-restaurant-utility-resilience-review.json."
+    },
+    {
+      "id": "pr-energy-bureau-essa-reliability-order-2026",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-infrastructure"
+      ],
+      "publisher": "Puerto Rico Energy Bureau",
+      "portal": "energia.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://energia.pr.gov/wp-content/uploads/sites/7/2026/04/20260424-MI20200012-Resolution-and-Order.pdf",
+      "resourceUrl": "https://energia.pr.gov/wp-content/uploads/sites/7/2026/04/20260424-MI20200012-Resolution-and-Order.pdf",
+      "sourceBasis": "Official April 24, 2026 Puerto Rico Energy Bureau order states that Puerto Rico continues to need firm capacity to improve electric-system reliability and cites the Resource Adequacy Study's reduction of load-shed risk through additional storage resources.",
+      "notes": "Use as descriptive resource-adequacy and load-shed evidence for planning-profile work only. It confirms that island-wide electric continuity remains tied to firm-capacity and storage conditions, but it does not prove one site's backup-power coverage, outage duration, or refrigeration continuity. Supporting review artifact: data/profile-reach/aguada-restaurant-utility-resilience-review.json."
+    },
+    {
+      "id": "prasa-hurricane-season-guidance",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-infrastructure"
+      ],
+      "publisher": "Autoridad de Acueductos y Alcantarillados de Puerto Rico",
+      "portal": "acueductos.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.acueductos.pr.gov/en-us/comunicaciones/temporada-de-huracanes",
+      "resourceUrl": "https://www.acueductos.pr.gov/en-us/comunicaciones/temporada-de-huracanes",
+      "sourceBasis": "Official PRASA hurricane-season guidance provides emergency information contacts and region-level customer-service lines for water and sewer emergencies during major storm conditions.",
+      "notes": "Use as descriptive water emergency-response evidence for planning-profile work only. It confirms an official storm-response surface for Puerto Rico water-service continuity events, but it does not prove corridor-level restoration speed, water pressure, or one facility's continuity performance. Supporting review artifact: data/profile-reach/aguada-restaurant-utility-resilience-review.json."
+    },
+    {
+      "id": "prasa-mission-operations-profile",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-infrastructure"
+      ],
+      "publisher": "Autoridad de Acueductos y Alcantarillados de Puerto Rico",
+      "portal": "acueductos.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.acueductos.pr.gov/en-us/nuestra-aaa/mision-vision-y-objetivos",
+      "resourceUrl": "https://www.acueductos.pr.gov/en-us/nuestra-aaa/mision-vision-y-objetivos",
+      "sourceBasis": "Official PRASA mission and operations profile states that the authority is the only water company on the island and documents the scale and complexity of its island-wide operational infrastructure.",
+      "notes": "Use as descriptive island-wide water-operations evidence for planning-profile work only. It confirms the scale and operational footprint of Puerto Rico's public water system, but it does not prove one corridor's service stability, storage redundancy, or one operator's business continuity readiness. Supporting review artifact: data/profile-reach/aguada-restaurant-utility-resilience-review.json."
+    },
+    {
+      "id": "prhta-pr2-aguadilla-mayaguez-corridor-study-2024",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-logistics"
+      ],
+      "publisher": "Puerto Rico Highway and Transportation Authority",
+      "portal": "act.dtop.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://act.dtop.pr.gov/media/documentos/TIP-AUA-2023-2026-Enmienda2_Aprobado_21_Mayo_2024-01.pdf",
+      "resourceUrl": "https://act.dtop.pr.gov/media/documentos/TIP-AUA-2023-2026-Enmienda2_Aprobado_21_Mayo_2024-01.pdf",
+      "sourceBasis": "Official Aguadilla Urbanized Area transportation improvement program identifies the PR-2 Aguadilla-Mayaguez corridor improvement study surface from PR-107 in Aguadilla toward PR-114 near Mayaguez, which is relevant to west-region supplier and delivery movement.",
+      "notes": "Use as descriptive corridor-logistics evidence for planning-profile work only. It confirms that the PR-2 Aguadilla-Mayaguez corridor is an official transport-planning surface relevant to the fixed Aguada scenario, but it does not prove route-time reliability, cold-chain performance, or one delivery window. Supporting review artifact: data/profile-reach/aguada-restaurant-corridor-logistics-review.json."
+    },
+    {
+      "id": "iepr-air-maritime-cargo-passengers-2024-q2",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-logistics"
+      ],
+      "publisher": "Instituto de Estadisticas de Puerto Rico",
+      "portal": "estadisticas.pr",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://estadisticas.pr/en/inventario-de-estadisticas/carga_pasajeros_aereos_maritimos",
+      "resourceUrl": "https://estadisticas.pr/files/inventario/carga_pasajeros_aereos_maritimos/2024-09-23/AP-CargaPasajeros-2024-Q2.xlsx",
+      "sourceBasis": "Official Puerto Rico cargo and passenger inventory publishes airport and maritime cargo volumes reported by the Puerto Rico Ports Authority, including Rafael Hernandez Airport in Aguadilla and Eugenio Maria de Hostos Airport in Mayaguez.",
+      "notes": "Use as descriptive west-region cargo-movement evidence for planning-profile work only. It confirms that official quarterly cargo volumes are tracked for the Aguadilla and Mayaguez airports, but it does not prove supplier depth, delivery timeliness, refrigeration continuity, or one restaurant's procurement path. Supporting review artifact: data/profile-reach/aguada-restaurant-external-logistics-review.json."
+    },
+    {
+      "id": "pr-jp-mipr-site-screening",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-site-feasibility"
+      ],
+      "publisher": "Junta de Planificación de Puerto Rico",
+      "portal": "PR.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.jp.pr.gov/visualizadores-y-mapas",
+      "resourceUrl": "https://gis.jp.pr.gov/mipr/index.html?noTools=&orig=pDigital",
+      "sourceBasis": "Official Puerto Rico Planning Board online map services provide access to MIPR, territorial-plan viewers, and the interactive zoning catalog for land-use, regulation, and classification screening.",
+      "notes": "Use as descriptive site-screening evidence for planning-profile work only. It confirms that official Planning Board-controlled map and zoning surfaces exist for site screening in Puerto Rico, but it does not prove parcel-level readiness, legal clearance, or a specific lease condition. Supporting review artifact: data/profile-reach/aguada-restaurant-site-screening-review.json."
+    },
+    {
+      "id": "pr-jp-flood-determination-service",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-site-feasibility"
+      ],
+      "publisher": "Junta de Planificación de Puerto Rico",
+      "portal": "PR.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.jp.pr.gov/",
+      "resourceUrl": "https://portaldeinundacion.jp.pr.gov/riesgo.html",
+      "sourceBasis": "Official Puerto Rico Planning Board flood services provide standard property flood determination based on FIRM and ABFE criteria and identify the adopted flood-risk maps used for Puerto Rico screening.",
+      "notes": "Use as descriptive flood-screening evidence for planning-profile work only. It confirms official flood-determination and adopted flood-risk map access, but it does not prove one parcel's final buildability, floodproofing cost, or operating readiness. Supporting review artifact: data/profile-reach/aguada-restaurant-site-screening-review.json."
+    },
+    {
+      "id": "aguada-hazard-mitigation-plan-2020",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-site-feasibility"
+      ],
+      "publisher": "Municipio de Aguada and Junta de Planificación de Puerto Rico",
+      "portal": "docs.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.jp.pr.gov/planificacion-fisica",
+      "resourceUrl": "https://docs.pr.gov/files/JP-Junta%20de%20Planificacion/Planes%20de%20Mitigaci%C3%B3n%20Aprobados/Actualizados%20por%20los%20municipios/Agda-HMP-ExeSummary.pdf",
+      "sourceBasis": "Aguada's official 2020 hazard mitigation summary documents the municipality's hazard context, including the flood ranking and the use of geographic information system data in risk assessment.",
+      "notes": "Use as descriptive Aguada hazard-context evidence for planning-profile work only. It confirms municipality-level hazard priority and planning context, but it does not prove parcel-specific flood exposure, structure condition, or lease readiness. Supporting review artifact: data/profile-reach/aguada-restaurant-site-screening-review.json."
+    },
+    {
+      "id": "pr-jp-district-legend",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-site-feasibility"
+      ],
+      "publisher": "Junta de Planificación de Puerto Rico",
+      "portal": "gis.jp.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://gis.jp.pr.gov/mipr/index.html?noTools=&orig=pDigital",
+      "resourceUrl": "https://gis.jp.pr.gov/geolocalizadorreal/Leyenda_distritos.pdf",
+      "sourceBasis": "Official Puerto Rico Planning Board district definitions explain the flood, classification, and commercial district labels used in land-use and site-screening tools.",
+      "notes": "Use as descriptive district-reference evidence for planning-profile work only. It explains the official flood and land-use district codes that appear in Planning Board screening tools, but it does not prove a property's final allowed use or physical readiness. Supporting review artifact: data/profile-reach/aguada-restaurant-site-screening-review.json."
+    },
+    {
+      "id": "aguada-territorial-plan-order-2024",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-site-feasibility"
+      ],
+      "publisher": "Gobierno de Puerto Rico and Junta de Planificación de Puerto Rico",
+      "portal": "docs.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.jp.pr.gov/planificacion-fisica",
+      "resourceUrl": "https://docs.pr.gov/files/JP-Junta%20de%20Planificacion/Planes%20Territoriales/PT/Aguada/JP-PT-26-01-Orden-Ejecutiva-OE-2024-044.pdf",
+      "sourceBasis": "Official 2024 executive order approves Aguada's territorial-plan revision and states that the municipality's plan includes classification, zoning, urban-center delimitation, and road-plan documents presented as official digital geodata.",
+      "notes": "Use as descriptive large-site governance evidence for planning-profile work only. It confirms that Aguada has an official current territorial-plan control for land-use, classification, and road-plan review, but it does not prove parcel assembly, parking supply, truck access, or one property's operating readiness. Supporting review artifact: data/profile-reach/aguada-restaurant-large-site-screening-review.json."
+    },
+    {
+      "id": "pr-tourism-registration-occupancy-2024",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-demand"
+      ],
+      "publisher": "Compania de Turismo de Puerto Rico",
+      "portal": "tourism.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://tourism.pr.gov/industry-research-and-statistics/?lang=en",
+      "resourceUrl": "https://tourism.pr.gov/wp-content/uploads/2025/06/CALENDAR-YEAR-2024.pdf",
+      "sourceBasis": "Official Puerto Rico Tourism Company registration and occupancy report provides by-region lodging arrivals, non-resident share, occupancy, room nights, ADR, and average stay for calendar year 2024, including Porta del Sol.",
+      "notes": "Use as descriptive demand-proxy evidence for planning-profile work only. It confirms west-region visitor and lodging activity relevant to the fixed Aguada restaurant scenario, but it does not prove Aguada-specific restaurant demand, one operator's capture rate, or island-wide destination pull. Supporting review artifact: data/profile-reach/aguada-restaurant-demand-proxy-review.json."
+    },
+    {
+      "id": "pr-tourism-visitor-profile-fy2023-2024",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-demand"
+      ],
+      "publisher": "Instituto de Estadisticas de Puerto Rico and Compania de Turismo de Puerto Rico",
+      "portal": "tourism.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://tourism.pr.gov/industry-research-and-statistics/?lang=en",
+      "resourceUrl": "https://tourism.pr.gov/wp-content/uploads/2025/07/Visitor-Profile-Fiscal-Year-2023-2024.pdf",
+      "sourceBasis": "Official Puerto Rico visitor survey profile reports tourist-region visitation, airport distribution, activity participation, return intent, and visitor spending for fiscal year 2023-2024.",
+      "notes": "Use as descriptive demand-proxy evidence for planning-profile work only. It confirms that Porta del Sol participates in the island visitor circuit and that restaurant-adjacent activity is common among visitors, but it does not prove municipality-level customer origin, one restaurant's demand, or island-wide destination-scale capture. Supporting review artifact: data/profile-reach/aguada-restaurant-demand-proxy-review.json."
+    },
+    {
+      "id": "pr-tourism-visitors-expenditures-contribution-2024",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-demand"
+      ],
+      "publisher": "Compania de Turismo de Puerto Rico",
+      "portal": "tourism.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://tourism.pr.gov/statistics/",
+      "resourceUrl": "https://tourism.pr.gov/wp-content/uploads/2025/09/JP-Visitors-Expenditures-Contribution.pdf",
+      "sourceBasis": "Official Puerto Rico Tourism Company fiscal-year summary table reports island-wide total visitors, tourists, visitor expenditures, and tourism contribution to gross product through fiscal year 2024.",
+      "notes": "Use as descriptive island-wide demand evidence for planning-profile work only. It confirms Puerto Rico-wide visitor scale, visitor spending, and tourism GDP contribution relevant to large-format destination-demand screening, but it does not prove Aguada-specific capture, one concept's customer conversion, or parcel-level demand. Supporting review artifact: data/profile-reach/aguada-restaurant-island-demand-review.json."
+    },
+    {
+      "id": "pr-tourism-passenger-movement-cy-2024",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-demand"
+      ],
+      "publisher": "Compania de Turismo de Puerto Rico",
+      "portal": "tourism.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://tourism.pr.gov/statistics/",
+      "resourceUrl": "https://tourism.pr.gov/wp-content/uploads/2025/09/Passenger-Movement-CY.pdf",
+      "sourceBasis": "Official Puerto Rico Tourism Company calendar-year passenger movement report publishes airport passenger totals for Puerto Rico, including Luis Munoz Marin International Airport and Rafael Hernandez Airport in Aguadilla, with 2024 totals.",
+      "notes": "Use as descriptive island-access demand evidence for planning-profile work only. It confirms current island-scale airport throughput and west-side airport participation relevant to destination-format access, but it does not prove ground-transport conversion, dwell time, or one restaurant's customer volume. Supporting review artifact: data/profile-reach/aguada-restaurant-island-demand-review.json."
+    },
+    {
+      "id": "pr-lmi-hospitality-food-service-profile-2026",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-workforce"
+      ],
+      "publisher": "Departamento del Trabajo y Recursos Humanos de Puerto Rico",
+      "portal": "mercadolaboral.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.mercadolaboral.pr.gov/LMI/PDF/DIDO/Folletos/Alojamiento%20y%20Servicio%20de%20Comida.pdf",
+      "resourceUrl": "https://www.mercadolaboral.pr.gov/LMI/PDF/DIDO/Folletos/Alojamiento%20y%20Servicio%20de%20Comida.pdf",
+      "sourceBasis": "Official Puerto Rico labor-market sector profile for lodging and food service identifies role-specific wage and common training or experience expectations for direct supervisors, waitstaff, cooks, and related hospitality occupations.",
+      "notes": "Use as descriptive workforce-baseline evidence for planning-profile work only. It confirms island-wide Puerto Rico wage and qualification context for food-service supervision and staffing roles, but it does not prove Aguada-specific hiring depth, one employer's retention outcomes, or that a destination-format operator can assemble a leadership team at one site. Supporting review artifacts: data/profile-reach/aguada-restaurant-routine-workforce-review.json and data/profile-reach/aguada-restaurant-workforce-pipeline-review.json."
+    },
+    {
+      "id": "pr-lmi-top-occupations-2024",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-workforce"
+      ],
+      "publisher": "Departamento del Trabajo y Recursos Humanos de Puerto Rico",
+      "portal": "mercadolaboral.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.mercadolaboral.pr.gov/LMI/PDF/Proyecciones/Datos_Interes/Ocupaciones%20con%20Mayor%20Empleo.pdf",
+      "resourceUrl": "https://www.mercadolaboral.pr.gov/LMI/PDF/Proyecciones/Datos_Interes/Ocupaciones%20con%20Mayor%20Empleo.pdf",
+      "sourceBasis": "Official Puerto Rico OEWS 2024 occupational-employment publication reports island-wide employment and wages for high-employment occupations, including food-service frontline roles relevant to restaurant staffing.",
+      "notes": "Use as descriptive island-wide staffing-volume evidence for planning-profile work only. It confirms that restaurant cooks, waitstaff, and quick-service counter roles remain large occupational pools in Puerto Rico, but it does not prove Aguada-specific hiring depth, shift coverage, or retention. Supporting review artifacts: data/profile-reach/aguada-restaurant-routine-workforce-review.json and data/profile-reach/aguada-restaurant-workforce-pipeline-review.json."
+    },
+    {
+      "id": "pr-lmi-occupation-openings-2022-2032",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-workforce"
+      ],
+      "publisher": "Departamento del Trabajo y Recursos Humanos de Puerto Rico",
+      "portal": "mercadolaboral.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://mercadolaboral.pr.gov/LMI/PDF/Proyecciones/Datos_Interes/Proyecciones%20por%20Ocupaciones%20con%20el%20Mayor%20N%C3%BAmero%20de%20Plazas%20Vacantes%20Anuales%202022-2032.pdf",
+      "resourceUrl": "https://mercadolaboral.pr.gov/LMI/PDF/Proyecciones/Datos_Interes/Proyecciones%20por%20Ocupaciones%20con%20el%20Mayor%20N%C3%BAmero%20de%20Plazas%20Vacantes%20Anuales%202022-2032.pdf",
+      "sourceBasis": "Official Puerto Rico occupational projections publication reports annual openings for occupations across the 2022-2032 horizon, including frontline food-service roles relevant to replacement and growth demand.",
+      "notes": "Use as descriptive workforce-flow evidence for planning-profile work only. It confirms island-wide annual openings for food-service roles in Puerto Rico, but it does not prove that one municipality or operator can fill those roles on schedule. Supporting review artifacts: data/profile-reach/aguada-restaurant-routine-workforce-review.json and data/profile-reach/aguada-restaurant-workforce-pipeline-review.json."
+    },
+    {
+      "id": "pr-lmi-occupation-projections-2024-2034",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-workforce"
+      ],
+      "publisher": "Departamento del Trabajo y Recursos Humanos de Puerto Rico",
+      "portal": "mercadolaboral.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.mercadolaboral.pr.gov/LMI/pdf/Proyecciones/Puerto%20Rico-Proyecciones%20a%20Largo%20Plazo%20por%20Ocupaci%C3%B3n.pdf",
+      "resourceUrl": "https://www.mercadolaboral.pr.gov/LMI/pdf/Proyecciones/Puerto%20Rico-Proyecciones%20a%20Largo%20Plazo%20por%20Ocupaci%C3%B3n.pdf",
+      "sourceBasis": "Official Puerto Rico long-term occupation projections for 2024-2034 report projected employment, change, annual openings, and wages for individual occupations, including restaurant cooks and related food-service roles.",
+      "notes": "Use as descriptive workforce-growth evidence for planning-profile work only. It confirms island-wide Puerto Rico growth and annual-openings context for selected food-service occupations, but it does not prove Aguada-specific management depth, commute patterns, or one operator's staffing resilience. Supporting review artifact: data/profile-reach/aguada-restaurant-workforce-pipeline-review.json."
+    },
+    {
+      "id": "ddec-emprender-puerto-rico-2026",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-ecosystem"
+      ],
+      "publisher": "Departamento de Desarrollo Economico y Comercio de Puerto Rico",
+      "portal": "desarrollo.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.desarrollo.pr.gov/emprender-en-puerto-rico",
+      "resourceUrl": "https://www.desarrollo.pr.gov/emprender-en-puerto-rico",
+      "sourceBasis": "Official DDEC entrepreneurship guidance lists business-orientation support for ideas, startups, expansion, and export activity, and identifies an entrepreneurship center at the Centro Regional de Distribucion in Mayaguez.",
+      "notes": "Use as descriptive ecosystem-support evidence for planning-profile work only. It confirms that an official west-region entrepreneurship support touchpoint and island-wide business-orientation path exist for Puerto Rico, but it does not prove partner density, service throughput, or one operator's recovery capacity. Supporting review artifact: data/profile-reach/aguada-restaurant-support-network-review.json."
+    },
+    {
+      "id": "ddec-ayudas-incentivos-2026",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-ecosystem"
+      ],
+      "publisher": "Departamento de Desarrollo Economico y Comercio de Puerto Rico",
+      "portal": "desarrollo.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.desarrollo.pr.gov/ayudas-e-incentivos",
+      "resourceUrl": "https://www.desarrollo.pr.gov/ayudas-e-incentivos",
+      "sourceBasis": "Official DDEC incentives guidance groups active business-support lanes including the Incentives Code, PyMEs, industry development incentives, export support, and federal-government assistance.",
+      "notes": "Use as descriptive ecosystem-growth evidence for planning-profile work only. It confirms that Puerto Rico maintains official incentive and growth-support channels for businesses, but it does not prove eligibility, approval timing, or one operator's expansion outcome. Supporting review artifact: data/profile-reach/aguada-restaurant-support-network-review.json."
+    },
+    {
+      "id": "prdoh-sbia-program-2026",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-ecosystem"
+      ],
+      "publisher": "Puerto Rico Department of Housing",
+      "portal": "recuperacion.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://recuperacion.pr.gov/en/programs/small-business-incubators-and-accelerators-program/",
+      "resourceUrl": "https://recuperacion.pr.gov/en/programs/small-business-incubators-and-accelerators-program/",
+      "sourceBasis": "Official Puerto Rico recovery-program guidance states that the Small Business Incubators and Accelerators Program supports early-stage businesses through entities across the island that provide mentoring, networking, training, consulting, technical assistance, and collaborative work space.",
+      "notes": "Use as descriptive ecosystem and recovery-support evidence for planning-profile work only. It confirms that Puerto Rico has an island-wide incubator or accelerator support surface, but it does not prove that one Aguada restaurant qualifies for, uses, or benefits from those services successfully. Supporting review artifact: data/profile-reach/aguada-restaurant-support-network-review.json."
     },
     {
       "id": "census-cbp-2014-state-72-fallback",
@@ -617,6 +1069,51 @@
           }
         ]
       }
+    },
+    {
+      "id": "pr-statistics-pemas-construction-permits",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-regulatory"
+      ],
+      "publisher": "Instituto de Estadísticas de Puerto Rico",
+      "portal": "estadisticas.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://www.estadisticas.pr.gov/productos/pemas---permisos-de-construccion",
+      "resourceUrl": "https://www.estadisticas.pr.gov/productos/pemas---permisos-de-construccion",
+      "sourceBasis": "Official Puerto Rico PEMAS construction-permit publication documents weekly OGPe construction filings and exposes case, municipality, filing, adjudication-status, and adjudication-date fields. Its stated exclusions name Bayamón, Guaynabo, Carolina, Caguas, Cidra, and Ponce; Aguada is not among those exclusions.",
+      "notes": "Use as descriptive construction-execution observability evidence for the fixed Aguada planning profile only. It distinguishes the existing-location Permiso Único path from a larger project that may require construction review, but it does not establish an Aguada case queue, a permit outcome, multi-agency coordination quality, or a launch timeline. Supporting review artifact: data/profile-reach/aguada-restaurant-construction-execution-review.json."
+    },
+    {
+      "id": "ddec-permit-task-force-coordination-timing-2025",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-regulatory"
+      ],
+      "publisher": "Departamento de Desarrollo Económico y Comercio de Puerto Rico",
+      "portal": "desarrollo.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://docs.pr.gov/files/DDEC/Aviso%20Pu%CC%81blico/Informe%20Final%20del%20Task%20Force%20para%20Simplicaci%C3%B3n%20del%20%20Sistema%20de%20Permiso%20de%20Puerto%20Rico/2025-11-21-Informe%20de%20Permisos-FINAL%20DDEC.pdf",
+      "resourceUrl": "https://www.desarrollo.pr.gov/noticias/el-grupo-de-trabajo-para-la-simplificacion-de-permisos-en-puerto-rico-presenta-hoja-de-ruta-para-transformar-el-sistema-de-permisos",
+      "sourceBasis": "The official DDEC Final Task Force report for Puerto Rico's permit-system simplification, revised October 31, 2025, reports that processing time for recommendations from concerned government entities fell from 55 to 27 days and that more than 2,600 priority-project filings had been processed. The report identifies fragmented multi-agency processes as a structural timing constraint.",
+      "notes": "Use as descriptive Puerto Rico interagency coordination-timing evidence for the fixed large/strategic planning profile only. It provides an official aggregate measure for concerned-entity recommendation processing and priority-project throughput, but it does not identify Aguada, restaurant use, a construction class, inspection completion, permit outcome, or a case-specific schedule. Supporting review artifact: data/profile-reach/aguada-restaurant-coordination-timing-review.json."
+    },
+    {
+      "id": "ddec-permit-task-force-inspection-window-2025",
+      "status": "candidate",
+      "targetTables": [
+        "planning-profile-regulatory"
+      ],
+      "publisher": "Departamento de Desarrollo Económico y Comercio de Puerto Rico",
+      "portal": "desarrollo.pr.gov",
+      "license": "Unknown public website terms",
+      "scope": "puerto-rico",
+      "sourceUrl": "https://docs.pr.gov/files/DDEC/Aviso%20Pu%CC%81blico/Informe%20Final%20del%20Task%20Force%20para%20Simplicaci%C3%B3n%20del%20%20Sistema%20de%20Permiso%20de%20Puerto%20Rico/2025-11-21-Informe%20de%20Permisos-FINAL%20DDEC.pdf",
+      "resourceUrl": "https://www.permisos.pr.gov/mejoras-sistema-permisos",
+      "sourceBasis": "The official DDEC Final Task Force report, revised October 31, 2025, states that the State has 90 days to perform the inspection corresponding to a Permiso Unico request; inspections not completed on time are not managed or paid by the merchant, and the State bills only inspections completed within the window.",
+      "notes": "Use as descriptive Puerto Rico inspection-service-window evidence for the fixed large/strategic planning profile only. It defines the public accountability window for Permiso Unico inspections, but it does not report an inspection count, completion rate, Aguada case queue, restaurant-specific coverage, construction inspection timing, or permit outcome. Supporting review artifact: data/profile-reach/aguada-restaurant-inspection-window-review.json."
     }
   ],
   "unresolvedTargets": [

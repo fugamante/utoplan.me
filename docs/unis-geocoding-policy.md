@@ -78,6 +78,12 @@ ambiguous or the ZIP points to a materially different location.
   `data/geocoding/unis-import-boundary-review.json`
 - Checked-in public-address review artifact:
   `data/geocoding/unis-public-address-review.json`
+- Checked-in staged Albizu alias/public-address review artifact:
+  `data/unis/albizu-staged-review.json`
+- Checked-in staged Sagrado alias/public-address review artifact:
+  `data/unis/sagrado-staged-review.json`
+- Checked-in read-only Sagrado geocoder candidate review artifact:
+  `data/geocoding/sagrado-geocoder-candidate-review.json`
 - Checked-in alias/campus review artifact:
   `data/unis/ipeds-alias-campus-review.json`
 - Alias/campus review policy:
@@ -152,6 +158,10 @@ Current reviewed baseline on 2026-06-11:
   records 5 NCES+DAPIP+ORLIE/JIP-corroborated identity/campus candidates, 22
   rows without row-level authority corroboration, and zero coordinate-eligible
   or generated-output-eligible identity-quarantined rows.
+- Albizu and Sagrado have staged alias/campus and public-address evidence in
+  `data/unis/albizu-staged-review.json` and
+  `data/unis/sagrado-staged-review.json`; those staged decisions do not create
+  cache rows, coordinates, generated output, API coverage, or UI coverage.
 
 Current cache baseline on 2026-06-23:
 

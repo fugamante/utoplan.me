@@ -70,12 +70,14 @@ export function addUniversities(map: LeafletMap, leaflet: LeafletApi, universiti
 
 function renderCoverage(documentRef: Document, coverage: NormalizedUniversityCoverage | null): void {
   const status = documentRef.querySelector<HTMLElement>('[data-ui="unis-coverage-status"]');
+  const detail = documentRef.querySelector<HTMLElement>('[data-ui="unis-coverage-detail"]');
 
-  if (!status) {
+  if (!status || !detail) {
     return;
   }
 
   status.textContent = coverage ? coverage.label : "";
+  detail.textContent = coverage ? coverage.limitation : "";
 }
 
 export function loadUniversities(windowRef: RequestWindow, config: MapConfig, callback: UniversityCallback): void {
