@@ -1083,6 +1083,15 @@
       "sourceUrl": "https://www.estadisticas.pr.gov/productos/pemas---permisos-de-construccion",
       "resourceUrl": "https://www.estadisticas.pr.gov/productos/pemas---permisos-de-construccion",
       "sourceBasis": "Official Puerto Rico PEMAS construction-permit publication documents weekly OGPe construction filings and exposes case, municipality, filing, adjudication-status, and adjudication-date fields. Its stated exclusions name Bayamón, Guaynabo, Carolina, Caguas, Cidra, and Ponce; Aguada is not among those exclusions.",
+      "timeScope": {
+        "kind": "publication-cadence",
+        "label": "Weekly OGPe construction-permit publication cadence",
+        "periodStart": null,
+        "periodEnd": null,
+        "cadence": "weekly",
+        "serviceWindowDays": null,
+        "notes": "Each PEMAS publication is a recurring weekly observability surface rather than a pre-aggregated throughput summary. Any descriptive timing baseline built from it must declare the exact aggregation period separately."
+      },
       "notes": "Use as descriptive construction-execution observability evidence for the fixed Aguada planning profile only. It distinguishes the existing-location Permiso Único path from a larger project that may require construction review, but it does not establish an Aguada case queue, a permit outcome, multi-agency coordination quality, or a launch timeline. Supporting review artifact: data/profile-reach/aguada-restaurant-construction-execution-review.json."
     },
     {
@@ -1098,6 +1107,15 @@
       "sourceUrl": "https://docs.pr.gov/files/DDEC/Aviso%20Pu%CC%81blico/Informe%20Final%20del%20Task%20Force%20para%20Simplicaci%C3%B3n%20del%20%20Sistema%20de%20Permiso%20de%20Puerto%20Rico/2025-11-21-Informe%20de%20Permisos-FINAL%20DDEC.pdf",
       "resourceUrl": "https://www.desarrollo.pr.gov/noticias/el-grupo-de-trabajo-para-la-simplificacion-de-permisos-en-puerto-rico-presenta-hoja-de-ruta-para-transformar-el-sistema-de-permisos",
       "sourceBasis": "The official DDEC Final Task Force report for Puerto Rico's permit-system simplification, revised October 31, 2025, reports that processing time for recommendations from concerned government entities fell from 55 to 27 days and that more than 2,600 priority-project filings had been processed. The report identifies fragmented multi-agency processes as a structural timing constraint.",
+      "timeScope": {
+        "kind": "observed-period-summary",
+        "label": "Aggregate permit-system progress reported through 2025-10-31",
+        "periodStart": null,
+        "periodEnd": "2025-10-31",
+        "cadence": null,
+        "serviceWindowDays": null,
+        "notes": "The report gives an observed aggregate outcome through its October 31, 2025 revision date, but it does not state a public period start for the 55-to-27-day comparison or the more-than-2,600 processed filings."
+      },
       "notes": "Use as descriptive Puerto Rico interagency coordination-timing evidence for the fixed large/strategic planning profile only. It provides an official aggregate measure for concerned-entity recommendation processing and priority-project throughput, but it does not identify Aguada, restaurant use, a construction class, inspection completion, permit outcome, or a case-specific schedule. Supporting review artifact: data/profile-reach/aguada-restaurant-coordination-timing-review.json."
     },
     {
@@ -1113,6 +1131,15 @@
       "sourceUrl": "https://docs.pr.gov/files/DDEC/Aviso%20Pu%CC%81blico/Informe%20Final%20del%20Task%20Force%20para%20Simplicaci%C3%B3n%20del%20%20Sistema%20de%20Permiso%20de%20Puerto%20Rico/2025-11-21-Informe%20de%20Permisos-FINAL%20DDEC.pdf",
       "resourceUrl": "https://www.permisos.pr.gov/mejoras-sistema-permisos",
       "sourceBasis": "The official DDEC Final Task Force report, revised October 31, 2025, states that the State has 90 days to perform the inspection corresponding to a Permiso Unico request; inspections not completed on time are not managed or paid by the merchant, and the State bills only inspections completed within the window.",
+      "timeScope": {
+        "kind": "policy-or-service-window",
+        "label": "Permiso Unico inspection accountability window",
+        "periodStart": null,
+        "periodEnd": null,
+        "cadence": null,
+        "serviceWindowDays": 90,
+        "notes": "This source defines a public service-window rule rather than an observed reporting period. Future inspection-throughput evidence still needs a separate official count, rate, or elapsed-time distribution tied to a declared period."
+      },
       "notes": "Use as descriptive Puerto Rico inspection-service-window evidence for the fixed large/strategic planning profile only. It defines the public accountability window for Permiso Unico inspections, but it does not report an inspection count, completion rate, Aguada case queue, restaurant-specific coverage, construction inspection timing, or permit outcome. Supporting review artifact: data/profile-reach/aguada-restaurant-inspection-window-review.json."
     }
   ],

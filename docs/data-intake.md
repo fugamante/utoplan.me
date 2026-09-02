@@ -15,6 +15,9 @@ Each accepted source must record:
 - Target legacy table or endpoint.
 - Candidate status and a short source-basis note.
 - Retrieval date at the registry level as an ISO `YYYY-MM-DD` string.
+- `timeScope` metadata when a source is used for a period-bound operational
+  metric, aggregate timing or throughput statement, recurring publication
+  cadence, or service-window rule.
 - Legacy-schema mapping evidence for active target tables where mapping
   evidence exists.
 - Import-readiness status and explicit blockers for active mapped tables when
@@ -263,6 +266,9 @@ Each artifact must:
   parcel-eligibility, case-outcome, continuity, or cost gaps;
 - remain descriptive and avoid scores, rankings, recommendations, or launch
   promises;
+- reference source-registry `timeScope` metadata when the reviewed lane depends
+  on a period-bound metric, recurring publication cadence, or service-window
+  rule;
 - link back to the controlling decision-signal entry and its registered
   Puerto Rico source ids.
 
