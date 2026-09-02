@@ -39,6 +39,10 @@ function isIsoDate(value) {
   return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value);
 }
 
+function isNullableIsoDate(value) {
+  return value === null || isIsoDate(value);
+}
+
 var expectedColumnsByTable = {
   cbps: [
     'id',
@@ -77,6 +81,45 @@ function findSourceById(sourceId) {
   return registry.sources.find(function(entry) {
     return entry.id === sourceId;
   });
+}
+
+function validateTimeScope(source) {
+  assert(source.timeScope && typeof source.timeScope === 'object', source.id + ' timeScope is required');
+  assert(
+    source.timeScope.kind === 'publication-cadence' ||
+    source.timeScope.kind === 'observed-period-summary' ||
+    source.timeScope.kind === 'policy-or-service-window',
+    source.id + ' timeScope.kind is invalid'
+  );
+  assert(isNonEmptyString(source.timeScope.label), source.id + ' timeScope.label is required');
+  assert(isNullableIsoDate(source.timeScope.periodStart), source.id + ' timeScope.periodStart must be null or ISO YYYY-MM-DD');
+  assert(isNullableIsoDate(source.timeScope.periodEnd), source.id + ' timeScope.periodEnd must be null or ISO YYYY-MM-DD');
+  assert(
+    source.timeScope.cadence === null || isNonEmptyString(source.timeScope.cadence),
+    source.id + ' timeScope.cadence must be null or a non-empty string'
+  );
+  assert(
+    source.timeScope.serviceWindowDays === null ||
+    (Number.isInteger(source.timeScope.serviceWindowDays) && source.timeScope.serviceWindowDays > 0),
+    source.id + ' timeScope.serviceWindowDays must be null or a positive integer'
+  );
+  assert(isNonEmptyString(source.timeScope.notes), source.id + ' timeScope.notes is required');
+
+  if (source.timeScope.kind === 'publication-cadence') {
+    assert(isNonEmptyString(source.timeScope.cadence), source.id + ' publication-cadence timeScope must define cadence');
+    assert.strictEqual(source.timeScope.serviceWindowDays, null, source.id + ' publication-cadence timeScope must not define serviceWindowDays');
+  }
+
+  if (source.timeScope.kind === 'observed-period-summary') {
+    assert(isIsoDate(source.timeScope.periodEnd), source.id + ' observed-period-summary timeScope must define periodEnd');
+    assert.strictEqual(source.timeScope.cadence, null, source.id + ' observed-period-summary timeScope must not define cadence');
+    assert.strictEqual(source.timeScope.serviceWindowDays, null, source.id + ' observed-period-summary timeScope must not define serviceWindowDays');
+  }
+
+  if (source.timeScope.kind === 'policy-or-service-window') {
+    assert.strictEqual(source.timeScope.cadence, null, source.id + ' policy-or-service-window timeScope must not define cadence');
+    assert(Number.isInteger(source.timeScope.serviceWindowDays), source.id + ' policy-or-service-window timeScope must define serviceWindowDays');
+  }
 }
 
 function resolveRepoPath(relativePath) {
@@ -928,6 +971,16 @@ registry.sources.forEach(function(source) {
   assert(isNonEmptyString(source.sourceUrl), source.id + ' sourceUrl is required');
   assert(isNonEmptyString(source.resourceUrl) || isNonEmptyString(source.apiUrl), source.id + ' must include a resourceUrl or apiUrl');
   assert(isNonEmptyString(source.sourceBasis), source.id + ' sourceBasis is required');
+  assert(isNonEmptyString(source.notes), source.id + ' notes are required');
+
+  if (
+    source.id === 'pr-statistics-pemas-construction-permits' ||
+    source.id === 'ddec-permit-task-force-coordination-timing-2025' ||
+    source.id === 'ddec-permit-task-force-inspection-window-2025'
+  ) {
+    validateTimeScope(source);
+  }
+
   assert(
     hasPuertoRicoScope(source),
     source.id + ' must be Puerto Rico-only or use an approved deterministic Puerto Rico scope filter'
