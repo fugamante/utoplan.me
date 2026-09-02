@@ -195,17 +195,32 @@ Collect or inspect this evidence before issuing an IEEE 828 audit finding:
 - Revisit trigger:
   - The next Node 26 base-image refresh, relevant base-image security advisory,
     or release-hardening pass, whichever occurs first.
-- Status: implemented locally; operational closure pending (2026-08-25). All
-  six Node stages use the reviewed
+- Status: operational and validated on `master` (2026-09-02). All six Node
+  stages use the reviewed
   `sha256:367679cf9792759492a486e4aa4b421764d71a9546a6dae8aab81a99eb797b3e`
   index digest, `.github/dependabot.yml` performs weekly Docker update
   discovery, the modernization maintainer owns review and advisory response,
   `test/deployment_container_contract_test.js` rejects partial or unreviewed
   refreshes, and `docs/container-base-refresh.md` defines validation and
-  rollback. PR #18 placed the configuration on current `master`; end-to-end
-  closure still requires confirmation that GitHub dependency automation is
-  enabled, one generated Docker refresh pull request, and passing validation
-  for that exact pull-request commit.
+  rollback. PR #18 placed the configuration on `master`.
+- Operational evidence:
+  - GitHub dependency automation generated Docker PR #21 at
+    `35bef56103882063bb6211146ee98fc73c6cf378`, establishing activation of the
+    weekly discovery path. Exact-head run `33396122699` failed at the
+    deployment-container contract because the proposed digest differed from
+    the previously reviewed oracle. This was the intended fail-closed review
+    gate; PR #21 did not pass or merge.
+  - The modernization maintainer coordinated the digest, contract-oracle, and
+    IEEE evidence updates in PR #23 at
+    `b84db5ce93bfdd5b43af029a129f0adc57172a4b`. Exact-head run `33594626470`
+    passed, the change merged as
+    `49612071ca7485263a0c90aa652c3a7bb5a94978`, and exact-master run
+    `33597376960` passed.
+  - This sequence completes the two-stage control in
+    `docs/container-base-refresh.md`: a generated pull request establishes
+    automated discovery, then exact-SHA validation of the coordinated,
+    maintainer-reviewed refresh establishes acceptance. Generated discovery
+    does not authorize automatic merge or weaken the fail-closed oracle.
 
 ## Hardening And Optimization Recommendation Rules
 
