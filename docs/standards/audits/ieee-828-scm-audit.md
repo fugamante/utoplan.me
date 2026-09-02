@@ -217,10 +217,11 @@ Collect or inspect this evidence before issuing an IEEE 828 audit finding:
     to the reviewed head tree. The change merged as
     `49612071ca7485263a0c90aa652c3a7bb5a94978`, whose exact-master run
     `33597376960` passed.
-  - On 2026-09-02, the canonical refresh stack also passed on that master
-    content: production app and modern API image builds, runtime user and
-    command inspection, `npm test`, release preflight, and
-    `npm run docker:test:all-db` (DB, proxy, and integrated-browser checks).
+  - On 2026-09-02, with container and runtime inputs identical to that master,
+    the canonical refresh stack also passed: production app and modern API
+    image builds, runtime user and command inspection, `npm test`, release
+    preflight, and `npm run docker:test:all-db` (DB, proxy, and
+    integrated-browser checks).
   - This sequence completes the two-stage control in
     `docs/container-base-refresh.md`: a generated pull request establishes
     automated discovery, then content-equivalent PR merge-ref validation and
