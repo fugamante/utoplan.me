@@ -206,21 +206,27 @@ Collect or inspect this evidence before issuing an IEEE 828 audit finding:
 - Operational evidence:
   - GitHub dependency automation generated Docker PR #21 at
     `35bef56103882063bb6211146ee98fc73c6cf378`, establishing activation of the
-    weekly discovery path. Exact-head run `33396122699` failed at the
-    deployment-container contract because the proposed digest differed from
-    the previously reviewed oracle. This was the intended fail-closed review
-    gate; PR #21 did not pass or merge.
+    weekly discovery path. Pull-request run `33396122699`, attributed to that
+    head, failed at the deployment-container contract because the proposed
+    digest differed from the previously reviewed oracle. This was the intended
+    fail-closed review gate; PR #21 did not pass or merge.
   - The modernization maintainer coordinated the digest, contract-oracle, and
     IEEE evidence updates in PR #23 at
-    `b84db5ce93bfdd5b43af029a129f0adc57172a4b`. Exact-head run `33594626470`
-    passed, the change merged as
-    `49612071ca7485263a0c90aa652c3a7bb5a94978`, and exact-master run
+    `b84db5ce93bfdd5b43af029a129f0adc57172a4b`. Pull-request run `33594626470`
+    passed against synthetic merge `ac6da54e` with tree `0d49602`, identical
+    to the reviewed head tree. The change merged as
+    `49612071ca7485263a0c90aa652c3a7bb5a94978`, whose exact-master run
     `33597376960` passed.
+  - On 2026-09-02, the canonical refresh stack also passed on that master
+    content: production app and modern API image builds, runtime user and
+    command inspection, `npm test`, release preflight, and
+    `npm run docker:test:all-db` (DB, proxy, and integrated-browser checks).
   - This sequence completes the two-stage control in
     `docs/container-base-refresh.md`: a generated pull request establishes
-    automated discovery, then exact-SHA validation of the coordinated,
-    maintainer-reviewed refresh establishes acceptance. Generated discovery
-    does not authorize automatic merge or weaken the fail-closed oracle.
+    automated discovery, then content-equivalent PR merge-ref validation and
+    exact-master validation of the coordinated, maintainer-reviewed refresh
+    establish acceptance. Generated discovery does not authorize automatic
+    merge or weaken the fail-closed oracle.
 
 ## Hardening And Optimization Recommendation Rules
 
