@@ -22,6 +22,31 @@ substitute for a release record.
 
 ## Standards maintenance evidence
 
+### 2026-09-02 source timing and roadmap alignment
+
+- Baseline reviewed: active `standards/container-refresh-closure` branch
+  through `cc06710` (`Align roadmap with source timing control`). Material
+  changes since the prior standards-maintenance entry added machine-checkable
+  `timeScope` metadata for the current PEMAS publication, DDEC aggregate
+  coordination-timing, and DDEC inspection-window registry entries in
+  `data/sources/puerto-rico.json`, then aligned the top-level roadmap mirrors
+  in `README.md` and `docs/modernization-roadmap.md`.
+- Acceptance evidence: `npm run test:data-sources`,
+  `npm run test:coordination-timing-signal-review`,
+  `npm run test:inspection-window-signal-review`, and `git diff --check`
+  passed on 2026-09-02 for the two focused control commits `5d92f44` and
+  `cc06710`.
+- Control-family disposition: IEEE 830 intake requirements and IEEE 829 test
+  coverage now record that period-bound regulatory timing sources must expose
+  machine-checkable cadence, observed-period, or service-window metadata
+  rather than leaving timing scope only in prose. IEEE 1058 roadmap mirrors
+  now state that same control explicitly while keeping completed-inspection
+  throughput as the remaining evidence-depth lane.
+- Boundary: this is local branch standards-maintenance evidence for source
+  registry and roadmap control alignment. It does not change the accepted
+  reviewed-artifact baseline date, add new official throughput evidence, or
+  claim release, merge, or production assurance.
+
 ### 2026-08-27 repository reconciliation
 
 - Baseline reviewed: active `modernization/integration-review` branch through
