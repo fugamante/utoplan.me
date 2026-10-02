@@ -22,6 +22,31 @@ substitute for a release record.
 
 ## Standards maintenance evidence
 
+### 2026-09-02 source timing and roadmap alignment
+
+- Baseline reviewed: active `standards/container-refresh-closure` branch
+  through `cc06710` (`Align roadmap with source timing control`). Material
+  changes since the prior standards-maintenance entry added machine-checkable
+  `timeScope` metadata for the current PEMAS publication, DDEC aggregate
+  coordination-timing, and DDEC inspection-window registry entries in
+  `data/sources/puerto-rico.json`, then aligned the top-level roadmap mirrors
+  in `README.md` and `docs/modernization-roadmap.md`.
+- Acceptance evidence: `npm run test:data-sources`,
+  `npm run test:coordination-timing-signal-review`,
+  `npm run test:inspection-window-signal-review`, and `git diff --check`
+  passed on 2026-09-02 for the two focused control commits `5d92f44` and
+  `cc06710`.
+- Control-family disposition: IEEE 830 intake requirements and IEEE 829 test
+  coverage now record that period-bound regulatory timing sources must expose
+  machine-checkable cadence, observed-period, or service-window metadata
+  rather than leaving timing scope only in prose. IEEE 1058 roadmap mirrors
+  now state that same control explicitly while keeping completed-inspection
+  throughput as the remaining evidence-depth lane.
+- Boundary: this is local branch standards-maintenance evidence for source
+  registry and roadmap control alignment. It does not change the accepted
+  reviewed-artifact baseline date, add new official throughput evidence, or
+  claim release, merge, or production assurance.
+
 ### 2026-08-27 repository reconciliation
 
 - Baseline reviewed: active `modernization/integration-review` branch through
@@ -119,6 +144,34 @@ substitute for a release record.
   performance, or production assurance. Supersede after any tracked change,
   failed gate, dependency/container refresh, CI edit, or release-environment
   change.
+
+## Standards maintenance evidence
+
+### 2026-09-02 container refresh closure
+
+- Baseline reviewed: `master` through
+  `49612071ca7485263a0c90aa652c3a7bb5a94978` (`Merge pull request #23 from
+  fugamante/standards/container-refresh-closure`). The branch closed the
+  reviewed Node 26 base-image digest refresh after the generated Docker update
+  proposal had already proved the fail-closed oracle on a mismatched digest.
+- Acceptance evidence: the generated Docker PR #21 head
+  `35bef56103882063bb6211146ee98fc73c6cf378` failed as intended in pull-request
+  run `33396122699` when `test:deployment-containers` rejected the proposed
+  digest. The maintainer-reviewed closure in PR #23 at
+  `b84db5ce93bfdd5b43af029a129f0adc57172a4b` then passed on merge-ref run
+  `33594626470` and on exact-master run `33597376960`.
+- Local confirmation: on 2026-09-02, with container and runtime inputs matching
+  `master`, production app and modern API image builds, runtime user and
+  command inspection, `npm test`, `UTOPLAN_RELEASE_SAMPLE=1 npm run
+  verify:release`, and `npm run docker:test:all-db` all passed.
+- Control-family disposition: IEEE 828 now has current operational evidence for
+  both stages of `docs/container-base-refresh.md`: automated weekly discovery
+  and coordinated maintainer-reviewed acceptance. This is standards-maintenance
+  and container-control evidence only; it does not change the accepted
+  profile/reach reviewed-artifact baseline date.
+- Release boundary: this section records hosted and local acceptance evidence
+  for the reviewed container refresh on `master`. It is not a new product/data
+  baseline, deployment record, or production assurance claim.
 
 ## Open high-impact signals
 

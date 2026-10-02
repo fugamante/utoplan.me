@@ -19,6 +19,9 @@ PostgreSQL-backed Node and TypeScript system with explicit data provenance.
 - Puerto Rico-only source-backed data intake and quarantine contracts.
 - Fixed-scenario demand, workforce, site, infrastructure, and permit baselines
   recorded as reviewed Puerto Rico evidence where official sources are pinned.
+- Period-bound regulatory timing sources now carry machine-checkable
+  `timeScope` metadata so publication cadence, observed periods, and
+  service-window claims stay distinct in the source registry.
 - Docker and host-native validation for app, API, database, and proxy paths.
 - IEEE-aligned planning, design, quality, test, and verification documentation.
 
