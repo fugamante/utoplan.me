@@ -1,6 +1,6 @@
 # utoplan.Me
 
-`utoplan.Me` is a map-first planning tool for evaluating how and where a
+`utoplan.Me` is a planning tool for evaluating how and where a
 business can take root in Puerto Rico. It starts with the business's operating
 model, scale, and market reach, then examines the site, demand, infrastructure,
 workforce, logistics, execution, and resilience conditions that could enable or
