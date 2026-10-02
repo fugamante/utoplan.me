@@ -20,12 +20,13 @@ interface LeafletMarker {
 
 interface LeafletLayer {
   addTo(map: LeafletMap): LeafletLayer;
+  on(event: string, callback: () => void): LeafletLayer;
 }
 
 interface LeafletApi {
   map(element: Element): LeafletMap;
   marker(position: [number, number]): LeafletMarker;
-  tileLayer(url: string, options: { attribution: string }): LeafletLayer;
+  tileLayer(url: string, options: { attribution: string; referrerPolicy: string }): LeafletLayer;
 }
 
 interface UtoplanWindow extends Window {
@@ -53,9 +54,23 @@ export function createMap(documentRef: Document, leaflet: LeafletApi, config: Ma
   const map = leaflet.map(mapElement).setView(config.center, config.zoom);
 
   if (config.tileUrl) {
-    leaflet.tileLayer(config.tileUrl, {
-      attribution: config.tileAttribution
-    }).addTo(map);
+    const status = documentRef.querySelector<HTMLElement>('[data-ui="basemap-status"]');
+    let failed = false;
+    const tiles = leaflet.tileLayer(config.tileUrl, {
+      attribution: config.tileAttribution,
+      // Tile providers need the site origin; never send page paths or query strings.
+      referrerPolicy: "strict-origin"
+    });
+    tiles.on("loading", function(): void { failed = false; });
+    tiles.on("tileerror", function(): void {
+      failed = true;
+      if (status) { status.hidden = false; }
+    });
+    // Clear the warning only after an entire subsequent batch succeeds.
+    tiles.on("load", function(): void {
+      if (status && !failed) { status.hidden = true; }
+    });
+    tiles.addTo(map);
   }
 
   return map;

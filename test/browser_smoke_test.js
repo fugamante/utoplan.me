@@ -409,6 +409,7 @@ async function main() {
     'planning-context detail should surface candidate-grade status and source count'
   );
   assert.strictEqual(await page.locator('.leaflet-tile-pane img.leaflet-tile').count() > 0, true, 'base map tiles should render');
+  assert.strictEqual(await page.locator('.leaflet-tile-pane img.leaflet-tile').first().getAttribute('referrerpolicy'), 'strict-origin', 'tile requests must identify the site without exposing page paths');
   assert.strictEqual(await page.locator('.leaflet-marker-icon').count(), 4, 'partial university markers should render');
   assert(
     (await page.locator('[data-ui="unis-coverage-status"]').innerText()).indexOf('Partial reviewed Census-cache coverage') !== -1,
@@ -472,6 +473,17 @@ async function main() {
 
   assert.deepStrictEqual(pageErrors, [], 'page should not throw runtime errors');
   assert.deepStrictEqual(consoleMessages, [], 'page should not log browser console errors or warnings');
+
+  await page.route('https://tile.openstreetmap.org/**', route => route.abort());
+  await page.reload();
+  await page.locator('[data-ui="basemap-status"]').waitFor({state: 'visible'});
+  await page.waitForFunction(() => document.querySelectorAll('.leaflet-marker-icon').length === 4);
+  assert.strictEqual(await page.locator('.leaflet-marker-icon').count(), 4, 'tile failure must preserve markers');
+  await page.waitForFunction(() => document.querySelector('[data-ui="planning-context-detail"]').textContent.toLowerCase().includes('source provenance'));
+  await page.unroute('https://tile.openstreetmap.org/**');
+  await page.route('https://tile.openstreetmap.org/**', route => route.fulfill({body: tilePng, contentType: 'image/png', status: 200}));
+  await page.getByRole('button', {name: 'Zoom in', exact: true}).click();
+  await page.locator('[data-ui="basemap-status"]').waitFor({state: 'hidden'});
 
   await browser.close();
   stopServer();
