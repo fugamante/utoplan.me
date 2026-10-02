@@ -34,6 +34,9 @@ assert.strictEqual(artifact.signalId, 'strategic-inspection-service-window-basel
 assert(signal, 'signal must exist');
 assert.strictEqual(signal.sourceType, 'registered-source');
 assert.strictEqual(signal.sourceId, source.id);
+assert(source.timeScope, 'inspection-window source must define timeScope');
+assert.strictEqual(source.timeScope.kind, 'policy-or-service-window');
+assert.strictEqual(source.timeScope.serviceWindowDays, 90);
 assert.deepStrictEqual(signal.applicableScenarioIds, ['large-strategic']);
 assert.deepStrictEqual(signal.reachByScenario, { 'large-strategic': 'island-wide' });
 assert.deepStrictEqual(signal.factIds, ['large-strategic-permit-inspection-window']);

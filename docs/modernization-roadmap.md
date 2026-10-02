@@ -42,6 +42,10 @@
   `legacySchemaMap` coverage and `importReadiness` blockers for active mapped
   tables so import work can distinguish accepted transforms from unresolved
   source gaps and operator decisions.
+- The Puerto Rico source registry now also records machine-checkable
+  `timeScope` metadata for period-bound regulatory timing sources so
+  publication cadence, observed periods, and service-window rules do not live
+  only in prose.
 - The approved `cbps.cnaic_name` import join now uses the checked-in
   `data/naics/cbp-naics-titles.json` Census title registry for the full
   registered Puerto Rico CBP code set, so the municipality-level `cbps`
@@ -425,7 +429,10 @@ completed-inspection volume or rate, construction inspection, project
 qualification, approval outcome, or one operator's recovery outcome. The next
 best high-criticality evidence-depth lane is a reproducible official completed-
 inspection count, completion rate, or elapsed-time distribution with a defined
-reporting period. The registry's sole literal source gap is now
+reporting period. That future lane should extend the source registry with the
+same machine-checkable `timeScope` discipline used for the current PEMAS and
+DDEC regulatory timing sources so observed periods remain distinct from policy
+windows. The registry's sole literal source gap is now
 `local-supplier-route-gap` for the small/local scenario; do not overextend the
 existing corridor evidence to close that local lane. Keep category and place
 constant while upgrading `data/profile-reach/business-profile-reach-v1.json`

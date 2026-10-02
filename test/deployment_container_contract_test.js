@@ -17,6 +17,7 @@ var compose = fs.readFileSync(path.join(root, 'docker-compose.integrated.yml'), 
 var publicCompose = fs.readFileSync(path.join(root, 'docker-compose.public-api.yml'), 'utf8');
 var dependabot = fs.readFileSync(path.join(root, '.github', 'dependabot.yml'), 'utf8');
 var baseRefresh = fs.readFileSync(path.join(root, 'docs', 'container-base-refresh.md'), 'utf8');
+var evidenceRegister = fs.readFileSync(path.join(root, 'docs', 'standards', 'evidence-register.md'), 'utf8');
 var nodeImage = 'node:26-bookworm-slim@sha256:367679cf9792759492a486e4aa4b421764d71a9546a6dae8aab81a99eb797b3e';
 var postgresImage = 'postgres:16-alpine@sha256:cf78e76683b9ca8c5733cbbdce6c9262b45b6767934dd0a95e671f9a0fc20685';
 
@@ -69,3 +70,8 @@ assert(dependabot.indexOf('open-pull-requests-limit: 1') !== -1);
 assert(baseRefresh.indexOf('modernization maintainer owns review') !== -1);
 assert(baseRefresh.indexOf('## Security Advisory Response') !== -1);
 assert(baseRefresh.indexOf('## Rollback') !== -1);
+assert(evidenceRegister.indexOf('### 2026-09-02 container refresh closure') !== -1);
+assert(evidenceRegister.indexOf('33396122699') !== -1);
+assert(evidenceRegister.indexOf('33594626470') !== -1);
+assert(evidenceRegister.indexOf('33597376960') !== -1);
+assert(evidenceRegister.indexOf('npm run docker:test:all-db') !== -1);
