@@ -352,3 +352,12 @@ a:active{
     bottom: 10px;
   }
 }
+
+#appHeader .basemapStatus{
+  margin-top: 8px;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-muted);
+  color: var(--text);
+}

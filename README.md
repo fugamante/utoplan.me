@@ -1,6 +1,6 @@
 # utoplan.Me
 
-`utoplan.Me` is a planning tool for evaluating how and where a
+`utoplan.Me` is a planning tool being developed to evaluate how and where a
 business can take root in Puerto Rico. It starts with the business's operating
 model, scale, and market reach, then examines the site, demand, infrastructure,
 workforce, logistics, execution, and resilience conditions that could enable or
@@ -12,6 +12,12 @@ that prototype while rebuilding the application as a reproducible, testable,
 PostgreSQL-backed Node and TypeScript system with explicit data provenance.
 
 ## Current State
+
+Today, you can explore a Puerto Rico map and selected descriptive planning-context
+slices, including source references, confidence, and unresolved questions. Coverage
+is partial; the app does not yet recommend sites, rank municipalities, or predict
+business viability. See [Product Scope](docs/product-scope.md) for the current boundary
+and [Modernization Roadmap](docs/modernization-roadmap.md) for the next gates.
 
 - Static browser app with same-origin `/v1/*` data requests.
 - Modern TypeScript Node API compatibility layer under `dtoapi/modern`.
@@ -25,28 +31,119 @@ PostgreSQL-backed Node and TypeScript system with explicit data provenance.
 - Docker and host-native validation for app, API, database, and proxy paths.
 - IEEE-aligned planning, design, quality, test, and verification documentation.
 
-## Quick Start
+## Installation
 
-Use Node 26.x. Install the root workspace and both nested packages:
+utoplan.Me currently runs from source. There is no standalone installer.
+
+### Prerequisites
+
+- Git to clone the repository.
+- Node 26.x and npm. The required Node version is recorded in `.nvmrc` and
+  `.node-version`.
+- A POSIX shell such as Bash or Zsh for the command examples below.
+- Docker with Docker Compose, with the Docker engine running, for the seeded
+  database-backed workflow. The map demo does not require Docker.
+
+### 1. Get the source
+
+```sh
+git clone https://github.com/fugamante/utoplan.me.git utoplanMe
+cd utoplanMe
+```
+
+If you already have a checkout, enter its root directory instead.
+
+### 2. Select Node and install dependencies
+
+If you use nvm, activate the pinned Node version:
+
+```sh
+nvm install
+nvm use
+```
+
+With Node 26.x active, install all workspace dependencies:
 
 ```sh
 npm run install:all
 ```
 
-Run the integrated local app and modern API:
+This installs the root package, browser app, API launcher, and modern API.
+
+## Quick Start
+
+Complete [Installation](#installation) first, then run these commands from the
+repository root. Choose the map demo for a first look or the app and API workflow
+to explore planning-context details.
+
+**Map demo — no database required**
+
+For a first look at the map and layer controls:
 
 ```sh
+UTOPLAN_DEMO_FIXTURE=1 npm run start:app
+```
+
+Open [http://localhost:8080](http://localhost:8080). This mode serves the checked-in
+university fixture; it does not provide the API-backed planning-context views.
+Map tiles still require internet access. Stop the app with `Ctrl+C`.
+In this mode, the Planning context panel displays “unavailable”; use the app
+and API workflow below to load those views.
+
+**App and API — seeded local database required**
+
+To explore the planning-context summaries and descriptive detail, use Docker
+Compose to start the repository's seeded development/test database:
+
+```sh
+docker compose up -d --build --wait db
+docker compose port db 5432
+```
+
+The second command prints `127.0.0.1:<port>`. Use that port below; Compose assigns
+it dynamically. The credentials shown here belong to this local test service.
+
+```sh
+DATABASE_HOST=127.0.0.1 \
+DATABASE_PORT=<port> \
+DATABASE_USER=postgres \
+DATABASE_PASSWORD=postgres \
+DATABASE_DB=dtoapi_test \
 npm run start:local
 ```
+
+Replace `<port>` before running. Use a shell without existing `DATABASE_URL` or
+`TEST_DATABASE_*` settings, since those override the connection values above.
+If you already have a local PostgreSQL database, it must satisfy the
+[`baseline-read-v1` schema](docs/database-migrations.md); an empty database is
+insufficient.
 
 `npm run start:local` starts the API on `UTOPLAN_API_PORT` or `3001`, waits for
 `/readyz`, then starts the static app on `UTOPLAN_APP_PORT` or `8080`. The
 browser continues to request same-origin paths such as `/v1/unis`.
 
-For explicit offline demos only, run the app with `UTOPLAN_DEMO_FIXTURE=1` to
-map `/v1/unis` to `app/public/data/unis.json`. Without
-`UTOPLAN_API_ORIGIN` or `UTOPLAN_DEMO_FIXTURE=1`, the static app does not serve
-`/v1/*` paths.
+Open [http://localhost:8080](http://localhost:8080), select a planning-context
+option, and inspect its sources, confidence, limitations, and unresolved questions.
+The seeded database demonstrates the workflow; it is not a production dataset.
+
+Stop the app and API with `Ctrl+C`, then stop the local database with
+`docker compose stop db`.
+
+### If startup fails
+
+- **Node version error:** activate Node 26.x and rerun the command.
+- **API readiness timeout:** check the database is running, the assigned port and
+  credentials match, and the `baseline-read-v1` schema is present. The app starts
+  only after the API is ready.
+- **Port already in use:** set `PORT` for the demo, or `UTOPLAN_APP_PORT` and
+  `UTOPLAN_API_PORT` for the integrated workflow, then open the chosen app port.
+- **Map tiles show “403 Access blocked”:** the external OpenStreetMap tile service
+  has rejected the browser's requests. Tile images send only the site origin as
+  their referrer, as required by the provider; browser privacy settings or network
+  filters that strip it can still prevent tiles from loading. Markers and API-backed planning-context
+  views can still load, but the basemap preview is incomplete.
+
+For validation commands, see [Validation Commands](#validation-commands).
 
 ## Product Vision
 
@@ -388,6 +485,16 @@ The legacy Nodal API path has been retired from the normal project tree. The
 modern API runs from `dtoapi/modern`, compiles TypeScript sources to ignored
 CommonJS output under `dtoapi/modern/lib/`, and preserves the captured root and
 seeded read endpoint contracts.
+
+Repeat `npx playwright install chromium` after a Playwright update so the browser
+matches the lockfile. Missing binaries must fail tests; do not substitute older
+cached versions. CI already installs the matching runtime after workspace install
+with `npx playwright install --with-deps chromium` and does not cache browsers.
+
+Browser suites mock external tiles for deterministic checks. Before a release,
+also open the app with live tiles and verify the basemap. Record provider/network
+failures separately from application regressions. The basemap warning must leave
+markers and available planning-context detail usable and clear after recovery.
 
 The static app and modern API both expose `/healthz` for runtime health checks.
 

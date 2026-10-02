@@ -6,9 +6,27 @@ export function createMap(documentRef, leaflet, config) {
     }
     const map = leaflet.map(mapElement).setView(config.center, config.zoom);
     if (config.tileUrl) {
-        leaflet.tileLayer(config.tileUrl, {
-            attribution: config.tileAttribution
-        }).addTo(map);
+        const status = documentRef.querySelector('[data-ui="basemap-status"]');
+        let failed = false;
+        const tiles = leaflet.tileLayer(config.tileUrl, {
+            attribution: config.tileAttribution,
+            // Tile providers need the site origin; never send page paths or query strings.
+            referrerPolicy: "strict-origin"
+        });
+        tiles.on("loading", function () { failed = false; });
+        tiles.on("tileerror", function () {
+            failed = true;
+            if (status) {
+                status.hidden = false;
+            }
+        });
+        // Clear the warning only after an entire subsequent batch succeeds.
+        tiles.on("load", function () {
+            if (status && !failed) {
+                status.hidden = true;
+            }
+        });
+        tiles.addTo(map);
     }
     return map;
 }
