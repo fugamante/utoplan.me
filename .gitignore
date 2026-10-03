@@ -14,3 +14,4 @@ build/
 dtoapi/modern/lib/
 tmp/
 temp/
+app/public/.ftpconfig
