@@ -158,6 +158,17 @@ async function main() {
   var missing = await request('/missing-file.css');
   assert.strictEqual(missing.statusCode, 404, 'missing assets should return HTTP 404');
 
+  var dotfile = await request('/.ftpconfig');
+  assert.strictEqual(dotfile.statusCode, 400, 'dotfiles should be rejected before static serving');
+
+  var nestedDotfile = await request('/css/.secret');
+  assert.strictEqual(nestedDotfile.statusCode, 400, 'nested dotfiles should be rejected before static serving');
+
+  var nulByte = await request('/%00');
+  assert.strictEqual(nulByte.statusCode, 400, 'NUL byte paths should be rejected before filesystem access');
+
+  assert.strictEqual(server.exitCode, null, 'static app should keep running after invalid paths');
+
   var traversal = await request('/../package.json');
   assert.strictEqual(traversal.statusCode, 400, 'path traversal should be rejected');
 }
