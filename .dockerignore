@@ -21,3 +21,4 @@ dist
 build
 tmp
 temp
+app/public/.ftpconfig

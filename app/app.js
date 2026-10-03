@@ -40,8 +40,18 @@ function safePath(urlPath) {
     return null;
   }
 
+  if (decoded.indexOf('\0') !== -1) {
+    return null;
+  }
+
   if (decoded === '/') {
     decoded = '/index.html';
+  }
+
+  if (decoded.split('/').some(function(segment) {
+    return segment.charAt(0) === '.';
+  })) {
+    return null;
   }
 
   var filePath = path.normalize(path.join(publicDir, decoded));

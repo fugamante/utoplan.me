@@ -175,6 +175,30 @@ async function main() {
   var missing = await request('/missing-file.css');
   assert.strictEqual(missing.statusCode, 404, 'missing assets should return HTTP 404');
 
+  var invalidPaths = [
+    '/.ftpconfig',
+    '/%2eftpconfig',
+    '/css/.secret',
+    '/css/%2ehidden/main.css',
+    '/%00',
+    '/css/main.css%00',
+    '/%2e%2e/package.json',
+    '/%ZZ'
+  ];
+
+  for (var k = 0; k < invalidPaths.length; k++) {
+    var invalidPath = await request(invalidPaths[k]);
+    assert.strictEqual(invalidPath.statusCode, 400, invalidPaths[k] + ' should be rejected before filesystem access');
+    assert.strictEqual(invalidPath.headers['referrer-policy'], 'no-referrer');
+    assert.strictEqual(invalidPath.headers['x-content-type-options'], 'nosniff');
+    assert.strictEqual(invalidPath.headers['x-frame-options'], 'DENY');
+  }
+
+  var healthyAfterInvalidPaths = await request('/healthz');
+  assert.strictEqual(healthyAfterInvalidPaths.statusCode, 200, 'static app should remain responsive after invalid paths');
+  assert.strictEqual(JSON.parse(healthyAfterInvalidPaths.body.toString('utf8')).status, 'ok');
+  assert.strictEqual(server.exitCode, null, 'static app should keep running after invalid paths');
+
   var removedAssets = [
     '/vendor/jquery/jquery.min.js',
     '/vendor/require/require.js',
