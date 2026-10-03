@@ -6,8 +6,15 @@
 - `dtoapi/` serves the modern API entrypoint; obsolete Nodal source has been removed from the normal project tree.
 - Root workspace scripts install, test, build, and start both services from lockfiles.
 - Generated dependency folders are ignored and removed from source control.
-- Azure Pipelines installs Node 22, runs the DB-free API contract baseline, and runs the modern DB-backed contract suite through Docker Compose.
+- GitHub Actions installs Node 26, runs the contract-test baseline, and runs
+  the modern Docker-backed validation surface.
 - Docker validation builds from lockfiles, runs the API test baseline, and serves the static app by default.
+- The production app and modern API images run their service commands as the
+  unprivileged image user `node`, with container contract coverage preventing
+  a regression to root runtime.
+- Every Node Docker stage is pinned to one reviewed OCI index digest; weekly
+  Dependabot discovery and the maintainer-owned refresh procedure are defined
+  in `docs/container-base-refresh.md`.
 - Docker DB validation builds a seeded Postgres test image instead of bind-mounting seed SQL, avoiding host file-sharing instability during database initialization.
 - DB-backed API contracts run in a current Node container against the modern API, including missing-record behavior.
 - The first-page map now prefers the modern same-origin `/v1/unis` collection path while preserving explicit demo/test fixture fallback for standalone static app runs.
@@ -25,8 +32,275 @@
 - `/readyz` now verifies the `baseline-read-v1` database schema contract before the API is marked ready.
 - `db/migrations/` and `docs/database-migrations.md` now define the migration artifact format and production release checklist.
 - `db/migrations/202605211200_baseline_read_v1.md` records the existing read schema as the initial production reference.
-- `npm run verify:release` wraps app/API deployment verification for release jobs, and Azure validates the wrapper in sample mode without production secrets.
+- `docs/data-provenance.md` records the current evidence for original hackathon data sources and tracks the unresolved organizer-provided dataset provenance gap.
+- `docs/data-intake.md` and `data/sources/puerto-rico.json` define the Puerto Rico-only source intake contract for future data replacement work.
+- `docs/data-source-schema-mapping.md` now maps the registered Puerto Rico
+  `cbps` and `unis` candidates to the preserved legacy read-schema columns in
+  `dtoapi/modern/src/resource_contract.ts` and
+  `db/migrations/202605211200_baseline_read_v1.md`.
+- The Puerto Rico source registry now records machine-readable
+  `legacySchemaMap` coverage and `importReadiness` blockers for active mapped
+  tables so import work can distinguish accepted transforms from unresolved
+  source gaps and operator decisions.
+- The Puerto Rico source registry now also records machine-checkable
+  `timeScope` metadata for period-bound regulatory timing sources so
+  publication cadence, observed periods, and service-window rules do not live
+  only in prose.
+- The approved `cbps.cnaic_name` import join now uses the checked-in
+  `data/naics/cbp-naics-titles.json` Census title registry for the full
+  registered Puerto Rico CBP code set, so the municipality-level `cbps`
+  candidate is import-ready without a live Census API key.
+- The `unis` higher-ed replacement candidate now treats the approved Census
+  geocoder cache, checked-in quarantine artifact, and accepted partial import
+  boundary as the authoritative import gate; production-style output is limited
+  to reviewed Census-cache-backed rows until coverage changes.
+- The reviewed Census geocoder cache now contains 4 Puerto Rico matches from
+  the 19 approved alias/campus rows, while 15 approved rows without Census
+  matches and the 27 identity-quarantined rows remain excluded through the
+  quarantine artifact.
+- The `unis` import boundary review now records the MAX decision board in
+  `data/geocoding/unis-import-boundary-review.json`: partial import from the 4
+  cache-backed rows is accepted with explicit API/UI coverage language, while
+  the 42 reviewed exclusions remain outside production-style output.
+- The accepted partial `unis` boundary now has a reproducible generated slice:
+  `node scripts/build_unis_slice.js` writes
+  `data/generated/unis-partial-import.json` and
+  `docker/postgres/002_unis_partial_seed.sql`, and the seeded modern DB reads
+  those 4 reviewed rows instead of placeholder university data.
+- The generated 4-row `unis` slice now also populates legacy `desc` from
+  non-personal fields in the checked-in `data/unis/partial-source-fields.json`
+  artifact, which is machine-checked to match only the accepted
+  Census-cache-backed rows.
+- The `unis` path now also records stronger federal corroboration candidates
+  for institution identity and accreditation so real Puerto Rico institutions
+  are not screened only through the current single auxiliary audit method.
+- The `unis` authority stack now also registers the Puerto Rico Department of
+  State ORLIE/JIP postsecondary listing as a licensure corroboration surface,
+  while documenting that its public Power BI listing is not yet a verified
+  stable bulk export or direct `unis` row source.
+- `data/unis/albizu-staged-review.json` and
+  `data/unis/sagrado-staged-review.json` record Universidad Carlos Albizu and
+  Universidad del Sagrado Corazón as source-backed staged alias/campus and
+  public-address evidence decisions while keeping both rows blocked before
+  Census cache, coordinates, DB seed, and generated output.
+- `data/geocoding/sagrado-geocoder-candidate-review.json` records read-only
+  Census candidate attempts for official-source Sagrado address forms; the
+  tested forms returned zero Puerto Rico matches and do not change cache,
+  coordinates, DB seed, generated output, API coverage, or UI coverage.
+- `docs/unis-alias-campus-match-policy.md` and
+  `data/unis/ipeds-alias-campus-review.json` now define the reviewed
+  alias/campus approval gate for unmatched `unis` rows so geocode-cache work
+  can proceed from row-level evidence rather than prose-only operator
+  decisions.
+- `docs/product-scope.md` defines the current product boundary: descriptive Puerto Rico planning context before recommendations, rankings, or automated decisions.
+- `docs/business-location-decision-framework.md` refocuses product sequencing
+  around business operating profile, scale, and geographic reach. University
+  presence is subordinate workforce evidence, not a primary location signal.
+- `data/mappings/puerto-rico-business-categories.json` defines the first candidate business-category to NAICS crosswalk for source-backed planning context.
+- `npm run test:data-sources` validates that registered import candidates are Puerto Rico-only or explicitly filtered to Puerto Rico.
+- `npm run test:naics-registry` validates the checked-in Census title registry
+  for the registered Puerto Rico CBP code set and the approved
+  `cbps.cnaic_name` auxiliary join path.
+- `npm run test:unis-geocode-audit` validates the checked-in higher-education
+  coordinate audit so `unis` blocker state stays tied to reproducible source
+  evidence.
+- `npm run test:business-categories` validates the candidate category crosswalk and rejects scoring-oriented contract drift.
+- `data/planning-context/mun001_construction.json` defines the first descriptive planning-context fixture for one municipality/category selection with matching CBP facts, confidence labels, and unresolved questions.
+- `data/planning-context/mun003_restaurant.json` adds a second descriptive planning-context fixture for a different municipality/category slice so confidence and unresolved-question patterns can be compared.
+- `data/municipalities/planning-context-municipalities.json` now records source-backed municipality display names for the active planning-context fixture set using the official Puerto Rico municipality boundary dataset from Datos.PR.
+- `npm run test:planning-context` validates the planning-context fixture contract and blocks scoring-oriented drift.
+- The modern API now serves read-only planning-context summaries at `GET /v1/planning-context` and fixture detail at `GET /v1/planning-context/:id`, with explicit descriptive-only guardrails in each response.
+- The first page now reads `GET /v1/planning-context` and renders descriptive municipality/category planning-context options without score/ranking/recommendation language.
+- The first page now requests `GET /v1/planning-context/:id` for the selected planning-context option and surfaces descriptive confidence, limitation, and unresolved-question detail in the same panel.
+- Planning-context summary/detail labels for the active fixture set now resolve against the source-backed municipality registry instead of placeholder `Municipality code ###` strings.
+- The first-page planning-context detail panel now renders disclosure-limited CBP values as masked and rounded/noise-flagged CBP values as approximate so the UI does not imply false precision from `D`/`H` source flags.
+- Planning-context CBP facts for the active fixture set now resolve deterministic source-backed `naicsTitle` labels from a Census-backed registry, and the first-page detail panel renders those labels instead of code-only fact headers.
+- The planning-context detail API now derives a `sourceProvenance` view from
+  fixture `sourceMetadata`, and the first-page detail panel renders source
+  publisher, portal, source id, and retrieval date so limitations and facts are
+  visibly tied to registered source evidence.
+- The first-page planning-context list and detail now also surface each
+  fixture's candidate-review status, update date, and registered-source count,
+  while the `unis` header renders both the accepted partial-coverage label and
+  its first explicit limitation so incomplete reviewed coverage is harder to
+  misread as full readiness.
+- `docs/production-readiness-decision-board.md` records the MAX decision to
+  keep the accepted partial `unis` boundary unchanged while making partial
+  coverage and candidate-grade planning-context state more explicit in the
+  API/UI surface.
+- `data/profile-reach/business-profile-reach-v1.json` now defines the first
+  versioned business-profile and geographic-reach contract, holding
+  `mun003_restaurant` constant across small/local, medium/regional, and
+  large/strategic scenarios so profile-dependent lens relevance, criticality,
+  reach, confidence, limitations, and next validation checks are explicit
+  without scores, ranks, or recommendations.
+- `data/profile-reach/decision-signal-registry-v1.json` now defines the first
+  decision-signal registry for the seven documented lenses, records which
+  matrix facts are backed by registered Puerto Rico evidence versus controlled
+  source gaps, and pins applicable scenarios, geographic reach, recency, and
+  interpretation limits before any profile-dependent API/UI expansion.
+- `data/profile-reach/aguada-restaurant-permit-path-review.json` now records
+  the first source-backed decision-signal upgrade: official Puerto Rico OGPe,
+  Fire Bureau, Department of Health, and municipal-patent authorities now
+  establish a descriptive permit path for the fixed Aguada restaurant
+  scenario, while timing, parcel eligibility, and case outcome remain explicit
+  limits.
+- `data/profile-reach/aguada-restaurant-utility-service-review.json` now
+  records the first infrastructure decision-signal upgrade: official Puerto
+  Rico electricity-rate governance, outage-reporting guidance, and Aguada
+  water-service interruption evidence now establish a descriptive utility
+  continuity baseline for the fixed restaurant scenario, while parcel-level
+  reliability, outage duration, and spoilage risk remain explicit limits.
+- `data/profile-reach/aguada-restaurant-utility-resilience-review.json` now
+  records the next infrastructure decision-signal upgrade: official Puerto
+  Rico Energy Bureau reliability and firm-capacity oversight plus official
+  PRASA emergency and operations sources now establish a descriptive
+  utility-resilience baseline for the fixed medium/regional and
+  large/strategic restaurant scenarios, while corridor-level restoration time,
+  parcel-level performance, backup coverage, and continuity cost remain
+  explicit limits.
+- `data/profile-reach/aguada-restaurant-site-screening-review.json` now
+  records the first site-feasibility decision-signal upgrade: official Puerto
+  Rico Planning Board zoning, flood, district, and Aguada hazard sources now
+  establish a descriptive site-screening baseline for the fixed restaurant
+  scenario, while parcel readiness, kitchen retrofit condition, frontage, and
+  lease fit remain explicit limits.
+- `data/profile-reach/aguada-restaurant-large-site-screening-review.json` now
+  records the next site-feasibility decision-signal upgrade: official Aguada
+  territorial-plan, Puerto Rico Planning Board zoning, flood, district, and
+  hazard sources now establish a descriptive large-site screening baseline for
+  the fixed large-strategic restaurant scenario, while parcel assembly,
+  parking, truck access, structure condition, and utility staging remain
+  explicit limits.
+- `data/profile-reach/aguada-restaurant-workforce-pipeline-review.json` now
+  records the first workforce decision-signal upgrade for the fixed strategic
+  restaurant scenario: official Puerto Rico labor-market publications now
+  establish island-wide food-service supervision, staffing-volume, annual-
+  openings, and growth context, while Aguada-specific hiring depth, retention,
+  commute range, and one-operator staffing resilience remain explicit limits.
+- `data/profile-reach/aguada-restaurant-construction-execution-review.json`
+  now records the next regulatory-execution decision-signal upgrade: the
+  official Puerto Rico PEMAS publication establishes an Aguada-inclusive
+  construction-permit observability surface distinct from the routine
+  existing-location permit path, while case timing, approval outcome, and
+  interagency execution remain explicit limits.
+- `data/profile-reach/aguada-restaurant-coordination-timing-review.json` now
+  records the next regulatory-execution decision-signal upgrade: the official
+  Puerto Rico DDEC permit-system Task Force report establishes an aggregate
+  interagency recommendation-processing baseline for the fixed large/strategic
+  restaurant scenario, while Aguada case timing, inspection completion,
+  project qualification, and approval outcome remain explicit limits.
+- `data/profile-reach/aguada-restaurant-inspection-window-review.json` now
+  records the next regulatory-execution decision-signal upgrade: the official
+  Puerto Rico DDEC permit-system Task Force report defines a 90-day State
+  inspection service window for Permiso Unico requests, while observed
+  inspection throughput, Aguada case completion, construction inspection, and
+  project outcome remain explicit limits.
+- `data/profile-reach/aguada-restaurant-support-network-review.json` now
+  records the next ecosystem decision-signal upgrade: official Puerto Rico
+  DDEC entrepreneurship and incentives guidance plus the Puerto Rico housing-
+  recovery incubator or accelerator program now establish a descriptive
+  support-network baseline for the fixed medium/regional and large/strategic
+  restaurant scenarios, while partner density, program eligibility, and one
+  operator's recovery outcome remain explicit limits.
+- `data/profile-reach/aguada-restaurant-routine-workforce-review.json` now
+  records the next workforce decision-signal upgrade for the fixed Aguada
+  restaurant small/local and medium/regional scenarios: official Puerto Rico
+  labor-market publications now establish island-wide wage, staffing-volume,
+  and annual-openings context for routine service and kitchen roles, while
+  Aguada-specific hiring depth, commute range, schedule coverage, and
+  employer-level retention remain explicit limits.
+- `data/profile-reach/aguada-restaurant-demand-proxy-review.json` now records
+  the first demand decision-signal upgrade beyond municipality-only context:
+  official Puerto Rico tourism occupancy and visitor-profile publications now
+  establish a descriptive west-region demand proxy for the fixed
+  medium/regional Aguada restaurant scenario, while Aguada-specific customer
+  capture, repeat-demand volume, and island-wide destination pull remain
+  explicit limits.
+- `data/profile-reach/aguada-restaurant-island-demand-review.json` now records
+  the next demand decision-signal upgrade for the fixed large/strategic Aguada
+  restaurant scenario: official Puerto Rico Tourism Company visitor-
+  expenditure, tourism-GDP-contribution, and passenger-movement publications
+  now establish a descriptive island-wide destination-demand baseline, while
+  Aguada-specific capture, event pull, west-coast dwell time, and one
+  operator's conversion remain explicit limits.
+- `data/profile-reach/aguada-restaurant-corridor-logistics-review.json` now
+  records the first logistics decision-signal upgrade: official Puerto Rico
+  west-corridor transport-planning and airport cargo publications now
+  establish a descriptive corridor logistics baseline for the fixed
+  medium/regional Aguada restaurant scenario, while route timing,
+  refrigerated-delivery performance, supplier redundancy, and spoilage risk
+  remain explicit limits.
+- `data/profile-reach/aguada-restaurant-external-logistics-review.json` now
+  records the next logistics decision-signal upgrade: official Puerto Rico
+  cargo inventory now establishes a descriptive external-connection gateway
+  baseline for the fixed large/strategic Aguada restaurant scenario through
+  west-region airport cargo and Puerto Rico maritime reporting context, while
+  supplier depth, cold-chain timing, maritime dependency, recovery time, and
+  one operator's procurement resilience remain explicit limits.
+- `npm run test:decision-signals` validates the decision-signal registry and
+  its linkage back to the profile/reach matrix so fixed-selection planning
+  facts cannot drift away from their documented evidence or explicit gap state.
+- `npm run test:regulatory-signal-review` validates the reviewed Aguada
+  restaurant permit-path artifact and its linkage to the source registry and
+  decision-signal contract.
+- `npm run test:infrastructure-signal-review` validates the reviewed Aguada
+  restaurant utility-service artifact and its linkage to the source registry
+  and decision-signal contract.
+- `npm run test:utility-resilience-signal-review` validates the reviewed
+  Aguada restaurant utility-resilience artifact and its linkage to the source
+  registry and decision-signal contract.
+- `npm run test:demand-signal-review` validates the reviewed Aguada restaurant
+  demand-proxy artifact and its linkage to the source registry and
+  decision-signal contract.
+- `npm run test:island-demand-signal-review` validates the reviewed Aguada
+  restaurant island-demand artifact and its linkage to the source registry and
+  decision-signal contract.
+- `npm run test:site-feasibility-signal-review` validates the reviewed Aguada
+  restaurant site-screening artifact and its linkage to the source registry
+  and decision-signal contract.
+- `npm run test:large-site-signal-review` validates the reviewed Aguada
+  restaurant large-site screening artifact and its linkage to the source
+  registry and decision-signal contract.
+- `npm run test:workforce-signal-review` validates the reviewed Aguada
+  restaurant workforce artifact and its linkage to the source registry and
+  decision-signal contract.
+- `npm run test:ecosystem-signal-review` validates the reviewed Aguada
+  restaurant support-network artifact and its linkage to the source registry
+  and decision-signal contract.
+- `npm run test:routine-workforce-signal-review` validates the reviewed Aguada
+  restaurant routine-workforce artifact and its linkage to the source registry
+  and decision-signal contract.
+- `npm run test:construction-execution-signal-review` validates the reviewed
+  Aguada restaurant construction-execution artifact and its linkage to the
+  source registry and decision-signal contract.
+- `npm run test:coordination-timing-signal-review` validates the reviewed
+  Aguada restaurant coordination-timing artifact and its linkage to the source
+  registry and decision-signal contract.
+- `npm run test:inspection-window-signal-review` validates the reviewed Aguada
+  restaurant inspection-window artifact and its linkage to the source registry
+  and decision-signal contract.
+- `npm run test:logistics-signal-review` validates the reviewed Aguada
+  restaurant corridor-logistics artifact and its linkage to the source
+  registry and decision-signal contract.
+- `npm run test:external-logistics-signal-review` validates the reviewed
+  Aguada restaurant external-logistics artifact and its linkage to the source
+  registry and decision-signal contract.
+- `npm run test:profile-reach-contract` validates the profile/reach contract,
+  the three-scenario matrix, the fixed municipality/category boundary, and the
+  expected profile-dependent reach and criticality progression.
+- `npm run test:browser:start-local` now validates the host-native integrated
+  `start:local` path against a seeded `baseline-read-v1` database, including
+  same-origin planning-context summary/detail requests, rendered descriptive
+  detail, and fixture exclusion.
+- `npm run verify:release` wraps app/API deployment verification for release
+  jobs, and GitHub Actions validates the wrapper in sample mode without
+  production secrets.
+- `npm run verify:release-smoke` checks deployed app `/healthz`, public
+  `/v1/unis`, public `/v1/planning-context`, and optional API `/readyz` from
+  configured release URLs.
 - The authoritative npm security gate is the current Node lockfile-backed audit across root, `app`, `dtoapi`, and `dtoapi/modern`, which currently reports zero vulnerabilities.
+- `docs/standards/` now defines the active IEEE 730, 828, 829, 830, 1016, 1012, and 1058 standards corpus, with paired audit guides for keeping quality, configuration, test, requirements, design, V&V, and project-management controls current during ongoing modernization.
 
 ## Target Outcomes
 
@@ -71,6 +345,7 @@ Exit criteria:
 - Stabilize the legacy API test suite under the selected compatibility runtime. Status: complete; behavior was captured before the Nodal runtime was removed from the normal dependency graph.
 - Add smoke tests for the public read endpoints. Status: complete; database-free root, route, CORS, gzip behavior, and seeded DB endpoints are covered.
 - Document database requirements and seed/reset steps. Status: complete; Docker Compose provides a disposable Postgres test database with deterministic seed data.
+- Document original data provenance before treating seeded or recovered data as production data. Status: in progress; `docs/data-provenance.md` records verified old-branch evidence, while `docs/data-intake.md` and `data/sources/puerto-rico.json` constrain replacement candidates to Puerto Rico-only sources.
 - Record runtime compatibility constraints. Status: complete; the Node 8/Nodal compatibility path has been retired after seeded DB read behavior moved to the modern API.
 - Isolate externally observable endpoint behavior before replacement. Status: complete via API contract tests.
 
@@ -140,4 +415,33 @@ Status: complete for active API runtime and first-party browser behavior. Tests/
 
 ## Immediate Next Step
 
-Continue hardening the production path by opening a focused PR for the release preflight wrapper and validating Azure before merge.
+Continue strengthening the highest-criticality evidence limitations in the
+fixed-selection matrix while replacing literal source gaps when a sufficiently
+narrow official Puerto Rico source is available. The official DDEC permit-system
+Task Force report now establishes a Puerto Rico-wide aggregate baseline for
+concerned-entity recommendation processing (55 to 27 days), priority-project
+filing throughput, and a 90-day State inspection service window for Permiso
+Unico requests, with PEMAS retained as Aguada-inclusive construction-case
+observability. Official DDEC plus Puerto Rico housing-recovery sources also
+establish a descriptive support-network baseline for the medium/regional and
+large/strategic scenarios. These upgrades do not establish Aguada case timing,
+completed-inspection volume or rate, construction inspection, project
+qualification, approval outcome, or one operator's recovery outcome. The next
+best high-criticality evidence-depth lane is a reproducible official completed-
+inspection count, completion rate, or elapsed-time distribution with a defined
+reporting period. That future lane should extend the source registry with the
+same machine-checkable `timeScope` discipline used for the current PEMAS and
+DDEC regulatory timing sources so observed periods remain distinct from policy
+windows. The registry's sole literal source gap is now
+`local-supplier-route-gap` for the small/local scenario; do not overextend the
+existing corridor evidence to close that local lane. Keep category and place
+constant while upgrading `data/profile-reach/business-profile-reach-v1.json`
+from controlled gaps or bounded baselines toward stronger source-backed signals
+without turning descriptive evidence into launch advice.
+
+Treat the current 4-row generated `unis` slice and its review artifacts as a
+maintenance boundary, not the next product lane. Do not spend the next pass on
+additional university identity or geocoding promotion unless a concrete
+occupation-to-skill or training-capacity question requires it. Preserve the
+existing university provenance, quarantine, API coverage language, and tests
+while product effort shifts to business-critical evidence.

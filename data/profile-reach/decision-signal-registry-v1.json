@@ -1,0 +1,574 @@
+{
+  "schemaVersion": 1,
+  "registryVersion": "decision-signal-registry-v1",
+  "scope": "puerto-rico-planning-candidate",
+  "status": "candidate-needs-review",
+  "updatedAt": "2026-08-23",
+  "fixedSelection": {
+    "fixtureId": "mun003_restaurant",
+    "municipalityCode": "003",
+    "businessCategoryId": "restaurant-cafe",
+    "selectedNaicsCodes": [
+      "722511"
+    ]
+  },
+  "signals": [
+    {
+      "id": "site-ready-kitchen-gap",
+      "lensId": "hard-constraints-site-feasibility",
+      "label": "Lease-ready kitchen fit and frontage conditions",
+      "sourceType": "registered-source",
+      "sourceId": "pr-jp-mipr-site-screening",
+      "supportingSourceIds": [
+        "pr-jp-flood-determination-service",
+        "aguada-hazard-mitigation-plan-2020",
+        "pr-jp-district-legend"
+      ],
+      "applicableScenarioIds": [
+        "small-local",
+        "medium-regional"
+      ],
+      "reachByScenario": {
+        "small-local": "site-bound",
+        "medium-regional": "site-bound"
+      },
+      "factIds": [
+        "small-local-lease-readiness",
+        "medium-regional-larger-lease"
+      ],
+      "recency": {
+        "evidenceDate": "2026-07-30",
+        "quality": "official-jp-screening-and-aguada-hazard-baseline"
+      },
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-site-screening-review.json",
+        "data/sources/puerto-rico.json"
+      ],
+      "interpretationLimits": [
+        "The reviewed sources establish official zoning, flood, and district-screening surfaces, not parcel-level readiness for one lease.",
+        "The current baseline still does not prove kitchen retrofit condition, frontage quality, parking adequacy, or landlord support for restaurant operation."
+      ],
+      "decisionSummary": "Official Puerto Rico Planning Board screening and Aguada hazard sources now establish a descriptive site-feasibility baseline for the fixed Aguada restaurant scenarios."
+    },
+    {
+      "id": "large-site-feasibility-gap",
+      "lensId": "hard-constraints-site-feasibility",
+      "label": "Large-site readiness, access, and hazard fit",
+      "sourceType": "registered-source",
+      "sourceId": "aguada-territorial-plan-order-2024",
+      "supportingSourceIds": [
+        "pr-jp-mipr-site-screening",
+        "pr-jp-flood-determination-service",
+        "aguada-hazard-mitigation-plan-2020",
+        "pr-jp-district-legend"
+      ],
+      "applicableScenarioIds": [
+        "large-strategic"
+      ],
+      "reachByScenario": {
+        "large-strategic": "site-bound"
+      },
+      "factIds": [
+        "large-strategic-large-site-fit"
+      ],
+      "recency": {
+        "evidenceDate": "2026-07-30",
+        "quality": "official-aguada-territorial-plan-and-screening-baseline"
+      },
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-large-site-screening-review.json",
+        "data/sources/puerto-rico.json"
+      ],
+      "interpretationLimits": [
+        "The reviewed sources establish official territorial-plan, zoning, flood, and hazard-screening controls, not parcel-specific readiness for one large-format restaurant site.",
+        "The current baseline still does not prove parcel assembly, destination-scale parking, truck circulation, building condition, or utility staging for one property."
+      ],
+      "decisionSummary": "Official Aguada territorial-plan and Puerto Rico Planning Board sources now establish a descriptive large-site screening baseline for the fixed large-strategic restaurant scenario."
+    },
+    {
+      "id": "municipality-restaurant-activity-baseline",
+      "lensId": "demand-market-reach",
+      "label": "Municipality restaurant activity baseline",
+      "sourceType": "registered-source",
+      "sourceId": "datospr-cbp-2014-municipios",
+      "applicableScenarioIds": [
+        "small-local",
+        "medium-regional",
+        "large-strategic"
+      ],
+      "reachByScenario": {
+        "small-local": "local-catchment",
+        "medium-regional": "local-catchment",
+        "large-strategic": "local-catchment"
+      },
+      "factIds": [
+        "small-local-cbp-baseline",
+        "medium-regional-cbp-baseline",
+        "large-strategic-local-cbp-baseline"
+      ],
+      "recency": {
+        "evidenceDate": "2026-05-24",
+        "quality": "historical-2014-baseline"
+      },
+      "artifactPaths": [
+        "data/planning-context/mun003_restaurant.json",
+        "data/sources/puerto-rico.json"
+      ],
+      "interpretationLimits": [
+        "The CBP row is descriptive business-activity context and not a demand, profitability, or market-size measure.",
+        "This source covers only the fixed municipality/category slice and does not prove corridor or island-wide customer pull."
+      ]
+    },
+    {
+      "id": "west-region-visitor-demand-baseline",
+      "lensId": "demand-market-reach",
+      "label": "West-region visitor demand proxy baseline",
+      "sourceType": "registered-source",
+      "sourceId": "pr-tourism-registration-occupancy-2024",
+      "supportingSourceIds": [
+        "pr-tourism-visitor-profile-fy2023-2024"
+      ],
+      "applicableScenarioIds": [
+        "medium-regional"
+      ],
+      "reachByScenario": {
+        "medium-regional": "regional-corridor"
+      },
+      "factIds": [
+        "medium-regional-corridor-demand-baseline"
+      ],
+      "recency": {
+        "evidenceDate": "2026-08-05",
+        "quality": "official-west-region-tourism-and-visitor-demand-proxy"
+      },
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-demand-proxy-review.json",
+        "data/sources/puerto-rico.json"
+      ],
+      "interpretationLimits": [
+        "The reviewed sources establish west-region arrivals, occupancy, visitor-region activity, and airport access context, not Aguada-specific restaurant demand or one concept's customer capture.",
+        "This proxy improves the corridor-demand lane but does not prove island-wide destination pull, municipality-level demand, or one operator's repeat-customer volume."
+      ],
+      "decisionSummary": "Official Puerto Rico tourism occupancy and visitor-survey sources now establish a descriptive west-region demand proxy baseline for the fixed Aguada medium/regional restaurant scenario."
+    },
+    {
+      "id": "island-wide-destination-demand-gap",
+      "lensId": "demand-market-reach",
+      "label": "Island-wide destination demand baseline",
+      "sourceType": "registered-source",
+      "sourceId": "pr-tourism-visitors-expenditures-contribution-2024",
+      "supportingSourceIds": [
+        "pr-tourism-passenger-movement-cy-2024"
+      ],
+      "applicableScenarioIds": [
+        "large-strategic"
+      ],
+      "reachByScenario": {
+        "large-strategic": "island-wide"
+      },
+      "factIds": [
+        "large-strategic-island-demand-gap"
+      ],
+      "recency": {
+        "evidenceDate": "2026-08-13",
+        "quality": "official-island-wide-visitor-spend-and-passenger-baseline"
+      },
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-island-demand-review.json",
+        "data/sources/puerto-rico.json"
+      ],
+      "interpretationLimits": [
+        "The reviewed sources establish Puerto Rico-wide visitor totals, visitor spending, tourism GDP contribution, and airport throughput, not Aguada-specific restaurant demand or one concept's conversion.",
+        "This baseline improves the large-scenario demand lane but does not prove destination capture, event demand, repeat-customer behavior, or one operator's volume."
+      ],
+      "decisionSummary": "Official Puerto Rico Tourism Company visitor-expenditure and passenger-movement reports now establish a descriptive island-wide demand baseline for the fixed Aguada large/strategic restaurant scenario."
+    },
+    {
+      "id": "aguada-basic-utility-service-baseline",
+      "lensId": "infrastructure-reliability-cost",
+      "label": "Aguada electric and water service continuity baseline",
+      "sourceType": "registered-source",
+      "sourceId": "pr-energy-bureau-2026-electricity-rate-order",
+      "applicableScenarioIds": [
+        "small-local"
+      ],
+      "reachByScenario": {
+        "small-local": "local-catchment"
+      },
+      "factIds": [
+        "small-local-basic-utilities"
+      ],
+      "recency": {
+        "evidenceDate": "2026-07-30",
+        "quality": "current-electric-governance-with-reviewed-local-water-interruption"
+      },
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-utility-service-review.json",
+        "data/sources/puerto-rico.json"
+      ],
+      "supportingSourceIds": [
+        "luma-outage-reporting-faq",
+        "prasa-aguada-water-service-interruption-2023"
+      ],
+      "interpretationLimits": [
+        "The reviewed sources establish official rate and interruption-handling surfaces, not measured outage frequency or restoration duration for one address.",
+        "The current baseline still does not quantify refrigeration-loss exposure, backup-power coverage, or small-business utility costs for a specific lease."
+      ]
+    },
+    {
+      "id": "utility-resilience-gap",
+      "lensId": "infrastructure-reliability-cost",
+      "label": "Utility resilience and operating continuity at larger scales",
+      "sourceType": "registered-source",
+      "sourceId": "pr-energy-bureau-jan-2026-reliability-metrics-report",
+      "supportingSourceIds": [
+        "pr-energy-bureau-reliability-metrics-order-2025",
+        "pr-energy-bureau-essa-reliability-order-2026",
+        "prasa-hurricane-season-guidance",
+        "prasa-mission-operations-profile"
+      ],
+      "applicableScenarioIds": [
+        "medium-regional",
+        "large-strategic"
+      ],
+      "reachByScenario": {
+        "medium-regional": "regional-corridor",
+        "large-strategic": "island-wide"
+      },
+      "factIds": [
+        "medium-regional-shift-reliability",
+        "large-strategic-resilience"
+      ],
+      "recency": {
+        "evidenceDate": "2026-08-05",
+        "quality": "official-electric-reliability-and-water-emergency-baseline"
+      },
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-utility-resilience-review.json",
+        "data/sources/puerto-rico.json"
+      ],
+      "interpretationLimits": [
+        "The reviewed sources establish official electric reliability-reporting, firm-capacity, and water emergency-response surfaces, not parcel-level outage duration, restoration speed, or backup coverage.",
+        "The current baseline still does not prove corridor-level restoration time, destination-scale continuity controls, refrigeration survival, or one operator's resilience costs."
+      ],
+      "decisionSummary": "Official Puerto Rico Energy Bureau and PRASA sources now establish a descriptive utility-resilience baseline for the fixed medium/regional and large/strategic Aguada restaurant scenarios."
+    },
+    {
+      "id": "routine-food-service-staffing-gap",
+      "lensId": "workforce-capability",
+      "label": "Routine food-service staffing baseline",
+      "sourceType": "registered-source",
+      "sourceId": "pr-lmi-hospitality-food-service-profile-2026",
+      "supportingSourceIds": [
+        "pr-lmi-top-occupations-2024",
+        "pr-lmi-occupation-openings-2022-2032"
+      ],
+      "applicableScenarioIds": [
+        "small-local",
+        "medium-regional"
+      ],
+      "reachByScenario": {
+        "small-local": "local-catchment",
+        "medium-regional": "regional-corridor"
+      },
+      "factIds": [
+        "small-local-shift-staffing",
+        "medium-regional-labor-depth"
+      ],
+      "recency": {
+        "evidenceDate": "2026-08-05",
+        "quality": "current-official-puerto-rico-labor-market-baseline"
+      },
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-routine-workforce-review.json",
+        "data/sources/puerto-rico.json"
+      ],
+      "interpretationLimits": [
+        "The reviewed labor-market sources establish island-wide occupation, wage, and annual-openings context, not Aguada-specific hiring depth, commute range, or retention performance.",
+        "The current baseline does not prove that one operator can fill a local or corridor roster on schedule in the fixed municipality."
+      ],
+      "decisionSummary": "Official Puerto Rico labor-market publications now establish a descriptive workforce baseline for routine food-service staffing in the fixed Aguada small/local and medium/regional restaurant scenarios."
+    },
+    {
+      "id": "specialized-management-pipeline-gap",
+      "lensId": "workforce-capability",
+      "label": "Island-wide food-service supervision and staffing pipeline",
+      "sourceType": "registered-source",
+      "sourceId": "pr-lmi-hospitality-food-service-profile-2026",
+      "supportingSourceIds": [
+        "pr-lmi-top-occupations-2024",
+        "pr-lmi-occupation-openings-2022-2032",
+        "pr-lmi-occupation-projections-2024-2034"
+      ],
+      "applicableScenarioIds": [
+        "large-strategic"
+      ],
+      "reachByScenario": {
+        "large-strategic": "island-wide"
+      },
+      "factIds": [
+        "large-strategic-management-depth"
+      ],
+      "recency": {
+        "evidenceDate": "2026-07-30",
+        "quality": "current-official-puerto-rico-labor-market-baseline"
+      },
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-workforce-pipeline-review.json",
+        "data/sources/puerto-rico.json"
+      ],
+      "interpretationLimits": [
+        "The reviewed labor-market sources establish island-wide occupation, wage, and openings context, not Aguada-specific hiring depth, commute range, or retention performance.",
+        "The current baseline does not prove that one operator can hire or retain a multi-site leadership team in the fixed municipality."
+      ],
+      "decisionSummary": "Official Puerto Rico labor-market publications now establish an island-wide food-service supervision and staffing baseline for the fixed strategic restaurant scenario."
+    },
+    {
+      "id": "local-supplier-route-gap",
+      "lensId": "logistics-supply-chain",
+      "label": "Routine local supplier and delivery access",
+      "sourceType": "source-gap",
+      "applicableScenarioIds": [
+        "small-local"
+      ],
+      "reachByScenario": {
+        "small-local": "local-catchment"
+      },
+      "factIds": [
+        "small-local-local-deliveries"
+      ],
+      "recency": {
+        "status": "no-registered-source"
+      },
+      "interpretationLimits": [
+        "No registered supplier, route-time, or cold-chain evidence exists for the local fixed-selection path.",
+        "Traffic and perishability constraints are still unmeasured."
+      ],
+      "sourceGapBasis": "Local supplier and route evidence is not yet registered."
+    },
+    {
+      "id": "cold-chain-corridor-gap",
+      "lensId": "logistics-supply-chain",
+      "label": "Corridor-level cold-chain and supplier reliability",
+      "sourceType": "registered-source",
+      "sourceId": "prhta-pr2-aguadilla-mayaguez-corridor-study-2024",
+      "supportingSourceIds": [
+        "iepr-air-maritime-cargo-passengers-2024-q2"
+      ],
+      "applicableScenarioIds": [
+        "medium-regional"
+      ],
+      "reachByScenario": {
+        "medium-regional": "regional-corridor"
+      },
+      "factIds": [
+        "medium-regional-cold-chain"
+      ],
+      "recency": {
+        "evidenceDate": "2026-08-05",
+        "quality": "official-west-corridor-planning-and-cargo-baseline"
+      },
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-corridor-logistics-review.json",
+        "data/sources/puerto-rico.json"
+      ],
+      "interpretationLimits": [
+        "The reviewed sources establish official west-corridor planning and regional cargo-movement surfaces, not measured delivery timing, refrigeration performance, or route recovery for one restaurant.",
+        "The current baseline still does not prove backup supplier depth, spoilage exposure, or cold-chain reliability for one operator."
+      ],
+      "decisionSummary": "Official Puerto Rico transport-planning and cargo-statistics sources now establish a descriptive west-corridor logistics baseline for the fixed medium/regional Aguada restaurant scenario."
+    },
+    {
+      "id": "external-supply-chain-gap",
+      "lensId": "logistics-supply-chain",
+      "label": "External supplier dependence and port or airport exposure",
+      "sourceType": "registered-source",
+      "sourceId": "iepr-air-maritime-cargo-passengers-2024-q2",
+      "applicableScenarioIds": [
+        "large-strategic"
+      ],
+      "reachByScenario": {
+        "large-strategic": "external-connection"
+      },
+      "factIds": [
+        "large-strategic-external-suppliers"
+      ],
+      "recency": {
+        "evidenceDate": "2026-08-13",
+        "quality": "official-external-cargo-gateway-baseline"
+      },
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-external-logistics-review.json",
+        "data/sources/puerto-rico.json"
+      ],
+      "interpretationLimits": [
+        "The reviewed source establishes official external cargo-gateway activity and reporting surfaces, not supplier-level dependency, recovery timing, or cold-chain performance for one restaurant.",
+        "The current baseline still does not prove backup supplier depth, maritime versus air dependency, customs timing, or one operator's resilience to external procurement disruption."
+      ],
+      "decisionSummary": "Official Puerto Rico cargo inventory now establishes a descriptive external-connection logistics baseline for the fixed large/strategic Aguada restaurant scenario."
+    },
+    {
+      "id": "food-service-permit-path-gap",
+      "lensId": "regulatory-execution-environment",
+      "label": "Food-service permitting and launch sequencing",
+      "sourceType": "registered-source",
+      "sourceId": "pr-ogpe-permiso-unico-business-path",
+      "supportingSourceIds": [
+        "pr-bomberos-commercial-permit-basics",
+        "pr-health-salud-digital-portal",
+        "pr-ogp-municipal-patent-2026-2027"
+      ],
+      "applicableScenarioIds": [
+        "small-local",
+        "medium-regional"
+      ],
+      "reachByScenario": {
+        "small-local": "site-bound",
+        "medium-regional": "site-bound"
+      },
+      "factIds": [
+        "small-local-food-permits",
+        "medium-regional-permit-scale"
+      ],
+      "recency": {
+        "evidenceDate": "2026-07-29",
+        "quality": "official-process-path-review"
+      },
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-permit-path-review.json",
+        "data/sources/puerto-rico.json"
+      ],
+      "interpretationLimits": [
+        "The reviewed authorities confirm the official permit path and baseline requirement surfaces, not approval timing or case outcome.",
+        "The current evidence still does not cover Aguada-specific queue time, inspection throughput, or parcel-level eligibility."
+      ],
+      "decisionSummary": "Official Puerto Rico permit, fire-safety, health-transaction, and municipal-patent sources now establish a descriptive launch-permit path for the fixed Aguada restaurant scenario."
+    },
+    {
+      "id": "strategic-coordination-timing-baseline",
+      "lensId": "regulatory-execution-environment",
+      "label": "Strategic interagency coordination timing",
+      "sourceType": "registered-source",
+      "sourceId": "ddec-permit-task-force-coordination-timing-2025",
+      "supportingSourceIds": [
+        "pr-statistics-pemas-construction-permits"
+      ],
+      "applicableScenarioIds": [
+        "large-strategic"
+      ],
+      "reachByScenario": {
+        "large-strategic": "regional-corridor"
+      },
+      "factIds": [
+        "large-strategic-multi-agency-approvals"
+      ],
+      "recency": {
+        "evidenceDate": "2025-10-31",
+        "quality": "official-ddec-task-force-interagency-recommendation-processing-report"
+      },
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-coordination-timing-review.json",
+        "data/profile-reach/aguada-restaurant-construction-execution-review.json",
+        "data/sources/puerto-rico.json"
+      ],
+      "interpretationLimits": [
+        "The DDEC report measures aggregate processing of recommendations from concerned government entities and priority-project filings; it does not provide an Aguada restaurant case queue, inspection-completion distribution, or approval outcome.",
+        "The reported improvement may reflect the priority-project population, process changes, and period reviewed; it is not a promise of timing for a future project or evidence that the fixed scenario qualifies as strategic."
+      ],
+      "decisionSummary": "Official Puerto Rico DDEC reporting now establishes a descriptive interagency coordination-timing baseline for the fixed Aguada strategic restaurant scenario, with PEMAS retained as supporting construction-execution observability."
+    },
+    {
+      "id": "strategic-inspection-service-window-baseline",
+      "lensId": "regulatory-execution-environment",
+      "label": "Strategic permit inspection service window",
+      "sourceType": "registered-source",
+      "sourceId": "ddec-permit-task-force-inspection-window-2025",
+      "applicableScenarioIds": [
+        "large-strategic"
+      ],
+      "reachByScenario": {
+        "large-strategic": "island-wide"
+      },
+      "factIds": [
+        "large-strategic-permit-inspection-window"
+      ],
+      "recency": {
+        "evidenceDate": "2025-10-31",
+        "quality": "official-ddec-permit-unico-inspection-service-window-report"
+      },
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-inspection-window-review.json",
+        "data/sources/puerto-rico.json"
+      ],
+      "interpretationLimits": [
+        "The DDEC report defines a 90-day accountability window for inspections corresponding to Permiso Unico requests; it does not report a completed-inspection count, completion rate, or distribution of elapsed inspection time.",
+        "The report does not identify Aguada, restaurant-cafe use, construction inspection, case qualification, inspection result, or permit outcome."
+      ],
+      "decisionSummary": "Official Puerto Rico DDEC reporting now establishes a descriptive inspection service-window baseline for the fixed Aguada strategic restaurant scenario without claiming observed inspection throughput."
+    },
+    {
+      "id": "local-industry-context-baseline",
+      "lensId": "ecosystem-resilience-growth",
+      "label": "Existing local food-service activity context",
+      "sourceType": "registered-source",
+      "sourceId": "datospr-cbp-2014-municipios",
+      "applicableScenarioIds": [
+        "small-local"
+      ],
+      "reachByScenario": {
+        "small-local": "local-catchment"
+      },
+      "factIds": [
+        "small-local-local-industry-context"
+      ],
+      "recency": {
+        "evidenceDate": "2026-05-24",
+        "quality": "historical-2014-baseline"
+      },
+      "artifactPaths": [
+        "data/planning-context/mun003_restaurant.json",
+        "data/sources/puerto-rico.json"
+      ],
+      "interpretationLimits": [
+        "Local establishment counts show category presence only and do not prove resilience, partnerships, or expansion capacity.",
+        "This signal does not measure post-disruption recovery or service network strength."
+      ]
+    },
+    {
+      "id": "growth-network-gap",
+      "lensId": "ecosystem-resilience-growth",
+      "label": "Partner, service, and resilience network depth",
+      "sourceType": "registered-source",
+      "sourceId": "ddec-emprender-puerto-rico-2026",
+      "supportingSourceIds": [
+        "ddec-ayudas-incentivos-2026",
+        "prdoh-sbia-program-2026"
+      ],
+      "applicableScenarioIds": [
+        "medium-regional",
+        "large-strategic"
+      ],
+      "reachByScenario": {
+        "medium-regional": "regional-corridor",
+        "large-strategic": "island-wide"
+      },
+      "factIds": [
+        "medium-regional-corridor-partners",
+        "large-strategic-island-support-network"
+      ],
+      "recency": {
+        "evidenceDate": "2026-08-20",
+        "quality": "official-entrepreneurship-incentives-and-incubator-support-baseline"
+      },
+      "artifactPaths": [
+        "data/profile-reach/aguada-restaurant-support-network-review.json",
+        "data/sources/puerto-rico.json"
+      ],
+      "interpretationLimits": [
+        "The reviewed authorities establish official entrepreneurship, incentive, and incubator or accelerator support surfaces, not west-corridor partner density or one operator's program outcome.",
+        "The matrix still does not quantify municipality-specific professional-service throughput, private network depth, or disruption-recovery capacity for one business."
+      ],
+      "decisionSummary": "Official Puerto Rico DDEC and housing-recovery program sources now establish a descriptive support-network baseline for the fixed Aguada restaurant medium/regional and large/strategic scenarios."
+    }
+  ]
+}

@@ -1,0 +1,488 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "datospr-higher-ed-directory-2017-18",
+  "reviewedAt": "2026-06-23",
+  "reviewer": "Modernization Maintainer",
+  "status": "reviewed",
+  "benchmark": "Public_AR_Census2020",
+  "vintage": "Census2020_Census2020",
+  "matchReviewArtifactPath": "data/unis/ipeds-alias-campus-review.json",
+  "summary": {
+    "reviewedRowCount": 16,
+    "reviewedAddressEvidenceCount": 14,
+    "rowsPromotedToReviewedCache": 1,
+    "rowsStillQuarantined": 15,
+    "activeRowsReviewedCount": 13,
+    "inactiveOrUnverifiedRowsReviewedCount": 3
+  },
+  "records": [
+    {
+      "directoryInstitution": "Caribbean University",
+      "rowCandidate": "Caribbean University / Caribbean University-Bayamon",
+      "currentNormalizedAddress": "Carr 167 km 21.2, Ext Forest Hills, BAYAMON, Puerto Rico",
+      "reviewedAddress": "Carretera 167 Km 21.2, Bayamón, PR 00960",
+      "useForGeocoder": true,
+      "publicEvidenceFound": [
+        {
+          "authority": "official-institution-site",
+          "url": "https://caribbean.edu/recinto-de-bayamon/",
+          "summary": "Campus page lists the Bayamón physical address as Carretera 167 Km 21.2, Bayamón, PR 00960."
+        },
+        {
+          "authority": "official-institution-site",
+          "url": "https://caribbean.edu/wp-content/uploads/2025/09/Catalogo-Subgraduado-OFICIAL-2025.pdf",
+          "summary": "The 2025 undergraduate catalog lists the active Bayamón main campus at Urb. Forest Hills, State Road 167, Km. 21.2, Ext. Forest Hills, Bayamon, PR 00961."
+        },
+        {
+          "authority": "official-institution-site",
+          "url": "https://caribbean.edu/wp-content/uploads/2025/09/CATALOGO-TECNICO-VOCACIONAL-OFICIAL-2025.pdf",
+          "summary": "The 2025 technical-vocational catalog separately lists Administración Central at Carretera #167 Km 21.2, Bayamón, PR 00960 and Recinto de Bayamón at Carretera #167, Km. 21.2, Ext. Forest Hills, Bayamón, PR 00961."
+        }
+      ],
+      "identityConfidence": "high",
+      "addressConfidence": "high",
+      "censusResult": {
+        "status": "no-reviewed-pr-match",
+        "attemptedAddress": "Carretera 167 Km 21.2, Bayamón, PR 00960"
+      },
+      "decision": "retain-quarantine-reviewed-address-no-match",
+      "status": "reviewed",
+      "notes": "Official current address is stronger than the legacy directory string, but the pinned Census path still returned no reviewed Puerto Rico match.",
+      "currentReviewedAddress": "Carretera 167 Km 21.2, Bayamón, PR 00960",
+      "newOfficialEvidenceFound": "Official 2025 catalogs now expose both the Bayamón campus form and the Administración Central form at the same Forest Hills / Carretera 167 corridor, but neither exact official form produced a reviewed Census match.",
+      "activeLocationStatus": "active",
+      "candidateAddressTested": "Recinto de Bayamon, Urb. Forest Hills, Carretera 167, Km 21.2, Ext. Forest Hills, Bayamon, PR 00961"
+    },
+    {
+      "directoryInstitution": "Columbia Central University",
+      "rowCandidate": "Columbia Central University / Columbia Centro Universitario",
+      "currentNormalizedAddress": "Carr. 183 Km. 1.7, Salida de Caguas hacia San Lorenzo, CAGUAS, Puerto Rico",
+      "reviewedAddress": "5 Genova St., Caguas, PR 00725",
+      "useForGeocoder": true,
+      "publicEvidenceFound": [
+        {
+          "authority": "official-institution-site",
+          "url": "https://columbiacentral.edu/wp-content/uploads/2025/03/25_Institutional-Catalog-2021-2022-Columbia-Central-University.pdf",
+          "summary": "The institutional catalog lists the Caguas location at 5 Genova St., Caguas, PR 00725."
+        },
+        {
+          "authority": "nces-corroboration",
+          "url": "https://nces.ed.gov/globallocator/index.asp?CS=F61620A3&College=1&Library=1&PrivSchool=1&Records=1919&School=1&State=&Status=Search+Finished&city=&itemname=&miles=20&search=1&sortby=city&zipcode=00934",
+          "summary": "NCES school search shows Columbia Central University-Caguas with Calle Genova # 5 Norte (Genova St.), Caguas, PR 00726-0000."
+        },
+        {
+          "authority": "official-institution-site",
+          "url": "https://columbiacentral.edu/wp-content/uploads/2023/05/Adenda-4-al-Catalogo-Institucional-2021-2022-1.pdf",
+          "summary": "The 2023 official addendum states that the Caguas Norte additional location was closed in December 2022 and its academic programs were transferred to the main Caguas campus license."
+        }
+      ],
+      "identityConfidence": "high",
+      "addressConfidence": "medium",
+      "censusResult": {
+        "status": "no-reviewed-pr-match",
+        "attemptedAddress": "5 Genova St., Caguas, PR 00725",
+        "notes": "A translated variant resolved to 5 CALLE E, CAGUAS, PR, 00725 and was treated as an ambiguous street-name conflict rather than a reviewed promotion."
+      },
+      "decision": "retain-quarantine-ambiguous-census-street-match",
+      "status": "reviewed",
+      "notes": "Current public address evidence is stronger than the legacy directory string, but the exact official form did not yield a clean reviewed Census match, and current official addenda indicate the old Caguas Norte additional location has since been closed.",
+      "currentReviewedAddress": "5 Genova St., Caguas, PR 00725",
+      "newOfficialEvidenceFound": "Official 2023 addendum states the old Caguas Norte additional location was closed and transferred back to the main Caguas campus license; the last official street form still resolves ambiguously in Census.",
+      "activeLocationStatus": "inactive-stale-additional-location",
+      "candidateAddressTested": "5 Calle Genova Norte, Caguas, PR 00726"
+    },
+    {
+      "directoryInstitution": "Dewey University",
+      "rowCandidate": "Dewey University / John Dewey College-University Division",
+      "currentNormalizedAddress": "Ave. Barbosa #427, SAN JUAN, Puerto Rico",
+      "reviewedAddress": "425 Avenida Barbosa, Hato Rey, Puerto Rico 00923",
+      "useForGeocoder": true,
+      "publicEvidenceFound": [
+        {
+          "authority": "official-institution-site",
+          "url": "https://dewey.edu/department/deweyuniversityhatorey/",
+          "summary": "The Hato Rey campus page lists 425 Avenida Barbosa, Hato Rey, Puerto Rico 00923."
+        }
+      ],
+      "identityConfidence": "high",
+      "addressConfidence": "high",
+      "censusResult": {
+        "status": "no-reviewed-pr-match",
+        "attemptedAddress": "425 Avenida Barbosa, Hato Rey, Puerto Rico 00923"
+      },
+      "decision": "retain-quarantine-reviewed-address-no-match",
+      "status": "reviewed",
+      "notes": "The official campus page supports a corrected street number, but the pinned Census path still did not return a reviewed Puerto Rico match.",
+      "currentReviewedAddress": "425 Avenida Barbosa, Hato Rey, Puerto Rico 00923",
+      "newOfficialEvidenceFound": "Current official Hato Rey campus page confirms 425 Avenida Barbosa, Hato Rey, Puerto Rico 00923.",
+      "activeLocationStatus": "active",
+      "candidateAddressTested": "425 Avenida Barbosa, Hato Rey, Puerto Rico 00923"
+    },
+    {
+      "directoryInstitution": "EDP Universityof Puerto Rico",
+      "rowCandidate": "EDP Universityof Puerto Rico / EDP College of Puerto Rico Inc",
+      "currentNormalizedAddress": "560 Ave. Ponce de León, SAN JUAN, Puerto Rico",
+      "reviewedAddress": "560 Ave. Ponce de León, Hato Rey, PR 00918",
+      "useForGeocoder": true,
+      "publicEvidenceFound": [
+        {
+          "authority": "official-institution-site",
+          "url": "https://edpuniversity.edu/localidades/",
+          "summary": "The locality listing gives the San Juan campus at 560 Ave. Ponce de León, Hato Rey, PR 00918."
+        }
+      ],
+      "identityConfidence": "high",
+      "addressConfidence": "high",
+      "censusResult": {
+        "status": "no-reviewed-pr-match",
+        "attemptedAddress": "560 Ave. Ponce de León, Hato Rey, PR 00918"
+      },
+      "decision": "retain-quarantine-reviewed-address-no-match",
+      "status": "reviewed",
+      "notes": "Official current address evidence adds the Hato Rey locality and postal code, but the pinned Census path still did not return a reviewed Puerto Rico match.",
+      "currentReviewedAddress": "560 Ave. Ponce de León, Hato Rey, PR 00918",
+      "newOfficialEvidenceFound": "Current official localities page confirms 560 Ave. Ponce de León, Hato Rey, PR 00918 for the San Juan campus.",
+      "activeLocationStatus": "active",
+      "candidateAddressTested": "560 Ave. Ponce de León, Hato Rey, PR 00918"
+    },
+    {
+      "directoryInstitution": "Educational Technical College",
+      "rowCandidate": "Educational Technical College / Educational Technical College-Bayamon",
+      "currentNormalizedAddress": "1685 Carr. #2 Km. 11.2, BAYAMON, Puerto Rico",
+      "reviewedAddress": null,
+      "useForGeocoder": false,
+      "publicEvidenceFound": [
+        {
+          "authority": "nces-corroboration",
+          "url": "https://nces.ed.gov/ipeds/dfr/2019/ReportHTML.aspx?unitId=240985",
+          "summary": "NCES confirms the Bayamón institution identity, but the reviewed public NCES page does not surface a current official physical address for a corrected Census retry."
+        }
+      ],
+      "identityConfidence": "high",
+      "addressConfidence": "low",
+      "censusResult": {
+        "status": "not-rerun-insufficient-reviewed-address-evidence"
+      },
+      "decision": "retain-quarantine-insufficient-official-address-evidence",
+      "status": "reviewed",
+      "notes": "No current official institution address page was found during this pass, so the row remains excluded despite a possible NCES-era alternate address.",
+      "currentReviewedAddress": null,
+      "newOfficialEvidenceFound": "No current official institution location page with a reviewed Bayamón physical address was found in this pass.",
+      "activeLocationStatus": "current-location-unverified",
+      "candidateAddressTested": null
+    },
+    {
+      "directoryInstitution": "Escuela de Artes Plásticas y Diseño de Puerto Rico",
+      "rowCandidate": "Escuela de Artes Plásticas y Diseño de Puerto Rico / Escuela de Artes Plasticas de Puerto Rico",
+      "currentNormalizedAddress": "Campos del Morro, Bo. Ballajá, SAN JUAN, Puerto Rico",
+      "reviewedAddress": "Calle Norzagaray Final, Campos del Morro, Barrio Ballajá, San Juan, PR 00901",
+      "useForGeocoder": true,
+      "publicEvidenceFound": [
+        {
+          "authority": "official-institution-site",
+          "url": "https://www.eap.edu/sobre-la-eapd/",
+          "summary": "The institution site identifies the school in Viejo San Juan at Calle Norzagaray Final, Campos del Morro, Barrio Ballajá, San Juan, PR 00901."
+        }
+      ],
+      "identityConfidence": "high",
+      "addressConfidence": "medium",
+      "censusResult": {
+        "status": "no-reviewed-pr-match",
+        "attemptedAddress": "Calle Norzagaray Final, Campos del Morro, Barrio Ballajá, San Juan, PR 00901"
+      },
+      "decision": "retain-quarantine-reviewed-address-no-match",
+      "status": "reviewed",
+      "notes": "Official current site evidence is stronger than the legacy short campus descriptor, but the pinned Census path still did not return a reviewed Puerto Rico match.",
+      "currentReviewedAddress": "Calle Norzagaray Final, Campos del Morro, Barrio Ballajá, San Juan, PR 00901",
+      "newOfficialEvidenceFound": "Current official institution site identifies the active Viejo San Juan campus at Calle Norzagaray Final, Campos del Morro, Barrio Ballajá, San Juan, PR 00901.",
+      "activeLocationStatus": "active",
+      "candidateAddressTested": "Calle Norzagaray Final, Campos del Morro, Barrio Ballajá, San Juan, PR 00901"
+    },
+    {
+      "directoryInstitution": "Escuela de Medicina San Juan Bautista",
+      "rowCandidate": "Escuela de Medicina San Juan Bautista / San Juan Bautista School of Medicine",
+      "currentNormalizedAddress": "Turabo Gardens Road 172 Caguas to Cidra, CAGUAS, Puerto Rico",
+      "reviewedAddress": "Luis A. Ferre Highway Exit #21, Road 172 Caguas to Cidra, Turabo Gardens, Caguas, PR 00725",
+      "useForGeocoder": true,
+      "publicEvidenceFound": [
+        {
+          "authority": "official-institution-site",
+          "url": "https://www.sanjuanbautista.edu/contact-us",
+          "summary": "The contact page lists Luis A. Ferre Highway Exit #21, Road 172 Caguas to Cidra, Turabo Gardens, Caguas, PR 00725."
+        }
+      ],
+      "identityConfidence": "high",
+      "addressConfidence": "high",
+      "censusResult": {
+        "status": "puerto-rico-match",
+        "attemptedAddress": "Luis A. Ferre Highway Exit #21, Road 172 Caguas to Cidra, Turabo Gardens, Caguas, PR 00725",
+        "matchedAddress": "21 PR- 172, CAGUAS, PR, 00727"
+      },
+      "decision": "promote-reviewed-cache",
+      "status": "reviewed",
+      "notes": "The official current address yields a reviewed Puerto Rico Census match under the pinned benchmark/vintage pair.",
+      "currentReviewedAddress": "Luis A. Ferre Highway Exit #21, Road 172 Caguas to Cidra, Turabo Gardens, Caguas, PR 00725",
+      "newOfficialEvidenceFound": "Current official contact page confirms the active Caguas campus address that produced the reviewed Puerto Rico Census match.",
+      "activeLocationStatus": "active",
+      "candidateAddressTested": "Luis A. Ferre Highway Exit #21, Road 172 Caguas to Cidra, Turabo Gardens, Caguas, PR 00725"
+    },
+    {
+      "directoryInstitution": "Huertas College Caguas",
+      "rowCandidate": "Huertas College Caguas / Huertas Junior College",
+      "currentNormalizedAddress": "Calle Héctor R. Bunker #41, CAGUAS, Puerto Rico",
+      "reviewedAddress": "Héctor R. Bunker #41, Caguas, PR 00725",
+      "useForGeocoder": true,
+      "publicEvidenceFound": [
+        {
+          "authority": "official-institution-site",
+          "url": "https://www.huertascollege.com/estudiaenhuertas",
+          "summary": "The admissions page lists the campus at Héctor R. Bunker #41, Caguas, PR 00725."
+        },
+        {
+          "authority": "official-institution-site",
+          "url": "https://www.huertascollege.com/event-details/taller-introductorio-de-ebanisteria",
+          "summary": "An official 2024 Huertas event page lists the location as 41 C. Héctor R. Bunker, Caguas, 00725, Puerto Rico."
+        }
+      ],
+      "identityConfidence": "high",
+      "addressConfidence": "high",
+      "censusResult": {
+        "status": "no-reviewed-pr-match",
+        "attemptedAddress": "Héctor R. Bunker #41, Caguas, PR 00725"
+      },
+      "decision": "retain-quarantine-reviewed-address-no-match",
+      "status": "reviewed",
+      "notes": "Official current address evidence confirms the street, but the pinned Census path still did not return a reviewed Puerto Rico match.",
+      "currentReviewedAddress": "Héctor R. Bunker #41, Caguas, PR 00725",
+      "newOfficialEvidenceFound": "Current official admissions page confirms Héctor R. Bunker #41, and an official 2024 event page provides the more explicit street form 41 C. Héctor R. Bunker, Caguas, 00725, Puerto Rico.",
+      "activeLocationStatus": "active",
+      "candidateAddressTested": "41 C. Héctor R. Bunker, Caguas, 00725, Puerto Rico"
+    },
+    {
+      "directoryInstitution": "Lomalinda University",
+      "rowCandidate": "Lomalinda University / Universidad Adventista de las Antillas",
+      "currentNormalizedAddress": "(Universidad Adventista de las Antillas) Carr. #106, Km. 2.2 Interior, MAYAGUEZ, Puerto Rico",
+      "reviewedAddress": "Carretera 106 Km 2.2 Int., Mayagüez, PR 00680",
+      "useForGeocoder": true,
+      "publicEvidenceFound": [
+        {
+          "authority": "official-institution-site",
+          "url": "https://www.uaa.edu/contactanos/",
+          "summary": "The contact page lists Carretera 106 Km 2.2 Int., Mayagüez, PR 00680."
+        }
+      ],
+      "identityConfidence": "high",
+      "addressConfidence": "high",
+      "censusResult": {
+        "status": "no-reviewed-pr-match",
+        "attemptedAddress": "Carretera 106 Km 2.2 Int., Mayagüez, PR 00680"
+      },
+      "decision": "retain-quarantine-reviewed-address-no-match",
+      "status": "reviewed",
+      "notes": "Official current address evidence removes the parenthetical legacy form, but the pinned Census path still did not return a reviewed Puerto Rico match.",
+      "currentReviewedAddress": "Carretera 106 Km 2.2 Int., Mayagüez, PR 00680",
+      "newOfficialEvidenceFound": "Current official contact page confirms Carretera 106 Km 2.2 Int., Mayagüez, PR 00680.",
+      "activeLocationStatus": "active",
+      "candidateAddressTested": "Carretera 106 Km 2.2 Int., Mayagüez, PR 00680"
+    },
+    {
+      "directoryInstitution": "Mech Tech College",
+      "rowCandidate": "Mech Tech College / Mech-Tech College LLC",
+      "currentNormalizedAddress": "Parque Industrial Oeste, Calle B #39-40, CAGUAS, Puerto Rico",
+      "reviewedAddress": "Parque Industrial Oeste, Calle B #39-40, Caguas, PR 00725",
+      "useForGeocoder": true,
+      "publicEvidenceFound": [
+        {
+          "authority": "official-institution-site",
+          "url": "https://www.mechtech.edu/recinto/caguas/",
+          "summary": "The Caguas campus page lists Parque Industrial Oeste, Calle B #39-40, Caguas, PR 00725."
+        }
+      ],
+      "identityConfidence": "high",
+      "addressConfidence": "high",
+      "censusResult": {
+        "status": "no-reviewed-pr-match",
+        "attemptedAddress": "Parque Industrial Oeste, Calle B #39-40, Caguas, PR 00725",
+        "notes": "A manually simplified variant reached a Puerto Rico match, but the exact reviewed public address did not, so the row was not promoted."
+      },
+      "decision": "retain-quarantine-reviewed-address-no-match",
+      "status": "reviewed",
+      "notes": "The exact official current address remains unmatched under the pinned Census path.",
+      "currentReviewedAddress": "Parque Industrial Oeste, Calle B #39-40, Caguas, PR 00725",
+      "newOfficialEvidenceFound": "Current official Caguas campus page confirms Parque Industrial Oeste, Calle B #39-40, Caguas, PR 00725.",
+      "activeLocationStatus": "active",
+      "candidateAddressTested": "Parque Industrial Oeste, Calle B #39-40, Caguas, PR 00725"
+    },
+    {
+      "directoryInstitution": "National University College",
+      "rowCandidate": "National University College / National College of Business and Technology-Bayamon",
+      "currentNormalizedAddress": "Carr. #2, Km. 11.2, Edificio National College Plaza,Edif. #1660, BAYAMON, Puerto Rico",
+      "reviewedAddress": "State Road #2, Km. 11.2, National University College Plaza Building #1660, Bayamón, PR 00960",
+      "useForGeocoder": true,
+      "publicEvidenceFound": [
+        {
+          "authority": "official-institution-site",
+          "url": "https://northbridge.edu/es-pr/campus/bayamon/",
+          "summary": "The Bayamón campus page lists State Road #2, Km. 11.2, National University College Plaza Building #1660, Bayamón, PR 00960."
+        }
+      ],
+      "identityConfidence": "high",
+      "addressConfidence": "high",
+      "censusResult": {
+        "status": "no-reviewed-pr-match",
+        "attemptedAddress": "State Road #2, Km. 11.2, National University College Plaza Building #1660, Bayamón, PR 00960"
+      },
+      "decision": "retain-quarantine-reviewed-address-no-match",
+      "status": "reviewed",
+      "notes": "The official current campus page supports a cleaner address string, but the pinned Census path still did not return a reviewed Puerto Rico match.",
+      "currentReviewedAddress": "State Road #2, Km. 11.2, National University College Plaza Building #1660, Bayamón, PR 00960",
+      "newOfficialEvidenceFound": "Current official Bayamón campus page confirms State Road #2, Km. 11.2, National University College Plaza Building #1660, Bayamón, PR 00960.",
+      "activeLocationStatus": "active",
+      "candidateAddressTested": "State Road #2, Km. 11.2, National University College Plaza Building #1660, Bayamón, PR 00960"
+    },
+    {
+      "directoryInstitution": "Ponce Health Sciences University",
+      "rowCandidate": "Ponce Health Sciences University / Ponce School of Medicine",
+      "currentNormalizedAddress": "388 Zona Industrial Reparada 2, Ponce, Puerto Rico",
+      "reviewedAddress": "388 Zona Industrial Reparada 2, Ponce, Puerto Rico 00716",
+      "useForGeocoder": true,
+      "publicEvidenceFound": [
+        {
+          "authority": "official-institution-site",
+          "url": "https://phsu.edu/about/locations-and-visits/ponce.php",
+          "summary": "The Ponce campus page lists 388 Zona Industrial Reparada 2, Ponce, Puerto Rico 00716."
+        }
+      ],
+      "identityConfidence": "high",
+      "addressConfidence": "high",
+      "censusResult": {
+        "status": "no-reviewed-pr-match",
+        "attemptedAddress": "388 Zona Industrial Reparada 2, Ponce, Puerto Rico 00716"
+      },
+      "decision": "retain-quarantine-reviewed-address-no-match",
+      "status": "reviewed",
+      "notes": "The official current campus page confirms the existing street form, but the pinned Census path still did not return a reviewed Puerto Rico match.",
+      "currentReviewedAddress": "388 Zona Industrial Reparada 2, Ponce, Puerto Rico 00716",
+      "newOfficialEvidenceFound": "Current official Ponce campus page confirms 388 Zona Industrial Reparada 2, Ponce, Puerto Rico 00716.",
+      "activeLocationStatus": "active",
+      "candidateAddressTested": "388 Zona Industrial Reparada 2, Ponce, Puerto Rico 00716"
+    },
+    {
+      "directoryInstitution": "Pontificia Universidad Católica de PR",
+      "rowCandidate": "Pontificia Universidad Católica de PR / Pontifical Catholic University of Puerto Rico-Ponce",
+      "currentNormalizedAddress": "2250 Boulevard Luis A. Ferré-Aguayo, PONCE, Puerto Rico",
+      "reviewedAddress": "2250 Boulevard Luis A. Ferré Aguayo, Ponce, Puerto Rico 00717",
+      "useForGeocoder": true,
+      "publicEvidenceFound": [
+        {
+          "authority": "official-institution-site",
+          "url": "https://www.pucpr.edu/conocenos/localizacion-y-contactos/",
+          "summary": "The location page lists the Ponce campus at 2250 Boulevard Luis A. Ferré Aguayo, Ponce, Puerto Rico 00717."
+        }
+      ],
+      "identityConfidence": "high",
+      "addressConfidence": "high",
+      "censusResult": {
+        "status": "no-reviewed-pr-match",
+        "attemptedAddress": "2250 Boulevard Luis A. Ferré Aguayo, Ponce, Puerto Rico 00717"
+      },
+      "decision": "retain-quarantine-reviewed-address-no-match",
+      "status": "reviewed",
+      "notes": "The official current campus page confirms the street form, but the pinned Census path still did not return a reviewed Puerto Rico match.",
+      "currentReviewedAddress": "2250 Boulevard Luis A. Ferré Aguayo, Ponce, Puerto Rico 00717",
+      "newOfficialEvidenceFound": "Current official location page confirms 2250 Boulevard Luis A. Ferré Aguayo, Ponce, Puerto Rico 00717.",
+      "activeLocationStatus": "active",
+      "candidateAddressTested": "2250 Boulevard Luis A. Ferré Aguayo, Ponce, Puerto Rico 00717"
+    },
+    {
+      "directoryInstitution": "Universidad Central de Bayamón",
+      "rowCandidate": "Universidad Central de Bayamón / Bayamon Central University",
+      "currentNormalizedAddress": "Avenida Zaya Verde Reparto la Milagrosa, Hato Tejas Bayamón, BAYAMON, Puerto Rico",
+      "reviewedAddress": "Reparto La Milagrosa, Bayamón, PR 00960-1725",
+      "useForGeocoder": true,
+      "publicEvidenceFound": [
+        {
+          "authority": "official-institution-site",
+          "url": "https://ucb.edu.pr/wp-content/uploads/2025/10/Undergraduate-Catalog-2022_2027_rev-October-2025.pdf",
+          "summary": "The official catalog identifies the campus in Reparto La Milagrosa, Bayamón, PR 00960-1725."
+        },
+        {
+          "authority": "official-institution-site",
+          "url": "https://ucb.edu.pr/wp-content/uploads/2024/09/Plan-de-Desalojo-y-plan-de-Accion-en-Caso-de-Emergencias.pdf",
+          "summary": "The official emergency plan states that the university is located between Ave. Zaya Verde and Urb. La Milagrosa in Barrio Hato Tejas, Bayamón."
+        },
+        {
+          "authority": "official-institution-site",
+          "url": "https://ucb.edu.pr/wp-content/uploads/2024/01/ReglamentoEstacionamiento2018.pdf",
+          "summary": "The official parking regulation refers to the campus entrance and traffic control on Calle Zaya Verde."
+        }
+      ],
+      "identityConfidence": "high",
+      "addressConfidence": "medium",
+      "censusResult": {
+        "status": "no-reviewed-pr-match",
+        "attemptedAddress": "Reparto La Milagrosa, Bayamón, PR 00960-1725"
+      },
+      "decision": "retain-quarantine-reviewed-address-no-match",
+      "status": "reviewed",
+      "notes": "Official current public evidence supports the Bayamón campus location, but the reviewed address remains too coarse for a pinned Census promotion.",
+      "currentReviewedAddress": "Reparto La Milagrosa, Bayamón, PR 00960-1725",
+      "newOfficialEvidenceFound": "Current official catalog, emergency, and parking documents now support the same active Hato Tejas / Zaya Verde / La Milagrosa campus area, but the more specific Calle Zaya Verde official form still did not yield a reviewed Census match.",
+      "activeLocationStatus": "active",
+      "candidateAddressTested": "Calle Zaya Verde, Hato Tejas, Bayamon, PR 00961"
+    },
+    {
+      "directoryInstitution": "Universidad Metropolitana",
+      "rowCandidate": "Universidad Metropolitana / Universidad Metropolitana (Cupey campus)",
+      "currentNormalizedAddress": "1399 Ave. Ana G. Méndez, Carr. 176, Km. 0.03, SAN JUAN, Puerto Rico",
+      "reviewedAddress": "Ave. Ana G. Mendez Carr. 176, Km 0.3, San Juan, P.R. 00926",
+      "useForGeocoder": true,
+      "publicEvidenceFound": [
+        {
+          "authority": "official-institution-site",
+          "url": "https://uagm.edu/es/sobre-la-uagm/contactanos",
+          "summary": "The Cupey contact listing gives Ave. Ana G. Mendez Carr. 176, Km 0.3, San Juan, P.R. 00926."
+        }
+      ],
+      "identityConfidence": "high",
+      "addressConfidence": "high",
+      "censusResult": {
+        "status": "no-reviewed-pr-match",
+        "attemptedAddress": "Ave. Ana G. Mendez Carr. 176, Km 0.3, San Juan, P.R. 00926"
+      },
+      "decision": "retain-quarantine-reviewed-address-no-match",
+      "status": "reviewed",
+      "notes": "The official current Cupey address differs from the legacy directory string, but the pinned Census path still did not return a reviewed Puerto Rico match.",
+      "currentReviewedAddress": "Ave. Ana G. Mendez Carr. 176, Km 0.3, San Juan, P.R. 00926",
+      "newOfficialEvidenceFound": "Current official contact page confirms Ave. Ana G. Mendez Carr. 176, Km 0.3, San Juan, P.R. 00926 for the Cupey campus.",
+      "activeLocationStatus": "active",
+      "candidateAddressTested": "Ave. Ana G. Mendez Carr. 176, Km 0.3, San Juan, P.R. 00926"
+    },
+    {
+      "directoryInstitution": "University of Phoenix",
+      "rowCandidate": "University of Phoenix / University of Phoenix-Puerto Rico Campus",
+      "currentNormalizedAddress": "Santander Tower at San Patricio, Calle Tabonuco B-7, suite 400, GUAYNABO, Puerto Rico",
+      "reviewedAddress": null,
+      "useForGeocoder": false,
+      "publicEvidenceFound": [
+        {
+          "authority": "official-institution-site",
+          "url": "https://www.phoenix.edu/",
+          "summary": "The current institution site was reviewed, but no Puerto Rico campus location or official Guaynabo physical address was surfaced during this pass."
+        }
+      ],
+      "identityConfidence": "high",
+      "addressConfidence": "low",
+      "censusResult": {
+        "status": "not-rerun-no-current-official-pr-campus-address"
+      },
+      "decision": "retain-quarantine-no-current-official-pr-campus-address",
+      "status": "reviewed",
+      "notes": "Historic Puerto Rico campus evidence exists in prior auxiliary material, but the reviewed current official site does not provide a present Puerto Rico campus address for a corrected Census retry.",
+      "currentReviewedAddress": null,
+      "newOfficialEvidenceFound": "The current official University of Phoenix site does not surface an active Puerto Rico campus location for a reviewed retry.",
+      "activeLocationStatus": "no-current-official-pr-campus-evidence",
+      "candidateAddressTested": null
+    }
+  ]
+}

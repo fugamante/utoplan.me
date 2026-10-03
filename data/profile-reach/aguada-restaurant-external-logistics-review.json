@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "artifactVersion": "aguada-restaurant-external-logistics-review-v1",
+  "scope": "puerto-rico-planning-candidate",
+  "status": "reviewed",
+  "reviewedAt": "2026-08-13",
+  "signalId": "external-supply-chain-gap",
+  "fixedSelection": {
+    "fixtureId": "mun003_restaurant",
+    "municipalityCode": "003",
+    "municipalityLabel": "Aguada",
+    "businessCategoryId": "restaurant-cafe",
+    "selectedNaicsCodes": [
+      "722511"
+    ]
+  },
+  "decisionSummary": "The fixed Aguada restaurant matrix no longer relies on a pure external logistics source gap for the large/strategic scenario. Official Puerto Rico cargo-movement inventory now establishes a descriptive external-connection baseline through the reported air and maritime cargo volumes tied to Puerto Rico Ports Authority facilities, including Rafael Hernandez Airport in Aguadilla and Eugenio Maria de Hostos Airport in Mayaguez. This remains gateway-baseline evidence only: it does not prove supplier depth, cold-chain integrity, delivery timing, maritime dependency, or one operator's recovery plan.",
+  "authorities": [
+    {
+      "sourceId": "iepr-air-maritime-cargo-passengers-2024-q2",
+      "role": "official-external-cargo-gateway-baseline",
+      "evidence": "The Puerto Rico Institute of Statistics publishes official airport and maritime cargo inventory reported by the Puerto Rico Ports Authority, including quarterly cargo volumes for Rafael Hernandez Airport in Aguadilla and Eugenio Maria de Hostos Airport in Mayaguez, which establishes that west-region external cargo gateways are active and measured in official Puerto Rico reporting."
+    }
+  ],
+  "scenarioCoverage": [
+    {
+      "scenarioId": "large-strategic",
+      "reachId": "external-connection",
+      "coverage": "descriptive-external-logistics-baseline",
+      "notes": [
+        "The fixed large/strategic scenario now has official Puerto Rico external cargo-gateway evidence instead of a blank external logistics lane.",
+        "The evidence shows that external cargo movement is formally tracked through west-region airport gateways and broader Puerto Rico maritime reporting, but it does not prove that one Aguada restaurant depends on those routes or can recover quickly when they are disrupted."
+      ]
+    }
+  ],
+  "interpretationLimits": [
+    "This source establishes official cargo-gateway activity and reporting surfaces, not supplier-level dependency, delivery punctuality, or cold-chain performance for one restaurant.",
+    "The reviewed inventory is Puerto Rico-wide cargo context and does not prove that one operator in Aguada receives goods through Aguadilla, Mayaguez, or any specific maritime route.",
+    "The artifact does not quantify recovery time, backup sourcing, storage resilience, customs timing, or one operator's exposure to mainland procurement delays.",
+    "The artifact does not imply that a large-format restaurant should operate in Aguada or that the external supply path is operationally resilient."
+  ],
+  "nextUpgradeTargets": [
+    "Register official port, shipping, or freight-disruption evidence if a reproducible Puerto Rico source becomes available for external-connection continuity review.",
+    "Add reviewed supplier-depth, backup-vendor, or perishability evidence before reducing criticality for destination-scale cold-chain assumptions.",
+    "Pair this gateway baseline with island-wide demand or strategic execution evidence before treating the large/strategic scenario as broadly source-backed."
+  ]
+}

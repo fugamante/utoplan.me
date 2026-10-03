@@ -57,9 +57,6 @@ CREATE TABLE cdepts (
   updated_at timestamp
 );
 
-INSERT INTO unis (id, title, address, "desc", lat, long, created_at, updated_at)
-VALUES (1, 'Contract University', '100 Contract Ave', 'Seeded university row', 18.42, -66.06, NOW(), NOW());
-
 INSERT INTO grade_cs (id, uni_id, cdepts_id, rate, year, created_at, updated_at)
 VALUES (1, 1, 1, '92', '2016', NOW(), NOW());
 
@@ -75,7 +72,6 @@ VALUES (1, 'Contract Municipality', 1, NOW(), NOW());
 INSERT INTO cdepts (id, cnaic, created_at, updated_at)
 VALUES (1, 541, NOW(), NOW());
 
-SELECT setval('unis_id_seq', 1, true);
 SELECT setval('grade_cs_id_seq', 1, true);
 SELECT setval('businesses_id_seq', 1, true);
 SELECT setval('cbps_id_seq', 1, true);

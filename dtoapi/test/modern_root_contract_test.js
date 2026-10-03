@@ -62,7 +62,8 @@ withServer(function(server, done) {
     assert.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8');
     assert.strictEqual(response.headers['access-control-allow-origin'], '*');
     assert(response.headers['access-control-allow-headers'].indexOf('Authorization') !== -1);
-    assert(response.headers['access-control-allow-methods'].indexOf('GET') !== -1);
+    assert.strictEqual(response.headers['access-control-allow-methods'], 'GET, OPTIONS');
+    assert.strictEqual(response.headers.vary, 'Accept-Encoding');
     assert.deepStrictEqual(JSON.parse(response.body.toString()), rootContract.rootPayload());
 
     request(server, '/healthz', null, function(healthError, healthResponse) {
@@ -91,25 +92,69 @@ withServer(function(server, done) {
 
         assert.deepStrictEqual(JSON.parse(result.toString()), rootContract.rootPayload());
 
-        request(server, '/v1/unis/1', {method: 'POST'}, function(methodError, methodResponse) {
-          if (methodError) {
-            return done(methodError);
+        request(server, '/v1/planning-context', null, function(planningError, planningResponse) {
+          if (planningError) {
+            return done(planningError);
           }
 
-          const body = JSON.parse(methodResponse.body.toString());
+          const planningBody = JSON.parse(planningResponse.body.toString());
 
-          assert.strictEqual(methodResponse.statusCode, 405);
-          assert.strictEqual(methodResponse.headers.allow, 'GET, OPTIONS');
-          assert.strictEqual(body.meta.error, 'Method Not Allowed');
+          assert.strictEqual(planningResponse.statusCode, 200);
+          assert(Array.isArray(planningBody.data));
+          assert(planningBody.data.length >= 2);
+          assert.strictEqual(planningBody.data[0].status, 'candidate-needs-review');
+          assert.strictEqual(typeof planningBody.data[0].updatedAt, 'string');
+          assert.strictEqual(typeof planningBody.data[0].sourceCount, 'number');
+          assert.strictEqual(planningBody.data[0].guardrails.descriptiveOnly, true);
+          assert.strictEqual(planningBody.data[0].guardrails.noScores, true);
 
-          request(server, '/v1/unis/not-a-number', null, function(routeError, routeResponse) {
-            if (routeError) {
-              return done(routeError);
+          request(server, '/v1/planning-context/mun001_construction', null, function(detailError, detailResponse) {
+            if (detailError) {
+              return done(detailError);
             }
 
-            assert.strictEqual(routeResponse.statusCode, 404);
-            assert.strictEqual(JSON.parse(routeResponse.body.toString()).meta.error, 'Not Found');
-            done();
+            const detailBody = JSON.parse(detailResponse.body.toString());
+
+            assert.strictEqual(detailResponse.statusCode, 200);
+            assert.strictEqual(detailBody.meta.count, 1);
+            assert.strictEqual(detailBody.data[0].id, 'mun001_construction');
+            assert.strictEqual(detailBody.data[0].status, 'candidate-needs-review');
+            assert.strictEqual(detailBody.data[0].updatedAt, '2026-05-29');
+            assert.strictEqual(detailBody.data[0].guardrails.noRecommendations, true);
+
+            request(server, '/v1/planning-context', {method: 'POST'}, function(planningMethodError, planningMethodResponse) {
+              if (planningMethodError) {
+                return done(planningMethodError);
+              }
+
+              const planningMethodBody = JSON.parse(planningMethodResponse.body.toString());
+
+              assert.strictEqual(planningMethodResponse.statusCode, 405);
+              assert.strictEqual(planningMethodResponse.headers.allow, 'GET, OPTIONS');
+              assert.strictEqual(planningMethodBody.meta.error, 'Method Not Allowed');
+
+              request(server, '/v1/unis/1', {method: 'POST'}, function(methodError, methodResponse) {
+                if (methodError) {
+                  return done(methodError);
+                }
+
+                const body = JSON.parse(methodResponse.body.toString());
+
+                assert.strictEqual(methodResponse.statusCode, 405);
+                assert.strictEqual(methodResponse.headers.allow, 'GET, OPTIONS');
+                assert.strictEqual(body.meta.error, 'Method Not Allowed');
+
+                request(server, '/v1/unis/not-a-number', null, function(routeError, routeResponse) {
+                  if (routeError) {
+                    return done(routeError);
+                  }
+
+                  assert.strictEqual(routeResponse.statusCode, 404);
+                  assert.strictEqual(JSON.parse(routeResponse.body.toString()).meta.error, 'Not Found');
+                  done();
+                });
+              });
+            });
           });
         });
       });

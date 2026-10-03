@@ -1,0 +1,1278 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "datospr-higher-ed-directory-2017-18",
+  "generatedAt": "2026-06-26",
+  "buildCommand": "node scripts/verify_unis_identity.js",
+  "status": "reviewed-excluded",
+  "decision": "retain-identity-quarantine",
+  "decisionSummary": "All 27 identity-quarantined rows remain excluded from generated/imported unis output. Five rows now have narrow NCES, DAPIP, and ORLIE/JIP corroboration, while 22 rows still lack row-level authority corroboration. No row has the full alias/campus, public-address, and Census-cache chain required to change import readiness.",
+  "productBoundary": "descriptive-only",
+  "matchReviewArtifactPath": "data/unis/ipeds-alias-campus-review.json",
+  "quarantineArtifactPath": "data/geocoding/unis-import-quarantine.json",
+  "importBoundaryArtifactPath": "data/geocoding/unis-import-boundary-review.json",
+  "generatedArtifactPath": "data/generated/unis-partial-import.json",
+  "authoritySources": [
+    {
+      "sourceId": "nces-college-navigator-puerto-rico",
+      "role": "identity-corroboration-only"
+    },
+    {
+      "sourceId": "usdoe-dapip-puerto-rico",
+      "role": "accreditation-corroboration-only"
+    },
+    {
+      "sourceId": "prdos-orlie-jip-postsecondary-listing",
+      "role": "licensure-corroboration-only"
+    }
+  ],
+  "summary": {
+    "identityQuarantinedRows": 27,
+    "authorityReviewedRows": 5,
+    "identityCorroboratedRows": 5,
+    "dapipReviewedRows": 5,
+    "orlieReviewedRows": 5,
+    "identityPromotedRows": 0,
+    "directImportEligibleRows": 0,
+    "coordinateEligibleRows": 0,
+    "generatedOutputEligibleRows": 0,
+    "rowsMissingExactAliasCampusEvidence": 27,
+    "rowsWithoutRowLevelAuthorityCorroboration": 22,
+    "rowsStillMissingOrlieJipCorroboration": 22
+  },
+  "invariants": [
+    "Identity corroboration sources do not replace the primary Datos.PR row source.",
+    "Identity classification alone does not provide coordinate authority.",
+    "NCES, DAPIP, and ORLIE/JIP corroboration do not provide public-address corrections or Census geocoder cache matches.",
+    "Identity-quarantined rows must remain absent from generated/imported unis output.",
+    "A row needs accepted alias/campus, public-address, and Census-cache evidence before generated output eligibility can change."
+  ],
+  "authoritySourceReviewNotes": [
+    {
+      "sourceId": "usdoe-dapip-puerto-rico",
+      "status": "row-level-corroboration-recorded-for-nces-subset",
+      "reviewedRows": 5,
+      "notes": "DAPIP simple search, institution profile, and institutional accreditation API records were reviewed only for the five NCES-corroborated rows."
+    },
+    {
+      "sourceId": "prdos-orlie-jip-postsecondary-listing",
+      "status": "row-level-corroboration-recorded-for-nces-dapip-subset",
+      "reviewedRows": 5,
+      "sourceUrl": "https://www.estado.pr.gov/instituciones-educativas",
+      "listingUrl": "https://app.powerbigov.us/view?r=eyJrIjoiMjM5M2U5NTItYWU0My00MDFjLTljMDMtZmJhZTlmZjIwYjVmIiwidCI6IjYzNmFkYzFhLTkyOTEtNGJlOC1hYjFiLTgzMDc2NWMzYjc0ZCJ9",
+      "reviewArtifactPath": "data/unis/orlie-jip-row-review.json",
+      "notes": "The ORLIE/JIP page identifies the office and links a public Power BI listing for postsecondary institutions. The checked-in ORLIE/JIP row review records the bounded public query contract and five row-level licensure-listing matches without storing personal contact fields."
+    }
+  ],
+  "records": [
+    {
+      "directoryInstitution": "Cambridge College",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "268 Ponce de Leon Avenue, Suite 1400",
+      "normalizedAddress": "268 Ponce de Leon Avenue, Suite 1400, SAN JUAN, Puerto Rico",
+      "matchReviewKey": "Cambridge College|SAN JUAN|268 Ponce de Leon Avenue, Suite 1400",
+      "normalizedIdentityKey": "Cambridge College|SAN JUAN",
+      "matchReviewReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "quarantineExclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
+      "classification": "identity-authority-review-required",
+      "identityStatus": "not-import-ready",
+      "corroborationStatus": "not-row-reviewed",
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false,
+      "authorityEvidenceReviewed": [],
+      "requiredAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "remainingAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "requiredPromotionEvidence": [
+        "row-level identity corroboration from registered authority sources",
+        "accepted alias/campus review decision",
+        "reviewed public-address evidence",
+        "reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "evidenceSummary": "No row-level authority evidence has been reviewed for this identity-quarantined row.",
+      "directImportBlocker": "No accepted row-level identity authority decision exists for this row; corroboration sources may inform review but do not replace the primary row source or provide coordinate authority.",
+      "reviewedAt": "2026-06-11",
+      "reviewer": "Modernization Maintainer"
+    },
+    {
+      "directoryInstitution": "Centro de Estudios Avanzados de PR y el Caribe",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Calle del Cristo #52 Viejo San Juan",
+      "normalizedAddress": "Calle del Cristo #52 Viejo San Juan, SAN JUAN, Puerto Rico",
+      "matchReviewKey": "Centro de Estudios Avanzados de PR y el Caribe|SAN JUAN|Calle del Cristo #52 Viejo San Juan",
+      "normalizedIdentityKey": "Centro de Estudios Avanzados de PR y el Caribe|SAN JUAN",
+      "matchReviewReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "quarantineExclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
+      "classification": "identity-authority-review-required",
+      "identityStatus": "not-import-ready",
+      "corroborationStatus": "not-row-reviewed",
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false,
+      "authorityEvidenceReviewed": [],
+      "requiredAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "remainingAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "requiredPromotionEvidence": [
+        "row-level identity corroboration from registered authority sources",
+        "accepted alias/campus review decision",
+        "reviewed public-address evidence",
+        "reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "evidenceSummary": "No row-level authority evidence has been reviewed for this identity-quarantined row.",
+      "directImportBlocker": "No accepted row-level identity authority decision exists for this row; corroboration sources may inform review but do not replace the primary row source or provide coordinate authority.",
+      "reviewedAt": "2026-06-11",
+      "reviewer": "Modernization Maintainer"
+    },
+    {
+      "directoryInstitution": "Colegio de Cinematografía, Artes y Televisión",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Ave. Gautier Benitez Esq. Monsenñor, Esq. Monseños Berrios",
+      "normalizedAddress": "Ave. Gautier Benitez Esq. Monsenñor, Esq. Monseños Berrios, SAN JUAN, Puerto Rico",
+      "matchReviewKey": "Colegio de Cinematografía, Artes y Televisión|SAN JUAN|Ave. Gautier Benitez Esq. Monsenñor, Esq. Monseños Berrios",
+      "normalizedIdentityKey": "Colegio de Cinematografía, Artes y Televisión|SAN JUAN",
+      "matchReviewReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "quarantineExclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
+      "classification": "identity-authority-review-required",
+      "identityStatus": "not-import-ready",
+      "corroborationStatus": "not-row-reviewed",
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false,
+      "authorityEvidenceReviewed": [],
+      "requiredAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "remainingAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "requiredPromotionEvidence": [
+        "row-level identity corroboration from registered authority sources",
+        "accepted alias/campus review decision",
+        "reviewed public-address evidence",
+        "reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "evidenceSummary": "No row-level authority evidence has been reviewed for this identity-quarantined row.",
+      "directImportBlocker": "No accepted row-level identity authority decision exists for this row; corroboration sources may inform review but do not replace the primary row source or provide coordinate authority.",
+      "reviewedAt": "2026-06-11",
+      "reviewer": "Modernization Maintainer"
+    },
+    {
+      "directoryInstitution": "Conservatorio de Música de Puerto Rico",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "951 Ave. Ponce de León",
+      "normalizedAddress": "951 Ave. Ponce de León, SAN JUAN, Puerto Rico",
+      "matchReviewKey": "Conservatorio de Música de Puerto Rico|SAN JUAN|951 Ave. Ponce de León",
+      "normalizedIdentityKey": "Conservatorio de Música de Puerto Rico|SAN JUAN",
+      "matchReviewReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "quarantineExclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
+      "classification": "identity-authority-review-required",
+      "identityStatus": "not-import-ready",
+      "corroborationStatus": "not-row-reviewed",
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false,
+      "authorityEvidenceReviewed": [],
+      "requiredAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "remainingAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "requiredPromotionEvidence": [
+        "row-level identity corroboration from registered authority sources",
+        "accepted alias/campus review decision",
+        "reviewed public-address evidence",
+        "reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "evidenceSummary": "No row-level authority evidence has been reviewed for this identity-quarantined row.",
+      "directImportBlocker": "No accepted row-level identity authority decision exists for this row; corroboration sources may inform review but do not replace the primary row source or provide coordinate authority.",
+      "reviewedAt": "2026-06-11",
+      "reviewer": "Modernization Maintainer"
+    },
+    {
+      "directoryInstitution": "Dublin Institute of Technology",
+      "directoryMunicipality": "GUAYNABO",
+      "directoryAddress": "Metro Parque #7, Metro Office Park Suite 204",
+      "normalizedAddress": "Metro Parque #7, Metro Office Park Suite 204, GUAYNABO, Puerto Rico",
+      "matchReviewKey": "Dublin Institute of Technology|GUAYNABO|Metro Parque #7, Metro Office Park Suite 204",
+      "normalizedIdentityKey": "Dublin Institute of Technology|GUAYNABO",
+      "matchReviewReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "quarantineExclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
+      "classification": "identity-authority-review-required",
+      "identityStatus": "not-import-ready",
+      "corroborationStatus": "not-row-reviewed",
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false,
+      "authorityEvidenceReviewed": [],
+      "requiredAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "remainingAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "requiredPromotionEvidence": [
+        "row-level identity corroboration from registered authority sources",
+        "accepted alias/campus review decision",
+        "reviewed public-address evidence",
+        "reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "evidenceSummary": "No row-level authority evidence has been reviewed for this identity-quarantined row.",
+      "directImportBlocker": "No accepted row-level identity authority decision exists for this row; corroboration sources may inform review but do not replace the primary row source or provide coordinate authority.",
+      "reviewedAt": "2026-06-11",
+      "reviewer": "Modernization Maintainer"
+    },
+    {
+      "directoryInstitution": "Escuela de Enfermeros/as Anestesistas de PR",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "728 Avda. Ponce de León, Oficina 201, Hato Rey",
+      "normalizedAddress": "728 Avda. Ponce de León, Oficina 201, Hato Rey, SAN JUAN, Puerto Rico",
+      "matchReviewKey": "Escuela de Enfermeros/as Anestesistas de PR|SAN JUAN|728 Avda. Ponce de León, Oficina 201, Hato Rey",
+      "normalizedIdentityKey": "Escuela de Enfermeros/as Anestesistas de PR|SAN JUAN",
+      "matchReviewReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "quarantineExclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
+      "classification": "identity-authority-review-required",
+      "identityStatus": "not-import-ready",
+      "corroborationStatus": "not-row-reviewed",
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false,
+      "authorityEvidenceReviewed": [],
+      "requiredAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "remainingAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "requiredPromotionEvidence": [
+        "row-level identity corroboration from registered authority sources",
+        "accepted alias/campus review decision",
+        "reviewed public-address evidence",
+        "reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "evidenceSummary": "No row-level authority evidence has been reviewed for this identity-quarantined row.",
+      "directImportBlocker": "No accepted row-level identity authority decision exists for this row; corroboration sources may inform review but do not replace the primary row source or provide coordinate authority.",
+      "reviewedAt": "2026-06-11",
+      "reviewer": "Modernization Maintainer"
+    },
+    {
+      "directoryInstitution": "Herbert Fletcher University",
+      "directoryMunicipality": "MAYAGUEZ",
+      "directoryAddress": "Carr. #2 Km. 158.2 Avenida Hosto #74 Bo. Guanajibo",
+      "normalizedAddress": "Carr. #2 Km. 158.2 Avenida Hosto #74 Bo. Guanajibo, MAYAGUEZ, Puerto Rico",
+      "matchReviewKey": "Herbert Fletcher University|MAYAGUEZ|Carr. #2 Km. 158.2 Avenida Hosto #74 Bo. Guanajibo",
+      "normalizedIdentityKey": "Herbert Fletcher University|MAYAGUEZ",
+      "matchReviewReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "quarantineExclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
+      "classification": "identity-authority-review-required",
+      "identityStatus": "not-import-ready",
+      "corroborationStatus": "not-row-reviewed",
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false,
+      "authorityEvidenceReviewed": [],
+      "requiredAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "remainingAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "requiredPromotionEvidence": [
+        "row-level identity corroboration from registered authority sources",
+        "accepted alias/campus review decision",
+        "reviewed public-address evidence",
+        "reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "evidenceSummary": "No row-level authority evidence has been reviewed for this identity-quarantined row.",
+      "directImportBlocker": "No accepted row-level identity authority decision exists for this row; corroboration sources may inform review but do not replace the primary row source or provide coordinate authority.",
+      "reviewedAt": "2026-06-11",
+      "reviewer": "Modernization Maintainer"
+    },
+    {
+      "directoryInstitution": "Industrial Biotechnological Institute IBI",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Carretera 871 Barrio Arenas",
+      "normalizedAddress": "Carretera 871 Barrio Arenas, SAN JUAN, Puerto Rico",
+      "matchReviewKey": "Industrial Biotechnological Institute IBI|SAN JUAN|Carretera 871 Barrio Arenas",
+      "normalizedIdentityKey": "Industrial Biotechnological Institute IBI|SAN JUAN",
+      "matchReviewReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "quarantineExclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
+      "classification": "identity-authority-review-required",
+      "identityStatus": "not-import-ready",
+      "corroborationStatus": "not-row-reviewed",
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false,
+      "authorityEvidenceReviewed": [],
+      "requiredAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "remainingAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "requiredPromotionEvidence": [
+        "row-level identity corroboration from registered authority sources",
+        "accepted alias/campus review decision",
+        "reviewed public-address evidence",
+        "reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "evidenceSummary": "No row-level authority evidence has been reviewed for this identity-quarantined row.",
+      "directImportBlocker": "No accepted row-level identity authority decision exists for this row; corroboration sources may inform review but do not replace the primary row source or provide coordinate authority.",
+      "reviewedAt": "2026-06-11",
+      "reviewer": "Modernization Maintainer"
+    },
+    {
+      "directoryInstitution": "Instituto Comercial de PR Junior College",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Munoz Rivera 558, Hato Rey",
+      "normalizedAddress": "Munoz Rivera 558, Hato Rey, SAN JUAN, Puerto Rico",
+      "matchReviewKey": "Instituto Comercial de PR Junior College|SAN JUAN|Munoz Rivera 558, Hato Rey",
+      "normalizedIdentityKey": "Instituto Comercial de PR Junior College|SAN JUAN",
+      "matchReviewReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "quarantineExclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
+      "classification": "identity-authority-review-required",
+      "identityStatus": "not-import-ready",
+      "corroborationStatus": "not-row-reviewed",
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false,
+      "authorityEvidenceReviewed": [],
+      "requiredAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "remainingAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "requiredPromotionEvidence": [
+        "row-level identity corroboration from registered authority sources",
+        "accepted alias/campus review decision",
+        "reviewed public-address evidence",
+        "reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "evidenceSummary": "No row-level authority evidence has been reviewed for this identity-quarantined row.",
+      "directImportBlocker": "No accepted row-level identity authority decision exists for this row; corroboration sources may inform review but do not replace the primary row source or provide coordinate authority.",
+      "reviewedAt": "2026-06-11",
+      "reviewer": "Modernization Maintainer"
+    },
+    {
+      "directoryInstitution": "Instituto de Banca y Comercio",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Ave. Ponce de Leon # 61, Barrio Hato Rey",
+      "normalizedAddress": "Ave. Ponce de Leon # 61, Barrio Hato Rey, SAN JUAN, Puerto Rico",
+      "matchReviewKey": "Instituto de Banca y Comercio|SAN JUAN|Ave. Ponce de Leon # 61, Barrio Hato Rey",
+      "normalizedIdentityKey": "Instituto de Banca y Comercio|SAN JUAN",
+      "matchReviewReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "quarantineExclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
+      "classification": "identity-authority-review-required",
+      "identityStatus": "not-import-ready",
+      "corroborationStatus": "not-row-reviewed",
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false,
+      "authorityEvidenceReviewed": [],
+      "requiredAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "remainingAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "requiredPromotionEvidence": [
+        "row-level identity corroboration from registered authority sources",
+        "accepted alias/campus review decision",
+        "reviewed public-address evidence",
+        "reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "evidenceSummary": "No row-level authority evidence has been reviewed for this identity-quarantined row.",
+      "directImportBlocker": "No accepted row-level identity authority decision exists for this row; corroboration sources may inform review but do not replace the primary row source or provide coordinate authority.",
+      "reviewedAt": "2026-06-11",
+      "reviewer": "Modernization Maintainer"
+    },
+    {
+      "directoryInstitution": "Instituto para el Desarrollo Humano",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Roosevelt 242 Esq Calle Unión Piso 4, Hato Rey",
+      "normalizedAddress": "Roosevelt 242 Esq Calle Unión Piso 4, Hato Rey, SAN JUAN, Puerto Rico",
+      "matchReviewKey": "Instituto para el Desarrollo Humano|SAN JUAN|Roosevelt 242 Esq Calle Unión Piso 4, Hato Rey",
+      "normalizedIdentityKey": "Instituto para el Desarrollo Humano|SAN JUAN",
+      "matchReviewReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "quarantineExclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
+      "classification": "identity-authority-review-required",
+      "identityStatus": "not-import-ready",
+      "corroborationStatus": "not-row-reviewed",
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false,
+      "authorityEvidenceReviewed": [],
+      "requiredAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "remainingAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "requiredPromotionEvidence": [
+        "row-level identity corroboration from registered authority sources",
+        "accepted alias/campus review decision",
+        "reviewed public-address evidence",
+        "reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "evidenceSummary": "No row-level authority evidence has been reviewed for this identity-quarantined row.",
+      "directImportBlocker": "No accepted row-level identity authority decision exists for this row; corroboration sources may inform review but do not replace the primary row source or provide coordinate authority.",
+      "reviewedAt": "2026-06-11",
+      "reviewer": "Modernization Maintainer"
+    },
+    {
+      "directoryInstitution": "Instituto Sexológico, Educativo y Psicológico de PR",
+      "directoryMunicipality": "CAROLINA",
+      "directoryAddress": "Avda. Sánchez Osorio 5H-5, Villa Fontana",
+      "normalizedAddress": "Avda. Sánchez Osorio 5H-5, Villa Fontana, CAROLINA, Puerto Rico",
+      "matchReviewKey": "Instituto Sexológico, Educativo y Psicológico de PR|CAROLINA|Avda. Sánchez Osorio 5H-5, Villa Fontana",
+      "normalizedIdentityKey": "Instituto Sexológico, Educativo y Psicológico de PR|CAROLINA",
+      "matchReviewReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "quarantineExclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
+      "classification": "identity-authority-review-required",
+      "identityStatus": "not-import-ready",
+      "corroborationStatus": "not-row-reviewed",
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false,
+      "authorityEvidenceReviewed": [],
+      "requiredAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "remainingAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "requiredPromotionEvidence": [
+        "row-level identity corroboration from registered authority sources",
+        "accepted alias/campus review decision",
+        "reviewed public-address evidence",
+        "reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "evidenceSummary": "No row-level authority evidence has been reviewed for this identity-quarantined row.",
+      "directImportBlocker": "No accepted row-level identity authority decision exists for this row; corroboration sources may inform review but do not replace the primary row source or provide coordinate authority.",
+      "reviewedAt": "2026-06-11",
+      "reviewer": "Modernization Maintainer"
+    },
+    {
+      "directoryInstitution": "Instituto Tecnológico de Puerto Rico",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Calle Federico Costa #150, Urb. Industrial Tres Monjitas, Hato Rey",
+      "normalizedAddress": "Calle Federico Costa #150, Urb. Industrial Tres Monjitas, Hato Rey, SAN JUAN, Puerto Rico",
+      "matchReviewKey": "Instituto Tecnológico de Puerto Rico|SAN JUAN|Calle Federico Costa #150, Urb. Industrial Tres Monjitas, Hato Rey",
+      "normalizedIdentityKey": "Instituto Tecnológico de Puerto Rico|SAN JUAN",
+      "matchReviewReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "quarantineExclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
+      "classification": "identity-authority-review-required",
+      "identityStatus": "not-import-ready",
+      "corroborationStatus": "not-row-reviewed",
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false,
+      "authorityEvidenceReviewed": [],
+      "requiredAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "remainingAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "requiredPromotionEvidence": [
+        "row-level identity corroboration from registered authority sources",
+        "accepted alias/campus review decision",
+        "reviewed public-address evidence",
+        "reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "evidenceSummary": "No row-level authority evidence has been reviewed for this identity-quarantined row.",
+      "directImportBlocker": "No accepted row-level identity authority decision exists for this row; corroboration sources may inform review but do not replace the primary row source or provide coordinate authority.",
+      "reviewedAt": "2026-06-11",
+      "reviewer": "Modernization Maintainer"
+    },
+    {
+      "directoryInstitution": "Monteclaro: Escuela de Hotelería y Artes Culinarias",
+      "directoryMunicipality": "PALMER",
+      "directoryAddress": "Carretera 955 km 4.8",
+      "normalizedAddress": "Carretera 955 km 4.8, PALMER, Puerto Rico",
+      "matchReviewKey": "Monteclaro: Escuela de Hotelería y Artes Culinarias|PALMER|Carretera 955 km 4.8",
+      "normalizedIdentityKey": "Monteclaro: Escuela de Hotelería y Artes Culinarias|PALMER",
+      "matchReviewReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "quarantineExclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
+      "classification": "identity-authority-review-required",
+      "identityStatus": "not-import-ready",
+      "corroborationStatus": "not-row-reviewed",
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false,
+      "authorityEvidenceReviewed": [],
+      "requiredAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "remainingAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "requiredPromotionEvidence": [
+        "row-level identity corroboration from registered authority sources",
+        "accepted alias/campus review decision",
+        "reviewed public-address evidence",
+        "reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "evidenceSummary": "No row-level authority evidence has been reviewed for this identity-quarantined row.",
+      "directImportBlocker": "No accepted row-level identity authority decision exists for this row; corroboration sources may inform review but do not replace the primary row source or provide coordinate authority.",
+      "reviewedAt": "2026-06-11",
+      "reviewer": "Modernization Maintainer"
+    },
+    {
+      "directoryInstitution": "Nova Southeastern University",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "997 Calle San Roberto, Professional Offices Park IV",
+      "normalizedAddress": "997 Calle San Roberto, Professional Offices Park IV, SAN JUAN, Puerto Rico",
+      "matchReviewKey": "Nova Southeastern University|SAN JUAN|997 Calle San Roberto, Professional Offices Park IV",
+      "normalizedIdentityKey": "Nova Southeastern University|SAN JUAN",
+      "matchReviewReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "quarantineExclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
+      "classification": "identity-authority-review-required",
+      "identityStatus": "not-import-ready",
+      "corroborationStatus": "not-row-reviewed",
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false,
+      "authorityEvidenceReviewed": [],
+      "requiredAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "remainingAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "requiredPromotionEvidence": [
+        "row-level identity corroboration from registered authority sources",
+        "accepted alias/campus review decision",
+        "reviewed public-address evidence",
+        "reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "evidenceSummary": "No row-level authority evidence has been reviewed for this identity-quarantined row.",
+      "directImportBlocker": "No accepted row-level identity authority decision exists for this row; corroboration sources may inform review but do not replace the primary row source or provide coordinate authority.",
+      "reviewedAt": "2026-06-11",
+      "reviewer": "Modernization Maintainer"
+    },
+    {
+      "directoryInstitution": "Ponce Paramedical College",
+      "directoryMunicipality": "Coto Laurel",
+      "directoryAddress": "Bo. Sábalos #410 Carretera #2",
+      "normalizedAddress": "Bo. Sábalos #410 Carretera #2, Coto Laurel, Puerto Rico",
+      "matchReviewKey": "Ponce Paramedical College|Coto Laurel|Bo. Sábalos #410 Carretera #2",
+      "normalizedIdentityKey": "Ponce Paramedical College|Coto Laurel",
+      "matchReviewReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "quarantineExclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
+      "classification": "identity-authority-review-required",
+      "identityStatus": "not-import-ready",
+      "corroborationStatus": "not-row-reviewed",
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false,
+      "authorityEvidenceReviewed": [],
+      "requiredAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "remainingAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "requiredPromotionEvidence": [
+        "row-level identity corroboration from registered authority sources",
+        "accepted alias/campus review decision",
+        "reviewed public-address evidence",
+        "reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "evidenceSummary": "No row-level authority evidence has been reviewed for this identity-quarantined row.",
+      "directImportBlocker": "No accepted row-level identity authority decision exists for this row; corroboration sources may inform review but do not replace the primary row source or provide coordinate authority.",
+      "reviewedAt": "2026-06-11",
+      "reviewer": "Modernization Maintainer"
+    },
+    {
+      "directoryInstitution": "Rutgers University",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Calle Gonzalez #1012, Urb. Santa Rita, Río Piedras",
+      "normalizedAddress": "Calle Gonzalez #1012, Urb. Santa Rita, Río Piedras, SAN JUAN, Puerto Rico",
+      "matchReviewKey": "Rutgers University|SAN JUAN|Calle Gonzalez #1012, Urb. Santa Rita, Río Piedras",
+      "normalizedIdentityKey": "Rutgers University|SAN JUAN",
+      "matchReviewReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "quarantineExclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
+      "classification": "identity-authority-review-required",
+      "identityStatus": "not-import-ready",
+      "corroborationStatus": "not-row-reviewed",
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false,
+      "authorityEvidenceReviewed": [],
+      "requiredAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "remainingAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "requiredPromotionEvidence": [
+        "row-level identity corroboration from registered authority sources",
+        "accepted alias/campus review decision",
+        "reviewed public-address evidence",
+        "reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "evidenceSummary": "No row-level authority evidence has been reviewed for this identity-quarantined row.",
+      "directImportBlocker": "No accepted row-level identity authority decision exists for this row; corroboration sources may inform review but do not replace the primary row source or provide coordinate authority.",
+      "reviewedAt": "2026-06-11",
+      "reviewer": "Modernization Maintainer"
+    },
+    {
+      "directoryInstitution": "Universal Technology College",
+      "directoryMunicipality": "CAMUY",
+      "directoryAddress": "Calle Muñoz Rivera #167",
+      "normalizedAddress": "Calle Muñoz Rivera #167, CAMUY, Puerto Rico",
+      "matchReviewKey": "Universal Technology College|CAMUY|Calle Muñoz Rivera #167",
+      "normalizedIdentityKey": "Universal Technology College|CAMUY",
+      "matchReviewReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "quarantineExclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
+      "classification": "identity-authority-review-required",
+      "identityStatus": "not-import-ready",
+      "corroborationStatus": "not-row-reviewed",
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false,
+      "authorityEvidenceReviewed": [],
+      "requiredAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "remainingAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "requiredPromotionEvidence": [
+        "row-level identity corroboration from registered authority sources",
+        "accepted alias/campus review decision",
+        "reviewed public-address evidence",
+        "reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "evidenceSummary": "No row-level authority evidence has been reviewed for this identity-quarantined row.",
+      "directImportBlocker": "No accepted row-level identity authority decision exists for this row; corroboration sources may inform review but do not replace the primary row source or provide coordinate authority.",
+      "reviewedAt": "2026-06-11",
+      "reviewer": "Modernization Maintainer"
+    },
+    {
+      "directoryInstitution": "Universidad Ana G. Méndez",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Avda. Ponce de León #1552, Urb. Reparto Seín, Sector El Cinco, Cupey",
+      "normalizedAddress": "Avda. Ponce de León #1552, Urb. Reparto Seín, Sector El Cinco, Cupey, SAN JUAN, Puerto Rico",
+      "matchReviewKey": "Universidad Ana G. Méndez|SAN JUAN|Avda. Ponce de León #1552, Urb. Reparto Seín, Sector El Cinco, Cupey",
+      "normalizedIdentityKey": "Universidad Ana G. Méndez|SAN JUAN",
+      "matchReviewReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "quarantineExclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
+      "classification": "nces-dapip-orlie-campus-corroborated-not-import-ready",
+      "identityStatus": "identity-corroborated-not-import-ready",
+      "corroborationStatus": "nces-dapip-orlie-row-reviewed",
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false,
+      "authorityEvidenceReviewed": [
+        {
+          "sourceId": "nces-college-navigator-puerto-rico",
+          "sourceName": "NCES College Navigator",
+          "sourceUrl": "https://nces.ed.gov/collegenavigator/?id=241739",
+          "retrievedAt": "2026-06-26",
+          "evidenceRole": "identity-campus-corroboration",
+          "matchedName": "Universidad Ana G. Mendez-Cupey Campus",
+          "matchedPlace": "San Juan, Puerto Rico 00928",
+          "notes": "Corroborates a Puerto Rico campus identity candidate only; not a direct row source or coordinate authority."
+        },
+        {
+          "sourceId": "usdoe-dapip-puerto-rico",
+          "sourceName": "U.S. Department of Education DAPIP",
+          "sourceUrl": "https://ope.ed.gov/dapip/#/institution-profile/150969",
+          "apiInstitutionUrl": "https://ope.ed.gov/dapip/api/institutions/150969",
+          "apiAccreditationUrl": "https://ope.ed.gov/dapip/api/records/institutional/profile/150969",
+          "retrievedAt": "2026-06-26",
+          "evidenceRole": "accreditation-corroboration",
+          "dapipUnitId": 150969,
+          "opeId": "02587500",
+          "matchedName": "Universidad Ana G. Mendez - Cupey Campus",
+          "matchedPlace": "Cupey, Puerto Rico",
+          "activeStatus": "Active",
+          "accreditingAgency": "Middle States Commission on Higher Education",
+          "accreditationStatus": "Active",
+          "reviewDate": "01/01/2031",
+          "notes": "Corroborates an active Puerto Rico institution/campus accreditation record only; not a direct row source or coordinate authority."
+        },
+        {
+          "sourceId": "prdos-orlie-jip-postsecondary-listing",
+          "sourceName": "Puerto Rico Department of State ORLIE/JIP postsecondary listing",
+          "sourceUrl": "https://www.estado.pr.gov/instituciones-educativas",
+          "reportUrl": "https://app.powerbigov.us/view?r=eyJrIjoiMjM5M2U5NTItYWU0My00MDFjLTljMDMtZmJhZTlmZjIwYjVmIiwidCI6IjYzNmFkYzFhLTkyOTEtNGJlOC1hYjFiLTgzMDc2NWMzYjc0ZCJ9",
+          "reviewArtifactPath": "data/unis/orlie-jip-row-review.json",
+          "retrievedAt": "2026-06-26",
+          "evidenceRole": "licensure-listing-corroboration",
+          "matchedName": "Universidad Ana G. Méndez",
+          "matchedPlace": "Urb. Reparto Seín, Sector el Cinco, San Juan, Puerto Rico",
+          "institutionType": "Educación Superior y Técnico Vocacional",
+          "publicPrivate": "Privada",
+          "profitType": "Sin Fines",
+          "licenseExpiration": "2030-11-29",
+          "matchType": "identity-campus-corroboration",
+          "notes": "Corroborates ORLIE/JIP postsecondary listing visibility for the institution/campus identity candidate only; does not resolve address, alias/campus, Census-cache, coordinate, or import-readiness gates."
+        }
+      ],
+      "requiredAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "remainingAuthoritySources": [],
+      "requiredPromotionEvidence": [
+        "row-level identity corroboration from registered authority sources",
+        "accepted alias/campus review decision",
+        "reviewed public-address evidence",
+        "reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "evidenceSummary": "NCES College Navigator lists Universidad Ana G. Mendez-Cupey Campus in San Juan, Puerto Rico. DAPIP lists Universidad Ana G. Mendez - Cupey Campus in Puerto Rico with active institutional accreditation. ORLIE/JIP lists Universidad Ana G. Méndez in the postsecondary listing. These corroborate a campus-level identity candidate, but do not resolve alias/campus, address, or Census-cache gates.",
+      "directImportBlocker": "No accepted row-level identity authority decision exists for this row; corroboration sources may inform review but do not replace the primary row source or provide coordinate authority.",
+      "reviewedAt": "2026-06-11",
+      "reviewer": "Modernization Maintainer"
+    },
+    {
+      "directoryInstitution": "Universidad Carlos Albizu",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "151 Calle Tanca",
+      "normalizedAddress": "151 Calle Tanca, SAN JUAN, Puerto Rico",
+      "matchReviewKey": "Universidad Carlos Albizu|SAN JUAN|151 Calle Tanca",
+      "normalizedIdentityKey": "Universidad Carlos Albizu|SAN JUAN",
+      "matchReviewReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "quarantineExclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
+      "classification": "nces-dapip-orlie-alias-corroborated-not-import-ready",
+      "identityStatus": "identity-corroborated-not-import-ready",
+      "corroborationStatus": "nces-dapip-orlie-row-reviewed",
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false,
+      "authorityEvidenceReviewed": [
+        {
+          "sourceId": "nces-college-navigator-puerto-rico",
+          "sourceName": "NCES College Navigator",
+          "sourceUrl": "https://nces.ed.gov/collegenavigator/?id=241331",
+          "retrievedAt": "2026-06-26",
+          "evidenceRole": "identity-alias-corroboration",
+          "matchedName": "Albizu University-San Juan",
+          "matchedPlace": "San Juan, Puerto Rico 00902-3711",
+          "notes": "Corroborates a Puerto Rico institution alias candidate only; not a direct row source or coordinate authority."
+        },
+        {
+          "sourceId": "usdoe-dapip-puerto-rico",
+          "sourceName": "U.S. Department of Education DAPIP",
+          "sourceUrl": "https://ope.ed.gov/dapip/#/institution-profile/150871",
+          "apiInstitutionUrl": "https://ope.ed.gov/dapip/api/institutions/150871",
+          "apiAccreditationUrl": "https://ope.ed.gov/dapip/api/records/institutional/profile/150871",
+          "retrievedAt": "2026-06-26",
+          "evidenceRole": "accreditation-corroboration",
+          "dapipUnitId": 150871,
+          "opeId": "01072400",
+          "matchedName": "Albizu University",
+          "matchedPlace": "San Juan, Puerto Rico",
+          "activeStatus": "Active",
+          "accreditingAgency": "Middle States Commission on Higher Education",
+          "accreditationStatus": "Active",
+          "reviewDate": "01/01/2028",
+          "notes": "Corroborates an active Puerto Rico institution accreditation record only; not a direct row source or coordinate authority."
+        },
+        {
+          "sourceId": "prdos-orlie-jip-postsecondary-listing",
+          "sourceName": "Puerto Rico Department of State ORLIE/JIP postsecondary listing",
+          "sourceUrl": "https://www.estado.pr.gov/instituciones-educativas",
+          "reportUrl": "https://app.powerbigov.us/view?r=eyJrIjoiMjM5M2U5NTItYWU0My00MDFjLTljMDMtZmJhZTlmZjIwYjVmIiwidCI6IjYzNmFkYzFhLTkyOTEtNGJlOC1hYjFiLTgzMDc2NWMzYjc0ZCJ9",
+          "reviewArtifactPath": "data/unis/orlie-jip-row-review.json",
+          "retrievedAt": "2026-06-26",
+          "evidenceRole": "licensure-listing-corroboration",
+          "matchedName": "Universidad Albizu",
+          "matchedPlace": "151 Tanca, Viejo San Juan, San Juan, Puerto Rico",
+          "institutionType": "Educación Superior",
+          "publicPrivate": "Privada",
+          "profitType": "Sin Fines",
+          "licenseExpiration": "2026-07-28",
+          "matchType": "identity-alias-corroboration",
+          "notes": "Corroborates ORLIE/JIP postsecondary listing visibility for the Albizu identity alias only; does not resolve address, alias/campus, Census-cache, coordinate, or import-readiness gates."
+        }
+      ],
+      "requiredAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "remainingAuthoritySources": [],
+      "requiredPromotionEvidence": [
+        "row-level identity corroboration from registered authority sources",
+        "accepted alias/campus review decision",
+        "reviewed public-address evidence",
+        "reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "evidenceSummary": "NCES College Navigator lists Albizu University-San Juan in San Juan, Puerto Rico. DAPIP lists Albizu University in San Juan, Puerto Rico with active institutional accreditation. ORLIE/JIP lists Universidad Albizu in San Juan. These corroborate an alias identity candidate, but do not resolve alias/campus, address, or Census-cache gates.",
+      "directImportBlocker": "No accepted row-level identity authority decision exists for this row; corroboration sources may inform review but do not replace the primary row source or provide coordinate authority.",
+      "reviewedAt": "2026-06-11",
+      "reviewer": "Modernization Maintainer"
+    },
+    {
+      "directoryInstitution": "Universidad Complutense de Madrid",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "(Universidad Interamericana, Escuela de Derecho), Calle Federico Costa #84, Ubr. Industrial Tres Monjitas, Hato Rey",
+      "normalizedAddress": "(Universidad Interamericana, Escuela de Derecho), Calle Federico Costa #84, Ubr. Industrial Tres Monjitas, Hato Rey, SAN JUAN, Puerto Rico",
+      "matchReviewKey": "Universidad Complutense de Madrid|SAN JUAN|(Universidad Interamericana, Escuela de Derecho), Calle Federico Costa #84, Ubr. Industrial Tres Monjitas, Hato Rey",
+      "normalizedIdentityKey": "Universidad Complutense de Madrid|SAN JUAN",
+      "matchReviewReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "quarantineExclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
+      "classification": "identity-authority-review-required",
+      "identityStatus": "not-import-ready",
+      "corroborationStatus": "not-row-reviewed",
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false,
+      "authorityEvidenceReviewed": [],
+      "requiredAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "remainingAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "requiredPromotionEvidence": [
+        "row-level identity corroboration from registered authority sources",
+        "accepted alias/campus review decision",
+        "reviewed public-address evidence",
+        "reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "evidenceSummary": "No row-level authority evidence has been reviewed for this identity-quarantined row.",
+      "directImportBlocker": "No accepted row-level identity authority decision exists for this row; corroboration sources may inform review but do not replace the primary row source or provide coordinate authority.",
+      "reviewedAt": "2026-06-11",
+      "reviewer": "Modernization Maintainer"
+    },
+    {
+      "directoryInstitution": "Universidad de Puerto Rico",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Calle Flamboyán, Jardín Botánico Sur, Río Piedras",
+      "normalizedAddress": "Calle Flamboyán, Jardín Botánico Sur, Río Piedras, SAN JUAN, Puerto Rico",
+      "matchReviewKey": "Universidad de Puerto Rico|SAN JUAN|Calle Flamboyán, Jardín Botánico Sur, Río Piedras",
+      "normalizedIdentityKey": "Universidad de Puerto Rico|SAN JUAN",
+      "matchReviewReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "quarantineExclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
+      "classification": "nces-dapip-orlie-campus-corroborated-not-import-ready",
+      "identityStatus": "identity-corroborated-not-import-ready",
+      "corroborationStatus": "nces-dapip-orlie-row-reviewed",
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false,
+      "authorityEvidenceReviewed": [
+        {
+          "sourceId": "nces-college-navigator-puerto-rico",
+          "sourceName": "NCES College Navigator",
+          "sourceUrl": "https://nces.ed.gov/collegenavigator/?id=243221",
+          "retrievedAt": "2026-06-26",
+          "evidenceRole": "identity-campus-corroboration",
+          "matchedName": "University of Puerto Rico-Rio Piedras",
+          "matchedPlace": "San Juan, Puerto Rico 00931-0000",
+          "notes": "Corroborates a Puerto Rico campus identity candidate only; the directory title remains too broad for direct import."
+        },
+        {
+          "sourceId": "usdoe-dapip-puerto-rico",
+          "sourceName": "U.S. Department of Education DAPIP",
+          "sourceUrl": "https://ope.ed.gov/dapip/#/institution-profile/151485",
+          "apiInstitutionUrl": "https://ope.ed.gov/dapip/api/institutions/151485",
+          "apiAccreditationUrl": "https://ope.ed.gov/dapip/api/records/institutional/profile/151485",
+          "retrievedAt": "2026-06-26",
+          "evidenceRole": "accreditation-corroboration",
+          "dapipUnitId": 151485,
+          "opeId": "00710800",
+          "matchedName": "University of Puerto Rico - Rio Piedras Campus",
+          "matchedPlace": "San Juan, Puerto Rico",
+          "activeStatus": "Active",
+          "accreditingAgency": "Middle States Commission on Higher Education",
+          "accreditationStatus": "Active",
+          "reviewDate": "01/01/2033",
+          "notes": "Corroborates an active Puerto Rico campus accreditation record only; the directory title remains too broad for direct import."
+        },
+        {
+          "sourceId": "prdos-orlie-jip-postsecondary-listing",
+          "sourceName": "Puerto Rico Department of State ORLIE/JIP postsecondary listing",
+          "sourceUrl": "https://www.estado.pr.gov/instituciones-educativas",
+          "reportUrl": "https://app.powerbigov.us/view?r=eyJrIjoiMjM5M2U5NTItYWU0My00MDFjLTljMDMtZmJhZTlmZjIwYjVmIiwidCI6IjYzNmFkYzFhLTkyOTEtNGJlOC1hYjFiLTgzMDc2NWMzYjc0ZCJ9",
+          "reviewArtifactPath": "data/unis/orlie-jip-row-review.json",
+          "retrievedAt": "2026-06-26",
+          "evidenceRole": "licensure-listing-corroboration",
+          "matchedName": "Universidad de Puerto Rico",
+          "matchedPlace": "Jardín Botánico Sur, 1187 Calle Flamboyán, San Juan, Puerto Rico",
+          "institutionType": "Educación Superior",
+          "publicPrivate": "Pública",
+          "profitType": "Sin Fines",
+          "licenseExpiration": "2028-06-27",
+          "matchType": "identity-campus-corroboration",
+          "notes": "Corroborates ORLIE/JIP postsecondary listing visibility for the broad UPR identity candidate only; does not resolve row specificity, address, alias/campus, Census-cache, coordinate, or import-readiness gates."
+        }
+      ],
+      "requiredAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "remainingAuthoritySources": [],
+      "requiredPromotionEvidence": [
+        "row-level identity corroboration from registered authority sources",
+        "accepted alias/campus review decision",
+        "reviewed public-address evidence",
+        "reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "evidenceSummary": "NCES College Navigator lists University of Puerto Rico-Rio Piedras in San Juan, Puerto Rico. DAPIP lists University of Puerto Rico - Rio Piedras Campus in San Juan, Puerto Rico with active institutional accreditation. ORLIE/JIP lists Universidad de Puerto Rico in San Juan. These corroborate a campus-level identity candidate for the generic directory title, but do not resolve alias/campus, address, or Census-cache gates.",
+      "directImportBlocker": "No accepted row-level identity authority decision exists for this row; corroboration sources may inform review but do not replace the primary row source or provide coordinate authority.",
+      "reviewedAt": "2026-06-11",
+      "reviewer": "Modernization Maintainer"
+    },
+    {
+      "directoryInstitution": "Universidad del Sagrado Corazón",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Calle Rosales, Esq. San Antonio, Parada 26 1/2",
+      "normalizedAddress": "Calle Rosales, Esq. San Antonio, Parada 26 1/2, SAN JUAN, Puerto Rico",
+      "matchReviewKey": "Universidad del Sagrado Corazón|SAN JUAN|Calle Rosales, Esq. San Antonio, Parada 26 1/2",
+      "normalizedIdentityKey": "Universidad del Sagrado Corazón|SAN JUAN",
+      "matchReviewReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "quarantineExclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
+      "classification": "nces-dapip-orlie-identity-corroborated-not-import-ready",
+      "identityStatus": "identity-corroborated-not-import-ready",
+      "corroborationStatus": "nces-dapip-orlie-row-reviewed",
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false,
+      "authorityEvidenceReviewed": [
+        {
+          "sourceId": "nces-college-navigator-puerto-rico",
+          "sourceName": "NCES College Navigator",
+          "sourceUrl": "https://nces.ed.gov/collegenavigator/?id=243443",
+          "retrievedAt": "2026-06-26",
+          "evidenceRole": "identity-corroboration",
+          "matchedName": "Universidad del Sagrado Corazon",
+          "matchedPlace": "Santurce, Puerto Rico 00907",
+          "notes": "Corroborates a Puerto Rico institution identity candidate only; not a direct row source or coordinate authority."
+        },
+        {
+          "sourceId": "usdoe-dapip-puerto-rico",
+          "sourceName": "U.S. Department of Education DAPIP",
+          "sourceUrl": "https://ope.ed.gov/dapip/#/institution-profile/151537",
+          "apiInstitutionUrl": "https://ope.ed.gov/dapip/api/institutions/151537",
+          "apiAccreditationUrl": "https://ope.ed.gov/dapip/api/records/institutional/profile/151537",
+          "retrievedAt": "2026-06-26",
+          "evidenceRole": "accreditation-corroboration",
+          "dapipUnitId": 151537,
+          "opeId": "00393700",
+          "matchedName": "University of the Sacred Heart",
+          "matchedAlias": "Universidad del Sagrado Corazon",
+          "matchedPlace": "San Juan, Puerto Rico",
+          "activeStatus": "Active",
+          "accreditingAgency": "Middle States Commission on Higher Education",
+          "accreditationStatus": "Active",
+          "reviewDate": "01/01/2027",
+          "notes": "Corroborates an active Puerto Rico institution accreditation record and Spanish alias only; not a direct row source or coordinate authority."
+        },
+        {
+          "sourceId": "prdos-orlie-jip-postsecondary-listing",
+          "sourceName": "Puerto Rico Department of State ORLIE/JIP postsecondary listing",
+          "sourceUrl": "https://www.estado.pr.gov/instituciones-educativas",
+          "reportUrl": "https://app.powerbigov.us/view?r=eyJrIjoiMjM5M2U5NTItYWU0My00MDFjLTljMDMtZmJhZTlmZjIwYjVmIiwidCI6IjYzNmFkYzFhLTkyOTEtNGJlOC1hYjFiLTgzMDc2NWMzYjc0ZCJ9",
+          "reviewArtifactPath": "data/unis/orlie-jip-row-review.json",
+          "retrievedAt": "2026-06-26",
+          "evidenceRole": "licensure-listing-corroboration",
+          "matchedName": "Universidad del Sagrado Corazón",
+          "matchedPlace": "Calle Rosales, Esquina San Antonio Parada 26 1/2, San Juan, Puerto Rico",
+          "institutionType": "Educación Superior",
+          "publicPrivate": "Privada",
+          "profitType": "Sin Fines",
+          "licenseExpiration": "2026-10-06",
+          "matchType": "identity-corroboration",
+          "notes": "Corroborates ORLIE/JIP postsecondary listing visibility for the institution identity only; does not resolve address, Census-cache, coordinate, or import-readiness gates."
+        }
+      ],
+      "requiredAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "remainingAuthoritySources": [],
+      "requiredPromotionEvidence": [
+        "row-level identity corroboration from registered authority sources",
+        "accepted alias/campus review decision",
+        "reviewed public-address evidence",
+        "reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "evidenceSummary": "NCES College Navigator lists Universidad del Sagrado Corazon in Santurce, Puerto Rico. DAPIP lists University of the Sacred Heart in San Juan, Puerto Rico with the Spanish alias Universidad del Sagrado Corazon and active institutional accreditation. ORLIE/JIP lists Universidad del Sagrado Corazón in San Juan. These corroborate an identity candidate, but do not resolve address or Census-cache gates.",
+      "directImportBlocker": "No accepted row-level identity authority decision exists for this row; corroboration sources may inform review but do not replace the primary row source or provide coordinate authority.",
+      "reviewedAt": "2026-06-11",
+      "reviewer": "Modernization Maintainer"
+    },
+    {
+      "directoryInstitution": "Universidad Interamericana de PR",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Calle Galileo Final #399, Urb. Villa Nevares, Río Piedras",
+      "normalizedAddress": "Calle Galileo Final #399, Urb. Villa Nevares, Río Piedras, SAN JUAN, Puerto Rico",
+      "matchReviewKey": "Universidad Interamericana de PR|SAN JUAN|Calle Galileo Final #399, Urb. Villa Nevares, Río Piedras",
+      "normalizedIdentityKey": "Universidad Interamericana de PR|SAN JUAN",
+      "matchReviewReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "quarantineExclusionReason": "No exact source-backed institution identity match was confirmed for this row, and cross-source alias or campus promotion is not allowed.",
+      "classification": "nces-dapip-orlie-campus-corroborated-not-import-ready",
+      "identityStatus": "identity-corroborated-not-import-ready",
+      "corroborationStatus": "nces-dapip-orlie-row-reviewed",
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false,
+      "authorityEvidenceReviewed": [
+        {
+          "sourceId": "nces-college-navigator-puerto-rico",
+          "sourceName": "NCES College Navigator",
+          "sourceUrl": "https://nces.ed.gov/collegenavigator/?id=242653",
+          "retrievedAt": "2026-06-26",
+          "evidenceRole": "identity-campus-corroboration",
+          "matchedName": "Inter American University of Puerto Rico-Metro",
+          "matchedPlace": "San Juan, Puerto Rico 00919",
+          "notes": "Corroborates a Puerto Rico campus identity candidate only; not a direct row source or coordinate authority."
+        },
+        {
+          "sourceId": "usdoe-dapip-puerto-rico",
+          "sourceName": "U.S. Department of Education DAPIP",
+          "sourceUrl": "https://ope.ed.gov/dapip/#/institution-profile/151193",
+          "apiInstitutionUrl": "https://ope.ed.gov/dapip/api/institutions/151193",
+          "apiAccreditationUrl": "https://ope.ed.gov/dapip/api/records/institutional/profile/151193",
+          "retrievedAt": "2026-06-26",
+          "evidenceRole": "accreditation-corroboration",
+          "dapipUnitId": 151193,
+          "opeId": "00394000",
+          "matchedName": "Inter American University of Puerto Rico Metropolitan Campus",
+          "matchedPlace": "San Juan, Puerto Rico",
+          "activeStatus": "Active",
+          "accreditingAgency": "Middle States Commission on Higher Education",
+          "accreditationStatus": "Active",
+          "reviewDate": "01/01/2031",
+          "notes": "Corroborates an active Puerto Rico campus accreditation record only; not a direct row source or coordinate authority."
+        },
+        {
+          "sourceId": "prdos-orlie-jip-postsecondary-listing",
+          "sourceName": "Puerto Rico Department of State ORLIE/JIP postsecondary listing",
+          "sourceUrl": "https://www.estado.pr.gov/instituciones-educativas",
+          "reportUrl": "https://app.powerbigov.us/view?r=eyJrIjoiMjM5M2U5NTItYWU0My00MDFjLTljMDMtZmJhZTlmZjIwYjVmIiwidCI6IjYzNmFkYzFhLTkyOTEtNGJlOC1hYjFiLTgzMDc2NWMzYjc0ZCJ9",
+          "reviewArtifactPath": "data/unis/orlie-jip-row-review.json",
+          "retrievedAt": "2026-06-26",
+          "evidenceRole": "licensure-listing-corroboration",
+          "matchedName": "Universidad Interamericana de Puerto Rico",
+          "matchedPlace": "100 Calle Francisco Seín, San Juan, Puerto Rico",
+          "institutionType": "Educación Superior y Técnico Vocacional",
+          "publicPrivate": "Privada",
+          "profitType": "Sin Fines",
+          "licenseExpiration": "2027-08-31",
+          "matchType": "identity-campus-corroboration",
+          "notes": "Corroborates ORLIE/JIP postsecondary listing visibility for the Interamericana identity candidate only; does not resolve address, alias/campus, Census-cache, coordinate, or import-readiness gates."
+        }
+      ],
+      "requiredAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "remainingAuthoritySources": [],
+      "requiredPromotionEvidence": [
+        "row-level identity corroboration from registered authority sources",
+        "accepted alias/campus review decision",
+        "reviewed public-address evidence",
+        "reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "evidenceSummary": "NCES College Navigator lists Inter American University of Puerto Rico-Metro in San Juan, Puerto Rico. DAPIP lists Inter American University of Puerto Rico Metropolitan Campus in San Juan, Puerto Rico with active institutional accreditation. ORLIE/JIP lists Universidad Interamericana de Puerto Rico in San Juan. These corroborate a campus-level identity candidate, but do not resolve alias/campus, address, or Census-cache gates.",
+      "directImportBlocker": "No accepted row-level identity authority decision exists for this row; corroboration sources may inform review but do not replace the primary row source or provide coordinate authority.",
+      "reviewedAt": "2026-06-11",
+      "reviewer": "Modernization Maintainer"
+    },
+    {
+      "directoryInstitution": "Universidad Internacional Iberoamericana",
+      "directoryMunicipality": "ARECIBO",
+      "directoryAddress": "Carr. 658 Km. 1.3  Bo. Arenalejos Sector Palache",
+      "normalizedAddress": "Carr. 658 Km. 1.3  Bo. Arenalejos Sector Palache, ARECIBO, Puerto Rico",
+      "matchReviewKey": "Universidad Internacional Iberoamericana|ARECIBO|Carr. 658 Km. 1.3  Bo. Arenalejos Sector Palache",
+      "normalizedIdentityKey": "Universidad Internacional Iberoamericana|ARECIBO",
+      "matchReviewReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "quarantineExclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
+      "classification": "identity-authority-review-required",
+      "identityStatus": "not-import-ready",
+      "corroborationStatus": "not-row-reviewed",
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false,
+      "authorityEvidenceReviewed": [],
+      "requiredAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "remainingAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "requiredPromotionEvidence": [
+        "row-level identity corroboration from registered authority sources",
+        "accepted alias/campus review decision",
+        "reviewed public-address evidence",
+        "reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "evidenceSummary": "No row-level authority evidence has been reviewed for this identity-quarantined row.",
+      "directImportBlocker": "No accepted row-level identity authority decision exists for this row; corroboration sources may inform review but do not replace the primary row source or provide coordinate authority.",
+      "reviewedAt": "2026-06-11",
+      "reviewer": "Modernization Maintainer"
+    },
+    {
+      "directoryInstitution": "Universidad Universal",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "Calle Méjico #16, Hato Rey",
+      "normalizedAddress": "Calle Méjico #16, Hato Rey, SAN JUAN, Puerto Rico",
+      "matchReviewKey": "Universidad Universal|SAN JUAN|Calle Méjico #16, Hato Rey",
+      "normalizedIdentityKey": "Universidad Universal|SAN JUAN",
+      "matchReviewReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "quarantineExclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
+      "classification": "identity-authority-review-required",
+      "identityStatus": "not-import-ready",
+      "corroborationStatus": "not-row-reviewed",
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false,
+      "authorityEvidenceReviewed": [],
+      "requiredAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "remainingAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "requiredPromotionEvidence": [
+        "row-level identity corroboration from registered authority sources",
+        "accepted alias/campus review decision",
+        "reviewed public-address evidence",
+        "reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "evidenceSummary": "No row-level authority evidence has been reviewed for this identity-quarantined row.",
+      "directImportBlocker": "No accepted row-level identity authority decision exists for this row; corroboration sources may inform review but do not replace the primary row source or provide coordinate authority.",
+      "reviewedAt": "2026-06-11",
+      "reviewer": "Modernization Maintainer"
+    },
+    {
+      "directoryInstitution": "University of Miami",
+      "directoryMunicipality": "GUAYNABO",
+      "directoryAddress": "Carretera 165 #50, Sector Buchanan, Parque Industrial Amelia",
+      "normalizedAddress": "Carretera 165 #50, Sector Buchanan, Parque Industrial Amelia, GUAYNABO, Puerto Rico",
+      "matchReviewKey": "University of Miami|GUAYNABO|Carretera 165 #50, Sector Buchanan, Parque Industrial Amelia",
+      "normalizedIdentityKey": "University of Miami|GUAYNABO",
+      "matchReviewReason": "no exact normalized institution-name + municipality match in auxiliary source",
+      "quarantineExclusionReason": "No reviewed auxiliary IPEDS alias/campus match was accepted for this row; keep it excluded from production-style unis import until new evidence is recorded.",
+      "classification": "identity-authority-review-required",
+      "identityStatus": "not-import-ready",
+      "corroborationStatus": "not-row-reviewed",
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false,
+      "authorityEvidenceReviewed": [],
+      "requiredAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "remainingAuthoritySources": [
+        "nces-college-navigator-puerto-rico",
+        "usdoe-dapip-puerto-rico",
+        "prdos-orlie-jip-postsecondary-listing"
+      ],
+      "requiredPromotionEvidence": [
+        "row-level identity corroboration from registered authority sources",
+        "accepted alias/campus review decision",
+        "reviewed public-address evidence",
+        "reviewed Puerto Rico Census geocoder cache match"
+      ],
+      "evidenceSummary": "No row-level authority evidence has been reviewed for this identity-quarantined row.",
+      "directImportBlocker": "No accepted row-level identity authority decision exists for this row; corroboration sources may inform review but do not replace the primary row source or provide coordinate authority.",
+      "reviewedAt": "2026-06-11",
+      "reviewer": "Modernization Maintainer"
+    }
+  ]
+}

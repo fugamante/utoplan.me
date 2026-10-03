@@ -1,11 +1,14 @@
-FROM mcr.microsoft.com/playwright:v1.60.0-noble
+FROM node:26-bookworm-slim@sha256:367679cf9792759492a486e4aa4b421764d71a9546a6dae8aab81a99eb797b3e
 
 WORKDIR /workspace
 
 ENV NODE_ENV=test
 
+COPY .node-version ./
+COPY scripts ./scripts/
 COPY package.json package-lock.json ./
 RUN npm ci
+RUN npx playwright install --with-deps
 COPY app/package.json app/package-lock.json ./app/
 RUN npm --prefix app ci
 COPY dtoapi/modern/package.json dtoapi/modern/package-lock.json ./dtoapi/modern/
@@ -13,7 +16,7 @@ RUN npm --prefix dtoapi/modern ci
 
 COPY app ./app/
 COPY dtoapi ./dtoapi/
-COPY scripts ./scripts/
+COPY data ./data/
 COPY test ./test/
 
 CMD ["npm", "run", "test:browser:start-local"]

@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "artifactVersion": "aguada-restaurant-large-site-screening-review-v1",
+  "scope": "puerto-rico-planning-candidate",
+  "status": "reviewed",
+  "reviewedAt": "2026-07-30",
+  "signalId": "large-site-feasibility-gap",
+  "fixedSelection": {
+    "fixtureId": "mun003_restaurant",
+    "municipalityCode": "003",
+    "municipalityLabel": "Aguada",
+    "businessCategoryId": "restaurant-cafe",
+    "selectedNaicsCodes": [
+      "722511"
+    ]
+  },
+  "decisionSummary": "The fixed Aguada restaurant matrix no longer relies on a pure large-site feasibility source gap. Official Puerto Rico Planning Board and Governor-approved Aguada territorial-plan materials now establish a descriptive large-footprint screening baseline through the municipality's territorial-plan revision, official zoning and classification viewers, official flood-determination access, district definitions, and reviewed Aguada hazard context. This remains screening-baseline evidence only: it does not prove parcel assembly, truck turning geometry, parking supply, structure condition, utility staging, or permit clearance for one destination-format site.",
+  "authorities": [
+    {
+      "sourceId": "aguada-territorial-plan-order-2024",
+      "role": "official-aguada-territorial-plan-control",
+      "evidence": "The 2024 executive order approving Aguada's territorial-plan revision states that municipal territorial plans protect soils, regulate land uses, and include classification, zoning, urban-center delimitation, and road-plan documents presented in official digital geodata."
+    },
+    {
+      "sourceId": "pr-jp-mipr-site-screening",
+      "role": "official-screening-viewer",
+      "evidence": "The Puerto Rico Planning Board presents Mi Puerto Rico Interactivo and related map services as official online tools for land-use, regulation, and classification screening."
+    },
+    {
+      "sourceId": "pr-jp-flood-determination-service",
+      "role": "official-flood-screening",
+      "evidence": "The Planning Board states that its standard flood-determination service provides official property flood information based on FIRM and ABFE criteria, and that its flood portal uses the adopted flood-risk maps for Puerto Rico."
+    },
+    {
+      "sourceId": "aguada-hazard-mitigation-plan-2020",
+      "role": "aguada-hazard-context",
+      "evidence": "Aguada's 2020 hazard mitigation summary identifies flood as the municipality's most significant natural hazard and states that the risk analysis used geographic information system data to assess hazard impacts."
+    },
+    {
+      "sourceId": "pr-jp-district-legend",
+      "role": "district-definition-reference",
+      "evidence": "The Planning Board district legend defines flood districts and commercial or developed-area classes used when screening whether a larger-footprint parcel may require deeper land-use and hazard review."
+    }
+  ],
+  "scenarioCoverage": [
+    {
+      "scenarioId": "large-strategic",
+      "reachId": "site-bound",
+      "coverage": "descriptive-large-site-screening-baseline",
+      "notes": [
+        "The fixed large-strategic scenario now has an official Aguada territorial-plan and Planning Board screening baseline for land-use classification, zoning context, flood review, and road-plan governance instead of a blank site-feasibility lane.",
+        "The evidence still does not prove parcel assembly, destination-scale parking, truck circulation, building condition, or whether one property is ready for a large-format restaurant operation."
+      ]
+    }
+  ],
+  "interpretationLimits": [
+    "These sources establish official territorial-plan, zoning, flood, and hazard-screening controls, not parcel-specific readiness or legal clearance for one destination-format address.",
+    "The reviewed Aguada territorial-plan order confirms that road-plan, classification, and zoning documents govern the municipality, but it does not measure driveway geometry, loading access, or parking capacity for one parcel.",
+    "The reviewed Aguada hazard evidence is municipality-level and does not replace parcel engineering, utility-capacity review, structure inspection, or lease and title review.",
+    "The artifact does not imply that a destination-format restaurant should open in Aguada or that a specific large site is ready for operation."
+  ],
+  "nextUpgradeTargets": [
+    "Register parcel-specific classification, zoning, or flood determinations before reducing criticality for one large-format site.",
+    "Add official or operator-reviewed road-access, parking, or loading evidence if a reproducible Puerto Rico source becomes available.",
+    "Add building-condition or utility-capacity evidence only if it can be tied to an official or reviewed source without becoming a one-off anecdote."
+  ]
+}

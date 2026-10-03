@@ -12,6 +12,8 @@ assert.strictEqual(defaults.app.env.PORT, '8080');
 assert.strictEqual(defaults.app.env.UTOPLAN_API_ORIGIN, 'http://127.0.0.1:3001');
 assert.strictEqual(defaults.appUrl, 'http://127.0.0.1:8080');
 assert.strictEqual(defaults.apiOrigin, 'http://127.0.0.1:3001');
+assert.strictEqual(defaults.apiReadyUrl, 'http://127.0.0.1:3001/readyz');
+assert.strictEqual(defaults.readyTimeoutMs, 60000);
 
 var custom = integrated.buildConfig({
   UTOPLAN_API_PORT: '3101',
@@ -22,6 +24,8 @@ assert.strictEqual(custom.api.env.PORT, '3101');
 assert.strictEqual(custom.app.env.PORT, '8181');
 assert.strictEqual(custom.app.env.UTOPLAN_API_ORIGIN, 'http://127.0.0.1:3101');
 assert.strictEqual(custom.appUrl, 'http://127.0.0.1:8181');
+assert.strictEqual(custom.apiReadyUrl, 'http://127.0.0.1:3101/readyz');
+assert.strictEqual(custom.readyTimeoutMs, 60000);
 
 var explicitOrigin = integrated.buildConfig({
   UTOPLAN_API_PORT: '3101',
@@ -30,3 +34,10 @@ var explicitOrigin = integrated.buildConfig({
 
 assert.strictEqual(explicitOrigin.api.env.PORT, '3101');
 assert.strictEqual(explicitOrigin.app.env.UTOPLAN_API_ORIGIN, 'http://localhost:4000');
+assert.strictEqual(explicitOrigin.apiReadyUrl, 'http://localhost:4000/readyz');
+
+var explicitTimeout = integrated.buildConfig({
+  UTOPLAN_START_READY_TIMEOUT_MS: '90000'
+});
+
+assert.strictEqual(explicitTimeout.readyTimeoutMs, 90000);

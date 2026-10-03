@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "datospr-higher-ed-directory-2017-18",
+  "reviewedAt": "2026-07-05",
+  "reviewer": "Modernization Maintainer",
+  "status": "staged-no-cache",
+  "decision": "accept-albizu-alias-public-address-stage",
+  "decisionSummary": "Universidad Carlos Albizu has source-backed alias and public-address evidence for a staged review decision only. It remains excluded from Census cache, coordinates, DB seed, generated output, API coverage, and UI coverage until the full cache, quarantine, boundary, registry, generated-output, and test chain is updated together.",
+  "productBoundary": "descriptive-only",
+  "inputArtifacts": {
+    "identityReviewArtifactPath": "data/unis/identity-review.json",
+    "orlieJipReviewArtifactPath": "data/unis/orlie-jip-row-review.json",
+    "identityFollowupReviewArtifactPath": "data/unis/corroborated-identity-followup-review.json",
+    "aliasCampusReviewArtifactPath": "data/unis/ipeds-alias-campus-review.json",
+    "publicAddressReviewArtifactPath": "data/geocoding/unis-public-address-review.json",
+    "addressVerificationArtifactPath": "data/geocoding/unis-address-verification.json",
+    "censusCacheArtifactPath": "data/geocoding/unis-census-geocoder-cache.json",
+    "quarantineArtifactPath": "data/geocoding/unis-import-quarantine.json",
+    "importBoundaryArtifactPath": "data/geocoding/unis-import-boundary-review.json",
+    "generatedArtifactPath": "data/generated/unis-partial-import.json",
+    "generatedSeedPath": "docker/postgres/002_unis_partial_seed.sql"
+  },
+  "summary": {
+    "reviewedRows": 1,
+    "acceptedAliasCampusRows": 1,
+    "reviewedPublicAddressRows": 1,
+    "censusCacheEligibleRows": 0,
+    "importEligibleRows": 0,
+    "coordinateEligibleRows": 0,
+    "generatedOutputEligibleRows": 0
+  },
+  "invariants": [
+    "This staged review does not move Albizu into the approved alias/campus artifact partition used by the Census cache builder.",
+    "This staged review records public-address evidence but does not authorize a Census geocoder attempt, cache record, coordinate, DB seed row, generated output row, API coverage change, or UI coverage change.",
+    "NCES, DAPIP, ORLIE/JIP, and Albizu evidence remain review evidence only; they do not replace the primary Datos.PR row source.",
+    "No personal contact fields, rankings, recommendations, scores, suitability claims, inferred coordinates, or invented coordinates are introduced."
+  ],
+  "records": [
+    {
+      "directoryInstitution": "Universidad Carlos Albizu",
+      "directoryMunicipality": "SAN JUAN",
+      "directoryAddress": "151 Calle Tanca",
+      "normalizedAddress": "151 Calle Tanca, SAN JUAN, Puerto Rico",
+      "identityClassification": "nces-dapip-orlie-alias-corroborated-not-import-ready",
+      "corroborationStatus": "nces-dapip-orlie-row-reviewed",
+      "orlieJipMatchType": "identity-alias-corroboration",
+      "aliasCampusDecision": "accepted-alias-evidence-staged",
+      "aliasCampusEvidenceSummary": "The Datos.PR row name uses the older Universidad Carlos Albizu form. NCES lists Albizu University-San Juan, DAPIP lists Albizu University, ORLIE/JIP lists Universidad Albizu, and the official Albizu site brands the institution as Universidad Albizu. This supports an alias-stage decision for the San Juan row only.",
+      "publicAddressDecision": "reviewed-public-address-evidence-staged",
+      "reviewedPublicAddress": "151 Calle Tanca, San Juan, PR 00901",
+      "publicAddressEvidenceSummary": "The official Albizu home page and San Juan page list the San Juan address as 151 Calle Tanca, San Juan, PR 00901. The legacy Datos.PR row address is 151 Calle Tanca, SAN JUAN, Puerto Rico, and the ORLIE/JIP review lists Universidad Albizu at 151 Tanca, Viejo San Juan.",
+      "addressVarianceNotes": [
+        "The official Albizu site uses the current Universidad Albizu brand, while the legacy Datos.PR row uses Universidad Carlos Albizu.",
+        "The staged decision accepts the official San Juan 151 Calle Tanca address for public-address evidence only.",
+        "A future Census-cache pass must still select and test one reviewed geocoder candidate address before any cache, coordinate, DB seed, or generated-output expansion."
+      ],
+      "officialEvidence": [
+        {
+          "authority": "official-institution-site",
+          "sourceId": "albizu-home",
+          "url": "https://www.albizu.edu/?lang=es",
+          "retrievedAt": "2026-07-05",
+          "evidenceRole": "public-address-and-institution-identity",
+          "summary": "Official Albizu home page footer lists San Juan at 151 Calle Tanca, San Juan, PR 00901."
+        },
+        {
+          "authority": "official-institution-site",
+          "sourceId": "albizu-san-juan",
+          "url": "https://www.albizu.edu/san-juan/?lang=es",
+          "retrievedAt": "2026-07-05",
+          "evidenceRole": "public-address-and-campus-context",
+          "summary": "Official Albizu San Juan page footer lists San Juan at 151 Calle Tanca, San Juan, PR 00901."
+        },
+        {
+          "authority": "registered-corroboration-source",
+          "sourceId": "nces-college-navigator-puerto-rico",
+          "url": "https://nces.ed.gov/collegenavigator/?id=241331",
+          "retrievedAt": "2026-06-26",
+          "evidenceRole": "identity-alias-corroboration",
+          "summary": "NCES College Navigator lists Albizu University-San Juan in San Juan, Puerto Rico."
+        },
+        {
+          "authority": "registered-corroboration-source",
+          "sourceId": "usdoe-dapip-puerto-rico",
+          "url": "https://ope.ed.gov/dapip/#/institution-profile/150871",
+          "retrievedAt": "2026-06-26",
+          "evidenceRole": "alias-and-accreditation-corroboration",
+          "summary": "DAPIP lists Albizu University in San Juan, Puerto Rico with active institutional accreditation."
+        },
+        {
+          "authority": "registered-corroboration-source",
+          "sourceId": "prdos-orlie-jip-postsecondary-listing",
+          "reviewArtifactPath": "data/unis/orlie-jip-row-review.json",
+          "retrievedAt": "2026-06-26",
+          "evidenceRole": "licensure-listing-corroboration",
+          "summary": "The checked-in ORLIE/JIP review lists Universidad Albizu at 151 Tanca, Viejo San Juan."
+        }
+      ],
+      "censusCacheDecision": "not-run-staged-before-cache-review",
+      "promotionDecision": "retain-quarantine-before-census-cache",
+      "promotionBlockers": [
+        "missing reviewed Puerto Rico Census geocoder cache match",
+        "staged decision not yet integrated into cache, quarantine, boundary, registry, generated output, DB seed, and tests as an import expansion"
+      ],
+      "useForGeocoder": false,
+      "censusResult": {
+        "status": "not-run-staged-before-cache-review",
+        "attemptedAddress": null
+      },
+      "importEligible": false,
+      "coordinateEligible": false,
+      "generatedOutputEligible": false
+    }
+  ]
+}
