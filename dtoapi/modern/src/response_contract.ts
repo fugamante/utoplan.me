@@ -5,6 +5,7 @@ export interface ResponseMeta {
   count: number;
   offset: number;
   error: string | null;
+  coverage?: unknown;
 }
 
 export interface ResponsePayload<T> {

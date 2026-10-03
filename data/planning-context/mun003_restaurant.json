@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "scope": "puerto-rico-planning-candidate",
+  "status": "candidate-needs-review",
+  "updatedAt": "2026-05-30",
+  "municipality": {
+    "code": "003",
+    "codeSystem": "fipscty",
+    "label": "Aguada",
+    "confidence": "high",
+    "notes": "Display name is mapped from the official Puerto Rico municipality boundary dataset in Datos.PR using countyfp to municipio."
+  },
+  "businessCategory": {
+    "id": "restaurant-cafe",
+    "displayName": "Restaurant or cafe",
+    "naicsYear": 2012,
+    "naicsCodes": [
+      "722511",
+      "722513",
+      "722515"
+    ],
+    "confidence": "medium",
+    "status": "candidate"
+  },
+  "selection": {
+    "sourceId": "datospr-cbp-2014-municipios",
+    "municipalityCode": "003",
+    "municipalityCodeField": "fipscty",
+    "selectedNaicsCodes": [
+      "722511"
+    ],
+    "matchRule": "exact-naics-and-municipality",
+    "selectionBasis": "Filter municipality-level CBP facts by one category NAICS code and one municipality code."
+  },
+  "cbpFacts": [
+    {
+      "sourceRow": {
+        "fipstate": "72",
+        "fipscty": "3",
+        "naics": "722511",
+        "empflag": "",
+        "emp_nf": "H",
+        "emp": "85",
+        "qp1_nf": "H",
+        "qp1": "157",
+        "ap_nf": "H",
+        "ap": "667",
+        "est": "18",
+        "censtate": "6",
+        "cencty": "3"
+      },
+      "municipalityCode": "003",
+      "naics": "722511",
+      "naicsTitle": "Full-Service Restaurants",
+      "establishments": 18,
+      "annualPayroll": 667,
+      "employment": 85,
+      "confidence": "medium",
+      "notes": "Fact row matches municipality and NAICS exactly, but noise flags indicate rounded values and should remain descriptive context."
+    }
+  ],
+  "sourceMetadata": [
+    {
+      "sourceId": "datospr-cbp-2014-municipios",
+      "publisher": "U.S. Census Bureau",
+      "portal": "Datos.PR",
+      "license": "Creative Commons Attribution",
+      "resourceId": "4828e082-6c0d-4d3f-be12-ab6aeb34eb59",
+      "resourceUrl": "https://datos.estadisticas.pr/dataset/b0e448f9-d41a-4064-8536-a1b8b2b9f04b/resource/4828e082-6c0d-4d3f-be12-ab6aeb34eb59/download/cbp14pr_mun.csv",
+      "targetTables": [
+        "cbps",
+        "muns"
+      ],
+      "retrievedAt": "2026-05-24",
+      "legacySchemaCoverage": {
+        "cnaic": "exact",
+        "total_anual": "exact",
+        "num_est": "exact",
+        "county": "exact",
+        "total_indus": "derived",
+        "cnaic_name": "missing"
+      }
+    }
+  ],
+  "confidence": {
+    "category": "medium",
+    "factSelection": "medium",
+    "factValues": "medium",
+    "overall": "medium",
+    "rationale": [
+      "Category mapping is candidate-grade and requires human review before production use.",
+      "The selected fact row matches municipality code and NAICS code deterministically.",
+      "Rounded noise-flagged values should remain descriptive and should not be treated as decision-grade precision."
+    ]
+  },
+  "limitations": [
+    "This fixture is descriptive planning context only and is not a site recommendation.",
+    "A single row does not support demand, viability, profitability, or permit conclusions.",
+    "The municipality CBP row does not include NAICS title text, so this fixture enriches the fact label from a separate Census-backed NAICS title registry."
+  ],
+  "unresolvedQuestions": [
+    "Should the planning-context municipality registry expand to every Puerto Rico fipscty code before additional fixtures are added?",
+    "Should rounded-noise values expose the raw Census `H` flag text alongside approximate numeric labels?",
+    "Should the NAICS title registry expand to every mapped business-category code before additional fixtures are added?"
+  ]
+}

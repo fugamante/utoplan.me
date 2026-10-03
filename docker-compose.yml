@@ -3,6 +3,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.postgres-test
+    ports:
+      - "127.0.0.1::5432"
     environment:
       POSTGRES_DB: dtoapi_test
       POSTGRES_USER: postgres

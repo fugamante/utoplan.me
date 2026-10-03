@@ -20,6 +20,17 @@ function value(primary: string | undefined, fallback: string | undefined): strin
   return primary || fallback;
 }
 
+export function handlePoolError(error: Error): void {
+  const code = (error as NodeJS.ErrnoException).code;
+
+  if (code === '57P01') {
+    console.error('database pool connection terminated during shutdown');
+    return;
+  }
+
+  console.error(error.stack || error.message);
+}
+
 export function connectionConfig(): PoolConfig {
   if (process.env.DATABASE_URL) {
     return {
@@ -51,6 +62,7 @@ export function hasExplicitConnectionConfig(): boolean {
 function getPool(): Pool {
   if (!pool) {
     pool = new Pool(connectionConfig());
+    pool.on('error', handlePoolError);
   }
 
   return pool;

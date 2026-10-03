@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "prdos-orlie-jip-postsecondary-listing",
+  "generatedAt": "2026-06-26",
+  "status": "row-level-query-reviewed",
+  "decision": "record-licensure-corroboration-only",
+  "decisionSummary": "The public Puerto Rico Department of State ORLIE/JIP Power BI postsecondary listing exposes a reproducible public query path for the report table. Five NCES+DAPIP-corroborated identity-quarantined rows were matched to listing rows for licensure-context corroboration only. No ORLIE/JIP evidence changes import readiness, coordinate eligibility, generated output eligibility, or descriptive-only scope.",
+  "productBoundary": "descriptive-only",
+  "sourceContract": {
+    "officePageUrl": "https://www.estado.pr.gov/instituciones-educativas",
+    "reportUrl": "https://app.powerbigov.us/view?r=eyJrIjoiMjM5M2U5NTItYWU0My00MDFjLTljMDMtZmJhZTlmZjIwYjVmIiwidCI6IjYzNmFkYzFhLTkyOTEtNGJlOC1hYjFiLTgzMDc2NWMzYjc0ZCJ9",
+    "resourceKey": "2393e952-ae43-401c-9c03-fbae9ff20b5f",
+    "tenantId": "636adc1a-9291-4be8-ab1b-830765c3b74d",
+    "apiHost": "https://wabi-us-gov-iowa-api.analysis.usgovcloudapi.net",
+    "modelId": 711352,
+    "datasetId": "1abe6169-3c65-457c-9da8-367a65b6bbb2",
+    "reportId": 958367,
+    "reportDisplayName": "Directorio Instituciones",
+    "tableEntity": "Instituciones",
+    "visualId": "62f674bc95ef38fad030",
+    "queryEndpoint": "https://wabi-us-gov-iowa-api.analysis.usgovcloudapi.net/public/reports/querydata?synchronous=true",
+    "metadataEndpoint": "https://wabi-us-gov-iowa-api.analysis.usgovcloudapi.net/public/reports/2393e952-ae43-401c-9c03-fbae9ff20b5f/modelsAndExploration?preferReadOnlySession=true",
+    "schemaEndpoint": "https://wabi-us-gov-iowa-api.analysis.usgovcloudapi.net/public/reports/2393e952-ae43-401c-9c03-fbae9ff20b5f/conceptualschema",
+    "requiredHeaders": [
+      "Accept: application/json",
+      "Content-Type: application/json;charset=UTF-8",
+      "X-PowerBI-ResourceKey: 2393e952-ae43-401c-9c03-fbae9ff20b5f"
+    ],
+    "queryFieldsReviewed": [
+      "Institución",
+      "Publica Privada",
+      "Tipo de Institución",
+      "Tipo de Lucro",
+      "Dirección Física 1",
+      "Dirección Física 2",
+      "Dirección Física Ciudad",
+      "Vencimiento de la Licencia"
+    ],
+    "excludedFields": [
+      "Teléfono Completo",
+      "Teléfono de la Persona Contacto",
+      "Nombre del Ejecutivo Principal",
+      "Persona Contacto",
+      "E-Mail"
+    ],
+    "operatorNote": "The Power BI public query surface is reproducible for bounded row-level review, but it is not a direct legacy unis row source, not a coordinate authority, and not a public-address correction authority by itself."
+  },
+  "summary": {
+    "reviewedRows": 5,
+    "matchedRows": 5,
+    "unmatchedRows": 0,
+    "importEligibleRows": 0,
+    "coordinateEligibleRows": 0,
+    "generatedOutputEligibleRows": 0
+  },
+  "invariants": [
+    "ORLIE/JIP licensure corroboration does not replace the primary Datos.PR row source.",
+    "ORLIE/JIP licensure corroboration does not provide coordinate authority.",
+    "ORLIE/JIP listing addresses are not public-address corrections unless separately reviewed in the public-address artifact.",
+    "Identity-quarantined rows must remain absent from generated/imported unis output.",
+    "No personal contact fields from the Power BI listing are stored in this artifact."
+  ],
+  "records": [
+    {
+      "directoryInstitution": "Universidad Ana G. Méndez",
+      "matchType": "identity-campus-corroboration",
+      "matchedName": "Universidad Ana G. Méndez",
+      "institutionType": "Educación Superior y Técnico Vocacional",
+      "publicPrivate": "Privada",
+      "profitType": "Sin Fines",
+      "physicalAddress1": "Urb. Reparto Seín, Sector el Cinco",
+      "physicalAddress2": "",
+      "physicalCity": "San Juan",
+      "licenseExpiration": "2030-11-29",
+      "evidenceRole": "licensure-listing-corroboration",
+      "notes": "Corroborates ORLIE/JIP postsecondary listing visibility for the institution/campus identity candidate only; does not resolve address, alias/campus, Census-cache, coordinate, or import-readiness gates."
+    },
+    {
+      "directoryInstitution": "Universidad Carlos Albizu",
+      "matchType": "identity-alias-corroboration",
+      "matchedName": "Universidad Albizu",
+      "institutionType": "Educación Superior",
+      "publicPrivate": "Privada",
+      "profitType": "Sin Fines",
+      "physicalAddress1": "151 Tanca",
+      "physicalAddress2": "Viejo San Juan",
+      "physicalCity": "San Juan",
+      "licenseExpiration": "2026-07-28",
+      "evidenceRole": "licensure-listing-corroboration",
+      "notes": "Corroborates ORLIE/JIP postsecondary listing visibility for the Albizu identity alias only; does not resolve address, alias/campus, Census-cache, coordinate, or import-readiness gates."
+    },
+    {
+      "directoryInstitution": "Universidad de Puerto Rico",
+      "matchType": "identity-campus-corroboration",
+      "matchedName": "Universidad de Puerto Rico",
+      "institutionType": "Educación Superior",
+      "publicPrivate": "Pública",
+      "profitType": "Sin Fines",
+      "physicalAddress1": "Jardín Botánico Sur",
+      "physicalAddress2": "1187 Calle Flamboyán",
+      "physicalCity": "San Juan",
+      "licenseExpiration": "2028-06-27",
+      "evidenceRole": "licensure-listing-corroboration",
+      "notes": "Corroborates ORLIE/JIP postsecondary listing visibility for the broad UPR identity candidate only; does not resolve row specificity, address, alias/campus, Census-cache, coordinate, or import-readiness gates."
+    },
+    {
+      "directoryInstitution": "Universidad del Sagrado Corazón",
+      "matchType": "identity-corroboration",
+      "matchedName": "Universidad del Sagrado Corazón",
+      "institutionType": "Educación Superior",
+      "publicPrivate": "Privada",
+      "profitType": "Sin Fines",
+      "physicalAddress1": "Calle Rosales, Esquina San Antonio Parada 26 1/2",
+      "physicalAddress2": "",
+      "physicalCity": "San Juan",
+      "licenseExpiration": "2026-10-06",
+      "evidenceRole": "licensure-listing-corroboration",
+      "notes": "Corroborates ORLIE/JIP postsecondary listing visibility for the institution identity only; does not resolve address, Census-cache, coordinate, or import-readiness gates."
+    },
+    {
+      "directoryInstitution": "Universidad Interamericana de PR",
+      "matchType": "identity-campus-corroboration",
+      "matchedName": "Universidad Interamericana de Puerto Rico",
+      "institutionType": "Educación Superior y Técnico Vocacional",
+      "publicPrivate": "Privada",
+      "profitType": "Sin Fines",
+      "physicalAddress1": "100 Calle Francisco Seín",
+      "physicalAddress2": "",
+      "physicalCity": "San Juan",
+      "licenseExpiration": "2027-08-31",
+      "evidenceRole": "licensure-listing-corroboration",
+      "notes": "Corroborates ORLIE/JIP postsecondary listing visibility for the Interamericana identity candidate only; does not resolve address, alias/campus, Census-cache, coordinate, or import-readiness gates."
+    }
+  ]
+}

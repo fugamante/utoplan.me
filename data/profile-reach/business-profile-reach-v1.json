@@ -1,0 +1,681 @@
+{
+  "schemaVersion": 1,
+  "contractVersion": "business-profile-reach-v1",
+  "scope": "puerto-rico-planning-candidate",
+  "status": "candidate-needs-review",
+  "updatedAt": "2026-08-23",
+  "rules": {
+    "noScores": true,
+    "noRankings": true,
+    "noRecommendations": true,
+    "requiresProfileDependentCriticality": true,
+    "requiresVisibleLimitations": true,
+    "requiresNextValidationCheck": true
+  },
+  "fixedSelection": {
+    "fixtureId": "mun003_restaurant",
+    "municipality": {
+      "code": "003",
+      "codeSystem": "fipscty",
+      "label": "Aguada"
+    },
+    "businessCategory": {
+      "id": "restaurant-cafe",
+      "displayName": "Restaurant or cafe",
+      "naicsYear": 2012,
+      "selectedNaicsCodes": [
+        "722511"
+      ]
+    },
+    "selectionBasis": "Hold one reviewed municipality and one mapped category constant so operating assumptions, not place or category drift, explain lens relevance and criticality changes."
+  },
+  "geographicReachLevels": [
+    {
+      "id": "site-bound",
+      "label": "Site-bound",
+      "definition": "Parcel, frontage, building, hazard, utility-service, and immediate-access conditions."
+    },
+    {
+      "id": "local-catchment",
+      "label": "Local catchment",
+      "definition": "Customers, workers, and services reachable in routine local travel."
+    },
+    {
+      "id": "regional-corridor",
+      "label": "Regional corridor",
+      "definition": "Multi-municipality access for labor, suppliers, and routine operating movement."
+    },
+    {
+      "id": "island-wide",
+      "label": "Island-wide",
+      "definition": "Resources or constraints that realistically span Puerto Rico."
+    },
+    {
+      "id": "external-connection",
+      "label": "External connection",
+      "definition": "Ports, airports, remote suppliers, remote labor, and mainland or export dependencies."
+    }
+  ],
+  "decisionLenses": [
+    {
+      "id": "hard-constraints-site-feasibility",
+      "label": "Hard constraints and site feasibility",
+      "order": 1
+    },
+    {
+      "id": "demand-market-reach",
+      "label": "Demand and market reach",
+      "order": 2
+    },
+    {
+      "id": "infrastructure-reliability-cost",
+      "label": "Infrastructure, reliability, and cost",
+      "order": 3
+    },
+    {
+      "id": "workforce-capability",
+      "label": "Workforce capability",
+      "order": 4
+    },
+    {
+      "id": "logistics-supply-chain",
+      "label": "Logistics and supply chain",
+      "order": 5
+    },
+    {
+      "id": "regulatory-execution-environment",
+      "label": "Regulatory and execution environment",
+      "order": 6
+    },
+    {
+      "id": "ecosystem-resilience-growth",
+      "label": "Ecosystem, resilience, and growth",
+      "order": 7
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "small-local",
+      "label": "Small / local",
+      "businessProfile": {
+        "currentTargetScale": "One storefront with modest capital exposure and a small hiring cohort.",
+        "customerReach": "Mostly local residents plus nearby pass-through traffic.",
+        "siteNeeds": "Existing small-footprint kitchen-ready lease with basic parking and utility service.",
+        "workforcePattern": "Small shift roster with broad service roles and owner coverage.",
+        "logisticsPattern": "Frequent local food and consumables deliveries with limited cold-chain complexity."
+      },
+      "decisionLensAssessments": [
+        {
+          "lensId": "hard-constraints-site-feasibility",
+          "relevance": "primary",
+          "criticality": "material-tradeoff",
+          "confidence": "medium",
+          "facts": [
+            {
+              "id": "small-local-lease-readiness",
+              "signalId": "site-ready-kitchen-gap",
+              "label": "Lease-ready kitchen fit and frontage conditions",
+              "reachId": "site-bound",
+              "sourceType": "registered-source",
+              "sourceId": "pr-jp-mipr-site-screening",
+              "notes": "Official Puerto Rico Planning Board sources now establish zoning, district, and flood-screening surfaces plus Aguada hazard context for site review, but they do not prove that an existing kitchen space, frontage condition, or landlord arrangement is operationally ready."
+            }
+          ],
+          "limitations": [
+            "The current baseline stops at official site screening and does not resolve kitchen retrofits, code compliance, or landlord constraints.",
+            "Municipality-level hazard context does not replace parcel-specific flood, structure, or lease review."
+          ],
+          "nextValidationCheck": "Add parcel-specific zoning, flood, or building-condition evidence before treating site fit as more than a planning question."
+        },
+        {
+          "lensId": "demand-market-reach",
+          "relevance": "primary",
+          "criticality": "material-tradeoff",
+          "confidence": "medium",
+          "facts": [
+            {
+              "id": "small-local-cbp-baseline",
+              "signalId": "municipality-restaurant-activity-baseline",
+              "label": "Municipality restaurant activity baseline",
+              "reachId": "local-catchment",
+              "sourceType": "registered-source",
+              "sourceId": "datospr-cbp-2014-municipios",
+              "notes": "Use the Aguada 722511 CBP row as descriptive local activity context only."
+            }
+          ],
+          "limitations": [
+            "The CBP row is business-activity context, not a demand or profitability signal.",
+            "No registered foot-traffic, tourism, or household-spending source is attached yet."
+          ],
+          "nextValidationCheck": "Register a defensible local demand proxy before acting on customer-volume assumptions."
+        },
+        {
+          "lensId": "infrastructure-reliability-cost",
+          "relevance": "primary",
+          "criticality": "material-tradeoff",
+          "confidence": "medium",
+          "facts": [
+            {
+              "id": "small-local-basic-utilities",
+              "signalId": "aguada-basic-utility-service-baseline",
+              "label": "Aguada electric and water service continuity baseline",
+              "reachId": "local-catchment",
+              "sourceType": "registered-source",
+              "sourceId": "pr-energy-bureau-2026-electricity-rate-order",
+              "notes": "Official Puerto Rico sources now establish current electric rate governance, an official outage-reporting path, and reviewed Aguada water-service interruption exposure, but they do not prove parcel-level reliability or outage duration."
+            }
+          ],
+          "limitations": [
+            "Current evidence does not quantify outage frequency, restoration speed, refrigeration loss, or parcel-specific service quality.",
+            "Small restaurant operating margins can still be sensitive to interruptions even though the utility lane now has a descriptive official baseline."
+          ],
+          "nextValidationCheck": "Add municipality-level or parcel-level utility continuity evidence before treating opening-hour or spoilage assumptions as measured."
+        },
+        {
+          "lensId": "workforce-capability",
+          "relevance": "secondary",
+          "criticality": "secondary",
+          "confidence": "medium",
+          "facts": [
+            {
+              "id": "small-local-shift-staffing",
+              "signalId": "routine-food-service-staffing-gap",
+              "label": "Routine food-service staffing baseline",
+              "reachId": "local-catchment",
+              "sourceType": "registered-source",
+              "sourceId": "pr-lmi-hospitality-food-service-profile-2026",
+              "notes": "Official Puerto Rico labor-market publications now establish island-wide wage, staffing-volume, and openings context for routine restaurant staffing roles, but they do not prove that one Aguada operator can fill or retain a local shift roster."
+            }
+          ],
+          "limitations": [
+            "The workforce lane now has an official Puerto Rico labor-market baseline, but it remains island-wide rather than Aguada-specific.",
+            "Current evidence does not measure local commute depth, shift coverage reliability, or employer-specific retention."
+          ],
+          "nextValidationCheck": "Add municipality-relevant commute, hiring-competition, or retention evidence before treating shift-fill assumptions as measured."
+        },
+        {
+          "lensId": "logistics-supply-chain",
+          "relevance": "secondary",
+          "criticality": "secondary",
+          "confidence": "low",
+          "facts": [
+            {
+              "id": "small-local-local-deliveries",
+              "signalId": "local-supplier-route-gap",
+              "label": "Routine local supplier and delivery access",
+              "reachId": "local-catchment",
+              "sourceType": "source-gap",
+              "notes": "No registered supplier, route-time, or cold-chain evidence is available yet."
+            }
+          ],
+          "limitations": [
+            "The repo does not yet distinguish local consumable deliveries from island-wide distribution dependencies.",
+            "Traffic, route reliability, and perishability constraints are still unmeasured."
+          ],
+          "nextValidationCheck": "Add a reproducible local supplier or route-access source before making perishability claims."
+        },
+        {
+          "lensId": "regulatory-execution-environment",
+          "relevance": "primary",
+          "criticality": "material-tradeoff",
+          "confidence": "medium",
+          "facts": [
+            {
+              "id": "small-local-food-permits",
+              "signalId": "food-service-permit-path-gap",
+              "label": "Food-service permitting and launch sequencing",
+              "reachId": "site-bound",
+              "sourceType": "registered-source",
+              "sourceId": "pr-ogpe-permiso-unico-business-path",
+              "notes": "Official Puerto Rico sources now establish the OGPe/SBP permit path, fire-safety baseline, municipal-patent administration, and Department of Health transaction surface for a new restaurant, but not Aguada-specific timing or parcel eligibility."
+            }
+          ],
+          "limitations": [
+            "Restaurant launch timing can still fail on permit readiness even though the official Puerto Rico process path is now evidenced.",
+            "Current evidence does not cover Aguada-specific or Commonwealth case timing, inspection backlog, or case outcome."
+          ],
+          "nextValidationCheck": "Add municipality-specific execution or inspection timing evidence before treating the opening sequence as predictable."
+        },
+        {
+          "lensId": "ecosystem-resilience-growth",
+          "relevance": "secondary",
+          "criticality": "informational",
+          "confidence": "medium",
+          "facts": [
+            {
+              "id": "small-local-local-industry-context",
+              "signalId": "local-industry-context-baseline",
+              "label": "Existing local food-service activity context",
+              "reachId": "local-catchment",
+              "sourceType": "registered-source",
+              "sourceId": "datospr-cbp-2014-municipios",
+              "notes": "The municipality CBP row can show that the category exists locally without implying survivability or growth."
+            }
+          ],
+          "limitations": [
+            "Current context does not measure resilience, customer loyalty, or post-disruption recovery.",
+            "Local establishment counts do not prove partnership or expansion capacity."
+          ],
+          "nextValidationCheck": "Keep resilience and growth as informational until additional evidence sources are registered."
+        }
+      ]
+    },
+    {
+      "id": "medium-regional",
+      "label": "Medium / regional",
+      "businessProfile": {
+        "currentTargetScale": "Larger dining room with multiple shifts and a wider supplier footprint.",
+        "customerReach": "Local demand plus regular pull from nearby municipalities and corridor travel.",
+        "siteNeeds": "More parking, storage, and utility resilience than the small/local default.",
+        "workforcePattern": "Broader staffing roster with supervisors, kitchen coverage, and schedule redundancy.",
+        "logisticsPattern": "Higher delivery cadence with more refrigeration exposure and corridor-level supplier dependence."
+      },
+      "decisionLensAssessments": [
+        {
+          "lensId": "hard-constraints-site-feasibility",
+          "relevance": "primary",
+          "criticality": "material-tradeoff",
+          "confidence": "medium",
+          "facts": [
+            {
+              "id": "medium-regional-larger-lease",
+              "signalId": "site-ready-kitchen-gap",
+              "label": "Larger-format lease fit and parking/service access",
+              "reachId": "site-bound",
+              "sourceType": "registered-source",
+              "sourceId": "pr-jp-mipr-site-screening",
+              "notes": "Official Puerto Rico Planning Board sources now establish the same zoning, district, and flood-screening surfaces for a larger-format Aguada restaurant site, but they do not prove parking, loading, retrofit, or circulation readiness for one property."
+            }
+          ],
+          "limitations": [
+            "Current evidence does not determine whether the selected place can support a larger-format layout at one parcel.",
+            "Parking, loading, circulation, and retrofit needs remain beyond the reviewed screening baseline."
+          ],
+          "nextValidationCheck": "Add parcel-specific access, parking, or building-condition evidence before treating larger-format siting as interchangeable with the small/local case."
+        },
+        {
+          "lensId": "demand-market-reach",
+          "relevance": "primary",
+          "criticality": "material-tradeoff",
+          "confidence": "medium",
+          "facts": [
+            {
+              "id": "medium-regional-cbp-baseline",
+              "signalId": "municipality-restaurant-activity-baseline",
+              "label": "Local restaurant activity baseline",
+              "reachId": "local-catchment",
+              "sourceType": "registered-source",
+              "sourceId": "datospr-cbp-2014-municipios",
+              "notes": "The existing CBP row remains useful context, but it does not capture corridor pull."
+            },
+            {
+              "id": "medium-regional-corridor-demand-baseline",
+              "signalId": "west-region-visitor-demand-baseline",
+              "label": "West-region visitor and restaurant-activity proxy",
+              "reachId": "regional-corridor",
+              "sourceType": "registered-source",
+              "sourceId": "pr-tourism-registration-occupancy-2024",
+              "notes": "Official Puerto Rico tourism sources now show west-region arrivals, occupancy, visitor-region visitation, and restaurant-adjacent activity, but they still do not isolate Aguada capture or one concept's repeat-demand volume."
+            }
+          ],
+          "limitations": [
+            "The current repo now has a west-region tourism and visitor-activity proxy in addition to municipality context, but not a direct Aguada demand measure.",
+            "A medium/regional scenario still cannot treat regional visitor flow as if it guaranteed customer capture for one restaurant."
+          ],
+          "nextValidationCheck": "Pair the west-region demand proxy with logistics or mobility evidence before treating corridor-scale volume assumptions as routine."
+        },
+        {
+          "lensId": "infrastructure-reliability-cost",
+          "relevance": "primary",
+          "criticality": "blocker",
+          "confidence": "medium",
+          "facts": [
+            {
+              "id": "medium-regional-shift-reliability",
+              "signalId": "utility-resilience-gap",
+              "label": "Utility continuity for multi-shift operations",
+              "reachId": "regional-corridor",
+              "sourceType": "registered-source",
+              "sourceId": "pr-energy-bureau-jan-2026-reliability-metrics-report",
+              "notes": "Official Puerto Rico Energy Bureau and PRASA sources now establish electric reliability-reporting, firm-capacity, and water emergency-response context relevant to multi-shift utility continuity, but they do not prove corridor-level restoration speed, backup-service access, or one site's continuity performance."
+            }
+          ],
+          "limitations": [
+            "Multiple shifts still increase exposure to outage duration and recovery lag even though the larger-scale utility lane now has an official Puerto Rico baseline.",
+            "Current evidence does not measure corridor-level restoration performance, generator availability, or whether one site can absorb a larger operating footprint."
+          ],
+          "nextValidationCheck": "Add corridor-specific outage-duration, restoration, or backup-service evidence before treating multi-shift continuity as more than a resilience screening question."
+        },
+        {
+          "lensId": "workforce-capability",
+          "relevance": "primary",
+          "criticality": "material-tradeoff",
+          "confidence": "medium",
+          "facts": [
+            {
+              "id": "medium-regional-labor-depth",
+              "signalId": "routine-food-service-staffing-gap",
+              "label": "Routine food-service staffing baseline",
+              "reachId": "regional-corridor",
+              "sourceType": "registered-source",
+              "sourceId": "pr-lmi-hospitality-food-service-profile-2026",
+              "notes": "Official Puerto Rico labor-market publications now establish island-wide wage, staffing-volume, and annual-openings context for service and kitchen roles, but they do not prove corridor commute depth, schedule redundancy, or one operator's ability to maintain a broader roster."
+            }
+          ],
+          "limitations": [
+            "The workforce lane now has an official Puerto Rico labor-market baseline, but it still cannot distinguish routine local hiring from corridor-specific staffing depth.",
+            "Current evidence does not measure commute range, hiring competition, or retention for a multi-shift Aguada operation."
+          ],
+          "nextValidationCheck": "Register commute, labor-shed, or hiring-competition evidence before asserting corridor hiring resilience."
+        },
+        {
+          "lensId": "logistics-supply-chain",
+          "relevance": "primary",
+          "criticality": "material-tradeoff",
+          "confidence": "medium",
+          "facts": [
+            {
+              "id": "medium-regional-cold-chain",
+              "signalId": "cold-chain-corridor-gap",
+              "label": "Corridor-level supplier and refrigerated delivery reliability",
+              "reachId": "regional-corridor",
+              "sourceType": "registered-source",
+              "sourceId": "prhta-pr2-aguadilla-mayaguez-corridor-study-2024",
+              "notes": "Official Puerto Rico transport-planning and cargo-statistics sources now establish PR-2 Aguadilla-Mayaguez corridor dependence and active west-region airport cargo context for perishable-input movement, but they do not prove refrigerated delivery timing, supplier redundancy, or one restaurant's spoilage exposure."
+            }
+          ],
+          "limitations": [
+            "Medium/regional operations still face wider supplier dependence than the small/local default even though the corridor logistics lane now has an official Puerto Rico baseline.",
+            "Current evidence does not measure route-time reliability, delivery recovery, or refrigerated supplier redundancy for one operator."
+          ],
+          "nextValidationCheck": "Add corridor travel-time, road-closure, or supplier-depth evidence before treating regional cold-chain logistics as more than a screened planning question."
+        },
+        {
+          "lensId": "regulatory-execution-environment",
+          "relevance": "primary",
+          "criticality": "material-tradeoff",
+          "confidence": "medium",
+          "facts": [
+            {
+              "id": "medium-regional-permit-scale",
+              "signalId": "food-service-permit-path-gap",
+              "label": "Larger-format permit and inspection path",
+              "reachId": "site-bound",
+              "sourceType": "registered-source",
+              "sourceId": "pr-ogpe-permiso-unico-business-path",
+              "notes": "Official Puerto Rico sources establish the baseline permit stack for restaurant operation, but they do not yet distinguish the added coordination burden for a larger-format fixed-selection launch."
+            }
+          ],
+          "limitations": [
+            "A broader operating footprint can still increase permit sequencing risk even though the baseline Puerto Rico permit path is now source-backed.",
+            "Current evidence does not test larger-format inspection sequencing, queue time, or case backlog."
+          ],
+          "nextValidationCheck": "Add larger-format execution or inspection timing evidence before treating regional-scale openings as a simple size-up of the local scenario."
+        },
+        {
+          "lensId": "ecosystem-resilience-growth",
+          "relevance": "secondary",
+          "criticality": "secondary",
+          "confidence": "medium",
+          "facts": [
+            {
+              "id": "medium-regional-corridor-partners",
+              "signalId": "growth-network-gap",
+              "label": "Regional partner, service, and recovery support depth",
+              "reachId": "regional-corridor",
+              "sourceType": "registered-source",
+              "sourceId": "ddec-emprender-puerto-rico-2026",
+              "notes": "Official Puerto Rico entrepreneurship, incentives, and incubator-program sources now establish a west-region support touchpoint in Mayaguez plus island-wide support-network surfaces, but they do not prove corridor-specific partner density or one operator's recovery flexibility."
+            }
+          ],
+          "limitations": [
+            "The current repo now shows official west-region and island-wide support surfaces, but it still does not quantify nearby professional-service density, lender appetite, or municipality-specific recovery depth.",
+            "Local establishment counts still do not measure regional service-network resilience or private partnership strength."
+          ],
+          "nextValidationCheck": "Add corridor-relevant service-density, lender, or program-availability evidence before treating regional support depth as more than a screened planning question."
+        }
+      ]
+    },
+    {
+      "id": "large-strategic",
+      "label": "Large / strategic",
+      "businessProfile": {
+        "currentTargetScale": "High-capacity destination format with larger capital exposure and a longer opening horizon.",
+        "customerReach": "Island-wide draw with visitor and event dependence beyond the local corridor.",
+        "siteNeeds": "Large footprint, resilient utilities, storage, and stronger recovery posture.",
+        "workforcePattern": "Large staffing roster with specialized management depth and higher schedule redundancy.",
+        "logisticsPattern": "Island-wide or external supplier dependencies with heavier cold-chain and inventory coordination."
+      },
+      "decisionLensAssessments": [
+        {
+          "lensId": "hard-constraints-site-feasibility",
+          "relevance": "primary",
+          "criticality": "blocker",
+          "confidence": "medium",
+          "facts": [
+            {
+              "id": "large-strategic-large-site-fit",
+              "signalId": "large-site-feasibility-gap",
+              "label": "Large-format site readiness and hazard tolerance",
+              "reachId": "site-bound",
+              "sourceType": "registered-source",
+              "sourceId": "aguada-territorial-plan-order-2024",
+              "notes": "Official Aguada territorial-plan and Puerto Rico Planning Board sources now establish land-use classification, zoning, flood-screening, road-plan, and hazard-review controls for a large-format site in Aguada, but they do not prove parcel assembly, truck access, building condition, or destination-scale operating readiness for one property."
+            }
+          ],
+          "limitations": [
+            "The current baseline stops at official territorial-plan and screening controls and does not resolve parcel assembly, parking, loading, or retrofit readiness for one large site.",
+            "Large capital exposure makes unresolved parcel-specific access, hazard, and facility constraints materially riskier than in the smaller scenarios."
+          ],
+          "nextValidationCheck": "Add parcel-specific classification, flood, access, or building-condition evidence before treating a destination-format site as more than a screened planning question."
+        },
+        {
+          "lensId": "demand-market-reach",
+          "relevance": "primary",
+          "criticality": "material-tradeoff",
+          "confidence": "low",
+          "facts": [
+            {
+              "id": "large-strategic-local-cbp-baseline",
+              "signalId": "municipality-restaurant-activity-baseline",
+              "label": "Local restaurant activity baseline",
+              "reachId": "local-catchment",
+              "sourceType": "registered-source",
+              "sourceId": "datospr-cbp-2014-municipios",
+              "notes": "The existing municipality CBP row is still contextual evidence, but it is insufficient for an island-wide draw."
+            },
+            {
+              "id": "large-strategic-island-demand-gap",
+              "signalId": "island-wide-destination-demand-gap",
+              "label": "Island-wide destination and visitor demand pattern",
+              "reachId": "island-wide",
+              "sourceType": "registered-source",
+              "sourceId": "pr-tourism-visitors-expenditures-contribution-2024",
+              "notes": "Official Puerto Rico Tourism Company visitor-expenditure and passenger-movement reports now establish island-wide visitor volume, visitor spending, tourism GDP contribution, and airport-throughput context, but they do not prove Aguada capture, event pull, or one concept's destination conversion."
+            }
+          ],
+          "limitations": [
+            "Municipality context alone is not the market boundary for a destination-format scenario, and the new island-wide tourism baseline still stops short of Aguada-specific demand proof.",
+            "The current repo still does not show customer conversion, west-coast dwell time, event-programming strength, or one operator's repeat-demand volume."
+          ],
+          "nextValidationCheck": "Add narrower west-coast, event, or customer-mobility evidence before treating destination-scale volume assumptions as locally credible."
+        },
+        {
+          "lensId": "infrastructure-reliability-cost",
+          "relevance": "primary",
+          "criticality": "blocker",
+          "confidence": "medium",
+          "facts": [
+            {
+              "id": "large-strategic-resilience",
+              "signalId": "utility-resilience-gap",
+              "label": "Redundant power, water, and refrigeration resilience",
+              "reachId": "island-wide",
+              "sourceType": "registered-source",
+              "sourceId": "pr-energy-bureau-jan-2026-reliability-metrics-report",
+              "notes": "Official Puerto Rico Energy Bureau and PRASA sources now establish island-wide electric reliability, firm-capacity, and water emergency-response context for continuity review, but they do not prove destination-scale backup power, redundant water supply, fuel logistics, or one operator's resilience performance."
+            }
+          ],
+          "limitations": [
+            "Large-format food service still cannot assume ordinary local continuity is enough even though the registry now has an island-wide official resilience baseline.",
+            "The current repo does not capture backup-system sizing, resilience cost, fuel logistics, or recovery lead times for one operator."
+          ],
+          "nextValidationCheck": "Add destination-format backup-power, water-storage, or restoration evidence before treating this scenario as more than a resilience screening case."
+        },
+        {
+          "lensId": "workforce-capability",
+          "relevance": "primary",
+          "criticality": "material-tradeoff",
+          "confidence": "medium",
+          "facts": [
+            {
+              "id": "large-strategic-management-depth",
+              "signalId": "specialized-management-pipeline-gap",
+              "label": "Island-wide food-service supervision and staffing baseline",
+              "reachId": "island-wide",
+              "sourceType": "registered-source",
+              "sourceId": "pr-lmi-hospitality-food-service-profile-2026",
+              "notes": "Official Puerto Rico labor-market sources now establish island-wide food-service staffing, wage, annual-openings, and direct-supervision context, but they do not prove Aguada-specific hiring depth, retention, or commute fit for one destination-format operator."
+            }
+          ],
+          "limitations": [
+            "A large roster changes workforce depth from a local staffing question to a broader labor-market question, and the current evidence now covers only that island-wide baseline.",
+            "Current repo artifacts still do not address Aguada-specific management depth, retention, commute range, or shift redundancy for one operator."
+          ],
+          "nextValidationCheck": "Add region-specific or municipality-relevant hiring, commute, or retention evidence before treating staffing as a locally solved execution problem."
+        },
+        {
+          "lensId": "logistics-supply-chain",
+          "relevance": "primary",
+          "criticality": "blocker",
+          "confidence": "medium",
+          "facts": [
+            {
+              "id": "large-strategic-external-suppliers",
+              "signalId": "external-supply-chain-gap",
+              "label": "External and island-wide cold-chain dependence",
+              "reachId": "external-connection",
+              "sourceType": "registered-source",
+              "sourceId": "iepr-air-maritime-cargo-passengers-2024-q2",
+              "notes": "Official Puerto Rico cargo inventory now establishes that west-region airport gateways and broader maritime cargo reporting are active external-connection surfaces for Puerto Rico, but they do not prove supplier depth, cold-chain performance, recovery speed, or one operator's procurement path."
+            }
+          ],
+          "limitations": [
+            "Destination-scale operations can still be constrained by supply dependencies that do not appear in municipality or corridor context even though the repo now has an official Puerto Rico gateway baseline.",
+            "Current evidence does not cover supplier depth, cold-chain timing, maritime dependency, customs timing, or one operator's backup procurement path."
+          ],
+          "nextValidationCheck": "Add port, freight-disruption, or supplier-depth evidence before treating destination-scale supply continuity as more than an external logistics screening question."
+        },
+        {
+          "lensId": "regulatory-execution-environment",
+          "relevance": "primary",
+          "criticality": "blocker",
+          "confidence": "low",
+          "facts": [
+            {
+              "id": "large-strategic-multi-agency-approvals",
+              "signalId": "strategic-coordination-timing-baseline",
+              "label": "Large-format interagency coordination timing",
+              "reachId": "regional-corridor",
+              "sourceType": "registered-source",
+              "sourceId": "ddec-permit-task-force-coordination-timing-2025",
+              "notes": "Official Puerto Rico DDEC reporting establishes an aggregate interagency recommendation-processing baseline: its 2025 permit-system Task Force report records a reduction from 55 to 27 days and more than 2,600 priority-project filings processed, while PEMAS remains supporting construction-execution observability for Aguada-inclusive OGPe coverage."
+            },
+            {
+              "id": "large-strategic-permit-inspection-window",
+              "signalId": "strategic-inspection-service-window-baseline",
+              "label": "Large-format permit inspection service window",
+              "reachId": "island-wide",
+              "sourceType": "registered-source",
+              "sourceId": "ddec-permit-task-force-inspection-window-2025",
+              "notes": "Official Puerto Rico DDEC reporting defines a 90-day State inspection window for Permiso Unico requests and states that inspections not completed within that window are not billable, which establishes a public inspection-accountability control without reporting observed completion throughput."
+            }
+          ],
+          "limitations": [
+            "The current repo now has an official aggregate interagency coordination-timing baseline and a distinct construction-execution observability surface, but it does not measure coordinated approvals for one project.",
+            "Regulatory timing risk can still dominate launch timing because the public evidence does not establish an Aguada restaurant case-specific queue, inspection completion rate, or outcome."
+          ],
+          "nextValidationCheck": "Review an Aguada-inclusive PEMAS extract for the relevant construction class only after an exact project, permit type, and aggregation rule are defined; add official completed-inspection volume or rate evidence before treating the service window as observed inspection throughput."
+        },
+        {
+          "lensId": "ecosystem-resilience-growth",
+          "relevance": "primary",
+          "criticality": "material-tradeoff",
+          "confidence": "medium",
+          "facts": [
+            {
+              "id": "large-strategic-island-support-network",
+              "signalId": "growth-network-gap",
+              "label": "Island-wide service, partner, and recovery support network",
+              "reachId": "island-wide",
+              "sourceType": "registered-source",
+              "sourceId": "ddec-emprender-puerto-rico-2026",
+              "notes": "Official Puerto Rico DDEC and housing-recovery sources now establish island-wide entrepreneurship, incentive, export-support, and incubator or accelerator surfaces, but they do not prove that one destination-format restaurant can scale or recover through those channels successfully."
+            }
+          ],
+          "limitations": [
+            "Large-format growth and resilience still depend on private support networks, funding access, and redundancy choices that the current official baseline does not measure directly.",
+            "The repo still cannot show whether the selected place supports expansion without major relocation, partner-search, or backup-infrastructure costs."
+          ],
+          "nextValidationCheck": "Add program-eligibility, corridor-density, or recovery-readiness evidence before treating ecosystem resilience as more than a bounded support-network baseline."
+        }
+      ]
+    }
+  ],
+  "expectedScenarioProgression": [
+    {
+      "lensId": "infrastructure-reliability-cost",
+      "relevanceByScenario": {
+        "small-local": "primary",
+        "medium-regional": "primary",
+        "large-strategic": "primary"
+      },
+      "criticalityByScenario": {
+        "small-local": "material-tradeoff",
+        "medium-regional": "blocker",
+        "large-strategic": "blocker"
+      },
+      "reachByScenario": {
+        "small-local": "local-catchment",
+        "medium-regional": "regional-corridor",
+        "large-strategic": "island-wide"
+      }
+    },
+    {
+      "lensId": "logistics-supply-chain",
+      "relevanceByScenario": {
+        "small-local": "secondary",
+        "medium-regional": "primary",
+        "large-strategic": "primary"
+      },
+      "criticalityByScenario": {
+        "small-local": "secondary",
+        "medium-regional": "material-tradeoff",
+        "large-strategic": "blocker"
+      },
+      "reachByScenario": {
+        "small-local": "local-catchment",
+        "medium-regional": "regional-corridor",
+        "large-strategic": "external-connection"
+      }
+    },
+    {
+      "lensId": "ecosystem-resilience-growth",
+      "relevanceByScenario": {
+        "small-local": "secondary",
+        "medium-regional": "secondary",
+        "large-strategic": "primary"
+      },
+      "criticalityByScenario": {
+        "small-local": "informational",
+        "medium-regional": "secondary",
+        "large-strategic": "material-tradeoff"
+      },
+      "reachByScenario": {
+        "small-local": "local-catchment",
+        "medium-regional": "regional-corridor",
+        "large-strategic": "island-wide"
+      }
+    }
+  ]
+}

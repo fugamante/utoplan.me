@@ -3,26 +3,32 @@
 const assert = require('assert');
 const http = require('http');
 
+if (!process.env.MODERN_DB_TEST_USE_ENV_DB) {
+  process.env.DATABASE_URL = '';
+}
+
 const db = require('../lib/db');
 const modernApi = require('../lib/server');
 
 const contracts = [
   {
     path: '/v1/unis',
+    coverage: 'partial',
+    expectedCount: 4,
     expected: {
       id: 1,
-      title: 'Contract University',
-      address: '100 Contract Ave',
-      desc: 'Seeded university row'
+      title: 'Atlantic University College',
+      address: 'Calle Colton #9, GUAYNABO, Puerto Rico',
+      desc: null
     }
   },
   {
     path: '/v1/unis/1',
     expected: {
       id: 1,
-      title: 'Contract University',
-      address: '100 Contract Ave',
-      desc: 'Seeded university row'
+      title: 'Atlantic University College',
+      address: 'Calle Colton #9, GUAYNABO, Puerto Rico',
+      desc: null
     }
   },
   {
@@ -143,9 +149,22 @@ function runContract(server, index) {
       assert.strictEqual(response.headers['content-type'], 'application/json; charset=utf-8');
       assert.strictEqual(response.headers['access-control-allow-origin'], '*');
       assert.strictEqual(body.meta.error, null);
-      assert.strictEqual(body.meta.total, contract.expected ? 1 : 0);
-      assert.strictEqual(body.meta.count, contract.expected ? 1 : 0);
+      assert.strictEqual(body.meta.total, contract.expected ? (contract.expectedCount || 1) : 0);
+      assert.strictEqual(body.meta.count, contract.expected ? (contract.expectedCount || 1) : 0);
       assert.strictEqual(body.meta.offset, 0);
+      if (contract.coverage) {
+        assert(body.meta.coverage, contract.path + ' should include coverage metadata');
+        assert.strictEqual(body.meta.coverage.status, contract.coverage);
+        assert.strictEqual(body.meta.coverage.boundaryDecision, 'accept-partial-import');
+        assert.strictEqual(body.meta.coverage.reviewedCacheRows, 4);
+        assert.strictEqual(body.meta.coverage.excludedRows, 42);
+        assert(
+          body.meta.coverage.limitations[0].indexOf('not complete Puerto Rico higher-education coverage') !== -1,
+          contract.path + ' coverage should state incomplete coverage'
+        );
+      } else {
+        assert.strictEqual(body.meta.coverage, undefined, contract.path + ' should not include collection coverage metadata');
+      }
 
       if (contract.expected) {
         contains(body.data[0], contract.expected);
