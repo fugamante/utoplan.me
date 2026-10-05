@@ -76,10 +76,16 @@ export function createMap(documentRef: Document, leaflet: LeafletApi, config: Ma
   return map;
 }
 
+function escapePopupTitle(title: string): string {
+  // Leaflet parses popup strings as HTML; university titles are plain text.
+  return String(title).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+
 export function addUniversities(map: LeafletMap, leaflet: LeafletApi, universities: NormalizedUniversity[]): void {
   universities.forEach(function(university: NormalizedUniversity): void {
     const marker = leaflet.marker(university.position).addTo(map);
-    marker.bindPopup(university.title + "<br/>" + university.position.toString()).openPopup();
+    marker.bindPopup(escapePopupTitle(university.title) + "<br/>" + university.position.toString()).openPopup();
   });
 }
 

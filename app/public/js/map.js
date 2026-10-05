@@ -30,10 +30,15 @@ export function createMap(documentRef, leaflet, config) {
     }
     return map;
 }
+function escapePopupTitle(title) {
+    // Leaflet parses popup strings as HTML; university titles are plain text.
+    return String(title).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
 export function addUniversities(map, leaflet, universities) {
     universities.forEach(function (university) {
         const marker = leaflet.marker(university.position).addTo(map);
-        marker.bindPopup(university.title + "<br/>" + university.position.toString()).openPopup();
+        marker.bindPopup(escapePopupTitle(university.title) + "<br/>" + university.position.toString()).openPopup();
     });
 }
 function renderCoverage(documentRef, coverage) {
